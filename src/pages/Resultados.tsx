@@ -4,39 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Calendar, ExternalLink, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-// Mock data - em produção virá do banco de dados
-const resultadosMock = [
-  {
-    id: "res-001",
-    testeId: "big-five",
-    nomeTeste: "Big Five",
-    dataRealizacao: "2024-01-15",
-    categoria: "Personalidade",
-    status: "Concluído",
-    pontuacao: 85,
-    url: "/resultado/res-001"
-  },
-  {
-    id: "res-002", 
-    testeId: "inteligencia-emocional",
-    nomeTeste: "Inteligência Emocional",
-    dataRealizacao: "2024-01-10",
-    categoria: "Emocional",
-    status: "Concluído",
-    pontuacao: 78,
-    url: "/resultado/res-002"
-  },
-  {
-    id: "res-003",
-    testeId: "lideranca",
-    nomeTeste: "Perfil de Liderança", 
-    dataRealizacao: "2024-01-05",
-    categoria: "Profissional",
-    status: "Concluído",
-    pontuacao: 92,
-    url: "/resultado/res-003"
-  }
-];
+// Em produção, os resultados virão do banco de dados via Supabase
+const resultadosReais: any[] = [];
 
 export default function Resultados() {
   const navigate = useNavigate();
@@ -76,7 +45,7 @@ export default function Resultados() {
         <Card className="bg-gradient-card border-border/50">
           <CardContent className="p-6 text-center">
             <div className="text-3xl font-bold text-primary mb-2">
-              {resultadosMock.length}
+              {resultadosReais.length}
             </div>
             <div className="text-sm text-muted-foreground">
               Testes Realizados
@@ -87,7 +56,7 @@ export default function Resultados() {
         <Card className="bg-gradient-card border-border/50">
           <CardContent className="p-6 text-center">
             <div className="text-3xl font-bold text-success mb-2">
-              {Math.round(resultadosMock.reduce((acc, r) => acc + r.pontuacao, 0) / resultadosMock.length)}%
+              {resultadosReais.length > 0 ? Math.round(resultadosReais.reduce((acc, r) => acc + r.pontuacao, 0) / resultadosReais.length) : 0}%
             </div>
             <div className="text-sm text-muted-foreground">
               Pontuação Média
@@ -98,7 +67,7 @@ export default function Resultados() {
         <Card className="bg-gradient-card border-border/50">
           <CardContent className="p-6 text-center">
             <div className="text-3xl font-bold text-warning mb-2">
-              {new Set(resultadosMock.map(r => r.categoria)).size}
+              {resultadosReais.length > 0 ? new Set(resultadosReais.map(r => r.categoria)).size : 0}
             </div>
             <div className="text-sm text-muted-foreground">
               Categorias Exploradas  
@@ -111,7 +80,7 @@ export default function Resultados() {
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Histórico de Testes</h2>
         
-        {resultadosMock.length === 0 ? (
+        {resultadosReais.length === 0 ? (
           <Card className="bg-gradient-card border-border/50">
             <CardContent className="p-12 text-center">
               <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -129,7 +98,7 @@ export default function Resultados() {
           </Card>
         ) : (
           <div className="grid gap-4">
-            {resultadosMock.map((resultado) => (
+            {resultadosReais.map((resultado) => (
               <Card 
                 key={resultado.id}
                 className="hover:shadow-glow transition-all duration-300 bg-gradient-card border-border/50"
