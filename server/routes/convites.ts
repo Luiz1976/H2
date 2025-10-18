@@ -1,0 +1,300 @@
+import express from 'express';
+import { db } from '../../db';
+import { convitesEmpresa, convitesColaborador, empresas, colaboradores, insertConviteEmpresaSchema, insertConviteColaboradorSchema, insertEmpresaSchema, insertColaboradorSchema } from '../../shared/schema';
+import { hashPassword, generateInviteToken } from '../utils/auth';
+import { authenticateToken, requireAdmin, requireEmpresa, AuthRequest } from '../middleware/auth';
+import { eq, and, gt } from 'drizzle-orm';
+import { z } from 'zod';
+
+const router = express.Router();
+
+// Admin cria convite para empresa
+router.post('/empresa', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
+  try {
+    const validationResult = insertConviteEmpresaSchema.omit({ token: true, validade: true }).extend({
+      diasValidade: z.number().min(1).max(30).default(7),
+    }).safeParse(req.body);
+
+    if (!validationResult.success) {
+      return res.status(400).json({ error: 'Dados inválidos', details: validationResult.error.issues });
+    }
+
+    const { nomeEmpresa, emailContato, diasValidade, ...rest } = validationResult.data;
+
+    const [existingEmpresa] = await db.select().from(empresas).where(eq(empresas.emailContato, emailContato)).limit(1);
+    if (existingEmpresa) {
+      return res.status(409).json({ error: 'Email já cadastrado' });
+    }
+
+    const token = generateInviteToken();
+    const validade = new Date();
+    validade.setDate(validade.getDate() + (diasValidade || 7));
+
+    const [convite] = await db
+      .insert(convitesEmpresa)
+      .values({
+        token,
+        nomeEmpresa,
+        emailContato,
+        adminId: req.user!.userId,
+        validade,
+        status: 'pendente',
+        ...rest,
+      })
+      .returning();
+
+    res.status(201).json({
+      convite,
+      linkConvite: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/convite/empresa/${token}`,
+    });
+  } catch (error) {
+    console.error('Erro ao criar convite empresa:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Empresa cria convite para colaborador
+router.post('/colaborador', authenticateToken, requireEmpresa, async (req: AuthRequest, res) => {
+  try {
+    const validationResult = insertConviteColaboradorSchema.omit({ token: true, validade: true, empresaId: true }).extend({
+      diasValidade: z.number().min(1).max(30).default(3),
+    }).safeParse(req.body);
+
+    if (!validationResult.success) {
+      return res.status(400).json({ error: 'Dados inválidos', details: validationResult.error.issues });
+    }
+
+    const { nome, email, diasValidade, ...rest } = validationResult.data;
+
+    const [existingColaborador] = await db.select().from(colaboradores).where(eq(colaboradores.email, email)).limit(1);
+    if (existingColaborador) {
+      return res.status(409).json({ error: 'Email já cadastrado' });
+    }
+
+    const token = generateInviteToken();
+    const validade = new Date();
+    validade.setDate(validade.getDate() + (diasValidade || 3));
+
+    const [convite] = await db
+      .insert(convitesColaborador)
+      .values({
+        token,
+        nome,
+        email,
+        empresaId: req.user!.empresaId!,
+        validade,
+        status: 'pendente',
+        ...rest,
+      })
+      .returning();
+
+    res.status(201).json({
+      convite,
+      linkConvite: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/convite/colaborador/${token}`,
+    });
+  } catch (error) {
+    console.error('Erro ao criar convite colaborador:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Buscar convite por token (público)
+router.get('/token/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { tipo } = req.query;
+
+    if (tipo === 'empresa') {
+      const [convite] = await db
+        .select()
+        .from(convitesEmpresa)
+        .where(
+          and(
+            eq(convitesEmpresa.token, token),
+            eq(convitesEmpresa.status, 'pendente'),
+            gt(convitesEmpresa.validade, new Date())
+          )
+        )
+        .limit(1);
+
+      if (!convite) {
+        return res.status(404).json({ error: 'Convite não encontrado ou expirado' });
+      }
+
+      return res.json({ convite, tipo: 'empresa' });
+    } else if (tipo === 'colaborador') {
+      const [convite] = await db
+        .select()
+        .from(convitesColaborador)
+        .where(
+          and(
+            eq(convitesColaborador.token, token),
+            eq(convitesColaborador.status, 'pendente'),
+            gt(convitesColaborador.validade, new Date())
+          )
+        )
+        .limit(1);
+
+      if (!convite) {
+        return res.status(404).json({ error: 'Convite não encontrado ou expirado' });
+      }
+
+      return res.json({ convite, tipo: 'colaborador' });
+    }
+
+    res.status(400).json({ error: 'Tipo de convite inválido' });
+  } catch (error) {
+    console.error('Erro ao buscar convite:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Aceitar convite de empresa
+router.post('/empresa/aceitar/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+    const validationResult = z.object({
+      senha: z.string().min(8),
+    }).safeParse(req.body);
+
+    if (!validationResult.success) {
+      return res.status(400).json({ error: 'Senha inválida', details: validationResult.error.issues });
+    }
+
+    const [convite] = await db
+      .select()
+      .from(convitesEmpresa)
+      .where(
+        and(
+          eq(convitesEmpresa.token, token),
+          eq(convitesEmpresa.status, 'pendente'),
+          gt(convitesEmpresa.validade, new Date())
+        )
+      )
+      .limit(1);
+
+    if (!convite) {
+      return res.status(404).json({ error: 'Convite não encontrado ou expirado' });
+    }
+
+    const hashedPassword = await hashPassword(validationResult.data.senha);
+
+    const [novaEmpresa] = await db
+      .insert(empresas)
+      .values({
+        nomeEmpresa: convite.nomeEmpresa,
+        emailContato: convite.emailContato,
+        senha: hashedPassword,
+        adminId: convite.adminId,
+      })
+      .returning();
+
+    await db
+      .update(convitesEmpresa)
+      .set({ status: 'aceito' })
+      .where(eq(convitesEmpresa.id, convite.id));
+
+    res.status(201).json({
+      message: 'Empresa cadastrada com sucesso',
+      empresa: {
+        id: novaEmpresa.id,
+        nome: novaEmpresa.nomeEmpresa,
+        email: novaEmpresa.emailContato,
+      },
+    });
+  } catch (error) {
+    console.error('Erro ao aceitar convite empresa:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Aceitar convite de colaborador
+router.post('/colaborador/aceitar/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+    const validationResult = z.object({
+      senha: z.string().min(8),
+    }).safeParse(req.body);
+
+    if (!validationResult.success) {
+      return res.status(400).json({ error: 'Senha inválida', details: validationResult.error.issues });
+    }
+
+    const [convite] = await db
+      .select()
+      .from(convitesColaborador)
+      .where(
+        and(
+          eq(convitesColaborador.token, token),
+          eq(convitesColaborador.status, 'pendente'),
+          gt(convitesColaborador.validade, new Date())
+        )
+      )
+      .limit(1);
+
+    if (!convite) {
+      return res.status(404).json({ error: 'Convite não encontrado ou expirado' });
+    }
+
+    const hashedPassword = await hashPassword(validationResult.data.senha);
+
+    const [novoColaborador] = await db
+      .insert(colaboradores)
+      .values({
+        nome: convite.nome,
+        email: convite.email,
+        senha: hashedPassword,
+        cargo: convite.cargo,
+        departamento: convite.departamento,
+        empresaId: convite.empresaId,
+      })
+      .returning();
+
+    await db
+      .update(convitesColaborador)
+      .set({ status: 'aceito' })
+      .where(eq(convitesColaborador.id, convite.id));
+
+    res.status(201).json({
+      message: 'Colaborador cadastrado com sucesso',
+      colaborador: {
+        id: novoColaborador.id,
+        nome: novoColaborador.nome,
+        email: novoColaborador.email,
+      },
+    });
+  } catch (error) {
+    console.error('Erro ao aceitar convite colaborador:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Listar convites (admin vê todos de empresa, empresa vê seus de colaborador)
+router.get('/listar', authenticateToken, async (req: AuthRequest, res) => {
+  try {
+    if (req.user!.role === 'admin') {
+      const convitesEmpresas = await db
+        .select()
+        .from(convitesEmpresa)
+        .where(eq(convitesEmpresa.adminId, req.user!.userId))
+        .orderBy(convitesEmpresa.createdAt);
+
+      return res.json({ convites: convitesEmpresas, tipo: 'empresa' });
+    } else if (req.user!.role === 'empresa') {
+      const convitesColaboradores = await db
+        .select()
+        .from(convitesColaborador)
+        .where(eq(convitesColaborador.empresaId, req.user!.empresaId!))
+        .orderBy(convitesColaborador.createdAt);
+
+      return res.json({ convites: convitesColaboradores, tipo: 'colaborador' });
+    }
+
+    res.status(403).json({ error: 'Sem permissão' });
+  } catch (error) {
+    console.error('Erro ao listar convites:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+export default router;

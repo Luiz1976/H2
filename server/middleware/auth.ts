@@ -41,7 +41,19 @@ export function requireAdmin(req: AuthRequest, res: Response, next: NextFunction
 }
 
 export function requireEmpresa(req: AuthRequest, res: Response, next: NextFunction) {
-  return requireRole('empresa', 'admin')(req, res, next);
+  if (!req.user) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  
+  if (req.user.role !== 'empresa') {
+    return res.status(403).json({ error: 'Acesso negado: requer permissão de empresa' });
+  }
+  
+  if (!req.user.empresaId) {
+    return res.status(400).json({ error: 'EmpresaId ausente' });
+  }
+  
+  next();
 }
 
 export function requireColaborador(req: AuthRequest, res: Response, next: NextFunction) {

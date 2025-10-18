@@ -85,48 +85,70 @@ export const resultados = pgTable('resultados', {
 }));
 
 export type Admin = typeof admins.$inferSelect;
+export type Empresa = typeof empresas.$inferSelect;
+export type Colaborador = typeof colaboradores.$inferSelect;
+export type Teste = typeof testes.$inferSelect;
+export type Resultado = typeof resultados.$inferSelect;
+
+export const insertAdminSchema = z.object({
+  email: z.string().email(),
+  nome: z.string().min(1),
+  senha: z.string().min(8),
+});
+
 export type InsertAdmin = z.infer<typeof insertAdminSchema>;
 
-export type Empresa = typeof empresas.$inferSelect;
+export const insertEmpresaSchema = z.object({
+  nomeEmpresa: z.string().min(1),
+  emailContato: z.string().email(),
+  senha: z.string().min(8),
+  adminId: z.string().uuid().optional().nullable(),
+  configuracoes: z.any().optional(),
+  ativa: z.boolean().optional(),
+});
+
 export type InsertEmpresa = z.infer<typeof insertEmpresaSchema>;
 
-export type Colaborador = typeof colaboradores.$inferSelect;
+export const insertColaboradorSchema = z.object({
+  nome: z.string().min(1),
+  email: z.string().email(),
+  senha: z.string().min(8),
+  cargo: z.string().optional().nullable(),
+  departamento: z.string().optional().nullable(),
+  empresaId: z.string().uuid().optional().nullable(),
+  permissoes: z.any().optional(),
+  ativo: z.boolean().optional(),
+});
+
 export type InsertColaborador = z.infer<typeof insertColaboradorSchema>;
 
-export type Teste = typeof testes.$inferSelect;
+export const insertTesteSchema = z.object({
+  nome: z.string().min(1),
+  descricao: z.string().optional().nullable(),
+  categoria: z.string().optional().nullable(),
+  tempoEstimado: z.number().optional().nullable(),
+  instrucoes: z.string().optional().nullable(),
+  ativo: z.boolean().optional(),
+});
+
 export type InsertTeste = z.infer<typeof insertTesteSchema>;
 
-export type Resultado = typeof resultados.$inferSelect;
+export const insertResultadoSchema = z.object({
+  testeId: z.string().uuid(),
+  usuarioId: z.string().uuid().optional().nullable(),
+  pontuacaoTotal: z.number().optional().nullable(),
+  tempoGasto: z.number().optional().nullable(),
+  status: z.string().optional(),
+  metadados: z.any().optional(),
+  sessionId: z.string().optional().nullable(),
+  userAgent: z.string().optional().nullable(),
+  ipAddress: z.string().optional().nullable(),
+  colaboradorId: z.string().uuid().optional().nullable(),
+  empresaId: z.string().uuid().optional().nullable(),
+  userEmail: z.string().optional().nullable(),
+});
+
 export type InsertResultado = z.infer<typeof insertResultadoSchema>;
-
-export const insertAdminSchema = createInsertSchema(admins).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertEmpresaSchema = createInsertSchema(empresas).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertColaboradorSchema = createInsertSchema(colaboradores).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertTesteSchema = createInsertSchema(testes).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertResultadoSchema = createInsertSchema(resultados).omit({
-  id: true,
-  dataRealizacao: true,
-});
 
 export const convitesEmpresa = pgTable('convites_empresa', {
   id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
@@ -190,33 +212,54 @@ export const respostas = pgTable('respostas', {
 }));
 
 export type ConviteEmpresa = typeof convitesEmpresa.$inferSelect;
+export type ConviteColaborador = typeof convitesColaborador.$inferSelect;
+export type Pergunta = typeof perguntas.$inferSelect;
+export type Resposta = typeof respostas.$inferSelect;
+
+export const insertConviteEmpresaSchema = z.object({
+  token: z.string(),
+  nomeEmpresa: z.string().min(1),
+  emailContato: z.string().email(),
+  adminId: z.string().uuid().optional().nullable(),
+  validade: z.date(),
+  status: z.string().optional(),
+  metadados: z.any().optional(),
+});
+
 export type InsertConviteEmpresa = z.infer<typeof insertConviteEmpresaSchema>;
 
-export type ConviteColaborador = typeof convitesColaborador.$inferSelect;
+export const insertConviteColaboradorSchema = z.object({
+  token: z.string(),
+  nome: z.string().min(1),
+  email: z.string().email(),
+  cargo: z.string().optional().nullable(),
+  departamento: z.string().optional().nullable(),
+  empresaId: z.string().uuid().optional().nullable(),
+  validade: z.date(),
+  status: z.string().optional(),
+  metadados: z.any().optional(),
+});
+
 export type InsertConviteColaborador = z.infer<typeof insertConviteColaboradorSchema>;
 
-export type Pergunta = typeof perguntas.$inferSelect;
+export const insertPerguntaSchema = z.object({
+  testeId: z.string().uuid(),
+  texto: z.string().min(1),
+  tipo: z.string().min(1),
+  opcoes: z.any().optional().nullable(),
+  escalaMin: z.number().optional().nullable(),
+  escalaMax: z.number().optional().nullable(),
+  obrigatoria: z.boolean().optional(),
+  ordem: z.number(),
+});
+
 export type InsertPergunta = z.infer<typeof insertPerguntaSchema>;
 
-export type Resposta = typeof respostas.$inferSelect;
+export const insertRespostaSchema = z.object({
+  resultadoId: z.string().uuid(),
+  perguntaId: z.string().uuid(),
+  valor: z.string(),
+  pontuacao: z.number().optional().nullable(),
+});
+
 export type InsertResposta = z.infer<typeof insertRespostaSchema>;
-
-export const insertConviteEmpresaSchema = createInsertSchema(convitesEmpresa).omit({
-  id: true,
-  createdAt: true,
-});
-
-export const insertConviteColaboradorSchema = createInsertSchema(convitesColaborador).omit({
-  id: true,
-  createdAt: true,
-});
-
-export const insertPerguntaSchema = createInsertSchema(perguntas).omit({
-  id: true,
-  createdAt: true,
-});
-
-export const insertRespostaSchema = createInsertSchema(respostas).omit({
-  id: true,
-  createdAt: true,
-});
