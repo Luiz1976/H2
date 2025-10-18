@@ -78,12 +78,7 @@ function App() {
         <BrowserRouter>
           <AuthProvider>
             <Routes>
-              <Route path="/login" element={
-                <div>
-                  {console.log('🔍 [APP] Renderizando rota /login')}
-                  <Login />
-                </div>
-              } />
+              <Route path="/login" element={<Login />} />
               <Route 
                 path="/post-login-animation" 
                 element={
