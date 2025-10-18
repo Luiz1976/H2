@@ -1,0 +1,449 @@
+/* Animação do Logo HumaniQ AI - Inspirada no Disney+ Original */
+
+.humaniq-logo-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animation-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fundo com cor azul escuro sólido */
+.background-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #1a1a2e;
+  z-index: 1;
+}
+
+/* Partículas de fundo */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(0, 212, 255, 0.6);
+  border-radius: 50%;
+  animation: float 8s infinite ease-in-out;
+}
+
+.particle-0 { top: 10%; left: 15%; animation-delay: 0s; }
+.particle-1 { top: 20%; left: 80%; animation-delay: 1s; }
+.particle-2 { top: 60%; left: 10%; animation-delay: 2s; }
+.particle-3 { top: 80%; left: 70%; animation-delay: 0.5s; }
+.particle-4 { top: 30%; left: 90%; animation-delay: 1.5s; }
+.particle-5 { top: 70%; left: 25%; animation-delay: 2.5s; }
+.particle-6 { top: 15%; left: 60%; animation-delay: 3s; }
+.particle-7 { top: 85%; left: 45%; animation-delay: 0.8s; }
+.particle-8 { top: 40%; left: 5%; animation-delay: 1.8s; }
+.particle-9 { top: 55%; left: 85%; animation-delay: 2.2s; }
+.particle-10 { top: 25%; left: 35%; animation-delay: 0.3s; }
+.particle-11 { top: 75%; left: 65%; animation-delay: 1.3s; }
+.particle-12 { top: 5%; left: 50%; animation-delay: 2.8s; }
+.particle-13 { top: 90%; left: 20%; animation-delay: 0.7s; }
+.particle-14 { top: 35%; left: 75%; animation-delay: 1.7s; }
+.particle-15 { top: 65%; left: 40%; animation-delay: 2.3s; }
+.particle-16 { top: 45%; left: 95%; animation-delay: 0.2s; }
+.particle-17 { top: 95%; left: 55%; animation-delay: 1.2s; }
+.particle-18 { top: 50%; left: 15%; animation-delay: 2.7s; }
+.particle-19 { top: 8%; left: 85%; animation-delay: 0.9s; }
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) scale(0.8);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: translateY(-20px) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Estrela inicial */
+.star {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  opacity: 0;
+}
+
+.star.animate {
+  animation: starAppear 1s ease-out forwards;
+}
+
+.star-inner {
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #ffffff 0%, #00d4ff 70%, transparent 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 10px #00d4ff,
+    0 0 20px #00d4ff,
+    0 0 30px #00d4ff;
+}
+
+@keyframes starAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Arco de luz */
+.light-arc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  opacity: 0;
+}
+
+.light-arc.animate {
+  animation: arcAppear 1.5s ease-out forwards;
+}
+
+.arc-svg {
+  width: 300px;
+  height: 150px;
+  filter: drop-shadow(0 0 10px #00d4ff);
+}
+
+.arc-path {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: drawArc 1.5s ease-out forwards;
+}
+
+@keyframes arcAppear {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes drawArc {
+  0% {
+    stroke-dashoffset: 400;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Explosão de luz */
+.explosion {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  opacity: 0;
+}
+
+.explosion.animate {
+  animation: explosionAppear 0.8s ease-out forwards;
+}
+
+.explosion-ring {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #00d4ff;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: explosionRing 0.8s ease-out forwards;
+}
+
+.explosion-particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.explosion-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #00d4ff;
+  border-radius: 50%;
+  transform: scale(0);
+}
+
+.explosion.animate .explosion-particle {
+  animation: particleExplode 0.8s ease-out forwards;
+}
+
+.explosion-particle-0 { transform: rotate(0deg) translateX(30px); }
+.explosion-particle-1 { transform: rotate(30deg) translateX(30px); }
+.explosion-particle-2 { transform: rotate(60deg) translateX(30px); }
+.explosion-particle-3 { transform: rotate(90deg) translateX(30px); }
+.explosion-particle-4 { transform: rotate(120deg) translateX(30px); }
+.explosion-particle-5 { transform: rotate(150deg) translateX(30px); }
+.explosion-particle-6 { transform: rotate(180deg) translateX(30px); }
+.explosion-particle-7 { transform: rotate(210deg) translateX(30px); }
+.explosion-particle-8 { transform: rotate(240deg) translateX(30px); }
+.explosion-particle-9 { transform: rotate(270deg) translateX(30px); }
+.explosion-particle-10 { transform: rotate(300deg) translateX(30px); }
+.explosion-particle-11 { transform: rotate(330deg) translateX(30px); }
+
+@keyframes explosionAppear {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes explosionRing {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes particleExplode {
+  0% {
+    transform: scale(0) rotate(var(--rotation, 0deg)) translateX(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(var(--rotation, 0deg)) translateX(50px);
+    opacity: 0;
+  }
+}
+
+/* Logo HumaniQ */
+.humaniq-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 7;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.humaniq-logo.animate {
+  animation: logoAppear 1s ease-out forwards;
+}
+
+.logo-text {
+  font-family: 'Arial', sans-serif;
+  font-size: 3.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.logo-humani {
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.logo-space {
+  color: transparent;
+  width: 0.3em;
+}
+
+.logo-ai {
+  color: #66b3ff;
+  font-size: 3.5rem;
+  text-shadow: 0 0 20px rgba(102, 179, 255, 0.8);
+}
+
+/* Remove a animação do plus que não existe mais */
+
+@keyframes logoAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Animação removida pois o símbolo + não existe mais */
+
+/* Texto "INTELIGÊNCIA" */
+.original-text {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  display: flex;
+  gap: 2px;
+  font-family: 'Arial', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: #ffffff;
+  opacity: 0;
+}
+
+.original-text.animate {
+  animation: textAppear 1.5s ease-out forwards;
+}
+
+.original-text span {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: letterSlide 0.1s ease-out forwards;
+}
+
+.original-text.animate span:nth-child(1) { animation-delay: 0.05s; }
+.original-text.animate span:nth-child(2) { animation-delay: 0.1s; }
+.original-text.animate span:nth-child(3) { animation-delay: 0.15s; }
+.original-text.animate span:nth-child(4) { animation-delay: 0.2s; }
+.original-text.animate span:nth-child(5) { animation-delay: 0.25s; }
+.original-text.animate span:nth-child(6) { animation-delay: 0.3s; }
+.original-text.animate span:nth-child(7) { animation-delay: 0.35s; }
+.original-text.animate span:nth-child(8) { animation-delay: 0.4s; }
+.original-text.animate span:nth-child(9) { animation-delay: 0.45s; }
+.original-text.animate span:nth-child(10) { animation-delay: 0.5s; }
+.original-text.animate span:nth-child(11) { animation-delay: 0.55s; }
+.original-text.animate span:nth-child(12) { animation-delay: 0.6s; }
+.original-text.animate span:nth-child(13) { animation-delay: 0.65s; }
+.original-text.animate span:nth-child(14) { animation-delay: 0.7s; }
+.original-text.animate span:nth-child(15) { animation-delay: 0.75s; }
+.original-text.animate span:nth-child(16) { animation-delay: 0.8s; }
+.original-text.animate span:nth-child(17) { animation-delay: 0.85s; }
+.original-text.animate span:nth-child(18) { animation-delay: 0.9s; }
+.original-text.animate span:nth-child(19) { animation-delay: 0.95s; }
+.original-text.animate span:nth-child(20) { animation-delay: 1.0s; }
+.original-text.animate span:nth-child(21) { animation-delay: 1.05s; }
+.original-text.animate span:nth-child(22) { animation-delay: 1.1s; }
+
+@keyframes textAppear {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes letterSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Brilho final */
+.final-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  opacity: 0;
+  background: radial-gradient(circle at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+}
+
+.final-glow.animate {
+  animation: finalGlow 2s ease-in-out forwards;
+}
+
+@keyframes finalGlow {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 2.5rem;
+  }
+  
+  .logo-ai {
+    font-size: 2rem;
+  }
+  
+  .logo-plus {
+    font-size: 2.2rem;
+  }
+  
+  .original-text {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+  
+  .arc-svg {
+    width: 250px;
+    height: 125px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 2rem;
+  }
+  
+  .logo-ai {
+    font-size: 1.6rem;
+  }
+  
+  .logo-plus {
+    font-size: 1.8rem;
+  }
+  
+  .original-text {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+  
+  .arc-svg {
+    width: 200px;
+    height: 100px;
+  }
+}

@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Clock, FileText, Target, CheckCircle } from "lucide-react";
+import LoadingAnimation from "@/components/LoadingAnimation";
 
 // Mock data dos testes - em produção seria carregado do backend
 const testesData = {
@@ -59,6 +61,66 @@ const testesData = {
       "Pense em como você interage com outros",
       "Responda baseado em sua experiência geral"
     ]
+  },
+  "clima-organizacional": {
+    nome: "HumaniQ - Clima Organizacional",
+    descricao: "Pesquisa de clima organizacional baseada em modelo científico que avalia 8 dimensões fundamentais do ambiente de trabalho, proporcionando insights valiosos para o desenvolvimento organizacional.",
+    duracao: "15-20 minutos",
+    questoes: 56,
+    categoria: "Organizacional",
+    objetivos: [
+      "Avaliar a percepção do clima organizacional",
+      "Identificar pontos fortes e oportunidades de melhoria",
+      "Medir o nível de engajamento e satisfação",
+      "Fornecer insights para desenvolvimento organizacional"
+    ],
+    dimensoes: [
+      "Comunicação",
+      "Liderança",
+      "Relacionamento Interpessoal",
+      "Reconhecimento e Recompensas",
+      "Desenvolvimento Profissional",
+      "Condições de Trabalho e Infraestrutura",
+      "Equilíbrio Trabalho x Vida Pessoal",
+      "Engajamento e Pertencimento"
+    ],
+    instrucoes: [
+      "Responda com base na sua experiência atual na organização",
+      "Use a escala de 1 (Discordo totalmente) a 5 (Concordo totalmente)",
+      "Seja honesto e objetivo em suas respostas",
+      "Considere situações recentes e frequentes",
+      "Suas respostas são confidenciais e anônimas"
+    ]
+  },
+  "karasek-siegrist": {
+    nome: "HumaniQ - Karasek–Siegrist",
+    descricao: "Avaliação científica de risco psicossocial no trabalho baseada nos modelos de Karasek e Siegrist. Identifica fatores de estresse ocupacional e risco de burnout através de 6 dimensões fundamentais.",
+    duracao: "15-20 minutos",
+    questoes: 60,
+    categoria: "Psicossocial",
+    objetivos: [
+      "Avaliar o risco psicossocial no ambiente de trabalho",
+      "Identificar fatores de estresse ocupacional",
+      "Medir o desequilíbrio esforço-recompensa",
+      "Detectar sinais precoces de burnout",
+      "Fornecer recomendações para intervenção preventiva"
+    ],
+    dimensoes: [
+      "Demanda Psicológica",
+      "Controle e Autonomia",
+      "Apoio Social",
+      "Esforço Exigido",
+      "Recompensas Recebidas",
+      "Hipercomprometimento"
+    ],
+    instrucoes: [
+      "Responda com base na sua experiência atual no trabalho",
+      "Use a escala fornecida para cada pergunta",
+      "Seja honesto sobre suas percepções e sentimentos",
+      "Considere situações típicas do seu dia a dia profissional",
+      "Não há respostas certas ou erradas, apenas sua percepção",
+      "Suas respostas são confidenciais e protegidas"
+    ]
   }
   // ... outros testes podem ser adicionados aqui
 };
@@ -66,6 +128,7 @@ const testesData = {
 export default function TesteIntroducao() {
   const { testeId } = useParams();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   
   const teste = testesData[testeId as keyof typeof testesData];
 
@@ -81,8 +144,23 @@ export default function TesteIntroducao() {
   }
 
   const handleIniciarTeste = () => {
+    setIsLoading(true);
+  };
+
+  const handleLoadingComplete = () => {
     navigate(`/teste/${testeId}/perguntas`);
   };
+
+  // Renderizar animação de carregamento
+  if (isLoading) {
+    return (
+      <LoadingAnimation 
+        onComplete={handleLoadingComplete}
+        testName={teste?.nome || "teste"}
+        duration={8000} // 8 segundos
+      />
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
