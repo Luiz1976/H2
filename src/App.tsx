@@ -24,6 +24,7 @@ import EmpresaConvites from "./pages/empresa/EmpresaConvites";
 import EmpresaGestaoConvites from "./pages/empresa/EmpresaGestaoConvites";
 import EmpresaResultados from "./pages/empresa/EmpresaResultados";
 import EmpresaColaboradorResultados from "./pages/empresa/EmpresaColaboradorResultados";
+import EmpresaEstadoPsicossocial from "./pages/empresa/EmpresaEstadoPsicossocial";
 import GestaoAI from "./pages/GestaoAI";
 import GestaoConvite from "./pages/GestaoConvite";
 import AcessoConvite from "./pages/AcessoConvite";
@@ -146,6 +147,7 @@ function App() {
                 <Route path="gestao-colaboradores" element={<EmpresaColaboradores />} />
                 <Route path="convites" element={<EmpresaConvites />} />
                 <Route path="gestao-convites" element={<EmpresaGestaoConvites />} />
+                <Route path="estado-psicossocial" element={<EmpresaEstadoPsicossocial />} />
                 <Route path="resultados" element={<EmpresaResultados />} />
                 <Route path="colaborador/:colaboradorId/resultados" element={<EmpresaColaboradorResultados />} />
               </Route>

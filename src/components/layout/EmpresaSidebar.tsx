@@ -1,4 +1,4 @@
-import { Building2, UserPlus, Users, Menu, LogOut, Home } from "lucide-react";
+import { Building2, UserPlus, Users, Menu, LogOut, Home, Brain } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
 import {
@@ -28,6 +28,11 @@ const items = [
     title: "Gestão de Colaboradores", 
     url: "/empresa/gestao-colaboradores", 
     icon: Users,
+  },
+  { 
+    title: "Estado Psicossocial da Empresa", 
+    url: "/empresa/estado-psicossocial", 
+    icon: Brain,
   },
 ];
 
