@@ -1,4 +1,4 @@
-import { Building2, UserPlus, Users, Menu, LogOut } from "lucide-react";
+import { Building2, UserPlus, Users, Menu, LogOut, Home } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
 import {
@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
+  { 
+    title: "Home", 
+    url: "/empresa/overview", 
+    icon: Home,
+  },
   { 
     title: "Gestão de Convites", 
     url: "/empresa/gestao-convites", 
