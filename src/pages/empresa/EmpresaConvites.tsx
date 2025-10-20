@@ -45,9 +45,9 @@ export default function EmpresaConvites() {
   const carregarConvites = async () => {
     try {
       const user = authService.getCurrentUser();
-      if (!user?.empresa_id) return;
+      if (!user?.empresaId) return;
 
-      const response = await hybridInvitationService.listarConvites('colaborador', user.empresa_id);
+      const response = await hybridInvitationService.listarConvites('colaborador', user.empresaId);
       
       if (response.success && response.data) {
         setConvites(response.data);
@@ -68,12 +68,12 @@ export default function EmpresaConvites() {
       }
 
       const user = authService.getCurrentUser();
-      if (!user?.empresa_id) return;
+      if (!user?.empresaId) return;
 
       const response = await hybridInvitationService.criarConviteColaborador({
         email: novoConvite.email,
         nome: novoConvite.nome,
-        empresa_id: user.empresa_id,
+        empresa_id: user.empresaId,
         dias_expiracao: novoConvite.dias_expiracao
       });
 

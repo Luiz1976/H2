@@ -40,16 +40,16 @@ export default function EmpresaResultados() {
   useEffect(() => {
     const carregarResultados = async () => {
       const user = authService.getCurrentUser();
-      if (!user?.empresa_id) {
-        console.log('🔍 [EmpresaResultados] Usuário sem empresa_id:', user);
+      if (!user?.empresaId) {
+        console.log('🔍 [EmpresaResultados] Usuário sem empresaId:', user);
         return;
       }
 
-      console.log('🔍 [EmpresaResultados] Iniciando carregamento de resultados para empresa:', user.empresa_id);
+      console.log('🔍 [EmpresaResultados] Iniciando carregamento de resultados para empresa:', user.empresaId);
       setLoading(true);
       
       try {
-        const resultados = await empresaStatisticsService.buscarResultadosEmpresa(user.empresa_id);
+        const resultados = await empresaStatisticsService.buscarResultadosEmpresa(user.empresaId);
         console.log('✅ [EmpresaResultados] Resultados carregados com sucesso:', resultados);
         setResultados(resultados);
       } catch (error) {

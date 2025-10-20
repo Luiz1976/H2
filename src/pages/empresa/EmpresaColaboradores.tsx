@@ -71,12 +71,12 @@ export default function EmpresaColaboradores() {
       }
 
       const user = authService.getCurrentUser();
-      if (!user?.empresa_id) return;
+      if (!user?.empresaId) return;
 
       const response = await hybridInvitationService.criarConviteColaborador({
         email: novoConvite.email,
         nome: novoConvite.nome,
-        empresa_id: user.empresa_id,
+        empresa_id: user.empresaId,
         dias_expiracao: novoConvite.dias_expiracao
       });
 

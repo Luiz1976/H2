@@ -7,7 +7,7 @@ export interface User {
   name: string;
   role: 'admin' | 'empresa' | 'colaborador';
   redirectUrl: string;
-  empresa_id?: string;
+  empresaId?: string;
   permissoes?: any;
 }
 

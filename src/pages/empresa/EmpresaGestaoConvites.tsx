@@ -49,7 +49,7 @@ const EmpresaGestaoConvites: React.FC = () => {
       setLoading(true);
       console.log('🔄 Carregando convites da empresa...');
       
-      if (!user?.empresa_id) {
+      if (!user?.empresaId) {
         console.error('❌ ID da empresa não encontrado');
         toast.error('Erro ao carregar convites', {
           description: 'ID da empresa não encontrado'
@@ -57,14 +57,14 @@ const EmpresaGestaoConvites: React.FC = () => {
         return;
       }
 
-      const response = await secureInvitationService.listarConvites('colaborador', user.empresa_id);
+      const response = await secureInvitationService.listarConvites('colaborador', user.empresaId);
       console.log('✅ Convites carregados:', response);
       
       if (response.success && response.data) {
         setConvites(response.data as ConviteColaborador[]);
       } else {
         console.log('Tentando fallback para hybridInvitationService...');
-        const fallbackResponse = await hybridInvitationService.listarConvites('colaborador', user.empresa_id);
+        const fallbackResponse = await hybridInvitationService.listarConvites('colaborador', user.empresaId);
         
         if (fallbackResponse.success && fallbackResponse.data) {
           setConvites(fallbackResponse.data as ConviteColaborador[]);
@@ -88,13 +88,13 @@ const EmpresaGestaoConvites: React.FC = () => {
       setEnviandoConvite(true);
       console.log('🔄 Criando novo convite...', novoConvite);
 
-      if (!user?.empresa_id) {
+      if (!user?.empresaId) {
         toast.error('Erro', { description: 'ID da empresa não encontrado' });
         return;
       }
 
       const response = await secureInvitationService.criarConviteColaborador({
-        empresa_id: user.empresa_id,
+        empresa_id: user.empresaId,
         email: novoConvite.email,
         nome: novoConvite.nome,
         dias_expiracao: novoConvite.dias_expiracao
@@ -103,7 +103,7 @@ const EmpresaGestaoConvites: React.FC = () => {
       if (!response.success) {
         console.log('Tentando fallback para hybridInvitationService...');
         const fallbackResponse = await hybridInvitationService.criarConviteColaborador({
-          empresa_id: user.empresa_id,
+          empresa_id: user.empresaId,
           email: novoConvite.email,
           nome: novoConvite.nome,
           dias_expiracao: novoConvite.dias_expiracao
