@@ -154,36 +154,9 @@ export async function finalizarTesteQVT(
       });
     } else {
       console.warn('⚠️ [QVT-SERVICE] Nenhum usuário autenticado encontrado');
-      // Tentar obter por email se fornecido
-      if (usuarioEmail) {
-        usuarioId = usuarioEmail;
-        console.log('🔍 [QVT-SERVICE] Usando email como usuario_id (fallback):', usuarioEmail);
-      }
     }
     
-    // Preparar dados para salvar no banco (estrutura compatível com a tabela)
-    const dadosResultado = {
-      session_id: sessaoId,
-      usuario_id: usuarioId, // Vincular ao usuário autenticado se existir
-      indice_geral: analiseQVT.indiceGeral || 0,
-      nivel_geral: analiseQVT.nivelGeral || 'Indefinido',
-      percentual_geral: analiseQVT.percentualGeral || 0,
-      satisfacao_funcao: analiseQVT.dimensoes?.[0]?.pontuacao || 0,
-      relacao_lideranca: analiseQVT.dimensoes?.[1]?.pontuacao || 0,
-      estrutura_condicoes: analiseQVT.dimensoes?.[2]?.pontuacao || 0,
-      recompensas_remuneracao: analiseQVT.dimensoes?.[3]?.pontuacao || 0,
-      equilibrio_vida_trabalho: analiseQVT.dimensoes?.[4]?.pontuacao || 0,
-      dimensoes_criticas: analiseQVT.dimensoesCriticas?.map(dc => dc.dimensao) || [],
-      pontos_fortes: analiseQVT.pontoFortes?.map(pf => pf.dimensao) || [],
-      risco_turnover: analiseQVT.riscoTurnover || false,
-      total_perguntas: totalPerguntas,
-      recomendacoes: analiseQVT.recomendacoes || [],
-      insights: analiseQVT.insights || [],
-      alertas_criticos: JSON.stringify(analiseQVT.alertasCriticos || []),
-      created_at: new Date().toISOString()
-    };
-    
-    console.log('🔍 [QVT-SERVICE] Dados preparados para salvar via API local');
+    console.log('🔍 [QVT-SERVICE] Preparando dados para salvar via API local');
     
     // Salvar resultado via API local
     const dadosAPI = {
