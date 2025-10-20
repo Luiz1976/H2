@@ -1,5 +1,6 @@
 // Novo serviço de autenticação usando a API local
-const API_BASE_URL = 'http://localhost:3001';
+// Usa URL relativa - o Vite faz proxy para localhost:3001
+const API_BASE_URL = '';
 
 export interface User {
   id: string;

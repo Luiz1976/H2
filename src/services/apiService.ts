@@ -1,5 +1,6 @@
 // Serviço para comunicação com a API backend
-const API_BASE_URL = 'http://localhost:3001';
+// Usa URL relativa - o Vite faz proxy para localhost:3001
+const API_BASE_URL = '';
 
 interface ApiResponse<T> {
   success?: boolean;
