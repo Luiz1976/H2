@@ -278,7 +278,7 @@ export default function TesteQVTPerguntas() {
                   <div className="flex items-center gap-3 mb-4">
                     <h2 className="text-xl font-bold text-gray-800">Pergunta {perguntaAtual + 1}</h2>
                     <Badge className="bg-purple-500 text-white hover:bg-purple-600">
-                      {pergunta.dimensao.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      {pergunta.dimensao}
                     </Badge>
                   </div>
                   <p className="text-gray-700 text-lg leading-relaxed">
