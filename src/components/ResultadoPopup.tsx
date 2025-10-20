@@ -256,7 +256,7 @@ export function ResultadoPopup({ isOpen, onClose, resultado }: ResultadoPopupPro
                     {dimensao.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim()}
                   </div>
                   <div className="text-lg font-semibold text-slate-800">
-                    {typeof pontuacao === 'number' ? pontuacao.toFixed(1) : pontuacao}
+                    {typeof pontuacao === 'number' ? pontuacao.toFixed(1) : String(pontuacao)}
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
                     <div 
