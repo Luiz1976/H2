@@ -97,6 +97,10 @@ class AuthService {
       erros
     };
   }
+
+  async getEmpresas(): Promise<{ success: boolean; data?: any[]; message?: string }> {
+    return authServiceNew.getEmpresas();
+  }
 }
 
 export const authService = new AuthService();

@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { authService } from '@/services/authService';
-import { hybridInvitationService } from '@/services/invitationServiceHybrid';
+import { apiService } from '@/services/apiService';
 
 interface Empresa {
   id: string;
@@ -67,34 +67,27 @@ export default function AdminEmpresas() {
         return;
       }
 
-      const user = authService.getCurrentUser();
-      if (!user) return;
-
-      const response = await hybridInvitationService.criarConviteEmpresa({
-        email: novoConvite.email,
-        nome: novoConvite.nome,
-        admin_id: user.id,
-        dias_expiracao: novoConvite.dias_expiracao
+      const convite = await apiService.criarConviteEmpresa({
+        nomeEmpresa: novoConvite.nome,
+        emailContato: novoConvite.email,
+        diasValidade: novoConvite.dias_expiracao
       });
 
-      if (response.success) {
-        toast.success('Convite criado com sucesso!');
-        
-        // Gerar URL do convite
-        const urlConvite = hybridInvitationService.gerarUrlConvite(response.token!, 'empresa');
-        
-        // Copiar para clipboard
-        navigator.clipboard.writeText(urlConvite);
-        toast.info('URL do convite copiada para a área de transferência');
-        
-        setShowConviteModal(false);
-        setNovoConvite({ email: '', nome: '', dias_expiracao: 7 });
-        
-        // Redirecionar para a página de convites
-        navigate('/admin/convites');
-      } else {
-        toast.error(response.message || 'Erro ao criar convite');
-      }
+      toast.success('Convite criado com sucesso!');
+      
+      // Gerar URL do convite
+      const baseUrl = window.location.origin;
+      const urlConvite = `${baseUrl}/aceitar-convite/${convite.token}?tipo=empresa`;
+      
+      // Copiar para clipboard
+      navigator.clipboard.writeText(urlConvite);
+      toast.info('URL do convite copiada para a área de transferência');
+      
+      setShowConviteModal(false);
+      setNovoConvite({ email: '', nome: '', dias_expiracao: 7 });
+      
+      // Redirecionar para a página de convites
+      navigate('/admin/convites');
     } catch (error) {
       console.error('Erro ao criar convite:', error);
       toast.error('Erro ao criar convite');

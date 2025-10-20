@@ -161,6 +161,21 @@ class AuthServiceNew {
     if (!this.currentUser) return false;
     return roles.includes(this.currentUser.role);
   }
+
+  async getEmpresas(): Promise<{ success: boolean; data?: any[]; message?: string }> {
+    try {
+      const response = await this.makeRequest<{ empresas: any[]; total: number }>('/api/empresas/todas', {
+        method: 'GET',
+      });
+      return { success: true, data: response.empresas };
+    } catch (error) {
+      console.error('Erro ao buscar empresas:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Erro ao buscar empresas'
+      };
+    }
+  }
 }
 
 export const authServiceNew = new AuthServiceNew();
