@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/AuthContext';
 import { obterPerguntasQVT, finalizarTesteQVT } from '@/lib/services/qualidadeVidaTrabalhoService';
 import { sessionService } from '@/lib/services/session-service';
 import { supabase } from '@/lib/supabase';
+import { numeroParaLetra } from '@/lib/utils';
 import ProcessingAnimation from '@/components/ProcessingAnimation';
 
 interface Pergunta {
