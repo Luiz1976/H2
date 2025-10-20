@@ -182,6 +182,11 @@ npm run db:push    # Sincroniza schema com banco de dados
 **Data**: 20 de outubro de 2025  
 **Status**: Sistema PRONTO para uso em massa com múltiplos usuários simultâneos ✅
 
+### 🔧 Correções Finais (20/10/2025 - 17:40)
+- **Migração completa de Supabase → API Local**: Substituído `database.ts:resultadosService.salvarResultado()` para usar `apiService.submeterResultado()`
+- **Todos os testes agora salvam via API local**: Karasek-Siegrist, Clima Organizacional, RPO, QVT, PAS, MGRP, Estresse Ocupacional
+- **Erro "Supabase desabilitado" eliminado**: Sistema 100% funcional com backend local
+
 ### 🎨 Refatoração de UI (20/10/2025)
 - Criado componente `ResultadoVisualizacao.tsx` para unificar a exibição de resultados
 - Simplificado `ResultadoPopup.tsx` para usar o componente compartilhado
