@@ -133,14 +133,23 @@ npm run db:push    # Sincroniza schema com banco de dados
 ### Empresa
 1. Recebe convite via e-mail (token)
 2. Aceita convite e define senha
-3. Cria convites para colaboradores
-4. Visualiza resultados dos colaboradores
+3. Faz login via `/api/auth/login`
+4. Cria convites para colaboradores
+5. Visualiza resultados dos colaboradores
 
 ### Colaborador
 1. Recebe convite da empresa
 2. Aceita convite e define senha
-3. Realiza testes psicológicos
-4. Visualiza seus próprios resultados
+3. **IMPORTANTE**: Faz login com sua própria conta (email do colaborador)
+4. Realiza testes psicológicos (autenticado como colaborador)
+5. Visualiza seus próprios resultados
+
+### ⚠️ Regra Importante de Autenticação
+- **Colaboradores devem fazer login com suas próprias contas** para realizar testes
+- Testes realizados com login de empresa NÃO aparecem para colaboradores
+- Apenas testes feitos com login de colaborador são visíveis para:
+  - O próprio colaborador (via `/api/testes/resultados/meus`)
+  - A empresa vinculada (via `/api/empresas/colaboradores/:id/resultados`)
 
 ## Última Atualização
 **Data**: 20 de outubro de 2025  
@@ -160,3 +169,21 @@ npm run db:push    # Sincroniza schema com banco de dados
 - Resultados exibem corretamente o nome e cargo do colaborador em vez de "Anônimo"
 - Dados do teste também incluídos nos metadados (nome e categoria)
 - Listagem de resultados agora mostra: nome do teste, pontuação, percentual e categoria corretamente
+- **Visibilidade de resultados**: Corrigido para buscar resultados por `colaboradorId` OU `usuarioId` (compatibilidade)
+- Endpoint `/api/testes/resultados/meus` agora usa `OR` para buscar resultados
+- Endpoint `/api/empresas/colaboradores/:id/resultados` filtra corretamente por empresa
+
+### 🔐 Credenciais de Teste
+```
+Admin:
+  Email: admin@humaniq.com.br
+  Senha: Admin123
+
+Empresa:
+  Email: rochatech@rocha.com
+  Senha: Rocha123
+
+Colaborador:
+  Email: luiz.bastos@rochatech.com
+  Senha: Luiz123
+```
