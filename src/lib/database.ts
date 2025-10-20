@@ -160,15 +160,11 @@ export const resultadosService = {
         sessionIdToUse = regenerated;
       }
       
-      // Verificar se o Supabase está configurado
-      if (!supabase) {
-        console.error('❌ [DATABASE] Supabase não está configurado');
-        throw new Error('Supabase não está configurado');
-      }
-      
-      console.log('🔗 [DATABASE] Supabase configurado, preparando inserção...');
-      
-      const dadosParaInserir = {
+      // MIGRAÇÃO DE SUPABASE → API LOCAL
+      // As respostas individuais são salvas em localStorage como backup
+      // O resultado final será salvo via API local quando o teste for concluído
+      const chaveStorage = `resposta_${sessionIdToUse}_${resposta.pergunta_id}`;
+      const dadosResposta = {
         teste_id: resposta.teste_id,
         usuario_id: resposta.usuario_id,
         session_id: sessionIdToUse,
@@ -179,42 +175,20 @@ export const resultadosService = {
         created_at: resposta.timestamp
       };
       
-      console.log('📝 [DATABASE] Dados formatados para inserção:', JSON.stringify(dadosParaInserir, null, 2));
+      localStorage.setItem(chaveStorage, JSON.stringify(dadosResposta));
       
-      // Adicionar log antes da operação Supabase
-      console.log('🚀 [DATABASE] Executando inserção no Supabase...');
+      console.log('✅ [DATABASE] Resposta individual salva no localStorage');
+      console.log('📄 [DATABASE] Chave:', chaveStorage);
       
-      const { data, error } = await supabase
-        .from('respostas_individuais')
-        .insert(dadosParaInserir)
-        .select();
-
-      console.log('📡 [DATABASE] Resposta do Supabase recebida');
-      console.log('📄 [DATABASE] Data:', JSON.stringify(data, null, 2));
-      console.log('⚠️ [DATABASE] Error:', JSON.stringify(error, null, 2));
-
-      if (error) {
-        console.error('❌ [DATABASE] Erro detalhado do Supabase:', JSON.stringify(error, null, 2));
-        console.error('❌ [DATABASE] Código do erro:', error.code);
-        console.error('❌ [DATABASE] Mensagem do erro:', error.message);
-        console.error('❌ [DATABASE] Detalhes do erro:', error.details);
-        console.error('❌ [DATABASE] Hint do erro:', error.hint);
-        throw new Error(`Falha ao salvar resposta individual: ${error.message}`);
-      }
-
-      console.log('✅ [DATABASE] Resposta individual salva com sucesso');
-      console.log('📄 [DATABASE] Dados retornados:', JSON.stringify(data, null, 2));
+      // Nota: As respostas serão persistidas no banco de dados
+      // quando o teste for finalizado, via apiService.submeterResultado()
+      
     } catch (error) {
       console.error('❌ [DATABASE] Erro geral no salvamento da resposta:', error);
       console.error('🔍 [DATABASE] Tipo do erro:', typeof error);
       console.error('🔍 [DATABASE] Nome do erro:', error instanceof Error ? error.name : 'Unknown');
       console.error('🔍 [DATABASE] Mensagem do erro:', error instanceof Error ? error.message : String(error));
       console.error('🔍 [DATABASE] Stack trace:', error instanceof Error ? error.stack : 'Sem stack trace');
-      
-      // Log adicional para debugging
-      if (error instanceof Error && error.message.includes('fetch')) {
-        console.error('🌐 [DATABASE] Possível problema de conectividade de rede');
-      }
       
       throw error;
     }

@@ -187,6 +187,13 @@ npm run db:push    # Sincroniza schema com banco de dados
 - **Todos os testes agora salvam via API local**: Karasek-Siegrist, Clima Organizacional, RPO, QVT, PAS, MGRP, Estresse Ocupacional
 - **Erro "Supabase desabilitado" eliminado**: Sistema 100% funcional com backend local
 
+### 🐛 Correção Crítica - Teste Clima e Bem-Estar (20/10/2025 - 18:20)
+- **BUG CORRIGIDO**: Erro "supabase.from(...).insert(...).select is not a function" no teste de Clima e Bem-Estar
+- **Causa**: `resultadosService.salvarResposta()` ainda usava Supabase para salvar respostas individuais durante o teste
+- **Solução**: Migrado para localStorage com salvamento final via API local
+- **Arquivos alterados**: `src/lib/database.ts` (linhas 139-198)
+- **Status**: Teste de Clima e Bem-Estar 100% funcional sem Supabase ✅
+
 ### 🎨 Refatoração de UI (20/10/2025)
 - Criado componente `ResultadoVisualizacao.tsx` para unificar a exibição de resultados
 - Simplificado `ResultadoPopup.tsx` para usar o componente compartilhado
