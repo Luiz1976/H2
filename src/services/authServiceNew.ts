@@ -177,6 +177,35 @@ class AuthServiceNew {
       };
     }
   }
+
+  async getColaboradores(): Promise<{ success: boolean; data?: any[]; message?: string }> {
+    try {
+      const response = await this.makeRequest<{ colaboradores: any[]; total: number }>('/api/empresas/colaboradores', {
+        method: 'GET',
+      });
+      
+      const colaboradores = response.colaboradores.map((col: any) => ({
+        id: col.id,
+        nome: col.nome,
+        email: col.email,
+        cargo: col.cargo,
+        departamento: col.departamento,
+        ativo: col.ativo,
+        created_at: col.createdAt,
+        updated_at: col.createdAt,
+        total_testes: col.total_testes || 0,
+        ultimo_teste: col.ultimo_teste,
+      }));
+      
+      return { success: true, data: colaboradores };
+    } catch (error) {
+      console.error('Erro ao buscar colaboradores:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Erro ao buscar colaboradores'
+      };
+    }
+  }
 }
 
 export const authServiceNew = new AuthServiceNew();
