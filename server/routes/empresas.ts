@@ -1,8 +1,8 @@
 import express from 'express';
 import { db } from '../../db';
-import { empresas, colaboradores, convitesColaborador, resultados } from '../../shared/schema';
+import { empresas, colaboradores, convitesColaborador, resultados, testes } from '../../shared/schema';
 import { authenticateToken, requireEmpresa, requireAdmin, AuthRequest } from '../middleware/auth';
-import { eq, and, gt } from 'drizzle-orm';
+import { eq, and, gt, desc } from 'drizzle-orm';
 
 const router = express.Router();
 
@@ -112,13 +112,54 @@ router.get('/colaboradores/:id/resultados', authenticateToken, requireEmpresa, a
       return res.status(404).json({ error: 'Colaborador não encontrado' });
     }
 
-    // Buscar resultados do colaborador
+    // Buscar resultados do colaborador com JOIN na tabela de testes
     const resultadosList = await db
-      .select()
+      .select({
+        id: resultados.id,
+        testeId: resultados.testeId,
+        usuarioId: resultados.usuarioId,
+        pontuacaoTotal: resultados.pontuacaoTotal,
+        tempoGasto: resultados.tempoGasto,
+        dataRealizacao: resultados.dataRealizacao,
+        status: resultados.status,
+        metadados: resultados.metadados,
+        // Dados do teste
+        testeNome: testes.nome,
+        testeCategoria: testes.categoria,
+        testeTempoEstimado: testes.tempoEstimado,
+      })
       .from(resultados)
-      .where(eq(resultados.usuarioId, id));
+      .leftJoin(testes, eq(resultados.testeId, testes.id))
+      .where(eq(resultados.usuarioId, id))
+      .orderBy(desc(resultados.dataRealizacao));
 
-    res.json({ resultados: resultadosList, total: resultadosList.length });
+    // Enriquecer os resultados com informações formatadas
+    const resultadosEnriquecidos = resultadosList.map(resultado => {
+      const metadadosBase = resultado.metadados as Record<string, any> || {};
+      
+      // Calcular pontuação máxima e percentual
+      const pontuacaoMaxima = metadadosBase.pontuacao_maxima || 100;
+      const pontuacao = resultado.pontuacaoTotal || 0;
+      const percentual = pontuacaoMaxima > 0 
+        ? Math.round((pontuacao / pontuacaoMaxima) * 100) 
+        : 0;
+      
+      return {
+        id: resultado.id,
+        testeId: resultado.testeId,
+        nomeTest: resultado.testeNome || metadadosBase.teste_nome || 'Teste sem nome',
+        categoria: resultado.testeCategoria || metadadosBase.teste_categoria || '',
+        pontuacao: pontuacao,
+        pontuacaoMaxima: pontuacaoMaxima,
+        percentual: percentual,
+        status: resultado.status || 'concluido',
+        dataRealizacao: resultado.dataRealizacao,
+        tempoDuracao: resultado.tempoGasto ? Math.round(resultado.tempoGasto / 60) : undefined, // converter segundos para minutos
+        tipoTabela: metadadosBase.tipo_teste || '',
+      };
+    });
+
+    res.json({ resultados: resultadosEnriquecidos, total: resultadosEnriquecidos.length });
   } catch (error) {
     console.error('Erro ao buscar resultados do colaborador:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
