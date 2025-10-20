@@ -79,6 +79,7 @@ function App() {
           <AuthProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/aceitar-convite/:token" element={<AcessoConvite />} />
               <Route 
                 path="/post-login-animation" 
                 element={

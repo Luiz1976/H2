@@ -24,8 +24,8 @@ import {
   Lock
 } from "lucide-react";
 import { toast } from "sonner";
-import { hybridInvitationService } from "@/services/invitationServiceHybrid";
-import { authService, type EmpresaCadastroData } from "@/services/authService";
+import { apiService } from "@/services/apiService";
+import { authService } from "@/services/authService";
 
 interface ConviteInfo {
   id: string;
@@ -88,44 +88,31 @@ const AcessoConvite = () => {
       
       try {
         if (codigoConvite) {
-          let resultado = await hybridInvitationService.buscarConvitePorToken(codigoConvite, 'empresa');
-          
-          // Se não encontrar como empresa, tenta como colaborador
-          if (!resultado.success) {
-            resultado = await hybridInvitationService.buscarConvitePorToken(codigoConvite, 'colaborador');
-            
-            if (resultado.success) {
-              // Redirecionar diretamente para o cadastro de colaborador
-              navigate(`/cadastro/colaborador/${codigoConvite}`);
-              return;
-            }
-          }
-
-          if (resultado.success && resultado.convite) {
-            setConviteInfo(resultado.convite);
+          // Primeiro tenta como empresa
+          try {
+            const conviteEmpresa = await apiService.buscarConvitePorToken(codigoConvite, 'empresa');
+            setConviteInfo(conviteEmpresa);
             setConviteValido(true);
             setEtapaAtual('dados');
             
-            // Pré-preencher email e dados do colaborador
-            if (resultado.convite.email) { // É um convite de colaborador
-              setColaboradorData({
-                nome: resultado.convite.nome || '',
-                email: resultado.convite.email || '',
-                cargo: resultado.convite.cargo || '',
-                departamento: resultado.convite.departamento || ''
-              });
-            }
-
             // Pré-preencher email para cadastro de senha
             setEmpresaSenhaData(prev => ({
               ...prev,
-              email: resultado.convite.email || resultado.convite.email_contato || ''
+              email: conviteEmpresa.emailContato || conviteEmpresa.email || ''
             }));
-          } else {
-            setConviteValido(false);
-            toast.error("Convite inválido", {
-              description: resultado.message || "Token de convite não encontrado ou expirado"
-            });
+          } catch (error) {
+            // Se não encontrar como empresa, tenta como colaborador
+            try {
+              const conviteColaborador = await apiService.buscarConvitePorToken(codigoConvite, 'colaborador');
+              // Redirecionar diretamente para o cadastro de colaborador
+              navigate(`/cadastro/colaborador/${codigoConvite}`);
+              return;
+            } catch (errorColab) {
+              setConviteValido(false);
+              toast.error("Convite inválido", {
+                description: "Token de convite não encontrado ou expirado"
+              });
+            }
           }
         } else {
           setConviteValido(false);
@@ -183,29 +170,18 @@ const AcessoConvite = () => {
         return;
       }
 
-      // Preparar dados para cadastro
-      const dadosCadastro: EmpresaCadastroData = {
-        email: empresaSenhaData.email,
-        nomeEmpresa: conviteInfo?.empresa?.nome_empresa || conviteInfo?.nome_empresa || '',
-        senha: empresaSenhaData.senha
-      };
-
-      // Cadastrar empresa
-      const resultado = await authService.cadastrarEmpresa(dadosCadastro);
-
-      if (resultado.success) {
-        setEtapaAtual('confirmacao');
-        toast.success("Empresa cadastrada com sucesso!", {
-          description: "Você pode agora fazer login com suas credenciais"
-        });
-      } else {
-        // Processar erros de validação
-        const erros = resultado.message?.split('\n') || ['Erro desconhecido'];
-        setErrosValidacao(erros);
-        toast.error("Erro no cadastro", {
-          description: resultado.message
-        });
+      if (!codigoConvite) {
+        toast.error("Token de convite inválido");
+        return;
       }
+
+      // Aceitar convite usando a API
+      await apiService.aceitarConviteEmpresa(codigoConvite, empresaSenhaData.senha);
+
+      setEtapaAtual('confirmacao');
+      toast.success("Empresa cadastrada com sucesso!", {
+        description: "Você pode agora fazer login com suas credenciais"
+      });
     } catch (error) {
       setErrosValidacao(['Erro interno do servidor']);
       toast.error("Erro ao cadastrar empresa", {
