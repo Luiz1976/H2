@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text, timestamp, boolean, integer, decimal, jsonb, inet, index, uniqueIndex } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, text, timestamp, boolean, integer, real, decimal, jsonb, inet, index, uniqueIndex } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -67,7 +67,7 @@ export const resultados = pgTable('resultados', {
   id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
   testeId: uuid('teste_id').references(() => testes.id, { onDelete: 'cascade' }),
   usuarioId: uuid('usuario_id'),
-  pontuacaoTotal: integer('pontuacao_total'),
+  pontuacaoTotal: real('pontuacao_total'),
   tempoGasto: integer('tempo_gasto'),
   dataRealizacao: timestamp('data_realizacao', { withTimezone: true }).defaultNow().notNull(),
   status: varchar('status', { length: 50 }).default('concluido').notNull(),
