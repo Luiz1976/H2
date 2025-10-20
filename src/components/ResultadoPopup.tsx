@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { resultadosService } from '@/lib/database';
+import { apiService } from '@/services/apiService';
 import { calcularResultadoKarasekSiegrist, type ResultadoKarasekSiegrist } from '@/lib/testes/karasek-siegrist';
 import { KarasekRadarChart } from '@/components/charts/KarasekRadarChart';
 import { KarasekGaugeChart } from '@/components/charts/KarasekGaugeChart';
@@ -58,72 +58,11 @@ export function ResultadoPopup({ isOpen, onClose, resultado }: ResultadoPopupPro
       console.log('🔍 [ResultadoPopup] Tipo de tabela:', resultado.tipoTabela);
       console.log('🔍 [ResultadoPopup] Nome do teste:', resultado.nomeTest || 'Nome não disponível');
 
-      let dadosCompletos = null;
-
-      // Estratégia 1: Tentar buscar usando o serviço principal
-      try {
-        dadosCompletos = await resultadosService.buscarResultadoPorId(resultado.id);
-        console.log('📊 [ResultadoPopup] Dados recebidos via serviço principal:', !!dadosCompletos);
-      } catch (error) {
-        console.log('⚠️ [ResultadoPopup] Falha no serviço principal:', error);
-      }
-
-      // Estratégia 2: Se falhou, tentar buscar diretamente nas tabelas específicas
-      if (!dadosCompletos) {
-        console.log('🔄 [ResultadoPopup] Tentando busca direta nas tabelas específicas...');
-        
-        try {
-          // Importar supabase diretamente para busca de fallback
-          const { supabase } = await import('@/lib/supabase');
-          
-          // Tentar na tabela resultados primeiro
-          let { data, error } = await supabase
-            .from('resultados')
-            .select('*')
-            .eq('id', resultado.id)
-            .single();
-
-          // Se não encontrou, tentar na tabela resultados_qvt
-          if (error && error.code === 'PGRST116') {
-            console.log('🔄 [ResultadoPopup] Tentando na tabela resultados_qvt...');
-            const resultQVT = await supabase
-              .from('resultados_qvt')
-              .select('*')
-              .eq('id', resultado.id)
-              .single();
-            
-            data = resultQVT.data;
-            error = resultQVT.error;
-          }
-
-          // Se ainda não encontrou, tentar na tabela resultados_rpo
-          if (error && error.code === 'PGRST116') {
-            console.log('🔄 [ResultadoPopup] Tentando na tabela resultados_rpo...');
-            try {
-              const resultRPO = await supabase
-                .from('resultados_rpo')
-                .select('*')
-                .eq('id', resultado.id)
-                .single();
-              
-              data = resultRPO.data;
-              error = resultRPO.error;
-            } catch (rpoError) {
-              console.log('⚠️ [ResultadoPopup] Tabela resultados_rpo não disponível');
-            }
-          }
-
-          if (data && !error) {
-            console.log('✅ [ResultadoPopup] Dados encontrados via busca direta');
-            dadosCompletos = data;
-          }
-        } catch (directError) {
-          console.error('❌ [ResultadoPopup] Erro na busca direta:', directError);
-        }
-      }
+      const { resultado: dadosCompletos } = await apiService.obterResultadoPorId(resultado.id);
+      console.log('📊 [ResultadoPopup] Dados recebidos via API:', !!dadosCompletos);
 
       if (!dadosCompletos) {
-        throw new Error('Resultado não encontrado em nenhuma tabela');
+        throw new Error('Resultado não encontrado');
       }
 
       // Verificar se é teste Karasek-Siegrist e tem análise completa
