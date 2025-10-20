@@ -180,9 +180,10 @@ npm run db:push    # Sincroniza schema com banco de dados
 4. **Tokens JWT expiram em 7 dias** - usuário deve fazer login novamente após esse período
 
 ## Última Atualização
-**Data**: 20 de outubro de 2025 - 18:35  
+**Data**: 20 de outubro de 2025 - 21:20  
 **Status**: Sistema PRONTO para uso em massa com múltiplos usuários simultâneos ✅  
-**Teste "Clima e Bem-Estar"**: 100% funcional sem Supabase ✅
+**Teste "Clima e Bem-Estar"**: 100% funcional sem Supabase ✅  
+**Teste "QVT"**: Redirecionamento após vídeo de introdução corrigido ✅
 
 ### 🔧 Correções Finais (20/10/2025 - 17:40)
 - **Migração completa de Supabase → API Local**: Substituído `database.ts:resultadosService.salvarResultado()` para usar `apiService.submeterResultado()`
@@ -221,6 +222,23 @@ npm run db:push    # Sincroniza schema com banco de dados
     - ✅ Performance melhorada (menos lógica no cliente)
   
 - **Status**: Função `buscarResultadoPorId` 100% funcional via API local ✅
+
+### 🐛 Correção #4 - Redirecionamento do Teste QVT (20/10/2025 - 21:20)
+- **BUG CORRIGIDO**: Após o vídeo de introdução, teste QVT redirecionava para página de testes em vez da página de perguntas
+  - **Causa**: `TesteQVTPerguntas.tsx` verificava se existia sessão no `useEffect` inicial e redirecionava para `/testes` se não encontrasse
+  - **Solução**: Removida verificação de sessão do início; página agora carrega perguntas diretamente (padrão igual ao teste "Clima e Bem-Estar")
+  - **Mudanças**:
+    - ✅ Removida dependência de `sessaoId` no estado
+    - ✅ Removida verificação `if (!sessao)` do `useEffect` inicial
+    - ✅ Respostas agora salvam apenas no estado local React
+    - ✅ Salvamento no banco acontece apenas ao finalizar teste
+  - **Arquivos alterados**: `src/pages/TesteQVTPerguntas.tsx` (linhas 54-79, 102-156, 158)
+  - **Benefícios**:
+    - ✅ Fluxo consistente com outros testes
+    - ✅ Menos dependências e código mais simples
+    - ✅ Melhor performance (menos chamadas ao banco durante o teste)
+  
+- **Status**: Teste QVT 100% funcional com redirecionamento correto ✅
 
 ### 🎨 Refatoração de UI (20/10/2025)
 - Criado componente `ResultadoVisualizacao.tsx` para unificar a exibição de resultados

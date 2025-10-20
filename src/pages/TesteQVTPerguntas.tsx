@@ -10,11 +10,9 @@ import { ArrowLeft, ArrowRight, CheckCircle, AlertTriangle, Save, BarChart3 } fr
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/AuthContext';
-import { obterPerguntasQVT, salvarRespostaQVT, finalizarTesteQVT } from '@/lib/services/qualidadeVidaTrabalhoService';
-import { obterSessaoAtual } from '@/lib/services/session-service';
+import { obterPerguntasQVT, finalizarTesteQVT } from '@/lib/services/qualidadeVidaTrabalhoService';
 import { sessionService } from '@/lib/services/session-service';
 import { supabase } from '@/lib/supabase';
-import { numeroParaLetra } from '@/lib/utils';
 import ProcessingAnimation from '@/components/ProcessingAnimation';
 
 interface Pergunta {
@@ -49,19 +47,10 @@ export default function TesteQVTPerguntas() {
   const [finalizando, setFinalizando] = useState(false);
   const [mostrarAnimacaoProcessamento, setMostrarAnimacaoProcessamento] = useState(false);
   const [resultadoTeste, setResultadoTeste] = useState<any>(null);
-  const [sessaoId, setSessaoId] = useState<string | null>(null);
 
   useEffect(() => {
     const inicializar = async () => {
       try {
-        const sessao = await obterSessaoAtual();
-        if (!sessao) {
-          toast.error('Sessão não encontrada. Redirecionando...');
-          navigate('/testes');
-          return;
-        }
-        setSessaoId(sessao.sessionId);
-
         const perguntasData = await obterPerguntasQVT();
         const perguntasFormatadas = perguntasData.map((p, index) => ({
           id: index + 1,
@@ -106,34 +95,19 @@ export default function TesteQVTPerguntas() {
 
   const handleResposta = async (valor: number) => {
     console.log('🔍 [QVT-PERGUNTAS] Clique detectado no botão:', valor);
-    console.log('🔍 [QVT-PERGUNTAS] Estado atual - sessaoId:', sessaoId);
     console.log('🔍 [QVT-PERGUNTAS] Estado atual - perguntaAtual:', perguntaAtual);
     console.log('🔍 [QVT-PERGUNTAS] Estado atual - salvando:', salvando);
     
-    if (!sessaoId) {
-      console.error('❌ [QVT-PERGUNTAS] Erro: sessaoId não encontrado!');
-      toast.error('Erro: Sessão não encontrada. Recarregue a página.');
-      return;
-    }
-
     if (salvando) {
       console.log('⚠️ [QVT-PERGUNTAS] Operação já em andamento, ignorando clique');
       return;
     }
 
-    console.log('🔍 [QVT-PERGUNTAS] Iniciando salvamento da resposta...');
+    console.log('🔍 [QVT-PERGUNTAS] Salvando resposta no estado local...');
     setSalvando(true);
     
     try {
-      console.log('🔍 [QVT-PERGUNTAS] Chamando salvarRespostaQVT...');
-      console.log('🔍 [QVT-PERGUNTAS] Parâmetros:', { sessaoId, perguntaId: perguntaAtual + 1, valor });
-      
-      // Salvar resposta individual
-      await salvarRespostaQVT(sessaoId, perguntaAtual + 1, valor);
-      
-      console.log('✅ [QVT-PERGUNTAS] Resposta salva com sucesso!');
-      
-      // Atualizar estado local
+      // Atualizar estado local imediatamente
       setRespostas(prev => {
         const novasRespostas = {
           ...prev,
@@ -143,15 +117,17 @@ export default function TesteQVTPerguntas() {
         return novasRespostas;
       });
 
+      console.log('✅ [QVT-PERGUNTAS] Resposta salva com sucesso!');
+
       // Feedback visual
       toast.success('Resposta salva!', {
-        duration: 1000,
+        duration: 500,
         icon: <CheckCircle className="h-4 w-4 text-green-600" />
       });
 
-      console.log('🔍 [QVT-PERGUNTAS] Aguardando 1 segundo antes de avançar...');
+      console.log('🔍 [QVT-PERGUNTAS] Aguardando 500ms antes de avançar...');
       
-      // Avançar automaticamente após 1 segundo
+      // Avançar automaticamente após 500ms
       setTimeout(() => {
         console.log('🔍 [QVT-PERGUNTAS] Executando avanço automático...');
         if (perguntaAtual < perguntas.length - 1) {
@@ -162,7 +138,7 @@ export default function TesteQVTPerguntas() {
         }
         setSalvando(false);
         console.log('🔍 [QVT-PERGUNTAS] Estado salvando resetado');
-      }, 1000);
+      }, 500);
 
     } catch (error) {
       console.error('❌ [QVT-PERGUNTAS] Erro ao salvar resposta:', error);
@@ -174,8 +150,6 @@ export default function TesteQVTPerguntas() {
   };
 
   const handleFinalizarTeste = async () => {
-    if (!sessaoId) return;
-
     const respostasNaoRespondidas = perguntas.filter((_, index) => !respostas[index + 1]);
     
     if (respostasNaoRespondidas.length > 0) {
@@ -187,7 +161,7 @@ export default function TesteQVTPerguntas() {
     setMostrarAnimacaoProcessamento(true);
 
     try {
-      console.log('🔄 [QVT-FINALIZAR] Iniciando finalização do teste para sessão:', sessaoId);
+      console.log('🔄 [QVT-FINALIZAR] Iniciando finalização do teste');
       console.log('🔄 [QVT-FINALIZAR] Respostas disponíveis:', respostas);
       console.log('🔄 [QVT-FINALIZAR] Número de respostas:', Object.keys(respostas).length);
       
