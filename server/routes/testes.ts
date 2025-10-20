@@ -1,6 +1,6 @@
 import express from 'express';
 import { db } from '../../db';
-import { testes, perguntas, resultados, respostas, insertResultadoSchema, insertRespostaSchema } from '../../shared/schema';
+import { testes, perguntas, resultados, respostas, colaboradores, insertResultadoSchema, insertRespostaSchema } from '../../shared/schema';
 import { authenticateToken, AuthRequest } from '../middleware/auth';
 import { eq, and, desc } from 'drizzle-orm';
 import { z } from 'zod';
@@ -200,13 +200,34 @@ router.get('/resultado/:id', authenticateToken, async (req: AuthRequest, res) =>
   try {
     const { id } = req.params;
 
-    // Buscar resultado permitindo:
-    // 1. Resultados do próprio usuário (usuarioId = user.userId)
-    // 2. Resultados da mesma empresa (empresaId = user.empresaId)
-    // 3. Resultados de colaboradores da mesma empresa
+    // Buscar resultado com JOIN nas tabelas de colaboradores e testes
     const [resultado] = await db
-      .select()
+      .select({
+        id: resultados.id,
+        testeId: resultados.testeId,
+        usuarioId: resultados.usuarioId,
+        pontuacaoTotal: resultados.pontuacaoTotal,
+        tempoGasto: resultados.tempoGasto,
+        dataRealizacao: resultados.dataRealizacao,
+        status: resultados.status,
+        metadados: resultados.metadados,
+        sessionId: resultados.sessionId,
+        userAgent: resultados.userAgent,
+        ipAddress: resultados.ipAddress,
+        colaboradorId: resultados.colaboradorId,
+        empresaId: resultados.empresaId,
+        userEmail: resultados.userEmail,
+        // Dados do colaborador
+        colaboradorNome: colaboradores.nome,
+        colaboradorCargo: colaboradores.cargo,
+        colaboradorDepartamento: colaboradores.departamento,
+        // Dados do teste
+        testeNome: testes.nome,
+        testeCategoria: testes.categoria,
+      })
       .from(resultados)
+      .leftJoin(colaboradores, eq(resultados.colaboradorId, colaboradores.id))
+      .leftJoin(testes, eq(resultados.testeId, testes.id))
       .where(eq(resultados.id, id))
       .limit(1);
 
@@ -230,8 +251,22 @@ router.get('/resultado/:id', authenticateToken, async (req: AuthRequest, res) =>
       .from(respostas)
       .where(eq(respostas.resultadoId, id));
 
+    // Enriquecer metadados com informações do colaborador
+    const metadadosBase = resultado.metadados as Record<string, any> || {};
+    const metadadosEnriquecidos = {
+      ...metadadosBase,
+      usuario_nome: resultado.colaboradorNome || metadadosBase.usuario_nome || 'Usuário',
+      usuario_cargo: resultado.colaboradorCargo || metadadosBase.usuario_cargo || 'Não informado',
+      usuario_departamento: resultado.colaboradorDepartamento || metadadosBase.usuario_departamento,
+      teste_nome: resultado.testeNome || metadadosBase.teste_nome,
+      teste_categoria: resultado.testeCategoria || metadadosBase.teste_categoria,
+    };
+
     res.json({
-      resultado,
+      resultado: {
+        ...resultado,
+        metadados: metadadosEnriquecidos,
+      },
       respostas: respostasResultado,
     });
   } catch (error) {
