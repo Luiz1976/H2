@@ -6,7 +6,7 @@ import {
   infoTesteClimaOrganizacional,
   type ResultadoClimaOrganizacional 
 } from '../testes/clima-organizacional';
-import { resultadosService } from '../database';
+import { resultadosService } from '../resultadosServiceNew';
 import { sessionService } from './session-service';
 import type { Resultado, AnaliseResultado } from '../types';
 
