@@ -29,6 +29,22 @@ import {
 } from 'lucide-react';
 import { apiService } from '@/services/apiService';
 
+interface Resultado {
+  id: string;
+  teste_id?: string;
+  pontuacao_total?: number;
+  tempo_gasto?: number;
+  data_realizacao?: string;
+  status?: string;
+  metadados?: any;
+  testes?: {
+    nome?: string;
+    categoria?: string;
+  } | null;
+  indice_geral?: number;
+  satisfacao_funcao?: number;
+}
+
 interface FiltrosTodosResultados {
   tipoTeste?: string;
   dataInicio?: string;
@@ -66,6 +82,17 @@ export default function TodosResultados() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [recomendacoes, setRecomendacoes] = useState<{ titulo: string; descricao: string; prioridade: 'alta' | 'media' | 'baixa'; categoria?: string }[]>([]);
+  
+  // Estados de paginação e filtros
+  const [filtros, setFiltros] = useState<FiltrosTodosResultados>({
+    limite: ITENS_POR_PAGINA,
+    offset: 0
+  });
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const [totalResultados, setTotalResultados] = useState(0);
+  const [mostrarFiltros, setMostrarFiltros] = useState(false);
+  const [tiposTeste, setTiposTeste] = useState<string[]>(['QVT', 'RPO', 'Clima e Bem-Estar', 'Estresse Ocupacional', 'Karasek-Siegrist', 'PAS', 'MGRP']);
 
   // Carregar dados iniciais
   useEffect(() => {
@@ -100,6 +127,7 @@ export default function TodosResultados() {
       }));
 
       setResultados(resultadosMapeados);
+      setTotalResultados(response.total || response.resultados.length);
       
       // Calcular estatísticas
       if (response.resultados && response.resultados.length > 0) {
@@ -135,6 +163,23 @@ export default function TodosResultados() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const aplicarFiltros = (novosFiltros: Partial<FiltrosTodosResultados>) => {
+    setFiltros(prev => ({
+      ...prev,
+      ...novosFiltros,
+      offset: 0
+    }));
+    setPaginaAtual(1);
+  };
+
+  const limparFiltros = () => {
+    setFiltros({
+      limite: ITENS_POR_PAGINA,
+      offset: 0
+    });
+    setPaginaAtual(1);
   };
 
   const mudarPagina = (novaPagina: number) => {
