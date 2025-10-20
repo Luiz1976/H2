@@ -123,7 +123,10 @@ export default function TodosResultados() {
         data_realizacao: r.dataRealizacao,
         status: r.status,
         metadados: r.metadados,
-        testes: null, // Será preenchido via metadados se necessário
+        testes: {
+          nome: r.nomeTeste || r.metadados?.teste_nome || 'Teste Personalizado',
+          categoria: r.categoria || r.metadados?.teste_categoria || 'Geral',
+        },
       }));
 
       setResultados(resultadosMapeados);

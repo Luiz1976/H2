@@ -175,7 +175,7 @@ router.post('/resultado/anonimo', async (req, res) => {
 // Obter resultados do usuário
 router.get('/resultados/meus', authenticateToken, async (req: AuthRequest, res) => {
   try {
-    // Busca por colaboradorId OU usuarioId (para compatibilidade)
+    // Busca por colaboradorId OU usuarioId (para compatibilidade) com JOIN para pegar nome do teste
     const meusResultados = await db
       .select({
         id: resultados.id,
@@ -184,8 +184,13 @@ router.get('/resultados/meus', authenticateToken, async (req: AuthRequest, res) 
         tempoGasto: resultados.tempoGasto,
         dataRealizacao: resultados.dataRealizacao,
         status: resultados.status,
+        metadados: resultados.metadados,
+        // Dados do teste
+        testeNome: testes.nome,
+        testeCategoria: testes.categoria,
       })
       .from(resultados)
+      .leftJoin(testes, eq(resultados.testeId, testes.id))
       .where(
         or(
           eq(resultados.colaboradorId, req.user!.userId),
@@ -194,7 +199,29 @@ router.get('/resultados/meus', authenticateToken, async (req: AuthRequest, res) 
       )
       .orderBy(desc(resultados.dataRealizacao));
 
-    res.json({ resultados: meusResultados, total: meusResultados.length });
+    // Enriquecer metadados com nome do teste se disponível
+    const resultadosEnriquecidos = meusResultados.map(r => {
+      const metadadosBase = r.metadados as Record<string, any> || {};
+      const nomeTesteFinal = r.testeNome || metadadosBase.teste_nome || 'Teste Personalizado';
+      
+      return {
+        id: r.id,
+        testeId: r.testeId,
+        pontuacaoTotal: r.pontuacaoTotal,
+        tempoGasto: r.tempoGasto,
+        dataRealizacao: r.dataRealizacao,
+        status: r.status,
+        metadados: {
+          ...metadadosBase,
+          teste_nome: nomeTesteFinal,
+          teste_categoria: r.testeCategoria || metadadosBase.teste_categoria,
+        },
+        nomeTeste: nomeTesteFinal,
+        categoria: r.testeCategoria || metadadosBase.teste_categoria,
+      };
+    });
+
+    res.json({ resultados: resultadosEnriquecidos, total: resultadosEnriquecidos.length });
   } catch (error) {
     console.error('Erro ao buscar resultados:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
