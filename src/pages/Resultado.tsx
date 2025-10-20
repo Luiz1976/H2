@@ -158,10 +158,20 @@ export default function Resultado() {
             try {
               // Salvar diretamente sem verificação
               console.log('🔍 [RESULTADO-PAGE] Iniciando chamada para salvarResultado...');
-              console.log('🔍 [RESULTADO-PAGE] resultadosService disponível:', typeof resultadosService);
-              console.log('🔍 [RESULTADO-PAGE] salvarResultado disponível:', typeof resultadosService.salvarResultado);
+              console.log('🔍 [RESULTADO-PAGE] apiService disponível:', typeof apiService);
               
-              const resultadoSalvo = await resultadosService.salvarResultado(dadosResultado);
+              // Converter para formato da API (camelCase)
+              const dadosAPI = {
+                testeId: dadosResultado.teste_id,
+                usuarioId: dadosResultado.usuario_id,
+                pontuacaoTotal: dadosResultado.pontuacao_total,
+                tempoGasto: dadosResultado.tempo_gasto,
+                sessionId: dadosResultado.session_id,
+                metadados: dadosResultado.metadados,
+                status: dadosResultado.status
+              };
+              
+              const resultadoSalvo = await apiService.salvarResultadoTeste(dadosAPI);
               console.log('✅ [RESULTADO-PAGE] Resultado salvo com sucesso:', resultadoSalvo);
             } catch (saveError) {
               console.error('❌ [RESULTADO-PAGE] Falha ao salvar resultado:', saveError);
