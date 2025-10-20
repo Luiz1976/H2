@@ -95,6 +95,13 @@ npm run db:push    # Sincroniza schema com banco de dados
 - Integração frontend-backend
 - Database PostgreSQL (Neon)
 - Configuração Vite para Replit (`allowedHosts: true`)
+- Migração completa de Supabase para API local
+
+### 🔄 Componentes Migrados de Supabase → API Local
+- ✅ `TodosResultados.tsx` - usa `apiService.obterMeusResultados()`
+- ✅ `Resultado.tsx` - usa `apiService.obterResultadoPorId()`
+- ✅ `ResultadoPopup.tsx` - usa `apiService.obterResultadoPorId()`
+- ✅ `clima-organizacional-service.ts` - cálculo de pontuação corrigido
 
 ### 🔄 Em Uso
 - Frontend usando `apiService.ts` e `authServiceNew.ts`
@@ -105,6 +112,8 @@ npm run db:push    # Sincroniza schema com banco de dados
 - Mudança de `drizzle-zod` para schemas Zod manuais (incompatibilidade de versão)
 - Middleware de autenticação diferenciado para admin/empresa/colaborador
 - Endpoints de convites renomeados de `/api/invitations` para `/api/convites`
+- API retorna camelCase; frontend converte para snake_case quando necessário
+- Bug corrigido: `clima-organizacional-service.ts` agora usa `pontuacaoGeral` (soma das respostas) em vez de média convertida
 
 ## Fluxo de Usuário
 
