@@ -12,18 +12,20 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { authService } from '@/services/authService';
-import { hybridInvitationService } from '@/services/invitationServiceHybrid';
-import { secureInvitationService } from '@/services/secureInvitationService';
+import { apiService } from '@/services/apiService';
 
 interface ConviteEmpresa {
   id: string;
-  email_empresa: string;
-  nome_empresa: string;
+  emailContato?: string;
+  nomeEmpresa?: string;
+  email?: string;
+  nome?: string;
   token: string;
-  data_expiracao: string;
-  usado: boolean;
-  created_at: string;
-  admin_id: string;
+  validade: string;
+  status: string;
+  linkConvite?: string;
+  cargo?: string;
+  departamento?: string;
 }
 
 export default function AdminConvites() {
@@ -37,21 +39,10 @@ export default function AdminConvites() {
 
   const carregarConvites = async () => {
     try {
-      // Primeiro tenta usar o serviço seguro com RPC
-      const response = await secureInvitationService.listarConvites('empresa');
+      const response = await apiService.listarConvites();
       
-      if (response.success && response.data) {
-        setConvites(response.data);
-      } else {
-        // Fallback para o serviço híbrido
-        console.log('Tentando fallback para hybridInvitationService...');
-        const fallbackResponse = await hybridInvitationService.listarConvites('empresa');
-        
-        if (fallbackResponse.success && fallbackResponse.data) {
-          setConvites(fallbackResponse.data);
-        } else {
-          toast.error(fallbackResponse.message || 'Erro ao carregar convites');
-        }
+      if (response.convites) {
+        setConvites(response.convites);
       }
     } catch (error) {
       console.error('Erro ao carregar convites:', error);
@@ -61,14 +52,8 @@ export default function AdminConvites() {
 
   const cancelarConvite = async (conviteId: string) => {
     try {
-      const response = await hybridInvitationService.cancelarConvite(conviteId, 'empresa');
-      
-      if (response.success) {
-        toast.success('Convite cancelado com sucesso');
-        carregarConvites();
-      } else {
-        toast.error(response.message || 'Erro ao cancelar convite');
-      }
+      toast.info('Funcionalidade de cancelamento será implementada em breve');
+      // TODO: Implementar endpoint de cancelamento no backend
     } catch (error) {
       console.error('Erro ao cancelar convite:', error);
       toast.error('Erro ao cancelar convite');
@@ -76,7 +61,8 @@ export default function AdminConvites() {
   };
 
   const copiarUrlConvite = (token: string) => {
-    const url = hybridInvitationService.gerarUrlConvite(token, 'empresa');
+    const baseUrl = window.location.origin;
+    const url = `${baseUrl}/aceitar-convite/${token}?tipo=empresa`;
     navigator.clipboard.writeText(url);
     toast.success('URL copiada para a área de transferência');
   };
@@ -96,14 +82,16 @@ export default function AdminConvites() {
   };
 
   const getStatusConvite = (convite: ConviteEmpresa) => {
-    if (convite.usado) return 'usado';
-    if (isConviteExpirado(convite.data_expiracao)) return 'expirado';
+    if (convite.status === 'usado') return 'usado';
+    if (isConviteExpirado(convite.validade)) return 'expirado';
     return 'pendente';
   };
 
   const convitesFiltrados = convites.filter(convite => {
-    const matchesSearch = convite.nome_empresa.toLowerCase().includes(filtroConvites.toLowerCase()) ||
-                         convite.email_empresa.toLowerCase().includes(filtroConvites.toLowerCase());
+    const nomeEmpresa = convite.nomeEmpresa || convite.nome || '';
+    const emailContato = convite.emailContato || convite.email || '';
+    const matchesSearch = nomeEmpresa.toLowerCase().includes(filtroConvites.toLowerCase()) ||
+                         emailContato.toLowerCase().includes(filtroConvites.toLowerCase());
     
     const status = getStatusConvite(convite);
     const matchesStatus = statusFiltroConvites === 'todos' || status === statusFiltroConvites;
@@ -216,16 +204,16 @@ export default function AdminConvites() {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
-                          {convite.nome_empresa}
+                          {convite.nomeEmpresa || convite.nome || 'N/A'}
                         </div>
                         <div className="text-sm text-gray-500">
-                          ID: {convite.id.substring(0, 8)}...
+                          Token: {convite.token.substring(0, 8)}...
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{convite.email_empresa}</div>
+                    <div className="text-sm text-gray-900">{convite.emailContato || convite.email || 'N/A'}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {getStatusBadge(convite)}
@@ -233,18 +221,18 @@ export default function AdminConvites() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 text-gray-400 mr-1" />
-                      {formatarData(convite.created_at)}
+                      {formatarData(convite.validade)}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 text-gray-400 mr-1" />
-                      {formatarData(convite.data_expiracao)}
+                      {formatarData(convite.validade)}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
-                      {!convite.usado && !isConviteExpirado(convite.data_expiracao) && (
+                      {convite.status !== 'usado' && !isConviteExpirado(convite.validade) && (
                         <>
                           <button
                             onClick={() => copiarUrlConvite(convite.token)}
