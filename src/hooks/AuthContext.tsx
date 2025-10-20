@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     login,
     logout,
     registrarAdmin,
-    isAuthenticated: authServiceNew.isAuthenticated(),
+    isAuthenticated: user !== null,
     isLoading,
   };
 
