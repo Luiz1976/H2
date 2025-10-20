@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, Brain, Building2, AlertTriangle, Heart, Users, Loader2, CheckCircle } from "lucide-react";
-import { resultadosService } from "@/lib/database";
+import { apiService } from "@/services/apiService";
 import { sessionService } from "@/lib/services/session-service";
 import { qualidadeVidaTrabalhoService } from "@/lib/services/qualidadeVidaTrabalhoService";
 import ResultadoPAS from "@/components/ResultadoPAS";
@@ -198,8 +198,9 @@ export default function Resultado() {
 
       try {
         setCarregando(true);
-        const dadosResultado = await resultadosService.buscarResultadoPorId(resultadoId);
-        console.log('✅ [RESULTADO-PAGE] Dados recebidos do service:', dadosResultado);
+        const response = await apiService.obterResultadoPorId(resultadoId);
+        const dadosResultado = response.resultado;
+        console.log('✅ [RESULTADO-PAGE] Dados recebidos da API:', response);
         
         if (!dadosResultado) {
           console.warn('⚠️ [RESULTADO-PAGE] Nenhum resultado encontrado');

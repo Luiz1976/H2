@@ -154,6 +154,11 @@ class ApiService {
     return this.makeRequest('/api/testes/resultados/meus');
   }
 
+  // Obter resultado por ID
+  async obterResultadoPorId(id: string): Promise<{ resultado: any; respostas: any[] }> {
+    return this.makeRequest(`/api/testes/resultado/${id}`);
+  }
+
   // Obter dados da empresa
   async obterDadosEmpresa(): Promise<{ empresa: any }> {
     return this.makeRequest('/api/empresas/me');
