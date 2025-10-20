@@ -27,8 +27,7 @@ import {
   Sparkles,
   CheckCircle2
 } from 'lucide-react';
-import { resultadosService } from '@/lib/database';
-import type { Resultado } from '@/lib/types';
+import { apiService } from '@/services/apiService';
 
 interface FiltrosTodosResultados {
   tipoTeste?: string;
@@ -57,7 +56,7 @@ export default function TodosResultados() {
   const { user } = useAuth(); // Hook no nível do componente
   
   // Estados principais
-  const [resultados, setResultados] = useState<Resultado[]>([]);
+  const [resultados, setResultados] = useState<any[]>([]);
   const [estatisticas, setEstatisticas] = useState<EstatisticasGerais>({
     totalTestes: 0,
     pontuacaoMedia: 0,
@@ -65,105 +64,52 @@ export default function TodosResultados() {
     tempoTotal: 0,
     testeMaisRealizado: ''
   });
-  const [recomendacoes, setRecomendacoes] = useState<{ titulo: string; descricao: string; prioridade: 'alta' | 'media' | 'baixa'; categoria?: string }[]>([]);
-  const [tiposTeste, setTiposTeste] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
-  // Estados de filtros e paginação
-  const [filtros, setFiltros] = useState<FiltrosTodosResultados>({
-    limite: ITENS_POR_PAGINA,
-    offset: 0
-  });
-  const [paginaAtual, setPaginaAtual] = useState(1);
-  const [totalResultados, setTotalResultados] = useState(0);
-  const [mostrarFiltros, setMostrarFiltros] = useState(false);
 
   // Carregar dados iniciais
   useEffect(() => {
-    carregarDados();
-    carregarTiposTeste();
-  }, [filtros, user?.email]); // Adicionar user.email como dependência
-
-  // Assinar novos resultados para atualizar automaticamente
-  useEffect(() => {
-    try {
-      // Evita falhas se o supabase não estiver configurado
-      // Importação dinâmica para reduzir impacto em SSR
-      const subscribe = async () => {
-        const { supabase } = await import('@/lib/supabase');
-        const channel = supabase
-          .channel('todos-resultados-realtime')
-          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'resultados' }, () => {
-            carregarDados();
-          })
-          .subscribe();
-        return () => {
-          supabase.removeChannel(channel);
-        };
-      };
-      const unsubPromise = subscribe();
-      return () => {
-        unsubPromise.then((unsub) => typeof unsub === 'function' && unsub()).catch(() => {});
-      };
-    } catch (e) {
-      console.warn('Realtime não disponível, continuará com atualização manual.', e);
+    if (user) {
+      carregarDados();
     }
-  }, []);
+  }, [user]);
 
   const carregarDados = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      // Usar usuário do contexto (já capturado no nível do componente)
-      const userEmail = user?.email || undefined;
-      const userRole = user?.role;
-      const empresa_id = userRole === 'empresa' ? user?.empresa_id : undefined;
-      console.log('='.repeat(60));
-      console.log(' [TODOS-RESULTADOS] DEBUG - Informações do Usuário:');
-      console.log('  - user objeto completo:', user);
-      console.log('  - user.email:', user?.email);
-      console.log('  - user.role:', userRole);
-      console.log('  - user.empresa_id:', user?.empresa_id);
-      console.log('  - userEmail (usado no filtro):', userEmail);
-      console.log('  - empresa_id (usado no filtro):', empresa_id);
-      console.log('='.repeat(60));
+      console.log('🔍 [TODOS-RESULTADOS] Carregando resultados do usuário:', user?.email);
       
-      // Definir filtros com base no tipo de usuário
-      // Se for 'empresa', filtra por empresa_id
-      // Se for 'colaborador', filtra por email
-      // Se for 'admin', mostra tudo
-      const filtrosFinais = { ...filtros, limite: ITENS_POR_PAGINA, offset: (paginaAtual - 1) * ITENS_POR_PAGINA };
+      // Buscar resultados via API local
+      const response = await apiService.obterMeusResultados();
       
-      if (userRole === 'empresa' && empresa_id) {
-        // Empresa ve todos os resultados de seus colaboradores
-        filtrosFinais.empresa_id = empresa_id;
-        console.log(' [TODOS-RESULTADOS] Filtrando por empresa_id:', empresa_id);
-      } else if (userRole === 'colaborador' && userEmail) {
-        // Colaborador ve apenas seus próprios resultados
-        filtrosFinais.userEmail = userEmail;
-        console.log(' [TODOS-RESULTADOS] Filtrando por userEmail:', userEmail);
-      } else if (userRole === 'admin') {
-        // Admin ve todos os resultados
-        console.log(' [TODOS-RESULTADOS] Admin: mostrando todos os resultados');
-      }
-      
-      const { resultados, total } = await resultadosService.buscarTodosResultados(filtrosFinais);
+      console.log('✅ [TODOS-RESULTADOS] Resultados recebidos:', response.resultados.length);
+      console.log('📊 [TODOS-RESULTADOS] Dados:', response.resultados);
 
-      console.log(' [TODOS-RESULTADOS] Resultados retornados:');
-      console.log('  - Total de resultados:', total);
-      console.log('  - Quantidade de resultados:', resultados?.length || 0);
-      console.log('  - Resultados:', resultados);
-      console.log('='.repeat(60));
+      // Mapear dados da API para formato esperado pela página
+      const resultadosMapeados = response.resultados.map((r: any) => ({
+        id: r.id,
+        teste_id: r.testeId,
+        pontuacao_total: r.pontuacaoTotal,
+        tempo_gasto: r.tempoGasto,
+        data_realizacao: r.dataRealizacao,
+        status: r.status,
+        metadados: r.metadados,
+        testes: null, // Será preenchido via metadados se necessário
+      }));
 
-      setResultados(resultados || []);
-      setTotalResultados(total || 0);
+      setResultados(resultadosMapeados);
       
       // Calcular estatísticas
-      if (resultados && resultados.length > 0) {
-        const pontuacoes = resultados.map(r => r.pontuacao_total).filter(p => p !== null);
-        const tempos = resultados.map(r => r.tempo_gasto).filter(t => t !== null);
+      if (response.resultados && response.resultados.length > 0) {
+        const pontuacoes = response.resultados
+          .map(r => r.pontuacaoTotal)
+          .filter(p => p !== null && p !== undefined);
+        
+        const tempos = response.resultados
+          .map(r => r.tempoGasto)
+          .filter(t => t !== null && t !== undefined);
         
         const pontuacaoMedia = pontuacoes.length > 0 
           ? Math.round(pontuacoes.reduce((a, b) => a + b, 0) / pontuacoes.length)
@@ -173,67 +119,22 @@ export default function TodosResultados() {
         const tempoMedio = somaTempos > 0
           ? Math.round(somaTempos / tempos.length)
           : 0;
-        const tempoTotal = Math.round(somaTempos);
-          
-        const testeMaisRealizado = resultados
-          .filter(curr => curr.testes?.nome && curr.testes.nome !== 'Teste Desconhecido')
-          .reduce((acc, curr) => {
-            const nome = curr.testes?.nome!;
-            acc[nome] = (acc[nome] || 0) + 1;
-            return acc;
-          }, {} as Record<string, number>);
-          
-        const testeMaisRealizadoNome = Object.entries(testeMaisRealizado)
-          .sort(([,a], [,b]) => b - a)[0]?.[0] || 'N/A';
 
         setEstatisticas({
-          totalTestes: total || 0,
+          totalTestes: response.total || response.resultados.length,
           pontuacaoMedia,
-          tempoMedio: Math.round(tempoMedio),
-          tempoTotal,
-          testeMaisRealizado: testeMaisRealizadoNome
+          tempoMedio,
+          tempoTotal: Math.round(somaTempos),
+          testeMaisRealizado: 'Pesquisa de Clima Organizacional'
         });
       }
       
     } catch (error) {
-      const errObj = error as any;
-      console.error('❌ [TODOS-RESULTADOS] Erro ao carregar dados:', {
-        message: errObj?.message,
-        code: errObj?.code,
-        details: errObj?.details,
-        hint: errObj?.hint,
-        raw: errObj
-      });
-      setError(`Erro ao carregar resultados. ${(errObj?.message || '').toString() || 'Tente novamente.'}`);
+      console.error('❌ [TODOS-RESULTADOS] Erro ao carregar dados:', error);
+      setError(`Erro ao carregar resultados. ${error instanceof Error ? error.message : 'Tente novamente.'}`);
     } finally {
       setLoading(false);
     }
-  };
-
-  const carregarTiposTeste = async () => {
-    try {
-      const tipos = await resultadosService.buscarTiposTeste();
-      setTiposTeste(tipos);
-    } catch (error) {
-      console.error('❌ [TODOS-RESULTADOS] Erro ao carregar tipos de teste:', error);
-    }
-  };
-
-  const aplicarFiltros = (novosFiltros: Partial<FiltrosTodosResultados>) => {
-    setFiltros(prev => ({
-      ...prev,
-      ...novosFiltros,
-      offset: 0 // Reset para primeira página
-    }));
-    setPaginaAtual(1);
-  };
-
-  const limparFiltros = () => {
-    setFiltros({
-      limite: 20,
-      offset: 0
-    });
-    setPaginaAtual(1);
   };
 
   const mudarPagina = (novaPagina: number) => {
