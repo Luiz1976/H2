@@ -2,7 +2,7 @@ import express from 'express';
 import { db } from '../../db';
 import { empresas, colaboradores, convitesColaborador, resultados, testes } from '../../shared/schema';
 import { authenticateToken, requireEmpresa, requireAdmin, AuthRequest } from '../middleware/auth';
-import { eq, and, gt, desc } from 'drizzle-orm';
+import { eq, and, gt, desc, or } from 'drizzle-orm';
 
 const router = express.Router();
 
@@ -113,6 +113,7 @@ router.get('/colaboradores/:id/resultados', authenticateToken, requireEmpresa, a
     }
 
     // Buscar resultados do colaborador com JOIN na tabela de testes
+    // Busca por colaboradorId OU usuarioId (para compatibilidade com testes antigos)
     const resultadosList = await db
       .select({
         id: resultados.id,
@@ -130,7 +131,15 @@ router.get('/colaboradores/:id/resultados', authenticateToken, requireEmpresa, a
       })
       .from(resultados)
       .leftJoin(testes, eq(resultados.testeId, testes.id))
-      .where(eq(resultados.usuarioId, id))
+      .where(
+        and(
+          or(
+            eq(resultados.colaboradorId, id),
+            eq(resultados.usuarioId, id)
+          ),
+          eq(resultados.empresaId, req.user!.empresaId!)
+        )
+      )
       .orderBy(desc(resultados.dataRealizacao));
 
     // Enriquecer os resultados com informações formatadas
