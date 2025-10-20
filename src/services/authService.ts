@@ -105,6 +105,14 @@ class AuthService {
   async getColaboradores(): Promise<{ success: boolean; data?: any[]; message?: string }> {
     return authServiceNew.getColaboradores();
   }
+
+  async getColaboradorById(id: string): Promise<{ success: boolean; data?: any; message?: string }> {
+    return authServiceNew.getColaboradorById(id);
+  }
+
+  async getResultadosColaborador(colaboradorId: string): Promise<{ success: boolean; data?: any[]; message?: string }> {
+    return authServiceNew.getResultadosColaborador(colaboradorId);
+  }
 }
 
 export const authService = new AuthService();

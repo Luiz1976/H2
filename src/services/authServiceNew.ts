@@ -206,6 +206,48 @@ class AuthServiceNew {
       };
     }
   }
+
+  async getColaboradorById(id: string): Promise<{ success: boolean; data?: any; message?: string }> {
+    try {
+      const response = await this.makeRequest<{ colaborador: any }>(`/api/empresas/colaboradores/${id}`, {
+        method: 'GET',
+      });
+      
+      const colaborador = {
+        id: response.colaborador.id,
+        nome: response.colaborador.nome,
+        email: response.colaborador.email,
+        cargo: response.colaborador.cargo,
+        departamento: response.colaborador.departamento,
+        ativo: response.colaborador.ativo,
+        created_at: response.colaborador.createdAt,
+      };
+      
+      return { success: true, data: colaborador };
+    } catch (error) {
+      console.error('Erro ao buscar colaborador:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Erro ao buscar colaborador'
+      };
+    }
+  }
+
+  async getResultadosColaborador(colaboradorId: string): Promise<{ success: boolean; data?: any[]; message?: string }> {
+    try {
+      const response = await this.makeRequest<{ resultados: any[]; total: number }>(`/api/empresas/colaboradores/${colaboradorId}/resultados`, {
+        method: 'GET',
+      });
+      
+      return { success: true, data: response.resultados };
+    } catch (error) {
+      console.error('Erro ao buscar resultados do colaborador:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Erro ao buscar resultados'
+      };
+    }
+  }
 }
 
 export const authServiceNew = new AuthServiceNew();

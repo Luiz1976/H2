@@ -56,6 +56,75 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
   }
 });
 
+// Buscar colaborador por ID
+router.get('/colaboradores/:id', authenticateToken, requireEmpresa, async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params;
+    
+    const [colaborador] = await db
+      .select({
+        id: colaboradores.id,
+        nome: colaboradores.nome,
+        email: colaboradores.email,
+        cargo: colaboradores.cargo,
+        departamento: colaboradores.departamento,
+        ativo: colaboradores.ativo,
+        createdAt: colaboradores.createdAt,
+      })
+      .from(colaboradores)
+      .where(
+        and(
+          eq(colaboradores.id, id),
+          eq(colaboradores.empresaId, req.user!.empresaId!)
+        )
+      )
+      .limit(1);
+
+    if (!colaborador) {
+      return res.status(404).json({ error: 'Colaborador não encontrado' });
+    }
+
+    res.json({ colaborador });
+  } catch (error) {
+    console.error('Erro ao buscar colaborador:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Buscar resultados de testes de um colaborador
+router.get('/colaboradores/:id/resultados', authenticateToken, requireEmpresa, async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Verificar se o colaborador pertence à empresa
+    const [colaborador] = await db
+      .select()
+      .from(colaboradores)
+      .where(
+        and(
+          eq(colaboradores.id, id),
+          eq(colaboradores.empresaId, req.user!.empresaId!)
+        )
+      )
+      .limit(1);
+
+    if (!colaborador) {
+      return res.status(404).json({ error: 'Colaborador não encontrado' });
+    }
+
+    // Buscar resultados do colaborador
+    const resultadosList = await db
+      .select()
+      .from(resultados)
+      .where(eq(resultados.usuarioId, id));
+
+    res.json({ resultados: resultadosList, total: resultadosList.length });
+  } catch (error) {
+    console.error('Erro ao buscar resultados do colaborador:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 // Admin: listar todas as empresas
 router.get('/todas', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
