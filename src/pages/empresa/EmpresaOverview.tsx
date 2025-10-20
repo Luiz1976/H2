@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Users, UserPlus, TrendingUp, Award, Mail, Calendar, Clock, CheckCircle, Activity, Target, BarChart3 } from 'lucide-react';
-import { authService } from '../../services/authService';
-import { hybridInvitationService } from '../../services/invitationServiceHybrid';
 import { empresaStatisticsService, EstatisticasEmpresa } from '../../services/empresaStatisticsService';
+import { apiService } from '../../services/apiService';
 import { useAuth } from '../../hooks/AuthContext';
 import { toast } from 'sonner';
 
@@ -84,40 +83,39 @@ export default function EmpresaOverview() {
         return;
       }
 
-      const user = authService.getCurrentUser();
-      if (!user?.empresaId) return;
+      if (!user?.empresaId) {
+        toast.error('Empresa não identificada');
+        return;
+      }
 
-      const response = await hybridInvitationService.criarConviteColaborador({
-        email: novoConvite.email,
+      const response = await apiService.criarConviteColaborador({
         nome: novoConvite.nome,
-        empresa_id: user.empresaId,
-        dias_expiracao: novoConvite.dias_expiracao
+        email: novoConvite.email,
+        cargo: novoConvite.cargo,
+        departamento: novoConvite.departamento,
+        diasValidade: novoConvite.dias_expiracao
       });
 
-      if (response.success) {
-        toast.success('Convite criado com sucesso!');
-        
-        // Gerar URL do convite
-        const urlConvite = hybridInvitationService.gerarUrlConvite(response.token!, 'colaborador');
-        
-        // Copiar para clipboard
-        navigator.clipboard.writeText(urlConvite);
-        toast.info('URL do convite copiada para a área de transferência');
-        
-        setShowConviteModal(false);
-        setNovoConvite({ email: '', nome: '', cargo: '', departamento: '', dias_expiracao: 7 });
-        carregarEstatisticas();
-      } else {
-        toast.error(response.message || 'Erro ao criar convite');
-      }
+      toast.success('Convite criado com sucesso!');
+      
+      // Gerar URL do convite
+      const urlConvite = `${window.location.origin}/aceitar-convite/${response.token}`;
+      
+      // Copiar para clipboard
+      navigator.clipboard.writeText(urlConvite);
+      toast.info('URL do convite copiada para a área de transferência');
+      
+      setShowConviteModal(false);
+      setNovoConvite({ email: '', nome: '', cargo: '', departamento: '', dias_expiracao: 7 });
+      carregarEstatisticas();
     } catch (error) {
       console.error('Erro ao criar convite:', error);
       toast.error('Erro ao criar convite');
     }
   };
 
-  const calcularTaxaParticipacao = () => {
-    if (estatisticas.total_colaboradores === 0) return 0;
+  const calcularTaxaParticipacao = (): string => {
+    if (estatisticas.total_colaboradores === 0) return '0';
     return ((estatisticas.total_testes_realizados / estatisticas.total_colaboradores) * 100).toFixed(1);
   };
 
