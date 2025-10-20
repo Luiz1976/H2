@@ -105,24 +105,24 @@ export const resultadosService = {
       // Preparar dados no formato esperado pela API
       const dadosAPI = {
         testeId: resultado.teste_id || null,
-        tipoTabela: resultado.metadados?.tipo_teste || 'generico',
-        pontuacao: resultado.pontuacao_total,
-        tempoDuracao: resultado.tempo_gasto || 0,
-        respostas: [], // Respostas serão salvas separadamente
-        metadados: resultado.metadados
+        pontuacaoTotal: resultado.pontuacao_total,
+        tempoGasto: resultado.tempo_gasto || 0,
+        sessionId: resultado.session_id,
+        metadados: resultado.metadados,
+        status: resultado.status || 'concluido'
       };
       
       console.log('🔍 [DATABASE] Dados formatados para API:', dadosAPI);
       
-      // Chamar API local
-      const response = await apiService.submeterResultado(dadosAPI);
+      // Chamar API local usando o método correto
+      const response = await apiService.salvarResultadoTeste(dadosAPI);
       console.log('✅ [DATABASE] Resposta da API:', response);
       
       // Retornar no formato esperado
       const resultadoItem = {
         ...resultado,
-        id: response.resultado?.id || sessionService.getSessionId(),
-        data_realizacao: response.resultado?.dataRealizacao || new Date().toISOString()
+        id: response.id || sessionService.getSessionId(),
+        data_realizacao: response.dataRealizacao || new Date().toISOString()
       };
       
       console.log('✅ [DATABASE] Resultado processado com sucesso via API local');
