@@ -181,7 +181,7 @@ export async function finalizarTesteQVT(
     };
 
     console.log('🔍 [QVT-SERVICE] Enviando resultado para API...');
-    const resultadoSalvo = await apiService.submeterResultado(dadosAPI);
+    const resultadoSalvo = await apiService.submeterResultadoTeste(dadosAPI);
     console.log('✅ [QVT-SERVICE] Resultado salvo via API com sucesso:', resultadoSalvo);
     
     return {
