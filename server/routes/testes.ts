@@ -200,19 +200,29 @@ router.get('/resultado/:id', authenticateToken, async (req: AuthRequest, res) =>
   try {
     const { id } = req.params;
 
+    // Buscar resultado permitindo:
+    // 1. Resultados do próprio usuário (usuarioId = user.userId)
+    // 2. Resultados da mesma empresa (empresaId = user.empresaId)
+    // 3. Resultados de colaboradores da mesma empresa
     const [resultado] = await db
       .select()
       .from(resultados)
-      .where(
-        and(
-          eq(resultados.id, id),
-          eq(resultados.usuarioId, req.user!.userId)
-        )
-      )
+      .where(eq(resultados.id, id))
       .limit(1);
 
     if (!resultado) {
       return res.status(404).json({ error: 'Resultado não encontrado' });
+    }
+
+    // Verificar permissão: usuário pode ver se for dele ou da mesma empresa
+    const temPermissao = 
+      resultado.usuarioId === req.user!.userId ||
+      resultado.colaboradorId === req.user!.userId ||
+      (resultado.empresaId && resultado.empresaId === req.user!.empresaId) ||
+      (req.user!.role === 'admin');
+
+    if (!temPermissao) {
+      return res.status(403).json({ error: 'Acesso negado' });
     }
 
     const respostasResultado = await db
