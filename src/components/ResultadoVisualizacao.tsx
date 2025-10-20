@@ -262,100 +262,188 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
     const metadados = dados.metadados || dados;
     const analiseCompleta = metadados.analise_completa || {};
     const pontuacoesDimensoes = metadados.pontuacoes_dimensoes || {};
+    const pontuacaoTotal = metadados.pontuacao_total || analiseCompleta.indiceGeralRisco || 0;
+    const classificacaoGeral = analiseCompleta.classificacaoGeral || analiseCompleta.nivelGeral || 'Moderado';
     
     // Função para obter cor baseada no nível de risco
     const obterCorRiscoRPO = (nivel: string) => {
       switch (nivel?.toLowerCase()) {
         case 'baixo':
-          return 'bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 border border-emerald-200';
+        case 'baixo risco':
+          return 'bg-white text-emerald-700 border-2 border-emerald-400';
         case 'moderado':
-          return 'bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 border border-amber-200';
+        case 'risco moderado':
+          return 'bg-white text-amber-700 border-2 border-amber-400';
         case 'alto':
-          return 'bg-gradient-to-r from-orange-100 to-red-100 text-orange-800 border border-orange-200';
+        case 'alto risco':
+          return 'bg-white text-orange-700 border-2 border-orange-400';
+        case 'critico':
         case 'muito alto':
-          return 'bg-gradient-to-r from-red-100 to-rose-100 text-red-800 border border-red-200';
+        case 'risco crítico':
+          return 'bg-white text-red-700 border-2 border-red-400';
         default:
-          return 'bg-gradient-to-r from-slate-100 to-gray-100 text-slate-800 border border-slate-200';
+          return 'bg-white text-slate-700 border-2 border-slate-400';
       }
     };
+
+    // Função para obter cor da barra de progresso
+    const obterCorBarra = (pontuacao: number) => {
+      if (pontuacao >= 4.0) return 'bg-gradient-to-r from-red-500 to-rose-500';
+      if (pontuacao >= 3.0) return 'bg-gradient-to-r from-orange-500 to-amber-500';
+      if (pontuacao >= 2.0) return 'bg-gradient-to-r from-yellow-500 to-amber-500';
+      return 'bg-gradient-to-r from-emerald-500 to-teal-500';
+    };
+
+    // Calcular percentual (inverso para riscos - quanto menor, melhor)
+    const percentual = Math.round((5 - pontuacaoTotal) * 20);
   
     return (
       <div className="space-y-6">
-        {/* Resumo Executivo */}
-        <div className="bg-gradient-to-br from-red-50 to-orange-50 p-6 rounded-xl border border-red-200/60">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">HumaniQ RPO - Riscos Psicossociais Ocupacionais</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-              <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-1">
-                {metadados.pontuacao_total || analiseCompleta.indiceGeralRisco || 'N/A'}
+        {/* CARD PREMIUM: Resumo Executivo */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-orange-600 via-red-600 to-rose-700 p-8 rounded-2xl shadow-2xl border border-orange-400/20">
+          <div className="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                <AlertTriangle className="h-8 w-8 text-white" />
               </div>
-              <div className="text-sm font-medium text-slate-600">Índice Geral de Risco</div>
-            </div>
-            <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl border border-orange-100">
-              <Badge className={`text-sm font-medium px-3 py-1 ${obterCorRisco(analiseCompleta.classificacaoGeral || analiseCompleta.nivelGeral || 'moderado')}`}>
-                {analiseCompleta.classificacaoGeral || analiseCompleta.nivelGeral || 'Não definido'}
-              </Badge>
-              <div className="text-sm font-medium text-slate-600 mt-1">Classificação de Risco</div>
-            </div>
-            <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl border border-purple-100">
-              <div className="text-lg font-bold text-purple-600">
-                {metadados.usuario_nome || 'Usuário'}
+              <div>
+                <h3 className="text-2xl font-bold text-white">Análise de Riscos Psicossociais</h3>
+                <p className="text-orange-100 text-sm">Avaliação HumaniQ RPO</p>
               </div>
-              <div className="text-sm font-medium text-slate-600">Avaliado</div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Índice de Risco */}
+              <div className="text-center bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20">
+                <div className="text-6xl font-black text-white mb-2 tracking-tight">
+                  {typeof pontuacaoTotal === 'number' ? pontuacaoTotal.toFixed(1) : pontuacaoTotal}
+                </div>
+                <div className="text-sm font-semibold text-orange-100 uppercase tracking-wider">Índice de Risco</div>
+                <div className="text-xs text-white/80 mt-1">Escala de 1.0 a 5.0</div>
+              </div>
+
+              {/* Classificação */}
+              <div className="text-center bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20">
+                <div className="inline-block">
+                  <Badge className={`text-base font-bold px-4 py-2 ${obterCorRiscoRPO(classificacaoGeral)}`}>
+                    {classificacaoGeral}
+                  </Badge>
+                </div>
+                <div className="text-sm font-semibold text-orange-100 uppercase tracking-wider mt-3">Classificação</div>
+                <div className="text-xs text-white/80 mt-1">Nível de alerta</div>
+              </div>
+
+              {/* Saúde Psicossocial */}
+              <div className="text-center bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20">
+                <div className="text-5xl font-black text-white mb-2">
+                  {percentual}%
+                </div>
+                <div className="text-sm font-semibold text-orange-100 uppercase tracking-wider">Saúde Ocupacional</div>
+                <div className="text-xs text-white/80 mt-1">Quanto maior, melhor</div>
+              </div>
+            </div>
+
+            {/* Barra de Progresso */}
+            <div className="mt-6">
+              <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-white via-orange-200 to-white h-3 rounded-full transition-all duration-1000 shadow-lg"
+                  style={{ width: `${percentual}%` }}
+                ></div>
+              </div>
+              <div className="text-center text-white/90 text-xs mt-2 font-medium">
+                84 perguntas respondidas
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Alertas Críticos */}
+        {/* ALERTAS CRÍTICOS DETALHADOS */}
         {analiseCompleta.alertasCriticos && analiseCompleta.alertasCriticos.length > 0 && (
-          <div className="bg-red-50 p-6 rounded-xl border border-red-200/60">
-            <h3 className="text-lg font-semibold text-red-800 mb-4 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              Alertas Críticos
+          <div className="space-y-3">
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <div className="p-2 bg-red-100 rounded-lg">
+                <AlertTriangle className="h-5 w-5 text-red-600" />
+              </div>
+              Alertas Críticos Identificados
             </h3>
-            <div className="space-y-2">
+            <div className="grid gap-3">
               {analiseCompleta.alertasCriticos.map((alerta: string, index: number) => (
-                <div key={index} className="flex items-start gap-2 text-sm text-red-700 bg-red-100 p-3 rounded-lg border border-red-200">
-                  <AlertTriangle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                  <span>{alerta}</span>
+                <div 
+                  key={index} 
+                  className="group relative overflow-hidden bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 p-5 rounded-xl border border-red-200 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-red-500 to-orange-500"></div>
+                  <div className="flex items-start gap-4 ml-3">
+                    <div className="flex-shrink-0 p-2 bg-red-100 rounded-lg group-hover:bg-red-200 transition-colors">
+                      <AlertTriangle className="h-5 w-5 text-red-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Badge className="bg-red-100 text-red-800 border border-red-300 text-xs font-bold">
+                          URGENTE
+                        </Badge>
+                      </div>
+                      <p className="text-sm font-medium text-slate-800 leading-relaxed">
+                        {alerta}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Dimensões dos Riscos Psicossociais */}
+        {/* DIMENSÕES DOS RISCOS PSICOSSOCIAIS - Cards Individuais Premium */}
         {pontuacoesDimensoes && Object.keys(pontuacoesDimensoes).length > 0 && (
-          <div className="bg-white p-6 rounded-xl border border-slate-200/60">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Dimensões dos Riscos Psicossociais</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-3">
+            <h3 className="text-xl font-bold text-slate-800">Avaliação por Dimensões</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(pontuacoesDimensoes).map(([dimensao, dados]) => {
                 const dadosDimensao = typeof dados === 'object' ? dados as any : { media: dados };
                 const media = dadosDimensao.media || dadosDimensao.pontuacao || dados;
                 const classificacao = dadosDimensao.classificacao || 'Não definido';
+                const pontuacao = typeof media === 'number' ? media : parseFloat(media) || 0;
                 
                 return (
-                  <div key={dimensao} className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                    <div className="text-sm text-slate-600 mb-2 capitalize">
-                      {dimensao.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim()}
+                  <div 
+                    key={dimensao} 
+                    className="bg-white p-5 rounded-xl border-2 border-slate-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-slate-300"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1">
+                        <h4 className="text-base font-bold text-slate-800 capitalize leading-tight">
+                          {dimensao.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim()}
+                        </h4>
+                      </div>
+                      <Badge className={`text-xs px-3 py-1 font-bold ${obterCorRiscoRPO(classificacao)}`}>
+                        {classificacao}
+                      </Badge>
                     </div>
-                    <div className="text-lg font-semibold text-slate-800 mb-1">
-                      {typeof media === 'number' ? media.toFixed(1) : media}
+                    
+                    <div className="flex items-baseline gap-2 mb-3">
+                      <div className={`text-3xl font-black ${
+                        pontuacao >= 4.0 ? 'text-red-600' :
+                        pontuacao >= 3.0 ? 'text-orange-600' :
+                        pontuacao >= 2.0 ? 'text-yellow-600' :
+                        'text-emerald-600'
+                      }`}>
+                        {pontuacao.toFixed(1)}
+                      </div>
+                      <div className="text-sm text-slate-500 font-medium">/ 5.0</div>
                     </div>
-                    <Badge className={`text-xs px-2 py-1 ${obterCorRisco(classificacao)}`}>
-                      {classificacao}
-                    </Badge>
-                    <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
+                    
+                    <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
                       <div 
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          classificacao?.toLowerCase() === 'alto' || classificacao?.toLowerCase() === 'muito alto' 
-                            ? 'bg-gradient-to-r from-red-500 to-orange-500'
-                            : classificacao?.toLowerCase() === 'moderado'
-                            ? 'bg-gradient-to-r from-amber-500 to-yellow-500'
-                            : 'bg-gradient-to-r from-emerald-500 to-teal-500'
-                        }`}
-                        style={{ width: `${Math.min(100, Math.max(0, (typeof media === 'number' ? media : 0) * 20))}%` }}
+                        className={`h-3 rounded-full transition-all duration-500 shadow-sm ${obterCorBarra(pontuacao)}`}
+                        style={{ width: `${Math.min(100, Math.max(0, pontuacao * 20))}%` }}
                       ></div>
+                    </div>
+                    
+                    <div className="text-right text-xs text-slate-500 font-medium mt-2">
+                      {Math.round(pontuacao * 20)}% de risco
                     </div>
                   </div>
                 );
@@ -364,39 +452,57 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           </div>
         )}
 
-        {/* Interpretação e Recomendações */}
-        {(metadados.interpretacao || metadados.recomendacoes || analiseCompleta.interpretacao || analiseCompleta.recomendacoes) && (
-          <div className="bg-white p-6 rounded-xl border border-slate-200/60">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Análise e Recomendações</h3>
-            <div className="space-y-4">
-              {(metadados.interpretacao || analiseCompleta.interpretacao) && (
-                <div>
-                  <div className="text-sm font-medium text-blue-600 mb-2">Interpretação dos Riscos:</div>
-                  <div className="text-sm text-slate-700 bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    {Array.isArray(metadados.interpretacao || analiseCompleta.interpretacao) 
-                      ? (metadados.interpretacao || analiseCompleta.interpretacao).join(' ') 
-                      : (metadados.interpretacao || analiseCompleta.interpretacao)}
+        {/* INTERPRETAÇÃO PROFISSIONAL */}
+        {(metadados.interpretacao || analiseCompleta.interpretacao) && (
+          <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6 rounded-xl border-2 border-blue-200 shadow-lg">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Brain className="h-5 w-5 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-800">Interpretação dos Riscos</h3>
+            </div>
+            <div className="text-sm text-slate-700 leading-relaxed bg-white/60 p-4 rounded-lg border border-blue-300">
+              {Array.isArray(metadados.interpretacao || analiseCompleta.interpretacao) 
+                ? (metadados.interpretacao || analiseCompleta.interpretacao).join(' ') 
+                : (metadados.interpretacao || analiseCompleta.interpretacao)}
+            </div>
+          </div>
+        )}
+
+        {/* RECOMENDAÇÕES ESTRATÉGICAS */}
+        {(metadados.recomendacoes || analiseCompleta.recomendacoes) && (
+          <div className="space-y-3">
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <div className="p-2 bg-emerald-100 rounded-lg">
+                <AlertTriangle className="h-5 w-5 text-emerald-600" />
+              </div>
+              Recomendações de Intervenção
+            </h3>
+            <div className="grid gap-3">
+              {(Array.isArray(metadados.recomendacoes || analiseCompleta.recomendacoes) 
+                ? (metadados.recomendacoes || analiseCompleta.recomendacoes)
+                : [(metadados.recomendacoes || analiseCompleta.recomendacoes)]
+              ).map((rec: string, index: number) => (
+                <div 
+                  key={index} 
+                  className="group bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 p-5 rounded-xl border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
+                      {index + 1}
+                    </div>
+                    <p className="flex-1 text-sm font-medium text-slate-800 leading-relaxed pt-1">
+                      {rec}
+                    </p>
                   </div>
                 </div>
-              )}
-              {(metadados.recomendacoes || analiseCompleta.recomendacoes) && (
-                <div>
-                  <div className="text-sm font-medium text-green-600 mb-2">Recomendações de Intervenção:</div>
-                  <div className="text-sm text-slate-700 bg-green-50 p-4 rounded-lg border border-green-200">
-                    {Array.isArray(metadados.recomendacoes || analiseCompleta.recomendacoes) 
-                      ? (metadados.recomendacoes || analiseCompleta.recomendacoes).map((rec: string, index: number) => (
-                          <div key={index} className="mb-2 last:mb-0">• {rec}</div>
-                        ))
-                      : (metadados.recomendacoes || analiseCompleta.recomendacoes)}
-                  </div>
-                </div>
-              )}
+              ))}
             </div>
           </div>
         )}
 
         {/* Informações Técnicas */}
-        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200/60">
+        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
           <h3 className="text-lg font-semibold text-slate-800 mb-4">Informações da Avaliação</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
