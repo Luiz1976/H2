@@ -429,16 +429,36 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
     
     // Função para obter cor baseada na pontuação
     const obterCorPontuacao = (pontuacao: number) => {
-      if (pontuacao >= 4.0) return 'bg-green-500';
-      if (pontuacao >= 3.5) return 'bg-lime-500';
-      if (pontuacao >= 3.0) return 'bg-yellow-500';
-      if (pontuacao >= 2.5) return 'bg-orange-500';
-      return 'bg-red-500';
+      if (pontuacao >= 4.5) return 'bg-gradient-to-r from-green-500 to-emerald-500';
+      if (pontuacao >= 4.0) return 'bg-gradient-to-r from-lime-500 to-green-500';
+      if (pontuacao >= 3.5) return 'bg-gradient-to-r from-yellow-500 to-lime-500';
+      if (pontuacao >= 3.0) return 'bg-gradient-to-r from-orange-400 to-yellow-500';
+      if (pontuacao >= 2.5) return 'bg-gradient-to-r from-orange-500 to-red-500';
+      return 'bg-gradient-to-r from-red-600 to-rose-600';
+    };
+
+    const obterCorTexto = (pontuacao: number) => {
+      if (pontuacao >= 4.5) return 'text-green-700';
+      if (pontuacao >= 4.0) return 'text-lime-700';
+      if (pontuacao >= 3.5) return 'text-yellow-700';
+      if (pontuacao >= 3.0) return 'text-orange-600';
+      if (pontuacao >= 2.5) return 'text-orange-700';
+      return 'text-red-700';
+    };
+
+    const obterCorBadge = (pontuacao: number) => {
+      if (pontuacao >= 4.5) return 'bg-green-100 text-green-800 border-green-300';
+      if (pontuacao >= 4.0) return 'bg-lime-100 text-lime-800 border-lime-300';
+      if (pontuacao >= 3.5) return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      if (pontuacao >= 3.0) return 'bg-orange-100 text-orange-800 border-orange-300';
+      if (pontuacao >= 2.5) return 'bg-orange-200 text-orange-900 border-orange-400';
+      return 'bg-red-100 text-red-800 border-red-300';
     };
 
     // Função para obter classificação baseada na pontuação
     const obterClassificacao = (pontuacao: number) => {
-      if (pontuacao >= 4.0) return 'Excelente';
+      if (pontuacao >= 4.5) return 'Excelente';
+      if (pontuacao >= 4.0) return 'Muito Bom';
       if (pontuacao >= 3.5) return 'Bom';
       if (pontuacao >= 3.0) return 'Regular';
       if (pontuacao >= 2.5) return 'Baixo';
@@ -463,36 +483,129 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
     const pontoFortes = metadados.pontoFortes || dimensoes.filter((d: any) => d.pontuacao >= 4.0);
     const dimensoesCriticas = metadados.dimensoesCriticas || dimensoes.filter((d: any) => d.pontuacao < 2.5);
     const riscoTurnover = metadados.riscoTurnover || dados.risco_turnover || indiceGeral < 2.5;
+    
+    // Extrair dados adicionais
+    const insights = metadados.insights || [];
+    const recomendacoes = metadados.recomendacoes || [];
+    const alertasCriticos = metadados.alertasCriticos || [];
+    const totalPerguntas = metadados.totalPerguntas || dados.total_perguntas || 50;
 
     return (
       <div className="space-y-6">
-        {/* Resumo Executivo */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200/60">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">Qualidade de Vida no Trabalho - Resumo Executivo</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-white rounded-xl border border-blue-100">
-              <div className="text-3xl font-bold text-blue-600 mb-1">
-                {indiceGeral.toFixed(1)}/5.0
+        {/* Resumo Executivo - Card Destacado */}
+        <div className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 p-8 rounded-2xl shadow-2xl text-white">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+              <Eye className="h-8 w-8" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold">Qualidade de Vida no Trabalho</h2>
+              <p className="text-blue-100 text-sm mt-1">Avaliação Completa - {totalPerguntas} Perguntas Respondidas</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Índice Geral */}
+            <div className="text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl">
+              <div className="text-6xl font-black mb-2 drop-shadow-lg">
+                {indiceGeral.toFixed(1)}
               </div>
-              <div className="text-sm font-medium text-slate-600">Índice Geral</div>
+              <div className="text-sm font-medium text-blue-100 mb-1">de 5.0 pontos</div>
+              <div className="text-xs text-blue-200 uppercase tracking-wider">Índice Geral de QVT</div>
             </div>
-            <div className="text-center p-4 bg-white rounded-xl border border-blue-100">
-              <Badge className={`${obterCorPontuacao(indiceGeral)} text-white text-sm font-medium px-3 py-1`}>
-                {nivelGeral}
-              </Badge>
-              <div className="text-sm font-medium text-slate-600 mt-1">Classificação</div>
+            
+            {/* Classificação */}
+            <div className="text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl">
+              <div className="flex flex-col items-center justify-center h-full">
+                <Badge className="text-lg font-bold px-4 py-2 mb-3 bg-white text-indigo-900 border-none shadow-lg">
+                  {nivelGeral}
+                </Badge>
+                <div className="text-xs text-blue-200 uppercase tracking-wider">Classificação Geral</div>
+              </div>
             </div>
-            <div className="text-center p-4 bg-white rounded-xl border border-blue-100">
-              <div className="text-2xl font-bold text-slate-800 mb-1">
+            
+            {/* Percentual */}
+            <div className="text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl">
+              <div className="text-6xl font-black mb-2 drop-shadow-lg">
                 {percentualGeral.toFixed(0)}%
               </div>
-              <div className="text-sm font-medium text-slate-600">Percentual Geral</div>
+              <div className="text-sm font-medium text-blue-100 mb-1">de satisfação</div>
+              <div className="text-xs text-blue-200 uppercase tracking-wider">Performance Global</div>
+            </div>
+          </div>
+          
+          {/* Barra de Progresso Visual */}
+          <div className="mt-6">
+            <div className="w-full bg-white/20 rounded-full h-4 overflow-hidden backdrop-blur-sm border border-white/30">
+              <div 
+                className="h-full bg-gradient-to-r from-white via-yellow-200 to-green-400 shadow-inner transition-all duration-1000"
+                style={{ width: `${percentualGeral}%` }}
+              ></div>
             </div>
           </div>
         </div>
 
-        {/* Alertas Críticos */}
-        {(riscoTurnover || dimensoesCriticas.length > 0) && (
+        {/* Alertas Críticos Detalhados */}
+        {alertasCriticos.length > 0 && (
+          <div className="bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 p-6 rounded-2xl border-2 border-red-300 shadow-lg">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-red-100 rounded-xl">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-red-900">Alertas Críticos - Ação Imediata Necessária</h3>
+                <p className="text-sm text-red-700 mt-1">{alertasCriticos.length} área(s) requer(em) atenção urgente</p>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              {alertasCriticos.map((alerta: any, index: number) => (
+                <div key={index} className="bg-white p-6 rounded-xl border-2 border-red-200 shadow-md hover:shadow-lg transition-shadow">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Badge className="bg-red-600 text-white border-none text-xs font-bold px-3 py-1">
+                          {alerta.urgencia || 'URGENTE'}
+                        </Badge>
+                        <Badge className="bg-orange-100 text-orange-800 border-orange-300 text-xs font-medium px-3 py-1">
+                          Impacto: {alerta.impacto || 'Alto'}
+                        </Badge>
+                      </div>
+                      <h4 className="text-lg font-bold text-red-900 mb-2">{alerta.titulo}</h4>
+                      <p className="text-sm text-slate-700 mb-4">{alerta.descricao}</p>
+                    </div>
+                  </div>
+                  
+                  {alerta.recomendacoes && alerta.recomendacoes.length > 0 && (
+                    <div className="border-t border-red-100 pt-4 mt-4">
+                      <div className="text-xs font-bold text-slate-600 uppercase mb-3">Ações Recomendadas:</div>
+                      <ul className="space-y-2">
+                        {alerta.recomendacoes.map((rec: string, idx: number) => (
+                          <li key={idx} className="flex items-start gap-2 text-sm text-slate-700">
+                            <span className="text-red-500 font-bold mt-1">•</span>
+                            <span>{rec}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+                    <div className="text-xs text-slate-600">
+                      <span className="font-semibold">Prazo:</span> {alerta.prazoAcao || 'Imediato'}
+                    </div>
+                    <div className="text-xs text-slate-600">
+                      <span className="font-semibold">Responsável:</span> {alerta.responsavel || 'RH + Gestão'}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {/* Alertas Simples (fallback) */}
+        {alertasCriticos.length === 0 && (riscoTurnover || dimensoesCriticas.length > 0) && (
           <div className="bg-gradient-to-br from-red-50 to-orange-50 p-6 rounded-xl border border-red-200/60">
             <h3 className="text-lg font-semibold text-red-800 mb-4 flex items-center gap-2">
               <AlertTriangle className="h-5 w-5" />
@@ -517,26 +630,49 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           </div>
         )}
 
-        {/* Dimensões da Qualidade de Vida */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200/60">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">Avaliação por Dimensões</h3>
-          <div className="space-y-4">
+        {/* Dimensões da Qualidade de Vida - Design Profissional */}
+        <div className="bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl border border-slate-200/60 shadow-lg">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 bg-indigo-100 rounded-xl">
+              <Brain className="h-6 w-6 text-indigo-600" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-slate-800">Avaliação por Dimensões</h3>
+              <p className="text-sm text-slate-600 mt-1">Análise detalhada das 5 dimensões de QVT</p>
+            </div>
+          </div>
+          
+          <div className="space-y-5">
             {dimensoes.map((dimensao: any, index: number) => (
-              <div key={index} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-slate-700">{dimensao.dimensao}</span>
-                  <div className="flex items-center gap-2">
-                    <Badge className={`${obterCorPontuacao(dimensao.pontuacao)} text-white text-xs px-2 py-1`}>
-                      {dimensao.nivel || obterClassificacao(dimensao.pontuacao)}
-                    </Badge>
-                    <span className="text-sm font-bold text-slate-800">{dimensao.pontuacao.toFixed(1)}/5.0</span>
+              <div key={index} className="bg-white p-5 rounded-xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-bold text-slate-800">{dimensao.dimensao}</span>
+                      <Badge className={`${obterCorBadge(dimensao.pontuacao)} text-xs font-semibold px-2 py-1 border`}>
+                        {dimensao.nivel || obterClassificacao(dimensao.pontuacao)}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className={`text-3xl font-black ${obterCorTexto(dimensao.pontuacao)}`}>
+                      {dimensao.pontuacao.toFixed(1)}
+                    </div>
+                    <div className="text-xs text-slate-500 font-medium">de 5.0</div>
                   </div>
                 </div>
-                <div className="w-full bg-slate-200 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full ${obterCorPontuacao(dimensao.pontuacao)}`}
-                    style={{ width: `${(dimensao.pontuacao / 5) * 100}%` }}
-                  ></div>
+                
+                {/* Barra de Progresso Melhorada */}
+                <div className="relative">
+                  <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
+                    <div 
+                      className={`h-full ${obterCorPontuacao(dimensao.pontuacao)} transition-all duration-500 shadow-inner`}
+                      style={{ width: `${(dimensao.pontuacao / 5) * 100}%` }}
+                    ></div>
+                  </div>
+                  <div className="absolute -top-1 right-0 text-xs font-bold text-slate-600">
+                    {dimensao.percentual?.toFixed(0) || ((dimensao.pontuacao / 5) * 100).toFixed(0)}%
+                  </div>
                 </div>
               </div>
             ))}
@@ -561,19 +697,62 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           </div>
         )}
 
-        {/* Recomendações */}
-        {(dados.recomendacoes || dados.insights) && (
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-xl border border-indigo-200/60">
-            <h3 className="text-lg font-semibold text-indigo-800 mb-4">Recomendações e Insights</h3>
-            <div className="space-y-3">
-              {dados.recomendacoes && Array.isArray(dados.recomendacoes) && dados.recomendacoes.map((rec, index) => (
-                <div key={index} className="p-4 bg-white rounded-lg border border-indigo-100">
-                  <div className="text-sm text-indigo-800">{rec}</div>
+        {/* Insights Profissionais */}
+        {insights.length > 0 && (
+          <div className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-6 rounded-2xl border border-purple-200/60 shadow-lg">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-purple-100 rounded-xl">
+                <Brain className="h-6 w-6 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-purple-900">Insights Profissionais</h3>
+                <p className="text-sm text-purple-700 mt-1">Análise comportamental e padrões identificados</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4">
+              {insights.map((insight: string, index: number) => (
+                <div key={index} className="bg-white p-5 rounded-xl border-l-4 border-purple-400 shadow-sm hover:shadow-md transition-all">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                        <span className="text-sm font-bold text-purple-600">{index + 1}</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-700 leading-relaxed flex-1">{insight}</p>
+                  </div>
                 </div>
               ))}
-              {dados.insights && Array.isArray(dados.insights) && dados.insights.map((insight, index) => (
-                <div key={index} className="p-4 bg-white rounded-lg border border-purple-100">
-                  <div className="text-sm text-purple-800">{insight}</div>
+            </div>
+          </div>
+        )}
+        
+        {/* Recomendações Estratégicas */}
+        {recomendacoes.length > 0 && (
+          <div className="bg-gradient-to-br from-cyan-50 via-teal-50 to-emerald-50 p-6 rounded-2xl border border-cyan-200/60 shadow-lg">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-cyan-100 rounded-xl">
+                <AlertTriangle className="h-6 w-6 text-cyan-600" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-cyan-900">Recomendações Estratégicas</h3>
+                <p className="text-sm text-cyan-700 mt-1">Ações sugeridas para melhoria contínua</p>
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              {recomendacoes.map((rec: string, index: number) => (
+                <div key={index} className="bg-white p-5 rounded-xl border border-cyan-100 hover:border-cyan-300 shadow-sm hover:shadow-md transition-all">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-lg flex items-center justify-center shadow-md">
+                        <span className="text-white font-bold text-sm">✓</span>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-700 font-medium leading-relaxed">{rec}</p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
