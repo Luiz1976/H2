@@ -7,6 +7,7 @@ import {
 import { supabase } from '../supabase';
 import { obterSessaoAtual } from './session-service';
 import { authService } from '../../services/authService';
+import apiService from '../../services/apiService';
 import type { Pergunta } from '../types';
 
 // Função auxiliar para classificar nível QVT
@@ -182,31 +183,43 @@ export async function finalizarTesteQVT(
       created_at: new Date().toISOString()
     };
     
-    console.log('🔍 [QVT-SERVICE] Dados preparados para salvar');
+    console.log('🔍 [QVT-SERVICE] Dados preparados para salvar via API local');
     
-    // Salvar resultado no banco de dados
-    const { data, error } = await supabase
-      .from('resultados_qvt')
-      .insert(dadosResultado)
-      .select()
-      .single();
-    
-    if (error) {
-      console.error('❌ [QVT-SERVICE] Erro ao salvar resultado:', error);
-      throw new Error(`Erro ao salvar resultado: ${error.message}`);
-    }
-    
-    console.log('✅ [QVT-SERVICE] Resultado salvo com sucesso:', data);
+    // Salvar resultado via API local
+    const dadosAPI = {
+      testeId: '7b3c8d4e-9f0a-1b2c-3d4e-5f6a7b8c9d0e', // UUID do teste QVT no banco
+      pontuacao: analiseQVT.indiceGeral || 0,
+      percentual: analiseQVT.percentualGeral || 0,
+      categoria: analiseQVT.nivelGeral || 'Indefinido',
+      metadados: {
+        dimensoes: analiseQVT.dimensoes || [],
+        dimensoesCriticas: analiseQVT.dimensoesCriticas || [],
+        pontoFortes: analiseQVT.pontoFortes || [],
+        riscoTurnover: analiseQVT.riscoTurnover || false,
+        recomendacoes: analiseQVT.recomendacoes || [],
+        insights: analiseQVT.insights || [],
+        alertasCriticos: analiseQVT.alertasCriticos || [],
+        totalPerguntas: totalPerguntas,
+        respostas: Object.entries(respostas).map(([perguntaId, valor]) => ({
+          perguntaId,
+          valor
+        }))
+      }
+    };
+
+    console.log('🔍 [QVT-SERVICE] Enviando resultado para API...');
+    const resultadoSalvo = await apiService.submeterResultado(dadosAPI);
+    console.log('✅ [QVT-SERVICE] Resultado salvo via API com sucesso:', resultadoSalvo);
     
     return {
       resultado: {
-        id: data.id,
+        id: resultadoSalvo.id,
         analise: {
           ...analiseQVT,
-          id: data.id,
+          id: resultadoSalvo.id,
           testeId: 'qualidade-vida-trabalho',
           nomeTeste: configQualidadeVidaTrabalho.nome,
-          dataRealizacao: data.created_at,
+          dataRealizacao: resultadoSalvo.dataRealizacao || new Date().toISOString(),
           versao: '1.0'
         }
       }

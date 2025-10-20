@@ -1,274 +1,49 @@
 # HumaniQ - Plataforma de Avaliação Psicológica
 
-## Visão Geral
-Sistema hierárquico de gestão de usuários (Admin → Empresa → Colaborador) que fornece avaliações psicológicas no ambiente de trabalho.
+## Overview
+HumaniQ is a hierarchical user management system (Admin → Company → Employee) designed to provide psychological assessments in the workplace. The platform aims to streamline the process of conducting and analyzing psychological tests, offering insights into work-life quality, psychosocial risks, organizational climate, and occupational stress. It is built for mass usage, supporting multiple simultaneous users and ensuring data isolation between companies.
 
-## Arquitetura Atual
+## User Preferences
+I prefer simple language and clear explanations. I want iterative development with frequent updates. Ask before making major architectural changes. Do not make changes to the `shared` folder without explicit instruction. I prefer detailed explanations for complex features or decisions.
 
-### Backend (Porta 3001)
-- **Framework**: Express.js + TypeScript
+## System Architecture
+
+### UI/UX Decisions
+The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS for a modern and responsive user experience. Components like `ResultadoVisualizacao`, `ResultadoPopup`, and `Resultado.tsx` are designed for consistency in displaying test results across different views, unifying the layout and reducing code duplication.
+
+### Technical Implementations
+- **Backend**: Express.js + TypeScript
+- **Frontend**: React + Vite
 - **Database**: Neon PostgreSQL (via Replit Database)
-- **Autenticação**: JWT + bcrypt
 - **ORM**: Drizzle
-
-### Frontend (Porta 5000)
-- **Framework**: React + Vite
-- **UI**: Shadcn/UI + Tailwind CSS
-- **State**: React Query (TanStack Query)
+- **Authentication**: JWT + bcrypt (10 rounds)
+- **State Management**: React Query (TanStack Query)
 - **Routing**: Wouter
+- **API Structure**: RESTful API with distinct routes for authentication, invitations, companies, and psychological tests.
+- **Environment Variables**: `DATABASE_URL`, `JWT_SECRET`.
+- **NPM Commands**: `npm run dev` (frontend), `npm run server` (backend), `npm run db:push` (DB sync).
+- **Security**: JWT tokens are valid for 7 days.
+- **Performance**: PostgreSQL connection pool configured for up to 20 simultaneous connections, with optimized timeouts (10s connect, 20s idle). CORS is enabled for multiple origins.
 
-## Estrutura de Diretórios
-```
-├── server/               # Backend API
-│   ├── index.ts         # Servidor Express
-│   ├── routes/          # Rotas da API
-│   │   ├── auth.ts      # Autenticação
-│   │   ├── convites.ts  # Gestão de convites
-│   │   ├── empresas.ts  # Gestão de empresas
-│   │   └── testes.ts    # Testes psicológicos
-│   └── middleware/      # Middleware (auth, etc)
-├── src/                 # Frontend React
-│   ├── services/        # Serviços da API
-│   │   ├── apiService.ts       # API principal
-│   │   └── authServiceNew.ts   # Autenticação
-│   ├── hooks/           # React hooks
-│   └── pages/           # Páginas do app
-├── shared/              # Código compartilhado
-│   └── schema.ts        # Schema Drizzle + Zod
-└── db/                  # Migrações do banco
-```
+### Feature Specifications
+- **User Roles**: Admin, Company, Employee with distinct permissions and workflows.
+- **Invitation System**: Hierarchical invitations allowing Admins to invite Companies, and Companies to invite Employees.
+- **Psychological Tests**:
+    - QVT (Qualidade de Vida no Trabalho)
+    - RPO (Riscos Psicossociais Ocupacionais)
+    - Clima e Bem-Estar (Organizational Climate)
+    - Estresse Ocupacional (Occupational Stress)
+    - Karasek-Siegrist (Demand-Control-Support)
+    - PAS (Pesquisa de Ambiente de Segurança)
+    - MGRP (Modelo Geral de Riscos Psicossociais)
+- **Result Visualization**: Unified component for displaying results for all test types, ensuring visual consistency.
+- **Data Isolation**: Each company can only view results of its own employees. Employees can only view their own results.
+- **Authentication Rules**: Employees must log in with their own accounts to perform tests; company logins will not record results for specific employees.
 
-## Endpoints da API
+### System Design Choices
+The system migrated from Supabase to a fully local API backend to eliminate external dependencies and ensure greater control over data and authentication. Manual Zod schemas are used due to version incompatibilities with `drizzle-zod`. The API returns camelCase, and the frontend handles conversions to snake_case where necessary.
 
-### Autenticação
-- `POST /api/auth/login` - Login de usuários
-- `POST /api/auth/register/admin` - Registro de administrador
-
-### Convites
-- `POST /api/convites/empresa` - Criar convite para empresa
-- `POST /api/convites/colaborador` - Criar convite para colaborador
-- `GET /api/convites/token/:token` - Buscar convite por token
-- `POST /api/convites/empresa/aceitar/:token` - Aceitar convite de empresa
-- `POST /api/convites/colaborador/aceitar/:token` - Aceitar convite de colaborador
-- `GET /api/convites/listar` - Listar convites (requer autenticação)
-
-### Empresas
-- `GET /api/empresas/me` - Obter dados da empresa logada
-- `GET /api/empresas/colaboradores` - Listar colaboradores
-
-### Testes Psicológicos
-- `GET /api/testes` - Listar testes disponíveis
-- `GET /api/testes/:id/perguntas` - Obter perguntas de um teste
-- `POST /api/testes/resultado` - Submeter resultado de teste
-- `GET /api/testes/resultados/meus` - Obter meus resultados
-
-## Configuração
-
-### Variáveis de Ambiente
-```env
-DATABASE_URL=postgresql://...  # Fornecido automaticamente pelo Replit
-JWT_SECRET=...                 # Chave secreta para JWT
-```
-
-### Comandos NPM
-```bash
-npm run dev        # Inicia frontend (Vite) na porta 5000
-npm run server     # Inicia backend (Express) na porta 3001
-npm run db:push    # Sincroniza schema com banco de dados
-```
-
-## Testes Psicológicos Disponíveis
-1. **QVT** - Qualidade de Vida no Trabalho
-2. **RPO** - Riscos Psicossociais Ocupacionais
-3. **Clima e Bem-Estar** - Avaliação do clima organizacional
-4. **Estresse Ocupacional** - Medição de níveis de estresse
-5. **Karasek-Siegrist** - Demanda-Controle-Suporte
-6. **PAS** - Pesquisa de Ambiente de Segurança
-7. **MGRP** - Modelo Geral de Riscos Psicossociais
-
-## Status Atual
-
-### ✅ Implementado
-- Backend completo com 18 endpoints RESTful
-- Autenticação JWT com bcrypt
-- Sistema de convites hierárquico
-- Integração frontend-backend
-- Database PostgreSQL (Neon)
-- Configuração Vite para Replit (`allowedHosts: true`)
-- Migração completa de Supabase para API local
-
-### 🔄 Componentes Migrados de Supabase → API Local
-- ✅ `TodosResultados.tsx` - usa `apiService.obterMeusResultados()`
-- ✅ `Resultado.tsx` - usa `apiService.obterResultadoPorId()`
-- ✅ `ResultadoPopup.tsx` - usa `apiService.obterResultadoPorId()`
-- ✅ `ResultadoVisualizacao.tsx` - componente compartilhado para exibição de resultados
-- ✅ `clima-organizacional-service.ts` - cálculo de pontuação corrigido
-- ✅ **`database.ts:buscarResultadoPorId()`** - migrado de Supabase para `apiService.obterResultadoPorId()` (20/10/2025 - 20:56)
-
-### 📐 Arquitetura de Componentes
-- **ResultadoVisualizacao**: Componente compartilhado que renderiza todos os tipos de teste (Karasek-Siegrist, Clima Organizacional, RPO, QVT, Genérico)
-- **ResultadoPopup**: Dialog que usa `ResultadoVisualizacao` para exibir resultados em popup
-- **Resultado.tsx**: Página que usa `ResultadoVisualizacao` para exibir resultados em tela completa
-- **Layout unificado**: Ambas as páginas (`/resultado/:id` e `/empresa/colaborador/:id/resultados`) agora usam o mesmo componente de visualização, garantindo consistência visual
-
-### 🔄 Em Uso
-- Frontend usando `apiService.ts` e `authServiceNew.ts`
-- Backend rodando em `http://localhost:3001`
-- Frontend rodando em `http://localhost:5000`
-
-### 📝 Notas Técnicas
-- Mudança de `drizzle-zod` para schemas Zod manuais (incompatibilidade de versão)
-- Middleware de autenticação diferenciado para admin/empresa/colaborador
-- Endpoints de convites renomeados de `/api/invitations` para `/api/convites`
-- API retorna camelCase; frontend converte para snake_case quando necessário
-- Bug corrigido: `clima-organizacional-service.ts` agora usa `pontuacaoGeral` (soma das respostas) em vez de média convertida
-
-## Fluxo de Usuário
-
-### Admin
-1. Registra-se via `/api/auth/register/admin`
-2. Faz login via `/api/auth/login`
-3. Cria convites para empresas
-4. Monitora estatísticas globais
-
-### Empresa
-1. Recebe convite via e-mail (token)
-2. Aceita convite e define senha
-3. Faz login via `/api/auth/login`
-4. Cria convites para colaboradores
-5. Visualiza resultados dos colaboradores
-
-### Colaborador
-1. Recebe convite da empresa
-2. Aceita convite e define senha
-3. **IMPORTANTE**: Faz login com sua própria conta (email do colaborador)
-4. Realiza testes psicológicos (autenticado como colaborador)
-5. Visualiza seus próprios resultados
-
-### ⚠️ Regra Importante de Autenticação
-- **Colaboradores devem fazer login com suas próprias contas** para realizar testes
-- Testes realizados com login de empresa NÃO aparecem para colaboradores
-- Apenas testes feitos com login de colaborador são visíveis para:
-  - O próprio colaborador (via `/api/testes/resultados/meus`)
-  - A empresa vinculada (via `/api/empresas/colaboradores/:id/resultados`)
-
-## 🚀 Preparado para Uso em Massa
-
-### ✅ Otimizações Implementadas (20/10/2025)
-- **Pool de Conexões PostgreSQL**: Configurado para até 20 conexões simultâneas
-- **Timeout Otimizado**: 10s para conexão, 20s para idle
-- **CORS Habilitado**: Permite múltiplas origens simultâneas
-- **JWT Token**: Válido por 7 dias (604800 segundos)
-
-### 📊 Testes de Carga Realizados
-✅ **10 requisições simultâneas** de health check - Status 200  
-✅ **5 logins simultâneos de empresa** - Status 200 (~2.3s cada)  
-✅ **5 logins simultâneos de colaborador** - Status 200 (~2.3s cada)
-
-### 🎯 Capacidade do Sistema
-- **Usuários simultâneos**: Suporta múltiplas empresas e colaboradores logados ao mesmo tempo
-- **Isolation**: Cada empresa só vê seus próprios colaboradores
-- **Segurança**: Autenticação JWT com bcrypt (rounds: 10)
-- **Performance**: Pool de 20 conexões PostgreSQL (Neon Database)
-
-### ⚠️ Regras Importantes para Uso em Massa
-1. **Colaboradores devem fazer login com suas próprias contas** para realizar testes
-2. **Testes realizados com login de empresa** terão `colaboradorId = NULL` e não aparecerão para o colaborador
-3. **Visibilidade de resultados**:
-   - Colaborador: Vê apenas seus próprios resultados
-   - Empresa: Vê resultados de todos os colaboradores vinculados
-4. **Tokens JWT expiram em 7 dias** - usuário deve fazer login novamente após esse período
-
-## Última Atualização
-**Data**: 20 de outubro de 2025 - 21:20  
-**Status**: Sistema PRONTO para uso em massa com múltiplos usuários simultâneos ✅  
-**Teste "Clima e Bem-Estar"**: 100% funcional sem Supabase ✅  
-**Teste "QVT"**: Redirecionamento após vídeo de introdução corrigido ✅
-
-### 🔧 Correções Finais (20/10/2025 - 17:40)
-- **Migração completa de Supabase → API Local**: Substituído `database.ts:resultadosService.salvarResultado()` para usar `apiService.submeterResultado()`
-- **Todos os testes agora salvam via API local**: Karasek-Siegrist, Clima Organizacional, RPO, QVT, PAS, MGRP, Estresse Ocupacional
-- **Erro "Supabase desabilitado" eliminado**: Sistema 100% funcional com backend local
-
-### 🐛 Correção Crítica - Teste Clima e Bem-Estar (20/10/2025 - 18:20 - 18:35)
-- **BUG #1 CORRIGIDO**: Erro "supabase.from(...).insert(...).select is not a function" no teste de Clima e Bem-Estar
-  - **Causa**: `resultadosService.salvarResposta()` usava Supabase para salvar respostas individuais
-  - **Solução**: Migrado para localStorage com salvamento final via API local
-  - **Arquivos alterados**: `src/lib/database.ts` (linhas 139-198)
-
-- **BUG #2 CORRIGIDO**: Erro "Foreign key constraint violation" ao salvar resultado final
-  - **Causa**: Tabela `testes` estava vazia - nenhum teste cadastrado no PostgreSQL
-  - **Solução**: Populado banco de dados com todos os 7 testes disponíveis:
-    1. **Clima e Bem-Estar** (UUID: `55fc21f9-cc10-4b4a-8765-3f5087eaf1f5`)
-    2. **RPO** (UUID: `9b7d4c8e-1a2b-4f3e-9d7a-5e6f7a8b9c0d`)
-    3. **Estresse Ocupacional** (UUID: `2c8e3f9a-4b5d-6e7a-8c9d-0e1f2a3b4c5d`)
-    4. **Karasek-Siegrist** (UUID: `3d9f4a0b-5c6e-7f8a-9d0e-1f2a3b4c5d6e`)
-    5. **PAS** (UUID: `4e0a5b1c-6d7f-8e9a-0f1a-2b3c4d5e6f7a`)
-    6. **MGRP** (UUID: `5f1a6c2d-7e8f-9a0b-1c2d-3e4f5a6b7c8d`)
-    7. **Clima Organizacional** (UUID: `6a2b7d3e-8f9a-0b1c-2d3e-4f5a6b7c8d9e`)
-  
-- **Status**: Teste de Clima e Bem-Estar 100% funcional sem Supabase ✅
-
-### 🐛 Correção Crítica #3 - Função buscarResultadoPorId (20/10/2025 - 20:56)
-- **BUG CORRIGIDO**: Erro "supabase.from(...).select(...).eq is not a function" em `ResultadoPAS.tsx` e outros componentes
-  - **Causa**: Função `database.ts:buscarResultadoPorId()` ainda usava Supabase diretamente (linhas 282-489)
-  - **Solução**: Migrado para usar `apiService.obterResultadoPorId()` via API local
-  - **Redução de código**: De 244 linhas para 47 linhas (redução de 80%)
-  - **Arquivos alterados**: `src/lib/database.ts` (linhas 245-296)
-  - **Benefícios**:
-    - ✅ Autenticação e controle de acesso gerenciados pelo backend (JWT)
-    - ✅ Eliminação de dependência do Supabase no frontend
-    - ✅ Código mais simples e manutenível
-    - ✅ Performance melhorada (menos lógica no cliente)
-  
-- **Status**: Função `buscarResultadoPorId` 100% funcional via API local ✅
-
-### 🐛 Correção #4 - Redirecionamento do Teste QVT (20/10/2025 - 21:20)
-- **BUG CORRIGIDO**: Após o vídeo de introdução, teste QVT redirecionava para página de testes em vez da página de perguntas
-  - **Causa**: `TesteQVTPerguntas.tsx` verificava se existia sessão no `useEffect` inicial e redirecionava para `/testes` se não encontrasse
-  - **Solução**: Removida verificação de sessão do início; página agora carrega perguntas diretamente (padrão igual ao teste "Clima e Bem-Estar")
-  - **Mudanças**:
-    - ✅ Removida dependência de `sessaoId` no estado
-    - ✅ Removida verificação `if (!sessao)` do `useEffect` inicial
-    - ✅ Respostas agora salvam apenas no estado local React
-    - ✅ Salvamento no banco acontece apenas ao finalizar teste
-  - **Arquivos alterados**: `src/pages/TesteQVTPerguntas.tsx` (linhas 54-79, 102-156, 158)
-  - **Benefícios**:
-    - ✅ Fluxo consistente com outros testes
-    - ✅ Menos dependências e código mais simples
-    - ✅ Melhor performance (menos chamadas ao banco durante o teste)
-  
-- **Status**: Teste QVT 100% funcional com redirecionamento correto ✅
-
-### 🎨 Refatoração de UI (20/10/2025)
-- Criado componente `ResultadoVisualizacao.tsx` para unificar a exibição de resultados
-- Simplificado `ResultadoPopup.tsx` para usar o componente compartilhado
-- Refatorado `Resultado.tsx` para usar o mesmo layout do popup
-- Eliminada duplicação de código (~800 linhas de código removidas)
-- Layout consistente entre `/resultado/:id` e visualização em popup
-
-### 🐛 Correções de Bugs (20/10/2025)
-- **Dados do colaborador nos resultados**: Corrigido endpoint `/api/testes/resultado/:id` para fazer JOIN com tabela de colaboradores
-- **Listagem de resultados**: Corrigido endpoint `/api/empresas/colaboradores/:id/resultados` para incluir informações do teste
-- Backend agora enriquece metadados com nome, cargo e departamento do colaborador
-- Resultados exibem corretamente o nome e cargo do colaborador em vez de "Anônimo"
-- Dados do teste também incluídos nos metadados (nome e categoria)
-- Listagem de resultados agora mostra: nome do teste, pontuação, percentual e categoria corretamente
-- **Visibilidade de resultados**: Corrigido para buscar resultados por `colaboradorId` OU `usuarioId` (compatibilidade)
-- Endpoint `/api/testes/resultados/meus` agora usa `OR` para buscar resultados
-- Endpoint `/api/empresas/colaboradores/:id/resultados` filtra corretamente por empresa
-
-### 🔐 Credenciais de Teste
-```
-Admin:
-  Email: admin@humaniq.com.br
-  Senha: Admin123
-
-Empresa:
-  Email: rochatech@rocha.com
-  Senha: Rocha123
-
-Colaborador:
-  Email: luiz.bastos@rochatech.com
-  Senha: Luiz123
-```
+## External Dependencies
+- **Database**: Neon PostgreSQL
+- **Frontend Libraries**: React, Vite, Shadcn/UI, Tailwind CSS, TanStack Query, Wouter
+- **Backend Libraries**: Express.js, TypeScript, Drizzle, bcrypt, jsonwebtoken
