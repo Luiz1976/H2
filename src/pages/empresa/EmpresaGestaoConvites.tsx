@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from 'sonner';
 import { hybridInvitationService } from '../../services/invitationServiceHybrid';
-import { secureInvitationService } from '../../services/secureInvitationService';
 import { useAuth } from '../../hooks/AuthContext';
 import { StatusConvite } from '../../lib/enums';
 
@@ -57,21 +56,14 @@ const EmpresaGestaoConvites: React.FC = () => {
         return;
       }
 
-      const response = await secureInvitationService.listarConvites('colaborador', user.empresaId);
+      const response = await hybridInvitationService.listarConvites('colaborador', user.empresaId);
       console.log('✅ Convites carregados:', response);
       
       if (response.success && response.data) {
         setConvites(response.data as ConviteColaborador[]);
       } else {
-        console.log('Tentando fallback para hybridInvitationService...');
-        const fallbackResponse = await hybridInvitationService.listarConvites('colaborador', user.empresaId);
-        
-        if (fallbackResponse.success && fallbackResponse.data) {
-          setConvites(fallbackResponse.data as ConviteColaborador[]);
-        } else {
-          console.error('❌ Erro na resposta:', fallbackResponse.message);
-          setConvites([]);
-        }
+        console.error('❌ Erro na resposta:', response.message);
+        setConvites([]);
       }
     } catch (error) {
       console.error('❌ Erro ao carregar convites:', error);
@@ -93,29 +85,12 @@ const EmpresaGestaoConvites: React.FC = () => {
         return;
       }
 
-      const response = await secureInvitationService.criarConviteColaborador({
+      const response = await hybridInvitationService.criarConviteColaborador({
         empresa_id: user.empresaId,
         email: novoConvite.email,
         nome: novoConvite.nome,
         dias_expiracao: novoConvite.dias_expiracao
       });
-
-      if (!response.success) {
-        console.log('Tentando fallback para hybridInvitationService...');
-        const fallbackResponse = await hybridInvitationService.criarConviteColaborador({
-          empresa_id: user.empresaId,
-          email: novoConvite.email,
-          nome: novoConvite.nome,
-          dias_expiracao: novoConvite.dias_expiracao
-        });
-        
-        if (fallbackResponse.success) {
-          response.success = true;
-          response.data = fallbackResponse.data;
-        } else {
-          response.message = fallbackResponse.message;
-        }
-      }
 
       console.log('✅ Convite criado:', response);
       

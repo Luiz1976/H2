@@ -2,8 +2,8 @@
 // Serviço híbrido que usa API backend segura como principal e Supabase direto como fallback
 
 import { apiService, type ConviteEmpresa as ApiConviteEmpresa, type ConviteColaborador as ApiConviteColaborador, type ConviteResponse } from './apiService';
-import { invitationService as originalService, type ConviteEmpresa, type ConviteColaborador, type InvitationResponse } from './invitationService';
-import { type ConviteData } from './conviteService'; // Reutilizar a interface existente
+import { invitationService as originalService, type ConviteEmpresa, type ConviteColaborador, type InvitationResponse, type ConviteData } from './invitationService';
+import { type ConviteData as ConviteDataLegacy } from './conviteService';
 
 // ========================================
 // INTERFACES UNIFICADAS
@@ -25,7 +25,7 @@ export interface HybridInvitationResponse {
 import { supabase } from '../lib/supabase';
 
 class HybridInvitationService {
-  async createInvitation(dados: Omit<ConviteData, 'id' | 'dataCriacao' | 'status' | 'colaboradoresUsaram' | 'colaboradoresRestantes' | 'codigoConvite'>): Promise<ConviteData> {
+  async createInvitation(dados: Omit<ConviteDataLegacy, 'id' | 'dataCriacao' | 'status' | 'colaboradoresUsaram' | 'colaboradoresRestantes' | 'codigoConvite'>): Promise<ConviteDataLegacy> {
     const codigo = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     const agora = new Date();
 
