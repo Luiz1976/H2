@@ -161,10 +161,12 @@ export async function finalizarTesteQVT(
     // Salvar resultado via API local
     const dadosAPI = {
       testeId: '7b3c8d4e-9f0a-1b2c-3d4e-5f6a7b8c9d0e', // UUID do teste QVT no banco
-      pontuacao: analiseQVT.indiceGeral || 0,
-      percentual: analiseQVT.percentualGeral || 0,
-      categoria: analiseQVT.nivelGeral || 'Indefinido',
+      pontuacaoTotal: analiseQVT.indiceGeral || 0,
       metadados: {
+        tipo: 'qvt',
+        pontuacao: analiseQVT.indiceGeral || 0,
+        percentual: analiseQVT.percentualGeral || 0,
+        categoria: analiseQVT.nivelGeral || 'Indefinido',
         dimensoes: analiseQVT.dimensoes || [],
         dimensoesCriticas: analiseQVT.dimensoesCriticas || [],
         pontoFortes: analiseQVT.pontoFortes || [],
@@ -181,7 +183,7 @@ export async function finalizarTesteQVT(
     };
 
     console.log('🔍 [QVT-SERVICE] Enviando resultado para API...');
-    const resultadoSalvo = await apiService.submeterResultadoTeste(dadosAPI);
+    const resultadoSalvo = await apiService.salvarResultadoTeste(dadosAPI);
     console.log('✅ [QVT-SERVICE] Resultado salvo via API com sucesso:', resultadoSalvo);
     
     return {
