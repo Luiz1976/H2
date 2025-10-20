@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2, AlertTriangle, Eye, Download, Share2 } from 'lucide-react';
+import { Loader2, AlertTriangle, Eye, Download, Share2, Brain } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { calcularResultadoKarasekSiegrist, type ResultadoKarasekSiegrist } from '@/lib/testes/karasek-siegrist';
