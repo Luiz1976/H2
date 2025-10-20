@@ -162,6 +162,11 @@ class ApiService {
   async listarColaboradores(): Promise<{ colaboradores: any[]; total: number }> {
     return this.makeRequest('/api/empresas/colaboradores');
   }
+
+  // Obter estatísticas da empresa
+  async obterEstatisticasEmpresa(): Promise<{ estatisticas: any }> {
+    return this.makeRequest('/api/empresas/estatisticas');
+  }
 }
 
 export const apiService = new ApiService();

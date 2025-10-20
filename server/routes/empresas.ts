@@ -1,8 +1,8 @@
 import express from 'express';
 import { db } from '../../db';
-import { empresas, colaboradores } from '../../shared/schema';
+import { empresas, colaboradores, convitesColaborador, resultados } from '../../shared/schema';
 import { authenticateToken, requireEmpresa, requireAdmin, AuthRequest } from '../middleware/auth';
-import { eq } from 'drizzle-orm';
+import { eq, and, gt } from 'drizzle-orm';
 
 const router = express.Router();
 
@@ -94,6 +94,86 @@ router.patch('/configuracoes', authenticateToken, requireEmpresa, async (req: Au
     res.json({ empresa: empresaAtualizada });
   } catch (error) {
     console.error('Erro ao atualizar configurações:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Estatísticas da empresa
+router.get('/estatisticas', authenticateToken, requireEmpresa, async (req: AuthRequest, res) => {
+  try {
+    const empresaId = req.user!.empresaId!;
+
+    // Buscar colaboradores
+    const colaboradoresList = await db
+      .select()
+      .from(colaboradores)
+      .where(eq(colaboradores.empresaId, empresaId));
+
+    const totalColaboradores = colaboradoresList.length;
+    const colaboradoresAtivos = colaboradoresList.filter(c => c.ativo).length;
+
+    // Buscar convites pendentes
+    const agora = new Date();
+    const convitesList = await db
+      .select()
+      .from(convitesColaborador)
+      .where(
+        and(
+          eq(convitesColaborador.empresaId, empresaId),
+          eq(convitesColaborador.status, 'pendente'),
+          gt(convitesColaborador.validade, agora)
+        )
+      );
+
+    const convitesPendentes = convitesList.length;
+
+    // Buscar resultados (se houver colaboradores)
+    let totalTestesRealizados = 0;
+    let testesEsteMes = 0;
+    let mediaPontuacao = 0;
+
+    if (colaboradoresList.length > 0) {
+      const colaboradorIds = colaboradoresList.map(c => c.id);
+      
+      const resultadosList = await db
+        .select()
+        .from(resultados)
+        .where(eq(resultados.empresaId, empresaId));
+
+      const resultadosConcluidos = resultadosList.filter(r => r.status === 'concluido');
+      totalTestesRealizados = resultadosConcluidos.length;
+
+      // Testes deste mês
+      const inicioMes = new Date();
+      inicioMes.setDate(1);
+      inicioMes.setHours(0, 0, 0, 0);
+
+      testesEsteMes = resultadosConcluidos.filter(r => 
+        r.dataRealizacao && new Date(r.dataRealizacao) >= inicioMes
+      ).length;
+
+      // Média de pontuação
+      const pontuacoes = resultadosConcluidos
+        .map(r => r.pontuacaoTotal)
+        .filter(p => p !== null && p !== undefined) as number[];
+
+      if (pontuacoes.length > 0) {
+        mediaPontuacao = pontuacoes.reduce((acc, p) => acc + p, 0) / pontuacoes.length;
+      }
+    }
+
+    res.json({
+      estatisticas: {
+        total_colaboradores: totalColaboradores,
+        colaboradores_ativos: colaboradoresAtivos,
+        total_testes_realizados: totalTestesRealizados,
+        convites_pendentes: convitesPendentes,
+        testes_este_mes: testesEsteMes,
+        media_pontuacao: Math.round(mediaPontuacao * 10) / 10,
+      },
+    });
+  } catch (error) {
+    console.error('Erro ao buscar estatísticas:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
