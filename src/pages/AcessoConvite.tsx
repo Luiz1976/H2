@@ -30,15 +30,14 @@ import { authService } from "@/services/authService";
 interface ConviteInfo {
   id: string;
   token: string;
-  nome_empresa?: string; // Para convites de empresa
-  email_contato?: string; // Para convites de empresa
-  empresa?: { nome_empresa: string }; // Para convites de colaborador - CORRIGIDO
+  nomeEmpresa?: string; // Para convites de empresa (camelCase da API)
+  emailContato?: string; // Para convites de empresa (camelCase da API)
   email?: string; // Para convites de colaborador
   nome?: string; // Para convites de colaborador
-  admin_id?: string;
+  adminId?: string;
   status: 'pendente' | 'usado';
   validade: string;
-  created_at: string;
+  createdAt: string;
   metadados?: any;
 }
 
@@ -285,8 +284,8 @@ const AcessoConvite = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-semibold text-foreground mb-2">Empresa</h4>
-                  <p className="text-lg">{conviteInfo.empresa?.nome_empresa || conviteInfo.nome_empresa || 'Empresa não identificada'}</p>
-                  <p className="text-sm text-muted-foreground">{conviteInfo.email_contato}</p>
+                  <p className="text-lg">{conviteInfo.nomeEmpresa || 'Empresa não identificada'}</p>
+                  <p className="text-sm text-muted-foreground">{conviteInfo.emailContato || conviteInfo.email || ''}</p>
                 </div>
                 
                 <div>
