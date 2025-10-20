@@ -3,6 +3,7 @@ import type { Teste, Pergunta, Resultado, Resposta, AnaliseResultado } from './t
 import { climaOrganizacionalService } from './services/clima-organizacional-service';
 import { karasekSiegristService } from './services/karasek-siegrist-service';
 import { sessionService } from './services/session-service';
+import { apiService } from '@/services/apiService';
 
 // ==================== TESTES ====================
 
@@ -95,74 +96,40 @@ export const perguntasService = {
 // ==================== RESULTADOS ====================
 
 export const resultadosService = {
-  // Salvar resultado de um teste com session_id
+  // Salvar resultado de um teste usando API local
   async salvarResultado(resultado: Omit<Resultado, 'id' | 'data_realizacao'>): Promise<Resultado> {
     try {
-      console.log('🔍 [DATABASE] Iniciando salvamento do resultado');
+      console.log('🔍 [DATABASE] Iniciando salvamento do resultado via API local');
       console.log('🔍 [DATABASE] Dados recebidos:', resultado);
-      console.log('🔍 [DATABASE] Tipo dos dados:', typeof resultado);
-      console.log('🔍 [DATABASE] Campos presentes:', Object.keys(resultado));
       
-      // Normalizar e validar session_id
-      const isValidUUIDv4 = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
-      let normalizedResultado = { ...resultado } as any;
-      if (!normalizedResultado.session_id || !isValidUUIDv4(normalizedResultado.session_id)) {
-        const regenerated = sessionService.getSessionId();
-        console.warn('⚠️ [DATABASE] session_id inválido ou ausente. Gerando/forçando UUID v4:', {
-          recebido: normalizedResultado.session_id,
-          usando: regenerated
-        });
-        normalizedResultado.session_id = regenerated;
-      }
-      
-      // Validar dados obrigatórios
-      console.log('🔍 [DATABASE] Validando campos obrigatórios...');
-      if (!normalizedResultado.session_id) {
-        console.error('❌ [DATABASE] session_id é obrigatório');
-        throw new Error('session_id é obrigatório');
-      }
-      
-      if (typeof normalizedResultado.pontuacao_total !== 'number') {
-        console.error('❌ [DATABASE] pontuacao_total deve ser um número');
-        throw new Error('pontuacao_total deve ser um número');
-      }
-      
-      console.log('🔍 [DATABASE] Validação concluída com sucesso');
-      console.log('🔍 [DATABASE] Tentando inserir no Supabase...');
-      
-      const resultadoDireto = await supabase
-        .from('resultados')
-        .insert(normalizedResultado);
-
-      console.log('🔍 [DATABASE] Resultado - data:', resultadoDireto.data);
-      console.log('🔍 [DATABASE] Resultado - error:', resultadoDireto.error);
-
-      if (resultadoDireto.error) {
-        console.error('❌ [DATABASE] Erro ao salvar resultado:', resultadoDireto.error);
-        console.error('❌ [DATABASE] Detalhes do erro:', JSON.stringify(resultadoDireto.error, null, 2));
-        throw new Error(`Falha ao salvar resultado: ${resultadoDireto.error.message}`);
-      }
-
-      console.log('✅ [DATABASE] Resultado salvo com sucesso');
-      
-      // Como não usamos .select(), o Supabase retorna data: null mesmo quando a inserção é bem-sucedida
-      // Vamos criar um objeto de retorno com os dados que temos disponíveis
-      const resultadoItem = {
-        ...normalizedResultado,
-        id: sessionService.getSessionId(), // Usar session_id como identificador temporário
-        data_realizacao: new Date().toISOString()
+      // Preparar dados no formato esperado pela API
+      const dadosAPI = {
+        testeId: resultado.teste_id || null,
+        tipoTabela: resultado.metadados?.tipo_teste || 'generico',
+        pontuacao: resultado.pontuacao_total,
+        tempoDuracao: resultado.tempo_gasto || 0,
+        respostas: [], // Respostas serão salvas separadamente
+        metadados: resultado.metadados
       };
       
-      console.log('✅ [DATABASE] Resultado processado com sucesso:', {
-        session_id: resultadoItem.session_id,
-        pontuacao_total: resultadoItem.pontuacao_total,
-        teste_id: resultadoItem.teste_id
-      });
+      console.log('🔍 [DATABASE] Dados formatados para API:', dadosAPI);
       
+      // Chamar API local
+      const response = await apiService.submeterResultado(dadosAPI);
+      console.log('✅ [DATABASE] Resposta da API:', response);
+      
+      // Retornar no formato esperado
+      const resultadoItem = {
+        ...resultado,
+        id: response.resultado?.id || sessionService.getSessionId(),
+        data_realizacao: response.resultado?.dataRealizacao || new Date().toISOString()
+      };
+      
+      console.log('✅ [DATABASE] Resultado processado com sucesso via API local');
       return resultadoItem;
       
     } catch (error) {
-      console.error('❌ [DATABASE] Erro geral no salvamento:', error);
+      console.error('❌ [DATABASE] Erro ao salvar resultado via API:', error);
       console.error('❌ [DATABASE] Stack trace:', error instanceof Error ? error.stack : 'Sem stack trace');
       throw error;
     }
