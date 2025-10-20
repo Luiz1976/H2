@@ -101,7 +101,14 @@ npm run db:push    # Sincroniza schema com banco de dados
 - ✅ `TodosResultados.tsx` - usa `apiService.obterMeusResultados()`
 - ✅ `Resultado.tsx` - usa `apiService.obterResultadoPorId()`
 - ✅ `ResultadoPopup.tsx` - usa `apiService.obterResultadoPorId()`
+- ✅ `ResultadoVisualizacao.tsx` - componente compartilhado para exibição de resultados
 - ✅ `clima-organizacional-service.ts` - cálculo de pontuação corrigido
+
+### 📐 Arquitetura de Componentes
+- **ResultadoVisualizacao**: Componente compartilhado que renderiza todos os tipos de teste (Karasek-Siegrist, Clima Organizacional, RPO, QVT, Genérico)
+- **ResultadoPopup**: Dialog que usa `ResultadoVisualizacao` para exibir resultados em popup
+- **Resultado.tsx**: Página que usa `ResultadoVisualizacao` para exibir resultados em tela completa
+- **Layout unificado**: Ambas as páginas (`/resultado/:id` e `/empresa/colaborador/:id/resultados`) agora usam o mesmo componente de visualização, garantindo consistência visual
 
 ### 🔄 Em Uso
 - Frontend usando `apiService.ts` e `authServiceNew.ts`
@@ -136,5 +143,12 @@ npm run db:push    # Sincroniza schema com banco de dados
 4. Visualiza seus próprios resultados
 
 ## Última Atualização
-**Data**: 18 de outubro de 2025  
+**Data**: 20 de outubro de 2025  
 **Status**: Sistema funcional com backend e frontend integrados
+
+### 🎨 Refatoração de UI (20/10/2025)
+- Criado componente `ResultadoVisualizacao.tsx` para unificar a exibição de resultados
+- Simplificado `ResultadoPopup.tsx` para usar o componente compartilhado
+- Refatorado `Resultado.tsx` para usar o mesmo layout do popup
+- Eliminada duplicação de código (~800 linhas de código removidas)
+- Layout consistente entre `/resultado/:id` e visualização em popup
