@@ -179,19 +179,32 @@ npm run db:push    # Sincroniza schema com banco de dados
 4. **Tokens JWT expiram em 7 dias** - usuário deve fazer login novamente após esse período
 
 ## Última Atualização
-**Data**: 20 de outubro de 2025  
-**Status**: Sistema PRONTO para uso em massa com múltiplos usuários simultâneos ✅
+**Data**: 20 de outubro de 2025 - 18:35  
+**Status**: Sistema PRONTO para uso em massa com múltiplos usuários simultâneos ✅  
+**Teste "Clima e Bem-Estar"**: 100% funcional sem Supabase ✅
 
 ### 🔧 Correções Finais (20/10/2025 - 17:40)
 - **Migração completa de Supabase → API Local**: Substituído `database.ts:resultadosService.salvarResultado()` para usar `apiService.submeterResultado()`
 - **Todos os testes agora salvam via API local**: Karasek-Siegrist, Clima Organizacional, RPO, QVT, PAS, MGRP, Estresse Ocupacional
 - **Erro "Supabase desabilitado" eliminado**: Sistema 100% funcional com backend local
 
-### 🐛 Correção Crítica - Teste Clima e Bem-Estar (20/10/2025 - 18:20)
-- **BUG CORRIGIDO**: Erro "supabase.from(...).insert(...).select is not a function" no teste de Clima e Bem-Estar
-- **Causa**: `resultadosService.salvarResposta()` ainda usava Supabase para salvar respostas individuais durante o teste
-- **Solução**: Migrado para localStorage com salvamento final via API local
-- **Arquivos alterados**: `src/lib/database.ts` (linhas 139-198)
+### 🐛 Correção Crítica - Teste Clima e Bem-Estar (20/10/2025 - 18:20 - 18:35)
+- **BUG #1 CORRIGIDO**: Erro "supabase.from(...).insert(...).select is not a function" no teste de Clima e Bem-Estar
+  - **Causa**: `resultadosService.salvarResposta()` usava Supabase para salvar respostas individuais
+  - **Solução**: Migrado para localStorage com salvamento final via API local
+  - **Arquivos alterados**: `src/lib/database.ts` (linhas 139-198)
+
+- **BUG #2 CORRIGIDO**: Erro "Foreign key constraint violation" ao salvar resultado final
+  - **Causa**: Tabela `testes` estava vazia - nenhum teste cadastrado no PostgreSQL
+  - **Solução**: Populado banco de dados com todos os 7 testes disponíveis:
+    1. **Clima e Bem-Estar** (UUID: `55fc21f9-cc10-4b4a-8765-3f5087eaf1f5`)
+    2. **RPO** (UUID: `9b7d4c8e-1a2b-4f3e-9d7a-5e6f7a8b9c0d`)
+    3. **Estresse Ocupacional** (UUID: `2c8e3f9a-4b5d-6e7a-8c9d-0e1f2a3b4c5d`)
+    4. **Karasek-Siegrist** (UUID: `3d9f4a0b-5c6e-7f8a-9d0e-1f2a3b4c5d6e`)
+    5. **PAS** (UUID: `4e0a5b1c-6d7f-8e9a-0f1a-2b3c4d5e6f7a`)
+    6. **MGRP** (UUID: `5f1a6c2d-7e8f-9a0b-1c2d-3e4f5a6b7c8d`)
+    7. **Clima Organizacional** (UUID: `6a2b7d3e-8f9a-0b1c-2d3e-4f5a6b7c8d9e`)
+  
 - **Status**: Teste de Clima e Bem-Estar 100% funcional sem Supabase ✅
 
 ### 🎨 Refatoração de UI (20/10/2025)
