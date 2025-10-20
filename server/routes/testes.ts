@@ -74,51 +74,89 @@ router.get('/:id/perguntas', async (req, res) => {
   }
 });
 
-// Submeter resultado de teste
+// Submeter resultado de teste (com autenticação)
 router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
   try {
     const validationResult = z.object({
-      testeId: z.string().uuid(),
-      respostas: z.array(z.object({
-        perguntaId: z.string().uuid(),
-        valor: z.string(),
-        pontuacao: z.number().optional(),
-      })),
+      testeId: z.string().uuid().nullable().optional(),
+      pontuacaoTotal: z.number(),
       tempoGasto: z.number().optional(),
       sessionId: z.string().optional(),
+      metadados: z.any().optional(),
+      status: z.string().optional(),
     }).safeParse(req.body);
 
     if (!validationResult.success) {
       return res.status(400).json({ error: 'Dados inválidos', details: validationResult.error.issues });
     }
 
-    const { testeId, respostas: respostasData, tempoGasto, sessionId } = validationResult.data;
-
-    const pontuacaoTotal = respostasData.reduce((sum, r) => sum + (r.pontuacao || 0), 0);
+    const { testeId, pontuacaoTotal, tempoGasto, sessionId, metadados, status } = validationResult.data;
 
     const [resultado] = await db
       .insert(resultados)
       .values({
-        testeId,
+        testeId: testeId || null,
         usuarioId: req.user!.userId,
         pontuacaoTotal,
         tempoGasto,
-        status: 'concluido',
+        status: status || 'concluido',
         sessionId,
+        metadados,
         colaboradorId: req.user!.role === 'colaborador' ? req.user!.userId : undefined,
         empresaId: req.user!.empresaId,
         userEmail: req.user!.email,
       })
       .returning();
 
-    for (const resposta of respostasData) {
-      await db.insert(respostas).values({
-        resultadoId: resultado.id,
-        perguntaId: resposta.perguntaId,
-        valor: resposta.valor,
-        pontuacao: resposta.pontuacao,
-      });
+    res.status(201).json({
+      message: 'Resultado salvo com sucesso',
+      resultado: {
+        id: resultado.id,
+        pontuacaoTotal: resultado.pontuacaoTotal,
+        dataRealizacao: resultado.dataRealizacao,
+      },
+    });
+  } catch (error) {
+    console.error('Erro ao salvar resultado:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Submeter resultado de teste (SEM autenticação - para testes anônimos)
+router.post('/resultado/anonimo', async (req, res) => {
+  try {
+    const validationResult = z.object({
+      testeId: z.string().uuid().nullable().optional(),
+      usuarioId: z.string().uuid().nullable().optional(),
+      pontuacaoTotal: z.number(),
+      tempoGasto: z.number().optional(),
+      sessionId: z.string().optional(),
+      metadados: z.any().optional(),
+      status: z.string().optional(),
+      userEmail: z.string().email().optional(),
+      empresaId: z.string().uuid().nullable().optional(),
+    }).safeParse(req.body);
+
+    if (!validationResult.success) {
+      return res.status(400).json({ error: 'Dados inválidos', details: validationResult.error.issues });
     }
+
+    const { testeId, usuarioId, pontuacaoTotal, tempoGasto, sessionId, metadados, status, userEmail, empresaId } = validationResult.data;
+
+    const [resultado] = await db
+      .insert(resultados)
+      .values({
+        testeId: testeId || null,
+        usuarioId: usuarioId || null,
+        pontuacaoTotal,
+        tempoGasto,
+        status: status || 'concluido',
+        sessionId,
+        metadados,
+        userEmail: userEmail || null,
+        empresaId: empresaId || null,
+      })
+      .returning();
 
     res.status(201).json({
       message: 'Resultado salvo com sucesso',

@@ -168,6 +168,31 @@ class ApiService {
   async obterEstatisticasEmpresa(): Promise<{ estatisticas: any }> {
     return this.makeRequest('/api/empresas/estatisticas');
   }
+
+  // Salvar resultado de teste psicológico
+  async salvarResultadoTeste(dados: {
+    testeId?: string | null;
+    usuarioId?: string | null;
+    pontuacaoTotal: number;
+    tempoGasto?: number;
+    sessionId?: string;
+    metadados?: any;
+    status?: string;
+    userEmail?: string;
+    empresaId?: string | null;
+  }): Promise<{ id: string; pontuacaoTotal: number; dataRealizacao: string }> {
+    const token = localStorage.getItem('authToken');
+    
+    // Se tiver token, usa endpoint autenticado; senão usa anônimo
+    const endpoint = token ? '/api/testes/resultado' : '/api/testes/resultado/anonimo';
+    
+    const response = await this.makeRequest<{ resultado: any }>(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(dados),
+    });
+    
+    return response.resultado;
+  }
 }
 
 export const apiService = new ApiService();

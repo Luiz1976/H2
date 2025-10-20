@@ -65,7 +65,7 @@ export const testes = pgTable('testes', {
 
 export const resultados = pgTable('resultados', {
   id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
-  testeId: uuid('teste_id').references(() => testes.id, { onDelete: 'cascade' }).notNull(),
+  testeId: uuid('teste_id').references(() => testes.id, { onDelete: 'cascade' }),
   usuarioId: uuid('usuario_id'),
   pontuacaoTotal: integer('pontuacao_total'),
   tempoGasto: integer('tempo_gasto'),
