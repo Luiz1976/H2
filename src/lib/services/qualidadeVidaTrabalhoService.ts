@@ -7,7 +7,7 @@ import {
 import { supabase } from '../supabase';
 import { obterSessaoAtual } from './session-service';
 import { authService } from '../../services/authService';
-import apiService from '../../services/apiService';
+import { apiService } from '../../services/apiService';
 import type { Pergunta } from '../types';
 
 // Função auxiliar para classificar nível QVT
