@@ -242,243 +242,47 @@ export const resultadosService = {
     }
   },
 
-  // Buscar resultado específico por ID com respostas
+  // Buscar resultado específico por ID com respostas - MIGRADO PARA API LOCAL
   async buscarResultadoPorId(id: string): Promise<Resultado | null> {
     try {
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] ===== INICIANDO BUSCA =====');
+      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] ===== INICIANDO BUSCA VIA API LOCAL =====');
       console.log('🔍 [BUSCAR-RESULTADO-POR-ID] ID solicitado:', id);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Tipo do ID:', typeof id);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Comprimento do ID:', id.length);
       
-      // ===== CONTROLE DE ACESSO E SEGURANÇA =====
-      console.log('🔐 [BUSCAR-RESULTADO-POR-ID] Iniciando verificação de controle de acesso');
+      // Importar apiService para usar API local
+      const { apiService } = await import('../services/apiService');
       
-      // Importar authService dinamicamente para evitar dependência circular
-      const { authService } = await import('../services/authService');
+      // Fazer requisição à API local (autenticação feita automaticamente pelo backend)
+      const response = await apiService.obterResultadoPorId(id);
       
-      // Verificação de acesso: obter usuário atual e verificar se ele pode acessar este resultado
-      const currentUser = authService.getCurrentUser();
-      if (!currentUser) {
-        console.log('❌ [BUSCAR-RESULTADO-POR-ID] Usuário não autenticado - acesso negado');
-        console.log('🔒 [BUSCAR-RESULTADO-POR-ID] AUDITORIA: Tentativa de acesso não autenticado ao resultado ID:', id);
-        return null;
-      }
-      
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Usuário autenticado:', { 
-        email: currentUser.email, 
-        role: currentUser.role, 
-        empresa_id: currentUser.empresa_id 
-      });
-      
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Iniciando query simplificada...');
-      
-      // Timeout mais agressivo de 5 segundos
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('Query timeout após 5 segundos')), 5000);
-      });
-
-      // Query simplificada sem joins complexos
-      // Primeiro tentar na tabela resultados genérica
-      let queryPromise = supabase
-        .from('resultados')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Tentando busca na tabela resultados...');
-      
-      let { data, error } = await Promise.race([queryPromise, timeoutPromise]);
-      let tabelaOrigem = 'resultados';
-      
-      // Se não encontrou na tabela genérica, tentar na tabela específica QVT
-      if (error && error.code === 'PGRST116') {
-        console.log('🔄 [BUSCAR-RESULTADO-POR-ID] Não encontrado em resultados, tentando resultados_qvt...');
-        
-        queryPromise = supabase
-          .from('resultados_qvt')
-          .select('*')
-          .eq('id', id)
-          .single();
-          
-        const resultQVT = await Promise.race([queryPromise, timeoutPromise]);
-        data = resultQVT.data;
-        error = resultQVT.error;
-        tabelaOrigem = 'resultados_qvt';
-        
-        if (data) {
-          console.log('✅ [BUSCAR-RESULTADO-POR-ID] Encontrado na tabela resultados_qvt!');
-        }
-      }
-
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Query executada, verificando resultado...');
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Data recebida:', data ? 'DADOS ENCONTRADOS' : 'NENHUM DADO');
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Error recebido:', error ? 'ERRO ENCONTRADO' : 'NENHUM ERRO');
-
-      if (error) {
-        console.error('❌ [BUSCAR-RESULTADO-POR-ID] Erro na query:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        });
-        return null;
-      }
-
-      if (!data) {
+      if (!response || !response.resultado) {
         console.log('❌ [BUSCAR-RESULTADO-POR-ID] Nenhum resultado encontrado para ID:', id);
         return null;
       }
       
-      // ===== CONTROLE DE ACESSO POR PAPEL =====
-      console.log('🔐 [BUSCAR-RESULTADO-POR-ID] Verificando permissões de acesso');
+      const data = response.resultado;
       
-      // Verificar se o resultado pertence ao colaborador atual (se for colaborador)
-      if (currentUser.role === 'colaborador') {
-        console.log('👤 [BUSCAR-RESULTADO-POR-ID] Verificando acesso para colaborador');
-        
-        const { data: colaboradorData, error: colaboradorError } = await supabase
-          .from('colaboradores')
-          .select('id')
-          .eq('email', currentUser.email)
-          .single();
-        
-        if (colaboradorError) {
-          console.error('❌ [BUSCAR-RESULTADO-POR-ID] Erro ao buscar dados do colaborador:', colaboradorError);
-          console.log('🔒 [BUSCAR-RESULTADO-POR-ID] AUDITORIA: Erro na verificação de colaborador para resultado ID:', id);
-          return null;
-        }
-        
-        if (colaboradorData && data.usuario_id === colaboradorData.id) {
-          console.log('✅ [BUSCAR-RESULTADO-POR-ID] Acesso permitido para colaborador proprietário');
-          console.log('🔒 [BUSCAR-RESULTADO-POR-ID] AUDITORIA: Acesso autorizado - colaborador proprietário:', currentUser.email);
-        } else {
-          console.log('❌ [BUSCAR-RESULTADO-POR-ID] Acesso negado: resultado não pertence ao colaborador');
-          console.log('🔒 [BUSCAR-RESULTADO-POR-ID] AUDITORIA: Tentativa de acesso negado - colaborador não proprietário:', {
-            usuario_email: currentUser.email,
-            colaborador_id: colaboradorData?.id,
-            resultado_usuario_id: data.usuario_id,
-            resultado_id: id
-          });
-          return null;
-        }
-      }
-      
-      // Verificar se é empresa e se o resultado pertence a um colaborador da empresa
-      if (currentUser.role === 'empresa' && currentUser.empresa_id) {
-        console.log('🏢 [BUSCAR-RESULTADO-POR-ID] Verificando acesso para empresa');
-        
-        const { data: colaboradorResultado, error: empresaError } = await supabase
-          .from('colaboradores')
-          .select('empresa_id')
-          .eq('id', data.usuario_id)
-          .single();
-        
-        if (empresaError) {
-          console.error('❌ [BUSCAR-RESULTADO-POR-ID] Erro ao verificar vinculação empresa-colaborador:', empresaError);
-          console.log('🔒 [BUSCAR-RESULTADO-POR-ID] AUDITORIA: Erro na verificação de empresa para resultado ID:', id);
-          return null;
-        }
-        
-        if (colaboradorResultado && colaboradorResultado.empresa_id === currentUser.empresa_id) {
-          console.log('✅ [BUSCAR-RESULTADO-POR-ID] Acesso permitido para empresa proprietária');
-          console.log('🔒 [BUSCAR-RESULTADO-POR-ID] AUDITORIA: Acesso autorizado - empresa proprietária:', {
-            empresa_id: currentUser.empresa_id,
-            usuario_email: currentUser.email
-          });
-        } else {
-          console.log('❌ [BUSCAR-RESULTADO-POR-ID] Acesso negado: resultado não pertence à empresa');
-          console.log('🔒 [BUSCAR-RESULTADO-POR-ID] AUDITORIA: Tentativa de acesso negado - empresa não proprietária:', {
-            usuario_email: currentUser.email,
-            empresa_id_usuario: currentUser.empresa_id,
-            empresa_id_colaborador: colaboradorResultado?.empresa_id,
-            resultado_id: id
-          });
-          return null;
-        }
-      }
-      
-      // Admins têm acesso a todos os resultados
-      if (currentUser.role === 'admin') {
-        console.log('✅ [BUSCAR-RESULTADO-POR-ID] Acesso permitido para admin');
-        console.log('🔒 [BUSCAR-RESULTADO-POR-ID] AUDITORIA: Acesso autorizado - usuário admin:', currentUser.email);
-      }
-      
-      // Se chegou até aqui, o acesso foi autorizado
-      console.log('🔐 [BUSCAR-RESULTADO-POR-ID] Controle de acesso concluído - acesso autorizado');
-
       console.log('✅ [BUSCAR-RESULTADO-POR-ID] Resultado encontrado!');
       console.log('🔍 [BUSCAR-RESULTADO-POR-ID] ID do resultado:', data.id);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] teste_id:', data.teste_id);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] session_id:', data.session_id);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] pontuacao_total:', data.pontuacao_total);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] status:', data.status);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] data_realizacao:', data.data_realizacao);
+      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] teste_id:', data.testeId);
+      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] pontuacao_total:', data.pontuacaoTotal);
       console.log('🔍 [BUSCAR-RESULTADO-POR-ID] metadados existe?', !!data.metadados);
       
-      if (data.metadados) {
-        console.log('🔍 [BUSCAR-RESULTADO-POR-ID] metadados.tipo_teste:', data.metadados.tipo_teste);
-        console.log('🔍 [BUSCAR-RESULTADO-POR-ID] metadados.analise_completa existe?', !!data.metadados.analise_completa);
-        console.log('🔍 [BUSCAR-RESULTADO-POR-ID] metadados keys:', Object.keys(data.metadados));
-        
-        if (data.metadados.analise_completa) {
-          console.log('🔍 [BUSCAR-RESULTADO-POR-ID] analise_completa.mediaGeral existe?', !!data.metadados.analise_completa.mediaGeral);
-          console.log('🔍 [BUSCAR-RESULTADO-POR-ID] analise_completa keys:', Object.keys(data.metadados.analise_completa));
-        }
-      }
-
-      // Retornar dados com tipo_teste dos metadados ou detectar QVT pelos campos específicos
-      let tipoTeste = data.metadados?.tipo_teste || null;
-      
-      // Se não tem tipo_teste mas tem campos específicos do QVT, definir como QVT
-      if (!tipoTeste && (data.indice_geral !== undefined || data.nivel_geral !== undefined || data.satisfacao_funcao !== undefined)) {
-        tipoTeste = 'qualidade-vida-trabalho';
-        console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Detectado como QVT pelos campos específicos');
-      }
-      
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] ===== MAPEAMENTO DE CAMPOS QVT =====');
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] indice_geral:', data.indice_geral);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] nivel_geral:', data.nivel_geral);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] percentual_geral:', data.percentual_geral);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] satisfacao_funcao:', data.satisfacao_funcao);
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] pontos_fortes:', data.pontos_fortes);
-      
+      // Mapear dados da API para o formato esperado pelo frontend
       const resultado = {
         id: data.id,
-        session_id: data.session_id,
-        tipo_teste: tipoTeste,
-        created_at: data.created_at || data.data_realizacao,
-        pontuacao_total: data.pontuacao_total,
-        teste_id: data.teste_id,
-        metadados: data.metadados || {
-          tipo_teste: tipoTeste,
-          teste_nome: 'Qualidade de Vida no Trabalho'
-        },
-        respostas: [], // Sem respostas por enquanto para simplificar
+        session_id: data.sessionId,
+        tipo_teste: data.metadados?.tipo_teste || null,
+        created_at: data.dataRealizacao,
+        pontuacao_total: data.pontuacaoTotal,
+        teste_id: data.testeId,
+        metadados: data.metadados || {},
+        respostas: [],
         
-        // Campos específicos do QVT se existirem
-        ...(data.indice_geral !== undefined && {
-          indice_geral: data.indice_geral,
-          nivel_geral: data.nivel_geral,
-          percentual_geral: data.percentual_geral,
-          satisfacao_funcao: data.satisfacao_funcao,
-          relacao_lideranca: data.relacao_lideranca,
-          estrutura_condicoes: data.estrutura_condicoes,
-          recompensas_remuneracao: data.recompensas_remuneracao,
-          equilibrio_vida_trabalho: data.equilibrio_vida_trabalho,
-          dimensoes_criticas: data.dimensoes_criticas,
-          pontos_fortes: data.pontos_fortes,
-          risco_turnover: data.risco_turnover
-        })
+        // Incluir campos extras se existirem nos metadados
+        ...(data.metadados || {})
       };
       
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] Resultado final preparado:', {
-        id: resultado.id,
-        pontuacao_total: resultado.pontuacao_total,
-        tipo_teste: resultado.tipo_teste,
-        tem_metadados: !!resultado.metadados,
-        tem_analise_completa: !!resultado.metadados?.analise_completa
-      });
-      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] ===== BUSCA CONCLUÍDA =====');
+      console.log('🔍 [BUSCAR-RESULTADO-POR-ID] ===== BUSCA CONCLUÍDA VIA API LOCAL =====');
       
       return resultado;
     } catch (error) {

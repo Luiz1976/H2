@@ -103,6 +103,7 @@ npm run db:push    # Sincroniza schema com banco de dados
 - ✅ `ResultadoPopup.tsx` - usa `apiService.obterResultadoPorId()`
 - ✅ `ResultadoVisualizacao.tsx` - componente compartilhado para exibição de resultados
 - ✅ `clima-organizacional-service.ts` - cálculo de pontuação corrigido
+- ✅ **`database.ts:buscarResultadoPorId()`** - migrado de Supabase para `apiService.obterResultadoPorId()` (20/10/2025 - 20:56)
 
 ### 📐 Arquitetura de Componentes
 - **ResultadoVisualizacao**: Componente compartilhado que renderiza todos os tipos de teste (Karasek-Siegrist, Clima Organizacional, RPO, QVT, Genérico)
@@ -206,6 +207,20 @@ npm run db:push    # Sincroniza schema com banco de dados
     7. **Clima Organizacional** (UUID: `6a2b7d3e-8f9a-0b1c-2d3e-4f5a6b7c8d9e`)
   
 - **Status**: Teste de Clima e Bem-Estar 100% funcional sem Supabase ✅
+
+### 🐛 Correção Crítica #3 - Função buscarResultadoPorId (20/10/2025 - 20:56)
+- **BUG CORRIGIDO**: Erro "supabase.from(...).select(...).eq is not a function" em `ResultadoPAS.tsx` e outros componentes
+  - **Causa**: Função `database.ts:buscarResultadoPorId()` ainda usava Supabase diretamente (linhas 282-489)
+  - **Solução**: Migrado para usar `apiService.obterResultadoPorId()` via API local
+  - **Redução de código**: De 244 linhas para 47 linhas (redução de 80%)
+  - **Arquivos alterados**: `src/lib/database.ts` (linhas 245-296)
+  - **Benefícios**:
+    - ✅ Autenticação e controle de acesso gerenciados pelo backend (JWT)
+    - ✅ Eliminação de dependência do Supabase no frontend
+    - ✅ Código mais simples e manutenível
+    - ✅ Performance melhorada (menos lógica no cliente)
+  
+- **Status**: Função `buscarResultadoPorId` 100% funcional via API local ✅
 
 ### 🎨 Refatoração de UI (20/10/2025)
 - Criado componente `ResultadoVisualizacao.tsx` para unificar a exibição de resultados
