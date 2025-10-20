@@ -103,46 +103,66 @@ export function ResultadoPopup({ isOpen, onClose, resultado }: ResultadoPopupPro
   };
 
   // Função para identificar se é um teste Karasek-Siegrist
-  const isKarasekSiegrist = (resultado: ResultadoTeste): boolean => {
+  const isKarasekSiegrist = (resultado: ResultadoTeste | null): boolean => {
     if (!resultado) return false;
     
     const nomeTest = resultado.nomeTest?.toLowerCase() || '';
+    const tipoTeste = dadosResultado?.metadados?.tipo_teste?.toLowerCase() || '';
+    const testeNome = dadosResultado?.metadados?.teste_nome?.toLowerCase() || '';
+    
     return nomeTest.includes('karasek') || nomeTest.includes('siegrist') || 
            nomeTest.includes('demanda') || nomeTest.includes('controle') ||
-           nomeTest.includes('esforço') || nomeTest.includes('recompensa');
+           nomeTest.includes('esforço') || nomeTest.includes('recompensa') ||
+           tipoTeste === 'karasek-siegrist' ||
+           testeNome.includes('karasek') || testeNome.includes('siegrist');
   };
 
   // Função para identificar se é um teste de Clima Organizacional
-  const isClimaOrganizacional = (resultado: ResultadoTeste): boolean => {
+  const isClimaOrganizacional = (resultado: ResultadoTeste | null): boolean => {
     if (!resultado) return false;
     
     const nomeTest = resultado.nomeTest?.toLowerCase() || '';
+    const tipoTeste = dadosResultado?.metadados?.tipo_teste?.toLowerCase() || '';
+    const testeNome = dadosResultado?.metadados?.teste_nome?.toLowerCase() || '';
+    
     return nomeTest.includes('clima organizacional') || 
            nomeTest.includes('pesquisa de clima') ||
-           nomeTest === 'pesquisa de clima organizacional';
+           tipoTeste === 'clima-organizacional' ||
+           testeNome.includes('clima organizacional') ||
+           testeNome.includes('pesquisa de clima');
   };
 
   // Função para identificar se é um teste RPO (Riscos Psicossociais Ocupacionais)
-  const isRPO = (resultado: ResultadoTeste): boolean => {
+  const isRPO = (resultado: ResultadoTeste | null): boolean => {
     if (!resultado) return false;
     
     const nomeTest = resultado.nomeTest?.toLowerCase() || '';
+    const tipoTeste = dadosResultado?.metadados?.tipo_teste?.toLowerCase() || '';
+    const testeNome = dadosResultado?.metadados?.teste_nome?.toLowerCase() || '';
+    
     return nomeTest.includes('rpo') || 
            nomeTest.includes('riscos psicossociais') ||
            nomeTest.includes('humaniq rpo') ||
-           nomeTest === 'humaniq rpo - riscos psicossociais ocupacionais';
+           tipoTeste === 'rpo' ||
+           tipoTeste.includes('riscos-psicossociais') ||
+           testeNome.includes('rpo') ||
+           testeNome.includes('riscos psicossociais');
   };
 
   // Função para identificar se é um teste QVT (Qualidade de Vida no Trabalho)
-  const isQVT = (resultado: ResultadoTeste): boolean => {
+  const isQVT = (resultado: ResultadoTeste | null): boolean => {
     if (!resultado) return false;
     
     const nomeTest = resultado.nomeTest?.toLowerCase() || '';
+    const tipoTeste = dadosResultado?.metadados?.tipo_teste?.toLowerCase() || '';
+    const testeNome = dadosResultado?.metadados?.teste_nome?.toLowerCase() || '';
+    
     return nomeTest.includes('qvt') || 
            nomeTest.includes('qualidade de vida') ||
            nomeTest.includes('qualidade vida trabalho') ||
            nomeTest.includes('vida no trabalho') ||
-           nomeTest === 'qualidade de vida no trabalho';
+           tipoTeste === 'qvt' ||
+           testeNome.includes('qualidade de vida');
   };
 
   const renderKarasekSiegristContent = (dados: ResultadoKarasekSiegrist) => (
@@ -820,13 +840,27 @@ export function ResultadoPopup({ isOpen, onClose, resultado }: ResultadoPopupPro
     }
   };
 
+  // Obter nome do teste de várias fontes
+  const obterNomeTeste = (): string => {
+    if (resultado?.nomeTest) return resultado.nomeTest;
+    if (dadosResultado?.metadados?.teste_nome) return dadosResultado.metadados.teste_nome;
+    if (dadosResultado?.metadados?.tipo_teste) {
+      const tipo = dadosResultado.metadados.tipo_teste;
+      if (tipo === 'clima-organizacional') return 'Pesquisa de Clima Organizacional';
+      if (tipo === 'rpo') return 'Riscos Psicossociais Ocupacionais';
+      if (tipo === 'qvt') return 'Qualidade de Vida no Trabalho';
+      if (tipo === 'karasek-siegrist') return 'Karasek-Siegrist';
+    }
+    return 'Resultado do Teste';
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3 text-xl">
             <Eye className="h-5 w-5" />
-            {(resultado && resultado.nomeTest) ? resultado.nomeTest : 'Resultado do Teste'}
+            {obterNomeTeste()}
           </DialogTitle>
         </DialogHeader>
 
