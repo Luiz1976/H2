@@ -445,19 +445,24 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
       return 'Crítico';
     };
 
-    // Dimensões QVT
-    const dimensoes = [
-      { nome: 'Satisfação com a Função', valor: dados.satisfacao_funcao || 0, key: 'satisfacao_funcao' },
-      { nome: 'Relação com Liderança', valor: dados.relacao_lideranca || 0, key: 'relacao_lideranca' },
-      { nome: 'Estrutura e Condições', valor: dados.estrutura_condicoes || 0, key: 'estrutura_condicoes' },
-      { nome: 'Recompensas e Remuneração', valor: dados.recompensas_remuneracao || 0, key: 'recompensas_remuneracao' },
-      { nome: 'Equilíbrio Vida-Trabalho', valor: dados.equilibrio_vida_trabalho || 0, key: 'equilibrio_vida_trabalho' }
+    // Dimensões QVT - tentar buscar dos metadados.dimensoes ou do formato antigo
+    const dimensoes = metadados.dimensoes || [
+      { dimensao: 'Satisfação com a Função', pontuacao: dados.satisfacao_funcao || 0, percentual: 0, nivel: '' },
+      { dimensao: 'Relação com Liderança', pontuacao: dados.relacao_lideranca || 0, percentual: 0, nivel: '' },
+      { dimensao: 'Estrutura e Condições', pontuacao: dados.estrutura_condicoes || 0, percentual: 0, nivel: '' },
+      { dimensao: 'Recompensas e Remuneração', pontuacao: dados.recompensas_remuneracao || 0, percentual: 0, nivel: '' },
+      { dimensao: 'Equilíbrio Vida-Trabalho', pontuacao: dados.equilibrio_vida_trabalho || 0, percentual: 0, nivel: '' }
     ];
 
+    // Índice geral - tentar buscar dos metadados ou do formato antigo
+    const indiceGeral = metadados.pontuacao || dados.pontuacao_total || dados.indice_geral || 0;
+    const nivelGeral = metadados.categoria || dados.nivel_geral || obterClassificacao(indiceGeral);
+    const percentualGeral = metadados.percentual || dados.percentual_geral || ((indiceGeral / 5) * 100);
+
     // Identificar pontos fortes e críticos
-    const pontoFortes = dimensoes.filter(d => d.valor >= 4.0);
-    const dimensoesCriticas = dimensoes.filter(d => d.valor < 2.5);
-    const riscoTurnover = dados.risco_turnover || dados.indice_geral < 2.5;
+    const pontoFortes = metadados.pontoFortes || dimensoes.filter((d: any) => d.pontuacao >= 4.0);
+    const dimensoesCriticas = metadados.dimensoesCriticas || dimensoes.filter((d: any) => d.pontuacao < 2.5);
+    const riscoTurnover = metadados.riscoTurnover || dados.risco_turnover || indiceGeral < 2.5;
 
     return (
       <div className="space-y-6">
@@ -467,19 +472,19 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center p-4 bg-white rounded-xl border border-blue-100">
               <div className="text-3xl font-bold text-blue-600 mb-1">
-                {(dados.indice_geral || 0).toFixed(1)}/5.0
+                {indiceGeral.toFixed(1)}/5.0
               </div>
               <div className="text-sm font-medium text-slate-600">Índice Geral</div>
             </div>
             <div className="text-center p-4 bg-white rounded-xl border border-blue-100">
-              <Badge className={`${obterCorPontuacao(dados.indice_geral || 0)} text-white text-sm font-medium px-3 py-1`}>
-                {dados.nivel_geral || obterClassificacao(dados.indice_geral || 0)}
+              <Badge className={`${obterCorPontuacao(indiceGeral)} text-white text-sm font-medium px-3 py-1`}>
+                {nivelGeral}
               </Badge>
               <div className="text-sm font-medium text-slate-600 mt-1">Classificação</div>
             </div>
             <div className="text-center p-4 bg-white rounded-xl border border-blue-100">
               <div className="text-2xl font-bold text-slate-800 mb-1">
-                {(dados.percentual_geral || ((dados.indice_geral || 0) / 5) * 100).toFixed(0)}%
+                {percentualGeral.toFixed(0)}%
               </div>
               <div className="text-sm font-medium text-slate-600">Percentual Geral</div>
             </div>
@@ -504,7 +509,7 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
               {dimensoesCriticas.length > 0 && (
                 <Alert className="border-orange-200 bg-orange-50">
                   <AlertDescription className="text-orange-800">
-                    <strong>Dimensões Críticas:</strong> {dimensoesCriticas.map(d => d.nome).join(', ')} requerem atenção imediata.
+                    <strong>Dimensões Críticas:</strong> {dimensoesCriticas.map((d: any) => d.dimensao).join(', ')} requerem atenção imediata.
                   </AlertDescription>
                 </Alert>
               )}
@@ -516,21 +521,21 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
         <div className="bg-white p-6 rounded-xl border border-slate-200/60">
           <h3 className="text-lg font-semibold text-slate-800 mb-4">Avaliação por Dimensões</h3>
           <div className="space-y-4">
-            {dimensoes.map((dimensao, index) => (
+            {dimensoes.map((dimensao: any, index: number) => (
               <div key={index} className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-slate-700">{dimensao.nome}</span>
+                  <span className="text-sm font-medium text-slate-700">{dimensao.dimensao}</span>
                   <div className="flex items-center gap-2">
-                    <Badge className={`${obterCorPontuacao(dimensao.valor)} text-white text-xs px-2 py-1`}>
-                      {obterClassificacao(dimensao.valor)}
+                    <Badge className={`${obterCorPontuacao(dimensao.pontuacao)} text-white text-xs px-2 py-1`}>
+                      {dimensao.nivel || obterClassificacao(dimensao.pontuacao)}
                     </Badge>
-                    <span className="text-sm font-bold text-slate-800">{dimensao.valor.toFixed(1)}/5.0</span>
+                    <span className="text-sm font-bold text-slate-800">{dimensao.pontuacao.toFixed(1)}/5.0</span>
                   </div>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2">
                   <div 
-                    className={`h-2 rounded-full ${obterCorPontuacao(dimensao.valor)}`}
-                    style={{ width: `${(dimensao.valor / 5) * 100}%` }}
+                    className={`h-2 rounded-full ${obterCorPontuacao(dimensao.pontuacao)}`}
+                    style={{ width: `${(dimensao.pontuacao / 5) * 100}%` }}
                   ></div>
                 </div>
               </div>
@@ -543,12 +548,12 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200/60">
             <h3 className="text-lg font-semibold text-green-800 mb-4">Pontos Fortes</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {pontoFortes.map((ponto, index) => (
+              {pontoFortes.map((ponto: any, index: number) => (
                 <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-green-100">
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                   <div>
-                    <div className="font-medium text-green-800">{ponto.nome}</div>
-                    <div className="text-sm text-green-600">{ponto.valor.toFixed(1)}/5.0</div>
+                    <div className="font-medium text-green-800">{ponto.dimensao}</div>
+                    <div className="text-sm text-green-600">{ponto.pontuacao.toFixed(1)}/5.0</div>
                   </div>
                 </div>
               ))}
