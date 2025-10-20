@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Users, Mail, Lock, User, Eye, EyeOff, CheckCircle, XCircle, Building2 } from 'lucide-react';
-import { hybridInvitationService } from '../services/invitationServiceHybrid';
+import { apiService } from '../services/apiService';
 import { authService } from '../services/authService';
 import { toast } from 'sonner';
 import AvatarSelector from '../components/AvatarSelector';
@@ -102,26 +102,21 @@ const CadastroColaborador: React.FC = () => {
         return;
       }
 
-      const response = await hybridInvitationService.validarConvite(token, 'colaborador');
+      const conviteData = await apiService.buscarConvitePorToken(token, 'colaborador');
       
-      if (response.success && response.data) {
-        setTokenValido(true);
-        setConvite(response.data);
-        
-        // Pré-preencher dados do convite
-        setFormData(prev => ({
-          ...prev,
-          nome: response.data.nome_colaborador || response.data.nome || '',
-          email: response.data.email_colaborador || response.data.email || ''
-        }));
-      } else {
-        setTokenValido(false);
-        toast.error(response.message || 'Token inválido ou expirado');
-      }
+      setTokenValido(true);
+      setConvite(conviteData as any);
+      
+      // Pré-preencher dados do convite
+      setFormData(prev => ({
+        ...prev,
+        nome: conviteData.nome || '',
+        email: conviteData.email || ''
+      }));
     } catch (error) {
       console.error('Erro ao validar token:', error);
       setTokenValido(false);
-      toast.error('Erro ao validar convite');
+      toast.error('Convite inválido, expirado ou já utilizado');
     } finally {
       setValidandoToken(false);
       setLoading(false);
@@ -175,38 +170,16 @@ const CadastroColaborador: React.FC = () => {
       return;
     }
 
-    if (!convite?.empresa_id) {
-      toast.error('Erro: empresa não identificada no convite');
+    if (!token) {
+      toast.error('Token de convite não encontrado');
       return;
     }
 
     try {
       setSalvando(true);
 
-      // Criar colaborador no Supabase
-      const colaboradorResponse = await authService.criarColaborador({
-        nome: formData.nome,
-        email: formData.email,
-        senha: formData.senha,
-        empresa_id: convite.empresa_id,
-        cargo: formData.cargo,
-        departamento: formData.departamento,
-        avatar: formData.avatar
-      });
-
-      if (!colaboradorResponse.success) {
-        toast.error(colaboradorResponse.message || 'Erro ao criar colaborador');
-        return;
-      }
-
-      // Marcar convite como usado
-      if (token) {
-        const marcarResponse = await hybridInvitationService.usarConvite(token, 'colaborador');
-        
-        if (!marcarResponse.success) {
-          console.warn('Erro ao marcar convite como usado:', marcarResponse.message);
-        }
-      }
+      // Aceitar convite (cria colaborador e marca como aceito)
+      await apiService.aceitarConviteColaborador(token, formData.senha);
 
       toast.success('Cadastro realizado com sucesso!');
       
@@ -214,14 +187,14 @@ const CadastroColaborador: React.FC = () => {
       const loginResponse = await authService.login(formData.email, formData.senha);
       
       if (loginResponse.success) {
-        navigate('/Colaborador');
+        navigate('/colaborador');
       } else {
         navigate('/login');
       }
 
     } catch (error) {
       console.error('Erro ao cadastrar colaborador:', error);
-      toast.error('Erro interno. Tente novamente.');
+      toast.error(error instanceof Error ? error.message : 'Erro ao criar cadastro');
     } finally {
       setSalvando(false);
     }
