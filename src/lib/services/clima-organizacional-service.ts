@@ -60,7 +60,7 @@ export class ClimaOrganizacionalService {
         teste_id: null, // NULL para testes que não estão na tabela testes (como clima-organizacional)
         usuario_id: usuarioEmail ? crypto.randomUUID() : null, // NULL para anônimos conforme schema
         session_id: sessionId, // Incluir session_id para persistência
-        pontuacao_total: Math.round(((analiseClima.mediaGeral - 1) / 4) * 100), // Converter escala 1-5 para 0-100
+        pontuacao_total: analiseClima.pontuacaoGeral, // Usar pontuação total calculada (soma das respostas)
         tempo_gasto: tempoGasto, // Campo correto conforme schema
         status: 'concluido' as const,
         metadados: {
