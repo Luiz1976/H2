@@ -50,16 +50,16 @@ export default function EmpresaOverview() {
   });
 
   const carregarEstatisticas = async () => {
-    if (!user?.empresa_id) {
-      console.log('🔍 [EmpresaOverview] Usuário sem empresa_id:', user);
+    if (!user?.empresaId) {
+      console.log('🔍 [EmpresaOverview] Usuário sem empresaId:', user);
       return;
     }
 
-    console.log('🔍 [EmpresaOverview] Iniciando carregamento de estatísticas para empresa:', user.empresa_id);
+    console.log('🔍 [EmpresaOverview] Iniciando carregamento de estatísticas para empresa:', user.empresaId);
     setLoading(true);
     
     try {
-      const stats = await empresaStatisticsService.buscarEstatisticasEmpresa(user.empresa_id);
+      const stats = await empresaStatisticsService.buscarEstatisticasEmpresa(user.empresaId);
       console.log('✅ [EmpresaOverview] Estatísticas carregadas com sucesso:', stats);
       setEstatisticas(stats);
     } catch (error) {
@@ -73,7 +73,7 @@ export default function EmpresaOverview() {
 
   useEffect(() => {
     carregarEstatisticas();
-  }, [user?.empresa_id]);
+  }, [user?.empresaId]);
 
 
 
@@ -85,12 +85,12 @@ export default function EmpresaOverview() {
       }
 
       const user = authService.getCurrentUser();
-      if (!user?.empresa_id) return;
+      if (!user?.empresaId) return;
 
       const response = await hybridInvitationService.criarConviteColaborador({
         email: novoConvite.email,
         nome: novoConvite.nome,
-        empresa_id: user.empresa_id,
+        empresa_id: user.empresaId,
         dias_expiracao: novoConvite.dias_expiracao
       });
 
