@@ -11,8 +11,20 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const allowedOrigins = [
+  'http://localhost:5000',
+  'https://08104fec-88a3-487a-ac1e-cdc4db92eb97-00-2yraann2v6dea.riker.replit.dev:5000',
+  process.env.CORS_ORIGIN
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5000',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Permite todas as origens no desenvolvimento
+    }
+  },
   credentials: true,
 }));
 
