@@ -2,7 +2,7 @@ import express from 'express';
 import { db } from '../../db';
 import { testes, perguntas, resultados, respostas, colaboradores, insertResultadoSchema, insertRespostaSchema } from '../../shared/schema';
 import { authenticateToken, AuthRequest } from '../middleware/auth';
-import { eq, and, desc } from 'drizzle-orm';
+import { eq, and, desc, or } from 'drizzle-orm';
 import { z } from 'zod';
 
 const router = express.Router();
@@ -175,6 +175,7 @@ router.post('/resultado/anonimo', async (req, res) => {
 // Obter resultados do usuário
 router.get('/resultados/meus', authenticateToken, async (req: AuthRequest, res) => {
   try {
+    // Busca por colaboradorId OU usuarioId (para compatibilidade)
     const meusResultados = await db
       .select({
         id: resultados.id,
@@ -185,7 +186,12 @@ router.get('/resultados/meus', authenticateToken, async (req: AuthRequest, res) 
         status: resultados.status,
       })
       .from(resultados)
-      .where(eq(resultados.usuarioId, req.user!.userId))
+      .where(
+        or(
+          eq(resultados.colaboradorId, req.user!.userId),
+          eq(resultados.usuarioId, req.user!.userId)
+        )
+      )
       .orderBy(desc(resultados.dataRealizacao));
 
     res.json({ resultados: meusResultados, total: meusResultados.length });
