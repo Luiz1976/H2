@@ -155,6 +155,8 @@ npm run db:push    # Sincroniza schema com banco de dados
 
 ### 🐛 Correções de Bugs (20/10/2025)
 - **Dados do colaborador nos resultados**: Corrigido endpoint `/api/testes/resultado/:id` para fazer JOIN com tabela de colaboradores
+- **Listagem de resultados**: Corrigido endpoint `/api/empresas/colaboradores/:id/resultados` para incluir informações do teste
 - Backend agora enriquece metadados com nome, cargo e departamento do colaborador
 - Resultados exibem corretamente o nome e cargo do colaborador em vez de "Anônimo"
 - Dados do teste também incluídos nos metadados (nome e categoria)
+- Listagem de resultados agora mostra: nome do teste, pontuação, percentual e categoria corretamente
