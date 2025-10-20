@@ -227,7 +227,7 @@ class HybridInvitationService {
   }
 
   /**
-   * Lista convites - usa API backend para dados mais seguros
+   * Lista convites - usa apenas API backend
    */
   async listarConvites(
     tipo?: 'empresa' | 'colaborador',
@@ -236,9 +236,9 @@ class HybridInvitationService {
     offset?: number
   ): Promise<HybridInvitationResponse> {
     try {
-      console.log('🔄 [HYBRID] Tentando listar convites via API backend...', { tipo, empresaId });
+      console.log('🔄 [HYBRID] Listando convites via API backend...', { tipo, empresaId });
       
-      // Tentar via API backend primeiro
+      // Usar apenas API backend
       const apiResponse = await apiService.listarConvites(tipo, limite, offset);
 
       if (apiResponse.success && apiResponse.data) {
@@ -251,34 +251,22 @@ class HybridInvitationService {
         };
       }
 
-      console.log('⚠️ [HYBRID] API backend falhou, tentando Supabase direto...');
-      
-      // Fallback para Supabase direto
-      if (tipo === 'colaborador' && empresaId) {
-        const supabaseResponse = await originalService.listarConvitesColaborador(empresaId);
-        return {
-          ...supabaseResponse,
-          source: 'supabase'
-        };
-      } else if (tipo === 'empresa') {
-        const supabaseResponse = await originalService.listarConvitesEmpresa();
-        return {
-          ...supabaseResponse,
-          source: 'supabase'
-        };
-      }
-
+      // Se a API retornou erro, retornar lista vazia ao invés de falhar
+      console.log('⚠️ [HYBRID] API backend retornou erro, retornando lista vazia');
       return {
-        success: false,
-        message: 'Parâmetros insuficientes para listar convites',
-        source: 'supabase'
+        success: true,
+        message: apiResponse.message || 'Nenhum convite encontrado',
+        data: [],
+        source: 'api'
       };
 
     } catch (error) {
       console.error('❌ [HYBRID] Erro ao listar convites:', error);
+      // Retornar lista vazia ao invés de erro para não quebrar a interface
       return {
-        success: false,
-        message: 'Erro ao listar convites',
+        success: true,
+        message: 'Erro ao conectar com o servidor. Tente novamente.',
+        data: [],
         source: 'api'
       };
     }
