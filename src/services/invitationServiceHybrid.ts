@@ -139,69 +139,37 @@ class HybridInvitationService {
   }
 
   /**
-   * Cria convite para colaborador usando API backend (principal) ou Supabase direto (fallback)
+   * Cria convite para colaborador usando apenas API backend
    */
   async criarConviteColaborador(dados: ConviteData): Promise<HybridInvitationResponse> {
     try {
-      console.log('🔄 [HYBRID] Tentando criar convite colaborador via API backend...');
+      console.log('🔄 [HYBRID] Criando convite colaborador via API backend...', dados);
       
-      // Tentar via API backend primeiro
-      const apiResponse = await apiService.criarConviteColaborador({
-        empresa_id: dados.empresa_id!,
-        email: dados.email,
+      // Usar apenas API backend
+      const convite = await apiService.criarConviteColaborador({
         nome: dados.nome,
-        dias_expiracao: dados.dias_expiracao
+        email: dados.email,
+        cargo: dados.cargo,
+        departamento: dados.departamento,
+        diasValidade: dados.dias_expiracao || 3
       });
 
-      if (apiResponse.success && apiResponse.data) {
-        console.log('✅ [HYBRID] Convite colaborador criado via API backend');
-        return {
-          success: true,
-          message: apiResponse.message || 'Convite criado com sucesso via API',
-          token: apiResponse.data.token,
-          convite: {
-            id: apiResponse.data.id,
-            token: apiResponse.data.token,
-            email: apiResponse.data.email_colaborador,
-            nome: apiResponse.data.nome_colaborador,
-            empresa_id: apiResponse.data.empresa_id,
-            status: apiResponse.data.status,
-            validade: apiResponse.data.validade,
-            created_at: apiResponse.data.created_at
-          },
-          source: 'api'
-        };
-      }
-
-      console.log('⚠️ [HYBRID] API backend falhou, tentando Supabase direto...');
-      console.log('🔍 [HYBRID] Erro da API:', apiResponse.error);
-
-      // Fallback para Supabase direto
-      const supabaseResponse = await originalService.criarConviteColaborador(dados);
-      
+      console.log('✅ [HYBRID] Convite colaborador criado via API backend:', convite);
       return {
-        ...supabaseResponse,
-        source: 'supabase'
+        success: true,
+        message: 'Convite criado com sucesso',
+        token: convite.token,
+        data: convite,
+        source: 'api'
       };
 
     } catch (error) {
-      console.error('❌ [HYBRID] Erro em ambas as tentativas:', error);
-      
-      // Último recurso: tentar Supabase direto
-      try {
-        const supabaseResponse = await originalService.criarConviteColaborador(dados);
-        return {
-          ...supabaseResponse,
-          source: 'supabase'
-        };
-      } catch (fallbackError) {
-        console.error('❌ [HYBRID] Fallback também falhou:', fallbackError);
-        return {
-          success: false,
-          message: 'Erro em todos os métodos de criação de convite',
-          source: 'api'
-        };
-      }
+      console.error('❌ [HYBRID] Erro ao criar convite:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Erro ao criar convite',
+        source: 'api'
+      };
     }
   }
 
@@ -228,6 +196,7 @@ class HybridInvitationService {
 
   /**
    * Lista convites - usa apenas API backend
+   * A API backend determina automaticamente qual tipo retornar baseado no usuário autenticado
    */
   async listarConvites(
     tipo?: 'empresa' | 'colaborador',
@@ -236,26 +205,26 @@ class HybridInvitationService {
     offset?: number
   ): Promise<HybridInvitationResponse> {
     try {
-      console.log('🔄 [HYBRID] Listando convites via API backend...', { tipo, empresaId });
+      console.log('🔄 [HYBRID] Listando convites via API backend...');
       
-      // Usar apenas API backend
-      const apiResponse = await apiService.listarConvites(tipo, limite, offset);
+      // Usar apenas API backend - a API determina o tipo pelo token JWT
+      const apiResponse = await apiService.listarConvites();
 
-      if (apiResponse.success && apiResponse.data) {
-        console.log('✅ [HYBRID] Convites listados via API backend');
+      if (apiResponse && apiResponse.convites) {
+        console.log('✅ [HYBRID] Convites listados via API backend:', apiResponse.convites.length, 'convites');
         return {
           success: true,
           message: 'Convites listados com sucesso',
-          data: apiResponse.data,
+          data: apiResponse.convites,
           source: 'api'
         };
       }
 
       // Se a API retornou erro, retornar lista vazia ao invés de falhar
-      console.log('⚠️ [HYBRID] API backend retornou erro, retornando lista vazia');
+      console.log('⚠️ [HYBRID] API backend retornou resposta vazia, retornando lista vazia');
       return {
         success: true,
-        message: apiResponse.message || 'Nenhum convite encontrado',
+        message: 'Nenhum convite encontrado',
         data: [],
         source: 'api'
       };
