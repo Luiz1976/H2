@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 import { Brain, Heart, Shield, Users, TrendingUp, AlertCircle, CheckCircle, Activity, Target, Sparkles, Lock, Info, ChevronRight, ArrowRight, Star, Zap, Eye, Award, Clock } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { toast } from 'sonner';
+import { authService } from '@/services/authService';
 
 interface PsychosocialAnalysis {
   indiceGeralBemEstar: number;
@@ -145,13 +147,50 @@ function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: strin
 }
 
 export default function EmpresaEstadoPsicossocial() {
-  const { data, isLoading, error } = useQuery<{ analise: PsychosocialAnalysis }>({
-    queryKey: ['/api/empresas/estado-psicossocial'],
-  });
+  const [analise, setAnalise] = useState<PsychosocialAnalysis | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  console.log('🔍 [EmpresaEstadoPsicossocial] Estado:', { isLoading, hasError: !!error, hasData: !!data, data });
+  useEffect(() => {
+    const carregarAnalise = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        console.error('❌ [EmpresaEstadoPsicossocial] Token não encontrado');
+        setError(new Error('Token não encontrado'));
+        setIsLoading(false);
+        return;
+      }
 
-  const analise = data?.analise;
+      console.log('🔍 [EmpresaEstadoPsicossocial] Iniciando carregamento...');
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch('/api/empresas/estado-psicossocial', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erro ao carregar análise: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('✅ [EmpresaEstadoPsicossocial] Dados carregados:', data);
+        setAnalise(data.analise);
+      } catch (err) {
+        console.error('❌ [EmpresaEstadoPsicossocial] Erro:', err);
+        setError(err as Error);
+        toast.error('Erro ao carregar análise psicossocial');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    carregarAnalise();
+  }, []);
 
   if (isLoading) {
     return (
@@ -182,7 +221,6 @@ export default function EmpresaEstadoPsicossocial() {
   }
 
   if (error) {
-    console.error('❌ [EmpresaEstadoPsicossocial] Erro:', error);
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 p-6 flex items-center justify-center">
         <div className="max-w-2xl mx-auto">
@@ -191,7 +229,7 @@ export default function EmpresaEstadoPsicossocial() {
             <AlertTitle className="text-xl font-bold">Ops! Algo não saiu como esperado</AlertTitle>
             <AlertDescription className="mt-2">
               <p>Não conseguimos carregar a análise psicossocial neste momento.</p>
-              <p className="mt-2 text-sm">Erro: {String(error)}</p>
+              <p className="mt-2 text-sm">Erro: {error.message}</p>
               <p className="mt-2 text-sm">Por favor, aguarde alguns instantes e tente novamente. Se o problema persistir, nossa equipe está pronta para ajudar.</p>
             </AlertDescription>
           </Alert>
@@ -201,7 +239,6 @@ export default function EmpresaEstadoPsicossocial() {
   }
 
   if (!analise) {
-    console.warn('⚠️ [EmpresaEstadoPsicossocial] Dados carregados mas analise está undefined');
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 p-6 flex items-center justify-center">
         <div className="max-w-2xl mx-auto">
