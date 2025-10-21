@@ -171,27 +171,80 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           </div>
         </div>
 
-        {/* Dimensões do Clima Organizacional */}
+        {/* Dimensões do Clima Organizacional - MODERNIZADO */}
         {pontuacoesDimensoes && Object.keys(pontuacoesDimensoes).length > 0 && (
-          <div className="bg-white p-6 rounded-xl border border-slate-200/60">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Dimensões Avaliadas</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Object.entries(pontuacoesDimensoes).map(([dimensao, pontuacao]) => (
-                <div key={dimensao} className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                  <div className="text-sm text-slate-600 mb-2 capitalize">
-                    {dimensao.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim()}
+          <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border-2 border-slate-200 shadow-xl">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg">
+                <Brain className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-800">Dimensões Avaliadas</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Object.entries(pontuacoesDimensoes).map(([dimensao, pontuacao]) => {
+                const pontuacaoNum = typeof pontuacao === 'number' ? pontuacao : 0;
+                const percentual = Math.min(100, Math.max(0, pontuacaoNum));
+                const obterCor = (valor: number) => {
+                  if (valor >= 70) return {
+                    bg: 'from-emerald-500 to-teal-500',
+                    text: 'text-emerald-600',
+                    bgCard: 'from-emerald-50 to-teal-50',
+                    border: 'border-emerald-200'
+                  };
+                  if (valor >= 40) return {
+                    bg: 'from-amber-500 to-yellow-500',
+                    text: 'text-amber-600',
+                    bgCard: 'from-amber-50 to-yellow-50',
+                    border: 'border-amber-200'
+                  };
+                  return {
+                    bg: 'from-red-500 to-orange-500',
+                    text: 'text-red-600',
+                    bgCard: 'from-red-50 to-orange-50',
+                    border: 'border-red-200'
+                  };
+                };
+                const cores = obterCor(percentual);
+                
+                return (
+                  <div 
+                    key={dimensao} 
+                    className={`relative overflow-hidden bg-gradient-to-br ${cores.bgCard} p-6 rounded-2xl border-2 ${cores.border} shadow-lg hover:shadow-2xl transition-all duration-300 group`}
+                  >
+                    {/* Círculo decorativo */}
+                    <div className="absolute -right-8 -top-8 w-32 h-32 bg-white/30 rounded-full blur-2xl"></div>
+                    
+                    <div className="relative">
+                      <div className="text-sm font-bold text-slate-600 mb-3 uppercase tracking-wide">
+                        {dimensao.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim()}
+                      </div>
+                      
+                      <div className="flex items-baseline gap-2 mb-4">
+                        <div className={`text-5xl font-black ${cores.text}`}>
+                          {pontuacaoNum.toFixed(1)}
+                        </div>
+                        <div className="text-lg text-slate-500 font-medium">/ 100</div>
+                      </div>
+                      
+                      {/* Barra de progresso moderna */}
+                      <div className="relative">
+                        <div className="w-full bg-slate-300/50 rounded-full h-4 overflow-hidden shadow-inner">
+                          <div 
+                            className={`bg-gradient-to-r ${cores.bg} h-4 rounded-full transition-all duration-1000 ease-out shadow-lg relative overflow-hidden`}
+                            style={{ width: `${percentual}%` }}
+                          >
+                            {/* Shine effect */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                          </div>
+                        </div>
+                        <div className={`text-right text-xs font-bold ${cores.text} mt-2`}>
+                          {percentual.toFixed(0)}%
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-lg font-semibold text-slate-800">
-                    {typeof pontuacao === 'number' ? pontuacao.toFixed(1) : String(pontuacao)}
-                  </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
-                    <div 
-                      className="bg-gradient-to-r from-blue-500 to-emerald-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min(100, Math.max(0, (typeof pontuacao === 'number' ? pontuacao : 0) * 10))}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
