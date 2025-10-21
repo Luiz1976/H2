@@ -89,7 +89,7 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
             * PRG Maturity (calculated from test coverage)
             * Psychological Safety Perception (from seguranca category tests)
         - AI-powered intelligent analysis using real test data
-        - 7 interactive tabs: Geral, Clima, Estresse, Burnout, QVT, Assédio, DISC
+        - 6 interactive tabs: Geral, Clima, Estresse, Burnout, QVT, Assédio
         - 3 embedded charts/graphs for visual data representation
         - Real AI-generated action recommendations from backend
         - Export options: PDF Report (window.print), Excel Spreadsheet (CSV download), QR Code (placeholder)

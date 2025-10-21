@@ -525,9 +525,6 @@ export default function EmpresaPRG() {
             <TabsTrigger value="assedio" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white" data-testid="tab-assedio">
               Assédio
             </TabsTrigger>
-            <TabsTrigger value="disc" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white" data-testid="tab-disc">
-              DISC
-            </TabsTrigger>
           </TabsList>
 
           {/* GERAL - Gráfico de Radar */}
@@ -632,21 +629,6 @@ export default function EmpresaPRG() {
                 <CardTitle className="text-white text-xl">Assédio Moral e Sexual</CardTitle>
                 <CardDescription className="text-white/60">
                   Índice de percepção de segurança
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-white/60 text-center py-8">Dados em processamento...</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* DISC */}
-          <TabsContent value="disc">
-            <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-white text-xl">Perfil Comportamental DISC</CardTitle>
-                <CardDescription className="text-white/60">
-                  Distribuição dos perfis (Dominância, Influência, Estabilidade, Conformidade)
                 </CardDescription>
               </CardHeader>
               <CardContent>
