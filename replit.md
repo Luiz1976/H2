@@ -114,6 +114,18 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
     - **Color Coding**: Green (80-100 Healthy), Yellow (60-79 Attention), Red (0-59 Critical)
     - **Status**: Fully functional with real backend integration, live data, and dynamic chart visualization using Recharts
 
+- **Colaborador Module (UPDATED - October 21, 2025)**:
+    - **Avatar Field**: Added `avatar` field to colaboradores schema (stores base64 or URL)
+    - **Backend Endpoint**: `GET /api/colaboradores/me` - Returns authenticated collaborator's data (name, cargo, departamento, avatar)
+    - **Service**: colaboradorService.ts migrated from Supabase to local API
+    - **Frontend Display**:
+        - Colaborador.tsx page shows avatar and cargo in main header with badges
+        - AppSidebar.tsx displays avatar (clickable to change) and cargo below user name
+        - AvatarSelector component allows uploading/selecting custom avatars
+        - Falls back to default icon if no avatar is set
+    - **JWT Enhancement**: Token now includes `colaboradorId` field for role='colaborador'
+    - **Data Integrity**: Avatar and cargo are loaded from database and displayed consistently across all colaborador views
+
 ### System Design Choices
 The system migrated from Supabase to a fully local API backend to eliminate external dependencies and ensure greater control over data and authentication. Manual Zod schemas are used due to version incompatibilities with `drizzle-zod`. The API returns camelCase, and the frontend handles conversions to snake_case where necessary.
 
