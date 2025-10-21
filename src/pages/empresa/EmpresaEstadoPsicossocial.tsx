@@ -150,6 +150,13 @@ export default function EmpresaEstadoPsicossocial() {
   const [analise, setAnalise] = useState<PsychosocialAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [activeTab, setActiveTab] = useState("ia");
+
+  const handleImplementarMudancas = () => {
+    setActiveTab("acoes");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    toast.success('Navegando para o plano de ação!');
+  };
 
   useEffect(() => {
     const carregarAnalise = async () => {
@@ -458,7 +465,7 @@ export default function EmpresaEstadoPsicossocial() {
         </div>
 
         {/* CONTEÚDO PRINCIPAL - Tabs Modernos */}
-        <Tabs defaultValue="ia" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4 bg-white/10 backdrop-blur-2xl border-0 p-2 rounded-2xl shadow-2xl">
             <TabsTrigger 
               value="ia" 
@@ -583,11 +590,13 @@ export default function EmpresaEstadoPsicossocial() {
                                 </div>
                                 
                                 <Button 
+                                  onClick={handleImplementarMudancas}
                                   className={`${
                                     isPriority 
                                       ? 'bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700' 
                                       : 'bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700'
                                   } text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300`}
+                                  data-testid="button-agir-agora"
                                 >
                                   Agir Agora
                                   <ArrowRight className="h-4 w-4 ml-2" />
@@ -887,7 +896,11 @@ export default function EmpresaEstadoPsicossocial() {
                   Vamos juntos nessa jornada de cuidado e evolução.
                 </p>
               </div>
-              <Button className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white border-0 shadow-2xl hover:shadow-purple-500/50 px-8 py-6 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105">
+              <Button 
+                onClick={handleImplementarMudancas}
+                className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white border-0 shadow-2xl hover:shadow-purple-500/50 px-8 py-6 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105"
+                data-testid="button-implementar-mudancas"
+              >
                 Implementar Mudanças
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
