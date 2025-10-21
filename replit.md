@@ -42,6 +42,7 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
 - **Psychosocial State Monitoring (NEW - October 2025)**:
     - **Endpoint**: `GET /api/empresas/estado-psicossocial`
     - **Page**: `/empresa/estado-psicossocial`
+    - **Access Control**: Admins and Companies can access. Admins can view any company's data (defaults to first active company if no empresaId query param provided)
     - **NR1 Compliance**: Tracks psychosocial risk factors (workload, autonomy, harassment, support, work-life balance) as required by Brazilian NR1 regulation (effective May 2025)
     - **LGPD Compliance**: Implements Article 20 requirements for AI-driven analysis with transparency, explainability, and data minimization
     - **ISO 45003 Framework**: Uses international standards for psychological health and safety at work

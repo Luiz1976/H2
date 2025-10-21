@@ -298,9 +298,33 @@ router.get('/estatisticas', authenticateToken, requireEmpresa, async (req: AuthR
 });
 
 // Análise psicossocial agregada da empresa (NR1 + LGPD compliant)
-router.get('/estado-psicossocial', authenticateToken, requireEmpresa, async (req: AuthRequest, res) => {
+router.get('/estado-psicossocial', authenticateToken, async (req: AuthRequest, res) => {
   try {
-    const empresaId = req.user!.empresaId!;
+    // Admin pode especificar empresaId via query parameter, empresa usa seu próprio ID
+    let empresaId: string | undefined;
+    
+    if (req.user!.role === 'admin') {
+      // Para admin, pode passar empresaId como query parameter ou pega a primeira empresa
+      empresaId = req.query.empresaId as string;
+      
+      if (!empresaId) {
+        // Se admin não especificou empresa, pegar a primeira empresa do sistema
+        const [primeiraEmpresa] = await db
+          .select({ id: empresas.id })
+          .from(empresas)
+          .where(eq(empresas.ativa, true))
+          .limit(1);
+        
+        if (!primeiraEmpresa) {
+          return res.status(404).json({ error: 'Nenhuma empresa encontrada' });
+        }
+        empresaId = primeiraEmpresa.id;
+      }
+    } else if (req.user!.role === 'empresa') {
+      empresaId = req.user!.empresaId!;
+    } else {
+      return res.status(403).json({ error: 'Acesso negado. Apenas admins e empresas podem acessar esta funcionalidade.' });
+    }
 
     // Buscar todos os colaboradores
     const colaboradoresList = await db

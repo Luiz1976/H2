@@ -46,11 +46,11 @@ interface PsychosocialAnalysis {
   ultimaAtualizacao: string;
 }
 
-function getNivelColor(nivel: string): string {
+function getNivelColor(nivel: string): "destructive" | "secondary" | "default" | "outline" {
   const nivelLower = nivel.toLowerCase();
   if (nivelLower.includes('crítico') || nivelLower.includes('alto risco')) return 'destructive';
-  if (nivelLower.includes('atenção') || nivelLower.includes('moderado')) return 'warning';
-  if (nivelLower.includes('bom') || nivelLower.includes('excelente')) return 'success';
+  if (nivelLower.includes('atenção') || nivelLower.includes('moderado')) return 'destructive';
+  if (nivelLower.includes('bom') || nivelLower.includes('excelente')) return 'default';
   return 'secondary';
 }
 
@@ -62,9 +62,9 @@ function getNivelBgColor(nivel: string): string {
   return 'bg-gray-500';
 }
 
-function getPrioridadeColor(prioridade: string): string {
+function getPrioridadeColor(prioridade: string): "destructive" | "secondary" | "default" | "outline" {
   if (prioridade === 'Alta') return 'destructive';
-  if (prioridade === 'Média') return 'warning';
+  if (prioridade === 'Média') return 'destructive';
   return 'secondary';
 }
 
