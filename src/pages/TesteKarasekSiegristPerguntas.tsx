@@ -16,13 +16,8 @@ export default function TesteKarasekSiegristPerguntas() {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const perguntas = obterTodasPerguntasKS().map(pergunta => ({
-    id: pergunta.id,
-    texto: pergunta.texto,
-    categoria: pergunta.dimensao,
-    escala: pergunta.escala === 'likert4' ? escalaLikert4 : escalaLikert5
-  }));
-  
+  const [perguntas, setPerguntas] = useState<any[]>([]);
+  const [carregandoPerguntas, setCarregandoPerguntas] = useState(true);
   const [perguntaAtual, setPerguntaAtual] = useState(0);
   const [respostas, setRespostas] = useState<Record<number, number>>({});
   const [processandoTeste, setProcessandoTeste] = useState(false);
@@ -40,6 +35,51 @@ export default function TesteKarasekSiegristPerguntas() {
   
   // Estado para controlar a animação de processamento
   const [mostrarAnimacaoProcessamento, setMostrarAnimacaoProcessamento] = useState(false);
+  
+  // Buscar perguntas do banco de dados
+  useEffect(() => {
+    const buscarPerguntas = async () => {
+      try {
+        setCarregandoPerguntas(true);
+        const response = await fetch('/api/testes/3d9f4a0b-5c6e-7f8a-9d0e-1f2a3b4c5d6e/perguntas');
+        const data = await response.json();
+        
+        if (data.perguntas) {
+          // Mapear perguntas do banco de dados para o formato esperado
+          const perguntasMapeadas = data.perguntas.map((p: any) => ({
+            id: p.ordem, // Usar ordem como ID para manter compatibilidade
+            texto: p.texto,
+            categoria: 'karasek-siegrist',
+            escala: p.opcoes ? Object.values(p.opcoes) : escalaLikert5,
+            perguntaDbId: p.id // ID real do banco de dados
+          }));
+          
+          console.log(`✅ [PERGUNTAS] ${perguntasMapeadas.length} perguntas carregadas do banco de dados`);
+          setPerguntas(perguntasMapeadas);
+        }
+      } catch (error) {
+        console.error('❌ [PERGUNTAS] Erro ao buscar perguntas:', error);
+        toast({
+          title: "Erro ao carregar perguntas",
+          description: "Não foi possível carregar as perguntas do teste.",
+          variant: "destructive"
+        });
+      } finally {
+        setCarregandoPerguntas(false);
+      }
+    };
+    
+    buscarPerguntas();
+  }, [toast]);
+  
+  if (carregandoPerguntas) {
+    return (
+      <div className="text-center space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin mx-auto" />
+        <p className="text-muted-foreground">Carregando perguntas...</p>
+      </div>
+    );
+  }
   
   if (!perguntas.length) {
     return (
