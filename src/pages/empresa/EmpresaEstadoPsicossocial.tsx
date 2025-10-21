@@ -501,20 +501,20 @@ export default function EmpresaEstadoPsicossocial() {
           {/* TAB: ANÁLISE POR IA - O Destaque Principal */}
           <TabsContent value="ia" className="space-y-6">
             {/* Privacy & Transparency Banner */}
-            <Alert className="border-0 bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-2xl shadow-2xl rounded-2xl">
+            <Alert className="border-0 bg-gradient-to-r from-amber-600/30 to-orange-600/30 backdrop-blur-2xl shadow-2xl rounded-2xl border-2 border-amber-500/40">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-xl">
-                  <Info className="h-6 w-6 text-amber-300" />
+                <div className="p-3 bg-amber-600/40 rounded-xl backdrop-blur-xl border border-amber-400/50">
+                  <Info className="h-6 w-6 text-amber-100" />
                 </div>
                 <div className="flex-1">
-                  <AlertTitle className="text-white font-bold text-lg mb-2">
+                  <AlertTitle className="text-amber-50 font-bold text-lg mb-2">
                     Transparência Total: Como Funciona Nossa IA
                   </AlertTitle>
-                  <AlertDescription className="text-white/80 space-y-2">
-                    <p><strong className="text-white">Metodologia:</strong> Análise de padrões em dados agregados e 100% anônimos dos seus colaboradores.</p>
-                    <p><strong className="text-white">Frameworks Científicos:</strong> ISO 45003, OMS, Karasek-Siegrist, validados internacionalmente.</p>
-                    <p><strong className="text-white">Sua Privacidade:</strong> Nenhum dado individual é exposto. LGPD Art. 20 garantido.</p>
-                    <p><strong className="text-white">Próximo Passo:</strong> Valide com RH e Saúde Ocupacional para ação estratégica.</p>
+                  <AlertDescription className="text-amber-50/95 space-y-2">
+                    <p><strong className="text-white font-extrabold">Metodologia:</strong> Análise de padrões em dados agregados e 100% anônimos dos seus colaboradores.</p>
+                    <p><strong className="text-white font-extrabold">Frameworks Científicos:</strong> ISO 45003, OMS, Karasek-Siegrist, validados internacionalmente.</p>
+                    <p><strong className="text-white font-extrabold">Sua Privacidade:</strong> Nenhum dado individual é exposto. LGPD Art. 20 garantido.</p>
+                    <p><strong className="text-white font-extrabold">Próximo Passo:</strong> Valide com RH e Saúde Ocupacional para ação estratégica.</p>
                   </AlertDescription>
                 </div>
               </div>
@@ -541,7 +541,7 @@ export default function EmpresaEstadoPsicossocial() {
                         key={index}
                         className={`group border-0 backdrop-blur-2xl shadow-2xl rounded-2xl overflow-hidden hover:scale-[1.02] transition-all duration-500 ${
                           isPriority 
-                            ? 'bg-gradient-to-r from-red-500/20 to-orange-500/20 hover:from-red-500/30 hover:to-orange-500/30' 
+                            ? 'bg-gradient-to-r from-red-600/35 to-orange-600/35 hover:from-red-600/45 hover:to-orange-600/45 border-2 border-red-500/40' 
                             : 'bg-white/10 hover:bg-white/15'
                         }`}
                         data-testid={`recomendacao-${index}`}
@@ -577,7 +577,7 @@ export default function EmpresaEstadoPsicossocial() {
                                   <h4 className="text-xl font-bold text-white mb-2">
                                     {rec.titulo}
                                   </h4>
-                                  <p className="text-white/80 leading-relaxed">
+                                  <p className={`leading-relaxed ${isPriority ? 'text-red-50/95' : 'text-white/80'}`}>
                                     {rec.descricao}
                                   </p>
                                 </div>
@@ -809,12 +809,12 @@ export default function EmpresaEstadoPsicossocial() {
                         .map((rec, index) => (
                           <div 
                             key={index}
-                            className="flex gap-4 p-4 bg-red-500/20 backdrop-blur-xl rounded-xl border border-red-500/30"
+                            className="flex gap-4 p-4 bg-red-600/35 backdrop-blur-xl rounded-xl border-2 border-red-500/40"
                           >
-                            <CheckCircle className="h-6 w-6 text-red-300 flex-shrink-0 mt-1" />
+                            <CheckCircle className="h-6 w-6 text-red-200 flex-shrink-0 mt-1" />
                             <div className="flex-1 space-y-1">
-                              <p className="text-white font-bold">{rec.titulo}</p>
-                              <p className="text-white/70 text-sm">{rec.descricao}</p>
+                              <p className="text-red-50 font-bold">{rec.titulo}</p>
+                              <p className="text-red-50/90 text-sm">{rec.descricao}</p>
                             </div>
                           </div>
                         ))}
@@ -835,12 +835,12 @@ export default function EmpresaEstadoPsicossocial() {
                         .map((rec, index) => (
                           <div 
                             key={index}
-                            className="flex gap-4 p-4 bg-orange-500/20 backdrop-blur-xl rounded-xl border border-orange-500/30"
+                            className="flex gap-4 p-4 bg-orange-600/35 backdrop-blur-xl rounded-xl border-2 border-orange-500/40"
                           >
-                            <CheckCircle className="h-6 w-6 text-orange-300 flex-shrink-0 mt-1" />
+                            <CheckCircle className="h-6 w-6 text-orange-200 flex-shrink-0 mt-1" />
                             <div className="flex-1 space-y-1">
-                              <p className="text-white font-bold">{rec.titulo}</p>
-                              <p className="text-white/70 text-sm">{rec.descricao}</p>
+                              <p className="text-orange-50 font-bold">{rec.titulo}</p>
+                              <p className="text-orange-50/90 text-sm">{rec.descricao}</p>
                             </div>
                           </div>
                         ))}
@@ -875,14 +875,14 @@ export default function EmpresaEstadoPsicossocial() {
         </Tabs>
 
         {/* FOOTER - Call to Action Final */}
-        <Card className="border-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-2xl shadow-2xl rounded-2xl overflow-hidden">
+        <Card className="border-0 bg-gradient-to-r from-purple-600/35 to-pink-600/35 backdrop-blur-2xl shadow-2xl rounded-2xl overflow-hidden border-2 border-purple-500/40">
           <CardContent className="p-8">
             <div className="flex items-center justify-between gap-6 flex-wrap">
               <div className="flex-1 min-w-[300px] space-y-3">
-                <h3 className="text-2xl font-black text-white">
+                <h3 className="text-2xl font-black text-purple-50">
                   Pronto para Transformar Sua Organização?
                 </h3>
-                <p className="text-white/80 text-lg">
+                <p className="text-purple-50/95 text-lg">
                   Cada ação que você toma hoje constrói o futuro que seus colaboradores merecem. 
                   Vamos juntos nessa jornada de cuidado e evolução.
                 </p>
