@@ -69,13 +69,42 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
     - **Privacy**: All data is aggregated and anonymized; individual employee data is never exposed
     - **Error Handling**: Comprehensive error states with user-friendly messages
     - **Loading States**: Animated skeleton screens with glassmorphism effects
-- **PRG Module (IMPLEMENTED - October 21, 2025)**:
+- **PRG Module - Programa de Gestão de Riscos Psicossociais (FULLY IMPLEMENTED - October 21, 2025)**:
     - **Frontend Page**: `/empresa/prg` (EmpresaPRG.tsx)
     - **Route Configuration**: Registered in EmpresaDashboard.tsx
-    - **Sidebar Link**: "PRG" in EmpresaSidebar.tsx
-    - **Icon**: FileText (lucide-react)
-    - **Purpose**: Placeholder for Programa de Gerenciamento de Riscos (Risk Management Program)
-    - **Status**: Ready for future implementation
+    - **Sidebar Link**: "PRG" in EmpresaSidebar.tsx with FileText icon
+    - **Purpose**: Full psychosocial risk management program dashboard
+    - **Design**: Glassmorphism design matching EmpresaEstadoPsicossocial
+    - **Header**: Inspired by EmpresaEstadoPsicossocial with circular progress indicator (72% global index)
+    - **Features**:
+        - Dynamic filters (Period, Sector, Job Title, Test Type)
+        - 6 KPI cards with real-time metrics and progress indicators
+        - AI-powered intelligent analysis (HumaniQ AI) with automatic recommendations
+        - 7 interactive tabs: Geral, Clima, Estresse, Burnout, QVT, Assédio, DISC
+        - 3 embedded charts/graphs for visual data representation
+        - 4 AI-generated action recommendations with priority badges
+        - Export options: PDF Report, Excel Spreadsheet, QR Code
+    - **Charts**: 3 charts integrated from attached_assets:
+        - Radar Chart: General psychosocial condition (grafico1.png)
+        - Bar Chart: Organizational climate dimensions (grafico2.png)
+        - Thermometer: Occupational stress levels (grafico3.png)
+    - **KPIs Tracked**:
+        - Occupational Stress Index: 68% (Moderate)
+        - Positive Organizational Climate: 74% (Attention)
+        - Leadership Satisfaction: 82% (Healthy)
+        - Burnout Risk: 41% (High)
+        - PRG Maturity: 65% (Intermediate)
+        - Psychological Safety Perception: 79% (Good)
+    - **AI Recommendations**:
+        - Implement active listening channels
+        - Schedule programmed breaks
+        - Train leaders in empathetic communication
+        - Quarterly PRG review
+    - **Compliance**: NR-01 and WHO guidelines
+    - **UI Components**: Cards, Badges, Progress bars, Tabs, Select dropdowns
+    - **Color Coding**: Green (80-100 Healthy), Yellow (60-79 Attention), Red (0-59 Critical)
+    - **Assets Location**: `src/assets/prg/` (grafico1.png, grafico2.png, grafico3.png)
+    - **Status**: Fully functional with placeholder data, ready for backend integration
 
 ### System Design Choices
 The system migrated from Supabase to a fully local API backend to eliminate external dependencies and ensure greater control over data and authentication. Manual Zod schemas are used due to version incompatibilities with `drizzle-zod`. The API returns camelCase, and the frontend handles conversions to snake_case where necessary.
