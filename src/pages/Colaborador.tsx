@@ -79,9 +79,17 @@ const Colaborador = () => {
             {/* Avatar melhorado com animação */}
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-              <div className="relative mx-auto h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-green-500 flex items-center justify-center shadow-2xl transform group-hover:scale-105 transition-all duration-300">
-                <Brain className="h-12 w-12 text-white drop-shadow-lg animate-pulse" />
-              </div>
+              {colaborador?.avatar ? (
+                <img 
+                  src={colaborador.avatar} 
+                  alt={colaborador.nome}
+                  className="relative mx-auto h-24 w-24 rounded-full object-cover shadow-2xl transform group-hover:scale-105 transition-all duration-300"
+                />
+              ) : (
+                <div className="relative mx-auto h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-green-500 flex items-center justify-center shadow-2xl transform group-hover:scale-105 transition-all duration-300">
+                  <Brain className="h-12 w-12 text-white drop-shadow-lg animate-pulse" />
+                </div>
+              )}
             </div>
             
             {/* Título com gradiente aprimorado */}
@@ -109,14 +117,18 @@ const Colaborador = () => {
               {colaborador && (
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
                   <div className="flex items-center gap-3">
-                    <Badge variant="outline" className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
-                      <Users className="h-4 w-4 mr-2" />
-                      {colaborador.cargo}
-                    </Badge>
-                    <Badge variant="outline" className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-50 to-green-50 dark:from-purple-900/20 dark:to-green-900/20 border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300">
-                      <Building2 className="h-4 w-4 mr-2" />
-                      {colaborador.departamento}
-                    </Badge>
+                    {colaborador.cargo && (
+                      <Badge variant="outline" className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300" data-testid="badge-cargo">
+                        <Users className="h-4 w-4 mr-2" />
+                        {colaborador.cargo}
+                      </Badge>
+                    )}
+                    {colaborador.departamento && (
+                      <Badge variant="outline" className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-50 to-green-50 dark:from-purple-900/20 dark:to-green-900/20 border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300" data-testid="badge-departamento">
+                        <Building2 className="h-4 w-4 mr-2" />
+                        {colaborador.departamento}
+                      </Badge>
+                    )}
                   </div>
                 </div>
               )}

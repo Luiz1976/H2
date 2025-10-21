@@ -24,6 +24,7 @@ router.post('/login', async (req, res) => {
     let user;
     let role: 'admin' | 'empresa' | 'colaborador';
     let empresaId: string | undefined;
+    let colaboradorId: string | undefined;
 
     const [admin] = await db.select().from(admins).where(eq(admins.email, email)).limit(1);
     if (admin) {
@@ -53,6 +54,7 @@ router.post('/login', async (req, res) => {
           user = colaborador;
           role = 'colaborador';
           empresaId = colaborador.empresaId || undefined;
+          colaboradorId = colaborador.id;
         } else {
           return res.status(401).json({ error: 'Invalid credentials' });
         }
@@ -64,6 +66,7 @@ router.post('/login', async (req, res) => {
       email: user.email || (user as any).emailContato,
       role,
       empresaId,
+      colaboradorId,
     });
 
     res.json({

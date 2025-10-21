@@ -5,6 +5,7 @@ import authRouter from './routes/auth';
 import convitesRouter from './routes/convites';
 import empresasRouter from './routes/empresas';
 import testesRouter from './routes/testes';
+import colaboradoresRouter from './routes/colaboradores';
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/convites', convitesRouter);
 app.use('/api/empresas', empresasRouter);
 app.use('/api/testes', testesRouter);
+app.use('/api/colaboradores', colaboradoresRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado' });
@@ -63,6 +65,7 @@ app.listen(PORT, () => {
   console.log(`   POST /api/convites/colaborador`);
   console.log(`   GET  /api/convites/token/:token`);
   console.log(`   GET  /api/empresas/me`);
+  console.log(`   GET  /api/colaboradores/me`);
   console.log(`   GET  /api/testes`);
   console.log(`   POST /api/testes/resultado`);
 });

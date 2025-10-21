@@ -1,18 +1,16 @@
-import { supabase } from '../lib/supabase';
 import { authService } from './authService';
 
 export interface ColaboradorCompleto {
   id: string;
   nome: string;
   email: string;
-  cargo: string;
-  departamento: string;
-  empresa_id: string;
+  cargo?: string;
+  departamento?: string;
+  avatar?: string;
+  empresaId: string;
   permissoes: any;
   ativo: boolean;
-  created_at: string;
-  updated_at: string;
-  avatar?: string;
+  createdAt: string;
 }
 
 class ColaboradorService {
@@ -20,39 +18,32 @@ class ColaboradorService {
     try {
       console.log('🔍 [ColaboradorService] Iniciando busca por dados do colaborador logado...');
       
-      // Obter usuário autenticado do authService
-      const user = authService.getCurrentUser();
-      console.log('👤 [ColaboradorService] Usuário obtido:', user);
+      // Obter token de autenticação
+      const token = localStorage.getItem('authToken');
       
-      if (!user) {
-        console.log('⚠️ [ColaboradorService] Nenhum usuário autenticado');
+      if (!token) {
+        console.log('⚠️ [ColaboradorService] Nenhum token encontrado');
         return null;
       }
 
-      // Se o usuário já tem os dados completos e é um colaborador, retornar diretamente
-      if (user.role === 'colaborador' && user.empresa_id) {
-        console.log('📧 [ColaboradorService] Buscando colaborador com email:', user.email);
-
-        // Buscar dados do colaborador na tabela
-        const { data: colaborador, error: colaboradorError } = await supabase
-          .from('colaboradores')
-          .select('*')
-          .eq('email', user.email)
-          .single();
-
-        console.log('📋 [ColaboradorService] Resultado da query:', colaborador);
-
-        if (colaboradorError) {
-          console.error('❌ [ColaboradorService] Erro ao buscar colaborador:', colaboradorError);
-          return null;
+      // Buscar dados do colaborador via API
+      const response = await fetch('/api/colaboradores/me', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
+      });
 
-        console.log('✅ [ColaboradorService] Colaborador encontrado com sucesso');
-        return colaborador;
-      } else {
-        console.log('⚠️ [ColaboradorService] Usuário não é um colaborador ou não tem empresa_id');
+      if (!response.ok) {
+        console.error('❌ [ColaboradorService] Erro ao buscar colaborador:', response.status);
         return null;
       }
+
+      const data = await response.json();
+      console.log('✅ [ColaboradorService] Colaborador encontrado com sucesso:', data.colaborador);
+      
+      return data.colaborador;
     } catch (error) {
       console.error('❌ [ColaboradorService] Erro geral:', error);
       return null;
@@ -64,13 +55,24 @@ class ColaboradorService {
    */
   async atualizarColaborador(id: string, dados: Partial<ColaboradorCompleto>): Promise<boolean> {
     try {
-      const { error } = await supabase
-        .from('colaboradores')
-        .update(dados)
-        .eq('id', id);
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        console.error('Nenhum token encontrado');
+        return false;
+      }
 
-      if (error) {
-        console.error('Erro ao atualizar colaborador:', error);
+      const response = await fetch(`/api/colaboradores/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+      });
+
+      if (!response.ok) {
+        console.error('Erro ao atualizar colaborador:', response.status);
         return false;
       }
 
