@@ -130,7 +130,12 @@ REGRAS:
     console.error('❌ [IA] Erro ao gerar análise:', error);
     
     // Fallback: Recomendações baseadas em regras se IA falhar
-    const recomendacoes = [];
+    const recomendacoes: Array<{
+      categoria: string;
+      prioridade: string;
+      titulo: string;
+      descricao: string;
+    }> = [];
     
     if (data.indiceGeralBemEstar < 50) {
       recomendacoes.push({
