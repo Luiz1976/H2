@@ -26,9 +26,9 @@ import {
   Calendar,
   Loader2
 } from "lucide-react";
-import grafico1 from "@/assets/prg/grafico1.png";
-import grafico2 from "@/assets/prg/grafico2.png";
-import grafico3 from "@/assets/prg/grafico3.png";
+import MatrizRisco from "@/components/prg/MatrizRisco";
+import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
+import GraficoRadarDimensoes from "@/components/prg/GraficoRadarDimensoes";
 
 interface PRGData {
   indiceGlobal: number;
@@ -60,6 +60,24 @@ interface PRGData {
     prioridade: string;
     titulo: string;
     descricao: string;
+  }>;
+  matrizRiscos: Array<{
+    nome: string;
+    probabilidade: 'A' | 'B' | 'C' | 'D' | 'E';
+    severidade: 1 | 2 | 3 | 4 | 5;
+    categoria: string;
+  }>;
+  distribuicaoRiscos: Array<{
+    categoria: string;
+    critico: number;
+    alto: number;
+    moderado: number;
+    baixo: number;
+  }>;
+  dimensoesPsicossociais: Array<{
+    dimensao: string;
+    valor: number;
+    meta: number;
   }>;
 }
 
@@ -514,59 +532,31 @@ export default function EmpresaPRG() {
 
           {/* GERAL - Gráfico de Radar */}
           <TabsContent value="geral" className="space-y-6">
-            <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-white text-xl">Painel Geral – Condição Psicossocial</CardTitle>
-                <CardDescription className="text-white/60">
-                  Visão integrada de todas as dimensões avaliadas
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-center">
-                  <img 
-                    src={grafico1} 
-                    alt="Gráfico de Radar - Condição Psicossocial" 
-                    className="max-w-full h-auto rounded-xl shadow-2xl"
-                    data-testid="img-grafico-radar"
-                  />
-                </div>
-                
-                {/* Barra de Classificação */}
-                <div className="mt-8 grid grid-cols-3 gap-4">
-                  <div className="p-4 bg-green-500/20 border-2 border-green-500/50 rounded-xl text-center">
-                    <div className="text-green-300 text-lg font-bold">🟢 Saudável</div>
-                    <div className="text-white/70 text-sm">80–100</div>
-                  </div>
-                  <div className="p-4 bg-yellow-500/20 border-2 border-yellow-500/50 rounded-xl text-center">
-                    <div className="text-yellow-300 text-lg font-bold">🟡 Atenção</div>
-                    <div className="text-white/70 text-sm">60–79</div>
-                  </div>
-                  <div className="p-4 bg-red-500/20 border-2 border-red-500/50 rounded-xl text-center">
-                    <div className="text-red-300 text-lg font-bold">🔴 Crítico</div>
-                    <div className="text-white/70 text-sm">0–59</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Gráfico Radar - Dimensões Psicossociais */}
+            {prgData && <GraficoRadarDimensoes dados={prgData.dimensoesPsicossociais} />}
+
+            {/* Matriz de Risco Qualitativa */}
+            {prgData && <MatrizRisco riscos={prgData.matrizRiscos} />}
           </TabsContent>
 
           {/* CLIMA ORGANIZACIONAL */}
           <TabsContent value="clima" className="space-y-6">
+            {/* Gráfico de Distribuição de Riscos */}
+            {prgData && <GraficoDistribuicaoRiscos dados={prgData.distribuicaoRiscos} />}
+
+            {/* Card com métricas de clima */}
             <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-xl">
               <CardHeader>
-                <CardTitle className="text-white text-xl">Clima Organizacional</CardTitle>
-                <CardDescription className="text-white/60">
-                  Análise das dimensões: Comunicação, Chefia, Equilíbrio e Estrutura
-                </CardDescription>
+                <CardTitle className="text-white text-xl">Indicadores de Clima Organizacional</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="flex justify-center">
-                  <img 
-                    src={grafico2} 
-                    alt="Gráfico de Barras - Clima Organizacional" 
-                    className="max-w-full h-auto rounded-xl shadow-2xl"
-                    data-testid="img-grafico-clima"
-                  />
+              <CardContent className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-blue-500/20 border border-blue-500/30 rounded-xl">
+                  <p className="text-blue-300 text-sm font-semibold mb-1">Clima Positivo</p>
+                  <p className="text-white text-3xl font-bold">{prgData?.kpis.climaPositivo}%</p>
+                </div>
+                <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-xl">
+                  <p className="text-green-300 text-sm font-semibold mb-1">Satisfação com Liderança</p>
+                  <p className="text-white text-3xl font-bold">{prgData?.kpis.satisfacaoChefia}%</p>
                 </div>
               </CardContent>
             </Card>
@@ -574,21 +564,32 @@ export default function EmpresaPRG() {
 
           {/* ESTRESSE OCUPACIONAL */}
           <TabsContent value="estresse" className="space-y-6">
+            {/* Gráfico Radar para Estresse */}
+            {prgData && <GraficoRadarDimensoes dados={prgData.dimensoesPsicossociais} />}
+
+            {/* Card com métricas de estresse */}
             <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-xl">
               <CardHeader>
-                <CardTitle className="text-white text-xl">Estresse Ocupacional</CardTitle>
-                <CardDescription className="text-white/60">
-                  Termômetro de risco e níveis de pressão no trabalho
-                </CardDescription>
+                <CardTitle className="text-white text-xl">Níveis de Estresse Ocupacional</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="flex justify-center">
-                  <img 
-                    src={grafico3} 
-                    alt="Termômetro - Estresse Ocupacional" 
-                    className="max-w-full h-auto rounded-xl shadow-2xl"
-                    data-testid="img-grafico-estresse"
-                  />
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/80">Índice de Estresse</span>
+                    <span className="text-white font-bold text-xl">{prgData?.kpis.indiceEstresse}%</span>
+                  </div>
+                  <Progress value={prgData?.kpis.indiceEstresse} className="h-3" />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 mt-6">
+                  <div className={`p-4 rounded-xl ${(prgData?.kpis.riscoBurnout || 0) > 60 ? 'bg-red-500/20 border-red-500/30' : 'bg-yellow-500/20 border-yellow-500/30'} border`}>
+                    <p className={`text-sm font-semibold mb-1 ${(prgData?.kpis.riscoBurnout || 0) > 60 ? 'text-red-300' : 'text-yellow-300'}`}>Risco de Burnout</p>
+                    <p className="text-white text-3xl font-bold">{prgData?.kpis.riscoBurnout}%</p>
+                  </div>
+                  <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-xl">
+                    <p className="text-green-300 text-sm font-semibold mb-1">Segurança Psicológica</p>
+                    <p className="text-white text-3xl font-bold">{prgData?.kpis.segurancaPsicologica}%</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>

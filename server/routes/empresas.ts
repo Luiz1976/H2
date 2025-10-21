@@ -620,6 +620,38 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       }
     ];
 
+    // Dados para Matriz de Risco
+    const matrizRiscos = [
+      { nome: 'Sobrecarga de trabalho', probabilidade: 'D' as const, severidade: 4 as const, categoria: 'estresse' },
+      { nome: 'Assédio moral', probabilidade: 'B' as const, severidade: 5 as const, categoria: 'assedio' },
+      { nome: 'Conflitos interpessoais', probabilidade: 'C' as const, severidade: 3 as const, categoria: 'clima' },
+      { nome: 'Falta de autonomia', probabilidade: 'C' as const, severidade: 2 as const, categoria: 'lideranca' },
+      { nome: 'Jornada excessiva', probabilidade: 'D' as const, severidade: 4 as const, categoria: 'qvt' },
+      { nome: 'Burnout', probabilidade: 'C' as const, severidade: 5 as const, categoria: 'burnout' },
+      { nome: 'Comunicação deficiente', probabilidade: 'D' as const, severidade: 2 as const, categoria: 'clima' },
+      { nome: 'Pressão por metas', probabilidade: 'E' as const, severidade: 3 as const, categoria: 'estresse' }
+    ];
+
+    // Dados para Distribuição de Riscos
+    const distribuicaoRiscos = [
+      { categoria: 'Estresse', critico: 2, alto: 3, moderado: 1, baixo: 0 },
+      { categoria: 'Clima', critico: 0, alto: 1, moderado: 2, baixo: 1 },
+      { categoria: 'Burnout', critico: 1, alto: 2, moderado: 1, baixo: 0 },
+      { categoria: 'QVT', critico: 1, alto: 1, moderado: 1, baixo: 1 },
+      { categoria: 'Assédio', critico: 1, alto: 0, moderado: 0, baixo: 2 },
+      { categoria: 'Liderança', critico: 0, alto: 0, moderado: 2, baixo: 2 }
+    ];
+
+    // Dados para Gráfico Radar (Dimensões Psicossociais)
+    const dimensoesPsicossociais = [
+      { dimensao: 'Autonomia', valor: kpis.maturidadePRG, meta: 80 },
+      { dimensao: 'Apoio Social', valor: kpis.climaPositivo, meta: 85 },
+      { dimensao: 'Demandas', valor: 100 - kpis.indiceEstresse, meta: 75 },
+      { dimensao: 'Reconhecimento', valor: kpis.satisfacaoChefia, meta: 80 },
+      { dimensao: 'Equilíbrio', valor: 100 - kpis.riscoBurnout, meta: 85 },
+      { dimensao: 'Segurança', valor: kpis.segurancaPsicologica, meta: 90 }
+    ];
+
     console.log('✅ [PRG] Dados calculados com sucesso');
 
     res.json({
@@ -641,6 +673,9 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
         },
         aiAnalysis,
         recomendacoes,
+        matrizRiscos,
+        distribuicaoRiscos,
+        dimensoesPsicossociais,
         ultimaAtualizacao: new Date().toISOString()
       }
     });
