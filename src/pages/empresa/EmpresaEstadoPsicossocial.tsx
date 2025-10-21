@@ -149,6 +149,8 @@ export default function EmpresaEstadoPsicossocial() {
     queryKey: ['/api/empresas/estado-psicossocial'],
   });
 
+  console.log('🔍 [EmpresaEstadoPsicossocial] Estado:', { isLoading, hasError: !!error, hasData: !!data, data });
+
   const analise = data?.analise;
 
   if (isLoading) {
@@ -180,6 +182,7 @@ export default function EmpresaEstadoPsicossocial() {
   }
 
   if (error) {
+    console.error('❌ [EmpresaEstadoPsicossocial] Erro:', error);
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 p-6 flex items-center justify-center">
         <div className="max-w-2xl mx-auto">
@@ -188,7 +191,26 @@ export default function EmpresaEstadoPsicossocial() {
             <AlertTitle className="text-xl font-bold">Ops! Algo não saiu como esperado</AlertTitle>
             <AlertDescription className="mt-2">
               <p>Não conseguimos carregar a análise psicossocial neste momento.</p>
+              <p className="mt-2 text-sm">Erro: {String(error)}</p>
               <p className="mt-2 text-sm">Por favor, aguarde alguns instantes e tente novamente. Se o problema persistir, nossa equipe está pronta para ajudar.</p>
+            </AlertDescription>
+          </Alert>
+        </div>
+      </div>
+    );
+  }
+
+  if (!analise) {
+    console.warn('⚠️ [EmpresaEstadoPsicossocial] Dados carregados mas analise está undefined');
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 p-6 flex items-center justify-center">
+        <div className="max-w-2xl mx-auto">
+          <Alert className="border-2 shadow-2xl">
+            <Info className="h-6 w-6" />
+            <AlertTitle className="text-xl font-bold">Dados não disponíveis</AlertTitle>
+            <AlertDescription className="mt-2">
+              <p>A análise psicossocial ainda não possui dados suficientes.</p>
+              <p className="mt-2 text-sm">Certifique-se de que há colaboradores com testes concluídos.</p>
             </AlertDescription>
           </Alert>
         </div>
