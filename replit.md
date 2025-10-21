@@ -39,6 +39,21 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
 - **Result Visualization**: Unified component for displaying results for all test types, ensuring visual consistency.
 - **Data Isolation**: Each company can only view results of its own employees. Employees can only view their own results.
 - **Authentication Rules**: Employees must log in with their own accounts to perform tests; company logins will not record results for specific employees.
+- **Psychosocial State Monitoring (NEW - October 2025)**:
+    - **Endpoint**: `GET /api/empresas/estado-psicossocial`
+    - **Page**: `/empresa/estado-psicossocial`
+    - **NR1 Compliance**: Tracks psychosocial risk factors (workload, autonomy, harassment, support, work-life balance) as required by Brazilian NR1 regulation (effective May 2025)
+    - **LGPD Compliance**: Implements Article 20 requirements for AI-driven analysis with transparency, explainability, and data minimization
+    - **ISO 45003 Framework**: Uses international standards for psychological health and safety at work
+    - **Features**:
+        - Real-time aggregation of test results across all company employees
+        - AI-powered insights with transparent methodology disclosure
+        - Risk level classification (Critical, Attention, Moderate, Good)
+        - Automated recommendations based on statistical patterns
+        - Coverage metrics and compliance tracking
+        - Critical alerts identification
+        - Continuous improvement action plans
+    - **Privacy**: All data is aggregated and anonymized; individual employee data is never exposed
 
 ### System Design Choices
 The system migrated from Supabase to a fully local API backend to eliminate external dependencies and ensure greater control over data and authentication. Manual Zod schemas are used due to version incompatibilities with `drizzle-zod`. The API returns camelCase, and the frontend handles conversions to snake_case where necessary.
