@@ -546,35 +546,85 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
 
     console.log(`📊 [PRG] Encontrados ${resultadosList.length} resultados de testes`);
 
-    // Calcular KPIs baseados na média de pontuações
-    const calcularMediaPorCategoria = (categoria: string) => {
-      const resultadosCategoria = resultadosList.filter(r => 
-        r.testeCategoria?.toLowerCase().includes(categoria.toLowerCase())
+    // ✨ USAR MESMA LÓGICA DO ESTADO PSICOSSOCIAL - Processar metadados dos testes
+    const dimensoesAgregadas: Record<string, { total: number; soma: number }> = {};
+    const alertasCriticos: string[] = [];
+
+    // Processar metadados dos resultados (mesma lógica do estado-psicossocial)
+    resultadosList.forEach(resultado => {
+      const metadados = resultado.metadados as Record<string, any> || {};
+      const analiseCompleta = metadados.analise_completa || {};
+      
+      // Agregar dimensões
+      if (analiseCompleta.dimensoes) {
+        Object.entries(analiseCompleta.dimensoes).forEach(([dimensaoId, dados]: [string, any]) => {
+          if (!dimensoesAgregadas[dimensaoId]) {
+            dimensoesAgregadas[dimensaoId] = { total: 0, soma: 0 };
+          }
+          dimensoesAgregadas[dimensaoId].total++;
+          dimensoesAgregadas[dimensaoId].soma += dados.percentual || dados.media || dados.pontuacao || 0;
+        });
+      }
+
+      // Identificar alertas críticos
+      if (metadados.alertas_criticos && Array.isArray(metadados.alertas_criticos)) {
+        alertasCriticos.push(...metadados.alertas_criticos);
+      }
+    });
+
+    // Calcular médias das dimensões (mesma lógica do estado-psicossocial)
+    const todasDimensoes = Object.entries(dimensoesAgregadas).map(([dimensaoId, dados]) => {
+      const media = dados.total > 0 ? dados.soma / dados.total : 0;
+      let nivel = 'Bom';
+      let cor = 'green';
+      
+      if (media < 40) {
+        nivel = 'Crítico';
+        cor = 'red';
+      } else if (media < 60) {
+        nivel = 'Atenção';
+        cor = 'orange';
+      } else if (media < 75) {
+        nivel = 'Moderado';
+        cor = 'yellow';
+      }
+
+      return {
+        dimensaoId,
+        nome: dimensaoId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        percentual: Math.round(media),
+        nivel,
+        cor,
+        total: dados.total
+      };
+    });
+
+    console.log(`📊 [PRG] Processadas ${todasDimensoes.length} dimensões dos metadados`);
+
+    // Função helper para buscar dimensão específica
+    const getDimensaoValor = (keywords: string[]): number => {
+      const dimensao = todasDimensoes.find(d => 
+        keywords.some(k => d.dimensaoId.toLowerCase().includes(k.toLowerCase()))
       );
-      if (resultadosCategoria.length === 0) return 0;
-      const soma = resultadosCategoria.reduce((acc, r) => acc + (r.pontuacaoTotal || 0), 0);
-      return Math.round(soma / resultadosCategoria.length);
+      return dimensao?.percentual || 0;
     };
 
-    // Calcular média geral de todos os testes
-    const mediaGeral = resultadosList.length > 0
-      ? Math.round(resultadosList.reduce((acc, r) => acc + (r.pontuacaoTotal || 0), 0) / resultadosList.length)
-      : 0;
-
+    // Calcular KPIs baseados nas dimensões reais dos metadados
     const kpis = {
-      indiceEstresse: calcularMediaPorCategoria('estresse') || mediaGeral,
-      climaPositivo: calcularMediaPorCategoria('clima') || mediaGeral,
-      satisfacaoChefia: calcularMediaPorCategoria('lideranca') || 82,
-      riscoBurnout: calcularMediaPorCategoria('burnout') > 0 ? (100 - calcularMediaPorCategoria('burnout')) : 41,
+      indiceEstresse: getDimensaoValor(['estresse', 'demanda', 'carga']) || 0,
+      climaPositivo: getDimensaoValor(['clima', 'ambiente', 'organizacional']) || 0,
+      satisfacaoChefia: getDimensaoValor(['lideranca', 'chefia', 'lider', 'gestor']) || 0,
+      riscoBurnout: Math.max(0, 100 - getDimensaoValor(['burnout', 'exaustao', 'esgotamento'])),
       maturidadePRG: resultadosList.length > 0 ? Math.min(65 + (resultadosList.length / 10), 100) : 0,
-      segurancaPsicologica: calcularMediaPorCategoria('seguranca') || 79
+      segurancaPsicologica: getDimensaoValor(['seguranca', 'psicologica', 'apoio']) || 0
     };
 
-    // Índice global
-    const indiceGlobal = Math.round(
-      (kpis.indiceEstresse + kpis.climaPositivo + kpis.satisfacaoChefia + 
-       (100 - kpis.riscoBurnout) + kpis.maturidadePRG + kpis.segurancaPsicologica) / 6
-    );
+    // Índice global (mesma lógica do estado-psicossocial)
+    const indiceGlobal = todasDimensoes.length > 0
+      ? Math.round(todasDimensoes.reduce((acc, d) => acc + d.percentual, 0) / todasDimensoes.length)
+      : 0;
+    
+    console.log(`📊 [PRG] Índice Global calculado: ${indiceGlobal}`);
 
     // Dados por categoria de teste
     const dadosPorTipo = {
@@ -586,14 +636,8 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       disc: resultadosList.filter(r => r.testeCategoria?.toLowerCase().includes('disc') || r.testeCategoria?.toLowerCase().includes('comportamental'))
     };
 
-    // Preparar dimensões para análise de IA
-    const dimensoesAnalise = [
-      { dimensaoId: 'estresse', nome: 'Estresse Ocupacional', percentual: kpis.indiceEstresse, nivel: kpis.indiceEstresse > 70 ? 'Crítico' : kpis.indiceEstresse > 50 ? 'Atenção' : 'Bom', cor: kpis.indiceEstresse > 70 ? 'red' : kpis.indiceEstresse > 50 ? 'yellow' : 'green', total: dadosPorTipo.estresse.length },
-      { dimensaoId: 'clima', nome: 'Clima Organizacional', percentual: kpis.climaPositivo, nivel: kpis.climaPositivo < 60 ? 'Crítico' : kpis.climaPositivo < 75 ? 'Atenção' : 'Bom', cor: kpis.climaPositivo < 60 ? 'red' : kpis.climaPositivo < 75 ? 'yellow' : 'green', total: dadosPorTipo.clima.length },
-      { dimensaoId: 'lideranca', nome: 'Satisfação com Liderança', percentual: kpis.satisfacaoChefia, nivel: kpis.satisfacaoChefia < 60 ? 'Crítico' : kpis.satisfacaoChefia < 75 ? 'Atenção' : 'Bom', cor: kpis.satisfacaoChefia < 60 ? 'red' : kpis.satisfacaoChefia < 75 ? 'yellow' : 'green', total: dadosPorTipo.clima.length },
-      { dimensaoId: 'burnout', nome: 'Risco de Burnout', percentual: 100 - kpis.riscoBurnout, nivel: kpis.riscoBurnout > 60 ? 'Crítico' : kpis.riscoBurnout > 40 ? 'Atenção' : 'Bom', cor: kpis.riscoBurnout > 60 ? 'red' : kpis.riscoBurnout > 40 ? 'yellow' : 'green', total: dadosPorTipo.burnout.length },
-      { dimensaoId: 'seguranca', nome: 'Segurança Psicológica', percentual: kpis.segurancaPsicologica, nivel: kpis.segurancaPsicologica < 60 ? 'Crítico' : kpis.segurancaPsicologica < 75 ? 'Atenção' : 'Bom', cor: kpis.segurancaPsicologica < 60 ? 'red' : kpis.segurancaPsicologica < 75 ? 'yellow' : 'green', total: resultadosList.length }
-    ];
+    // Usar as dimensões reais processadas dos metadados (mesma lógica do estado-psicossocial)
+    const dimensoesAnalise = todasDimensoes;
 
     // Preparar fatores NR1 para análise de IA
     const nr1Fatores = [
@@ -627,7 +671,7 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       cobertura,
       dimensoes: dimensoesAnalise,
       nr1Fatores,
-      alertasCriticos: [] // PRG não tem alertas individuais, foca em métricas agregadas
+      alertasCriticos: [...new Set(alertasCriticos)].slice(0, 5) // Top 5 alertas únicos
     });
 
     const recomendacoes = aiAnalysis.recomendacoes;
