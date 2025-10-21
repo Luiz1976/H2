@@ -126,6 +126,40 @@ export default function EmpresaPRG() {
     return iconMap[categoria.toLowerCase()] || Target;
   };
 
+  // Funções de exportação
+  const handleGerarPDF = () => {
+    window.print(); // Abre diálogo de impressão (pode salvar como PDF)
+  };
+
+  const handleExportarExcel = () => {
+    if (!prgData) return;
+    
+    // Criar dados CSV simples
+    let csv = 'Métrica,Valor,Status\n';
+    csv += `Índice Global,${prgData.indiceGlobal}%,${getStatusBadge(prgData.indiceGlobal).label}\n`;
+    csv += `Índice de Estresse,${prgData.kpis.indiceEstresse}%,${getStatusBadge(prgData.kpis.indiceEstresse).label}\n`;
+    csv += `Clima Positivo,${prgData.kpis.climaPositivo}%,${getStatusBadge(prgData.kpis.climaPositivo).label}\n`;
+    csv += `Satisfação com Chefia,${prgData.kpis.satisfacaoChefia}%,${getStatusBadge(prgData.kpis.satisfacaoChefia).label}\n`;
+    csv += `Risco de Burnout,${prgData.kpis.riscoBurnout}%,${getStatusBadge(prgData.kpis.riscoBurnout).label}\n`;
+    csv += `Maturidade PRG,${prgData.kpis.maturidadePRG}%,${getStatusBadge(prgData.kpis.maturidadePRG).label}\n`;
+    csv += `Segurança Psicológica,${prgData.kpis.segurancaPsicologica}%,${getStatusBadge(prgData.kpis.segurancaPsicologica).label}\n`;
+    
+    // Criar blob e download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `prg_relatorio_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleGerarQRCode = () => {
+    alert('Funcionalidade de QR Code será implementada em breve');
+  };
+
   const getStatusBadge = (valor: number) => {
     if (valor >= 80) {
       return { label: "Saudável", color: "bg-green-500/20 text-green-300 border-green-500/30" };
@@ -440,7 +474,11 @@ export default function EmpresaPRG() {
             </p>
             
             <div className="flex gap-3">
-              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" data-testid="button-gerar-pdf">
+              <Button 
+                onClick={handleGerarPDF}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" 
+                data-testid="button-gerar-pdf"
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Gerar Relatório Técnico PDF
               </Button>
@@ -698,7 +736,12 @@ export default function EmpresaPRG() {
                 <h3 className="text-white font-bold mb-2">Planilha Excel</h3>
                 <p className="text-white/60 text-sm">Dados brutos e índices por setor</p>
               </div>
-              <Button variant="outline" className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10">
+              <Button 
+                onClick={handleExportarExcel}
+                variant="outline" 
+                className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10"
+                data-testid="button-baixar-excel"
+              >
                 Baixar Excel
               </Button>
             </CardContent>
@@ -715,7 +758,12 @@ export default function EmpresaPRG() {
                 <h3 className="text-white font-bold mb-2">QR Code Exclusivo</h3>
                 <p className="text-white/60 text-sm">Visualização online interativa</p>
               </div>
-              <Button variant="outline" className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10">
+              <Button 
+                onClick={handleGerarQRCode}
+                variant="outline" 
+                className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10"
+                data-testid="button-gerar-qrcode"
+              >
                 Gerar QR Code
               </Button>
             </CardContent>
