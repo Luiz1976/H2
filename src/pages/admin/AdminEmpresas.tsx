@@ -99,8 +99,8 @@ export default function AdminEmpresas() {
   };
 
   const empresasFiltradas = empresas.filter(empresa => {
-    const matchesSearch = empresa.nome_empresa.toLowerCase().includes(filtroEmpresas.toLowerCase()) ||
-                         empresa.email_contato.toLowerCase().includes(filtroEmpresas.toLowerCase());
+    const matchesSearch = (empresa.nome_empresa?.toLowerCase() || '').includes(filtroEmpresas.toLowerCase()) ||
+                         (empresa.email_contato?.toLowerCase() || '').includes(filtroEmpresas.toLowerCase());
     
     const matchesStatus = statusFiltro === 'todos' || 
                          (statusFiltro === 'ativo' && empresa.ativo) ||
