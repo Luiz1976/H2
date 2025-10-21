@@ -7,6 +7,7 @@ import EmpresaColaboradorResultados from '@/pages/empresa/EmpresaColaboradorResu
 import EmpresaConvites from '@/pages/empresa/EmpresaConvites';
 import EmpresaGestaoConvites from '@/pages/empresa/EmpresaGestaoConvites';
 import EmpresaResultados from '@/pages/empresa/EmpresaResultados';
+import EmpresaEstadoPsicossocial from '@/pages/empresa/EmpresaEstadoPsicossocial';
 
 const EmpresaDashboard: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const EmpresaDashboard: React.FC = () => {
         <Route path="/convites" element={<EmpresaConvites />} />
         <Route path="/gestao-convites" element={<EmpresaGestaoConvites />} />
         <Route path="/resultados" element={<EmpresaResultados />} />
+        <Route path="/estado-psicossocial" element={<EmpresaEstadoPsicossocial />} />
       </Routes>
     </EmpresaLayout>
   );
