@@ -69,6 +69,13 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
     - **Privacy**: All data is aggregated and anonymized; individual employee data is never exposed
     - **Error Handling**: Comprehensive error states with user-friendly messages
     - **Loading States**: Animated skeleton screens with glassmorphism effects
+- **PRG Module (IMPLEMENTED - October 21, 2025)**:
+    - **Frontend Page**: `/empresa/prg` (EmpresaPRG.tsx)
+    - **Route Configuration**: Registered in EmpresaDashboard.tsx
+    - **Sidebar Link**: "PRG" in EmpresaSidebar.tsx
+    - **Icon**: FileText (lucide-react)
+    - **Purpose**: Placeholder for Programa de Gerenciamento de Riscos (Risk Management Program)
+    - **Status**: Ready for future implementation
 
 ### System Design Choices
 The system migrated from Supabase to a fully local API backend to eliminate external dependencies and ensure greater control over data and authentication. Manual Zod schemas are used due to version incompatibilities with `drizzle-zod`. The API returns camelCase, and the frontend handles conversions to snake_case where necessary.
