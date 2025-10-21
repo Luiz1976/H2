@@ -97,11 +97,13 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
         - Uses `testes.categoria` field to filter results by type
         - Calculates average scores per category for KPIs
         - Aggregates all test results for the company
-        - Returns: indiceGlobal, kpis object, totalColaboradores, totalTestes, cobertura, dadosPorTipo, aiAnalysis, recomendacoes
-    - **Charts**: 3 charts integrated from attached_assets:
-        - Radar Chart: General psychosocial condition (grafico1.png)
-        - Bar Chart: Organizational climate dimensions (grafico2.png)
-        - Thermometer: Occupational stress levels (grafico3.png)
+        - Returns: indiceGlobal, kpis object, totalColaboradores, totalTestes, cobertura, dadosPorTipo, aiAnalysis, recomendacoes, matrizRiscos, distribuicaoRiscos, dimensoesPsicossociais
+    - **Dynamic Charts (Implemented October 21, 2025)**: 3 interactive React/Recharts components rendering real-time data:
+        - **MatrizRisco.tsx**: Qualitative risk matrix (Severity x Probability) with color-coded cells (Green=Trivial, Lime=Tolerable, Yellow=Moderate, Orange=Substantial, Red=Intolerable)
+        - **GraficoDistribuicaoRiscos.tsx**: Stacked bar chart showing risk distribution by category (Critical, High, Moderate, Low)
+        - **GraficoRadarDimensoes.tsx**: Radar chart for psychosocial dimensions (Autonomy, Social Support, Demands, Recognition, Balance, Safety) with current values vs targets
+        - Components location: `src/components/prg/`
+        - All charts use real backend data, replacing previous static images
     - **Export Functionality**:
         - PDF: Opens browser print dialog (can save as PDF)
         - Excel: Downloads CSV file with all KPIs and metrics
@@ -109,8 +111,7 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
     - **Compliance**: NR-01 and WHO guidelines
     - **UI Components**: Cards, Badges, Progress bars, Tabs, Select dropdowns with loading/error states
     - **Color Coding**: Green (80-100 Healthy), Yellow (60-79 Attention), Red (0-59 Critical)
-    - **Assets Location**: `src/assets/prg/` (grafico1.png, grafico2.png, grafico3.png)
-    - **Status**: Fully functional with real backend integration and live data
+    - **Status**: Fully functional with real backend integration, live data, and dynamic chart visualization using Recharts
 
 ### System Design Choices
 The system migrated from Supabase to a fully local API backend to eliminate external dependencies and ensure greater control over data and authentication. Manual Zod schemas are used due to version incompatibilities with `drizzle-zod`. The API returns camelCase, and the frontend handles conversions to snake_case where necessary.
