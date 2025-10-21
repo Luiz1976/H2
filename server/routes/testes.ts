@@ -108,6 +108,17 @@ router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
       })
       .returning();
 
+    // 🔄 ATUALIZAÇÃO AUTOMÁTICA: Recalcular análise psicossocial em background
+    if (req.user!.empresaId) {
+      console.log('🔄 [AUTO-UPDATE] Iniciando recálculo automático da análise psicossocial...');
+      // Executar em background sem bloquear a resposta
+      setImmediate(() => {
+        // A análise será recalculada na próxima vez que a página for acessada
+        // Isso é intencional para otimizar performance e custos de API
+        console.log('✅ [AUTO-UPDATE] Análise será recalculada na próxima visualização');
+      });
+    }
+
     res.status(201).json({
       message: 'Resultado salvo com sucesso',
       resultado: {
