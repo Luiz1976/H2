@@ -117,6 +117,15 @@ function App() {
                   </ProtectedRoute>
                 } 
               />
+              {/* Rota Colaborador */}
+              <Route 
+                path="/colaborador" 
+                element={
+                  <ProtectedRoute allowedRoles={['colaborador']}>
+                    <Colaborador />
+                  </ProtectedRoute>
+                } 
+              />
               {/* Rotas Admin com Sidebar */}
               <Route 
                 path="/admin" 
