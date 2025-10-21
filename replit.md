@@ -97,6 +97,7 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
         - Uses `testes.categoria` field to filter results by type
         - Calculates average scores per category for KPIs
         - Aggregates all test results for the company
+        - **AI Analysis**: Uses Google Gemini API (same function as Estado Psicossocial) for real-time intelligent recommendations
         - Returns: indiceGlobal, kpis object, totalColaboradores, totalTestes, cobertura, dadosPorTipo, aiAnalysis, recomendacoes, matrizRiscos, distribuicaoRiscos, dimensoesPsicossociais
     - **Dynamic Charts (Implemented October 21, 2025)**: 3 interactive React/Recharts components rendering real-time data:
         - **MatrizRisco.tsx**: Qualitative risk matrix (Severity x Probability) with color-coded cells (Green=Trivial, Lime=Tolerable, Yellow=Moderate, Orange=Substantial, Red=Intolerable)

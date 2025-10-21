@@ -586,39 +586,53 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       disc: resultadosList.filter(r => r.testeCategoria?.toLowerCase().includes('disc') || r.testeCategoria?.toLowerCase().includes('comportamental'))
     };
 
-    // Análise IA (reutilizar do endpoint estado-psicossocial se disponível)
-    const aiAnalysis = {
-      sintese: "Os resultados apontam uma organização em fase intermediária de maturidade psicossocial. Há bons indicadores de segurança emocional e apoio da liderança, mas sinais de sobrecarga e exaustão em setores específicos. Recomenda-se fortalecer as ações de acolhimento e prevenção de burnout, especialmente nas equipes operacionais.",
-      dataGeracao: new Date().toISOString()
-    };
-
-    // Recomendações
-    const recomendacoes = [
-      {
-        categoria: "Comunicação",
-        prioridade: "alta",
-        titulo: "Implementar canal de escuta ativa",
-        descricao: "Criar feedbacks quinzenais para melhorar comunicação"
-      },
-      {
-        categoria: "Bem-estar",
-        prioridade: "média",
-        titulo: "Pausas programadas",
-        descricao: "Incentivar autocuidado e intervalos regulares"
-      },
-      {
-        categoria: "Liderança",
-        prioridade: "alta",
-        titulo: "Treinar líderes",
-        descricao: "Capacitação em comunicação empática e gestão de pessoas"
-      },
-      {
-        categoria: "Governança",
-        prioridade: "média",
-        titulo: "Revisar PRG trimestralmente",
-        descricao: "Atualizar programa com base em novas medições"
-      }
+    // Preparar dimensões para análise de IA
+    const dimensoesAnalise = [
+      { dimensaoId: 'estresse', nome: 'Estresse Ocupacional', percentual: kpis.indiceEstresse, nivel: kpis.indiceEstresse > 70 ? 'Crítico' : kpis.indiceEstresse > 50 ? 'Atenção' : 'Bom', cor: kpis.indiceEstresse > 70 ? 'red' : kpis.indiceEstresse > 50 ? 'yellow' : 'green', total: dadosPorTipo.estresse.length },
+      { dimensaoId: 'clima', nome: 'Clima Organizacional', percentual: kpis.climaPositivo, nivel: kpis.climaPositivo < 60 ? 'Crítico' : kpis.climaPositivo < 75 ? 'Atenção' : 'Bom', cor: kpis.climaPositivo < 60 ? 'red' : kpis.climaPositivo < 75 ? 'yellow' : 'green', total: dadosPorTipo.clima.length },
+      { dimensaoId: 'lideranca', nome: 'Satisfação com Liderança', percentual: kpis.satisfacaoChefia, nivel: kpis.satisfacaoChefia < 60 ? 'Crítico' : kpis.satisfacaoChefia < 75 ? 'Atenção' : 'Bom', cor: kpis.satisfacaoChefia < 60 ? 'red' : kpis.satisfacaoChefia < 75 ? 'yellow' : 'green', total: dadosPorTipo.clima.length },
+      { dimensaoId: 'burnout', nome: 'Risco de Burnout', percentual: 100 - kpis.riscoBurnout, nivel: kpis.riscoBurnout > 60 ? 'Crítico' : kpis.riscoBurnout > 40 ? 'Atenção' : 'Bom', cor: kpis.riscoBurnout > 60 ? 'red' : kpis.riscoBurnout > 40 ? 'yellow' : 'green', total: dadosPorTipo.burnout.length },
+      { dimensaoId: 'seguranca', nome: 'Segurança Psicológica', percentual: kpis.segurancaPsicologica, nivel: kpis.segurancaPsicologica < 60 ? 'Crítico' : kpis.segurancaPsicologica < 75 ? 'Atenção' : 'Bom', cor: kpis.segurancaPsicologica < 60 ? 'red' : kpis.segurancaPsicologica < 75 ? 'yellow' : 'green', total: resultadosList.length }
     ];
+
+    // Preparar fatores NR1 para análise de IA
+    const nr1Fatores = [
+      { fator: 'Carga de Trabalho', nivel: kpis.indiceEstresse > 70 ? 'Crítico' : kpis.indiceEstresse > 50 ? 'Atenção' : 'Bom', percentual: kpis.indiceEstresse },
+      { fator: 'Autonomia e Controle', nivel: kpis.maturidadePRG < 60 ? 'Crítico' : kpis.maturidadePRG < 75 ? 'Atenção' : 'Bom', percentual: kpis.maturidadePRG },
+      { fator: 'Suporte Social', nivel: kpis.climaPositivo < 60 ? 'Crítico' : kpis.climaPositivo < 75 ? 'Atenção' : 'Bom', percentual: kpis.climaPositivo },
+      { fator: 'Assédio e Violência', nivel: dadosPorTipo.assedio.length > 0 ? 'Bom' : 'Não avaliado', percentual: dadosPorTipo.assedio.length > 0 ? 80 : 0 },
+      { fator: 'Equilíbrio Trabalho-Vida', nivel: kpis.riscoBurnout > 60 ? 'Crítico' : kpis.riscoBurnout > 40 ? 'Atenção' : 'Bom', percentual: 100 - kpis.riscoBurnout }
+    ];
+
+    // Calcular cobertura
+    const cobertura = colaboradoresList.length > 0 
+      ? Math.round((new Set(resultadosList.map(r => r.colaboradorId)).size / colaboradoresList.length) * 100)
+      : 0;
+
+    // Calcular últimos 30 dias
+    const trintaDiasAtras = new Date();
+    trintaDiasAtras.setDate(trintaDiasAtras.getDate() - 30);
+    const testesUltimos30Dias = resultadosList.filter(r => 
+      r.dataRealizacao && new Date(r.dataRealizacao) >= trintaDiasAtras
+    ).length;
+
+    // ✨ ANÁLISE REAL COM IA - Google Gemini (mesma função usada em estado-psicossocial)
+    console.log('🧠 [PRG] Gerando análise com IA para empresa:', empresaId);
+    
+    const aiAnalysis = await generatePsychosocialAnalysis({
+      indiceGeralBemEstar: indiceGlobal,
+      totalColaboradores: colaboradoresList.length,
+      totalTestesRealizados: resultadosList.length,
+      testesUltimos30Dias,
+      cobertura,
+      dimensoes: dimensoesAnalise,
+      nr1Fatores,
+      alertasCriticos: [] // PRG não tem alertas individuais, foca em métricas agregadas
+    });
+
+    const recomendacoes = aiAnalysis.recomendacoes;
+    
+    console.log('✅ [PRG] Análise IA gerada com sucesso:', recomendacoes.length, 'recomendações');
 
     // Dados para Matriz de Risco
     const matrizRiscos = [
