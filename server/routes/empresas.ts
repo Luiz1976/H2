@@ -297,4 +297,223 @@ router.get('/estatisticas', authenticateToken, requireEmpresa, async (req: AuthR
   }
 });
 
+// Análise psicossocial agregada da empresa (NR1 + LGPD compliant)
+router.get('/estado-psicossocial', authenticateToken, requireEmpresa, async (req: AuthRequest, res) => {
+  try {
+    const empresaId = req.user!.empresaId!;
+
+    // Buscar todos os colaboradores
+    const colaboradoresList = await db
+      .select()
+      .from(colaboradores)
+      .where(eq(colaboradores.empresaId, empresaId));
+
+    // Buscar todos os resultados dos testes
+    const resultadosList = await db
+      .select({
+        id: resultados.id,
+        testeId: resultados.testeId,
+        colaboradorId: resultados.colaboradorId,
+        pontuacaoTotal: resultados.pontuacaoTotal,
+        dataRealizacao: resultados.dataRealizacao,
+        status: resultados.status,
+        metadados: resultados.metadados,
+        testeNome: testes.nome,
+        testeCategoria: testes.categoria,
+      })
+      .from(resultados)
+      .leftJoin(testes, eq(resultados.testeId, testes.id))
+      .where(
+        and(
+          eq(resultados.empresaId, empresaId),
+          eq(resultados.status, 'concluido')
+        )
+      )
+      .orderBy(desc(resultados.dataRealizacao));
+
+    // Calcular últimos 30 dias
+    const trintaDiasAtras = new Date();
+    trintaDiasAtras.setDate(trintaDiasAtras.getDate() - 30);
+
+    const resultadosRecentes = resultadosList.filter(r => 
+      r.dataRealizacao && new Date(r.dataRealizacao) >= trintaDiasAtras
+    );
+
+    // Análise por dimensão psicossocial
+    const dimensoesAgregadas: Record<string, { total: number; soma: number; nivel: string }> = {};
+    const alertasCriticos: string[] = [];
+    const riscosPsicossociais: Array<{ nome: string; nivel: string; percentual: number; descricao: string }> = [];
+
+    // Processar metadados dos resultados
+    resultadosList.forEach(resultado => {
+      const metadados = resultado.metadados as Record<string, any> || {};
+      const analiseCompleta = metadados.analise_completa || {};
+      
+      // Agregar dimensões
+      if (analiseCompleta.dimensoes) {
+        Object.entries(analiseCompleta.dimensoes).forEach(([dimensaoId, dados]: [string, any]) => {
+          if (!dimensoesAgregadas[dimensaoId]) {
+            dimensoesAgregadas[dimensaoId] = { total: 0, soma: 0, nivel: '' };
+          }
+          dimensoesAgregadas[dimensaoId].total++;
+          dimensoesAgregadas[dimensaoId].soma += dados.percentual || dados.media || dados.pontuacao || 0;
+        });
+      }
+
+      // Identificar alertas críticos
+      if (metadados.alertas_criticos && Array.isArray(metadados.alertas_criticos)) {
+        alertasCriticos.push(...metadados.alertas_criticos);
+      }
+    });
+
+    // Calcular médias das dimensões
+    const dimensoesAnalise = Object.entries(dimensoesAgregadas).map(([dimensaoId, dados]) => {
+      const media = dados.total > 0 ? dados.soma / dados.total : 0;
+      let nivel = 'Bom';
+      let cor = 'green';
+      
+      if (media < 40) {
+        nivel = 'Crítico';
+        cor = 'red';
+      } else if (media < 60) {
+        nivel = 'Atenção';
+        cor = 'orange';
+      } else if (media < 75) {
+        nivel = 'Moderado';
+        cor = 'yellow';
+      }
+
+      return {
+        dimensaoId,
+        nome: dimensaoId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        percentual: Math.round(media),
+        nivel,
+        cor,
+        total: dados.total
+      };
+    });
+
+    // Análise NR1 - Fatores de Risco Psicossociais
+    const nr1Fatores = [
+      {
+        fator: 'Carga de Trabalho',
+        nivel: dimensoesAnalise.find(d => d.dimensaoId.includes('demanda') || d.dimensaoId.includes('estresse'))?.nivel || 'Não avaliado',
+        percentual: dimensoesAnalise.find(d => d.dimensaoId.includes('demanda') || d.dimensaoId.includes('estresse'))?.percentual || 0
+      },
+      {
+        fator: 'Autonomia e Controle',
+        nivel: dimensoesAnalise.find(d => d.dimensaoId.includes('autonomia') || d.dimensaoId.includes('controle'))?.nivel || 'Não avaliado',
+        percentual: dimensoesAnalise.find(d => d.dimensaoId.includes('autonomia') || d.dimensaoId.includes('controle'))?.percentual || 0
+      },
+      {
+        fator: 'Suporte Social',
+        nivel: dimensoesAnalise.find(d => d.dimensaoId.includes('suporte') || d.dimensaoId.includes('apoio'))?.nivel || 'Não avaliado',
+        percentual: dimensoesAnalise.find(d => d.dimensaoId.includes('suporte') || d.dimensaoId.includes('apoio'))?.percentual || 0
+      },
+      {
+        fator: 'Assédio e Violência',
+        nivel: dimensoesAnalise.find(d => d.dimensaoId.includes('assedio') || d.dimensaoId.includes('moral'))?.nivel || 'Não avaliado',
+        percentual: dimensoesAnalise.find(d => d.dimensaoId.includes('assedio') || d.dimensaoId.includes('moral'))?.percentual || 0
+      },
+      {
+        fator: 'Equilíbrio Trabalho-Vida',
+        nivel: dimensoesAnalise.find(d => d.dimensaoId.includes('equilibrio') || d.dimensaoId.includes('vida'))?.nivel || 'Não avaliado',
+        percentual: dimensoesAnalise.find(d => d.dimensaoId.includes('equilibrio') || d.dimensaoId.includes('vida'))?.percentual || 0
+      }
+    ];
+
+    // Calcular índice geral de bem-estar
+    const indiceGeralBemEstar = dimensoesAnalise.length > 0
+      ? Math.round(dimensoesAnalise.reduce((acc, d) => acc + d.percentual, 0) / dimensoesAnalise.length)
+      : 0;
+
+    // Compliance NR1
+    const dataProximaAvaliacao = new Date();
+    dataProximaAvaliacao.setMonth(dataProximaAvaliacao.getMonth() + 24); // NR1 exige reavaliação a cada 2 anos
+
+    const nr1Compliance = {
+      status: resultadosList.length > 0 ? 'Conforme' : 'Pendente',
+      ultimaAvaliacao: resultadosList[0]?.dataRealizacao || null,
+      proximaAvaliacao: dataProximaAvaliacao.toISOString(),
+      testesRealizados: resultadosList.length,
+      cobertura: colaboradoresList.length > 0 
+        ? Math.round((new Set(resultadosList.map(r => r.colaboradorId)).size / colaboradoresList.length) * 100)
+        : 0
+    };
+
+    // Recomendações baseadas em IA (análise dos padrões)
+    const recomendacoes: Array<{ categoria: string; prioridade: string; titulo: string; descricao: string }> = [];
+
+    if (indiceGeralBemEstar < 50) {
+      recomendacoes.push({
+        categoria: 'Urgente',
+        prioridade: 'Alta',
+        titulo: 'Intervenção Imediata Necessária',
+        descricao: 'O índice de bem-estar está crítico. Recomenda-se ação imediata com programas de apoio psicológico e revisão das condições de trabalho.'
+      });
+    }
+
+    if (nr1Fatores.some(f => f.nivel === 'Crítico')) {
+      recomendacoes.push({
+        categoria: 'NR1 Compliance',
+        prioridade: 'Alta',
+        titulo: 'Fatores de Risco Críticos Identificados',
+        descricao: 'Foram identificados fatores de risco psicossociais críticos. Implemente medidas preventivas imediatas conforme NR1.'
+      });
+    }
+
+    if (alertasCriticos.length > 0) {
+      recomendacoes.push({
+        categoria: 'Alertas Críticos',
+        prioridade: 'Alta',
+        titulo: 'Situações de Risco Detectadas',
+        descricao: `${alertasCriticos.length} alerta(s) crítico(s) identificado(s). Ações disciplinares e educativas podem ser necessárias.`
+      });
+    }
+
+    if (nr1Compliance.cobertura < 80) {
+      recomendacoes.push({
+        categoria: 'Cobertura',
+        prioridade: 'Média',
+        titulo: 'Aumentar Participação nos Testes',
+        descricao: `Apenas ${nr1Compliance.cobertura}% dos colaboradores realizaram testes. Aumente a cobertura para melhor diagnóstico.`
+      });
+    }
+
+    // Adicionar recomendações preventivas
+    recomendacoes.push({
+      categoria: 'Prevenção',
+      prioridade: 'Média',
+      titulo: 'Programas de Bem-Estar',
+      descricao: 'Implemente programas regulares de mindfulness, atividades físicas e gestão de estresse.'
+    });
+
+    recomendacoes.push({
+      categoria: 'Capacitação',
+      prioridade: 'Média',
+      titulo: 'Treinamento de Liderança',
+      descricao: 'Capacite gestores em comunicação não-violenta, mediação de conflitos e inteligência emocional.'
+    });
+
+    res.json({
+      analise: {
+        indiceGeralBemEstar,
+        totalColaboradores: colaboradoresList.length,
+        totalTestesRealizados: resultadosList.length,
+        testesUltimos30Dias: resultadosRecentes.length,
+        cobertura: nr1Compliance.cobertura,
+        dimensoes: dimensoesAnalise,
+        nr1Fatores,
+        nr1Compliance,
+        alertasCriticos: [...new Set(alertasCriticos)].slice(0, 5), // Top 5 únicos
+        recomendacoes,
+        ultimaAtualizacao: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('Erro ao gerar análise psicossocial:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 export default router;
