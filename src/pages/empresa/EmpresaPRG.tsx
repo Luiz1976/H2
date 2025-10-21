@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,95 +23,108 @@ import {
   MessageSquare,
   Coffee,
   GraduationCap,
-  Calendar
+  Calendar,
+  Loader2
 } from "lucide-react";
 import grafico1 from "@/assets/prg/grafico1.png";
 import grafico2 from "@/assets/prg/grafico2.png";
 import grafico3 from "@/assets/prg/grafico3.png";
 
+interface PRGData {
+  indiceGlobal: number;
+  kpis: {
+    indiceEstresse: number;
+    climaPositivo: number;
+    satisfacaoChefia: number;
+    riscoBurnout: number;
+    maturidadePRG: number;
+    segurancaPsicologica: number;
+  };
+  totalColaboradores: number;
+  totalTestes: number;
+  cobertura: number;
+  dadosPorTipo: {
+    clima: number;
+    estresse: number;
+    burnout: number;
+    qvt: number;
+    assedio: number;
+    disc: number;
+  };
+  aiAnalysis: {
+    sintese: string;
+    dataGeracao: string;
+  };
+  recomendacoes: Array<{
+    categoria: string;
+    prioridade: string;
+    titulo: string;
+    descricao: string;
+  }>;
+}
+
 export default function EmpresaPRG() {
   const [periodo, setPeriodo] = useState("90");
   const [setor, setSetor] = useState("todos");
   const [activeTab, setActiveTab] = useState("geral");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [prgData, setPrgData] = useState<PRGData | null>(null);
 
-  // KPIs simulados (serão substituídos por dados reais da API)
-  const kpis = [
-    {
-      titulo: "Índice de Estresse Ocupacional",
-      valor: 68,
-      status: "moderado",
-      icon: Activity,
-      color: "text-yellow-500",
-      bgColor: "bg-yellow-500/10"
-    },
-    {
-      titulo: "Clima Organizacional Positivo",
-      valor: 74,
-      status: "atenção",
-      icon: Users,
-      color: "text-yellow-500",
-      bgColor: "bg-yellow-500/10"
-    },
-    {
-      titulo: "Satisfação com Chefia",
-      valor: 82,
-      status: "saudável",
-      icon: CheckCircle2,
-      color: "text-green-500",
-      bgColor: "bg-green-500/10"
-    },
-    {
-      titulo: "Risco de Burnout",
-      valor: 41,
-      status: "alto",
-      icon: AlertTriangle,
-      color: "text-red-500",
-      bgColor: "bg-red-500/10"
-    },
-    {
-      titulo: "Maturidade do PRG",
-      valor: 65,
-      status: "intermediária",
-      icon: TrendingUp,
-      color: "text-blue-500",
-      bgColor: "bg-blue-500/10"
-    },
-    {
-      titulo: "Percepção de Segurança Psicológica",
-      valor: 79,
-      status: "boa",
-      icon: Shield,
-      color: "text-green-500",
-      bgColor: "bg-green-500/10"
-    }
-  ];
+  // Buscar dados do PRG ao carregar a página
+  useEffect(() => {
+    const fetchPRGData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          throw new Error('Token de autenticação não encontrado');
+        }
 
-  const recomendacoes = [
-    {
-      icon: MessageSquare,
-      titulo: "Implementar canal de escuta ativa",
-      descricao: "Criar feedbacks quinzenais para melhorar comunicação",
-      prioridade: "alta"
-    },
-    {
-      icon: Coffee,
-      titulo: "Pausas programadas",
-      descricao: "Incentivar autocuidado e intervalos regulares",
-      prioridade: "média"
-    },
-    {
-      icon: GraduationCap,
-      titulo: "Treinar líderes",
-      descricao: "Capacitação em comunicação empática e gestão de pessoas",
-      prioridade: "alta"
-    },
-    {
-      icon: Calendar,
-      titulo: "Revisar PRG trimestralmente",
-      descricao: "Atualizar programa com base em novas medições",
-      prioridade: "média"
-    }
-  ];
+        console.log('📊 [PRG Frontend] Buscando dados do PRG...');
+        
+        const response = await fetch('/api/empresas/prg', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erro ao buscar dados: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('✅ [PRG Frontend] Dados recebidos:', data);
+        
+        setPrgData(data.prg);
+      } catch (err) {
+        console.error('❌ [PRG Frontend] Erro:', err);
+        setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPRGData();
+  }, [periodo, setor]); // Recarregar quando filtros mudarem
+
+  // Mapear ícones para recomendações
+  const getIconForRecomendacao = (categoria: string) => {
+    const iconMap: Record<string, any> = {
+      'comunicação': MessageSquare,
+      'comunicacao': MessageSquare,
+      'bem-estar': Coffee,
+      'liderança': GraduationCap,
+      'lideranca': GraduationCap,
+      'governança': Calendar,
+      'governanca': Calendar
+    };
+    return iconMap[categoria.toLowerCase()] || Target;
+  };
 
   const getStatusBadge = (valor: number) => {
     if (valor >= 80) {
@@ -123,8 +136,84 @@ export default function EmpresaPRG() {
     }
   };
 
-  const indiceGlobal = 72; // Será calculado pela API
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto" />
+          <p className="text-white/70 text-lg">Carregando dados do PRG...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6 flex items-center justify-center">
+        <Card className="border-red-500/50 bg-red-950/20 backdrop-blur-xl max-w-md">
+          <CardContent className="p-6 text-center space-y-4">
+            <AlertTriangle className="h-12 w-12 text-red-400 mx-auto" />
+            <p className="text-white font-semibold">Erro ao carregar dados</p>
+            <p className="text-white/60 text-sm">{error}</p>
+            <Button onClick={() => window.location.reload()} variant="outline" className="bg-white/10">
+              Tentar novamente
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const indiceGlobal = prgData?.indiceGlobal || 0;
   const statusGlobal = getStatusBadge(indiceGlobal);
+
+  // Preparar KPIs com dados reais
+  const kpis = prgData ? [
+    {
+      titulo: "Índice de Estresse Ocupacional",
+      valor: prgData.kpis.indiceEstresse,
+      icon: Activity,
+      color: prgData.kpis.indiceEstresse >= 60 ? "text-yellow-500" : "text-green-500",
+      bgColor: prgData.kpis.indiceEstresse >= 60 ? "bg-yellow-500/10" : "bg-green-500/10"
+    },
+    {
+      titulo: "Clima Organizacional Positivo",
+      valor: prgData.kpis.climaPositivo,
+      icon: Users,
+      color: prgData.kpis.climaPositivo >= 60 ? "text-yellow-500" : "text-green-500",
+      bgColor: prgData.kpis.climaPositivo >= 60 ? "bg-yellow-500/10" : "bg-green-500/10"
+    },
+    {
+      titulo: "Satisfação com Chefia",
+      valor: prgData.kpis.satisfacaoChefia,
+      icon: CheckCircle2,
+      color: "text-green-500",
+      bgColor: "bg-green-500/10"
+    },
+    {
+      titulo: "Risco de Burnout",
+      valor: prgData.kpis.riscoBurnout,
+      icon: AlertTriangle,
+      color: prgData.kpis.riscoBurnout >= 60 ? "text-red-500" : "text-yellow-500",
+      bgColor: prgData.kpis.riscoBurnout >= 60 ? "bg-red-500/10" : "bg-yellow-500/10"
+    },
+    {
+      titulo: "Maturidade do PRG",
+      valor: prgData.kpis.maturidadePRG,
+      icon: TrendingUp,
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10"
+    },
+    {
+      titulo: "Percepção de Segurança Psicológica",
+      valor: prgData.kpis.segurancaPsicologica,
+      icon: Shield,
+      color: "text-green-500",
+      bgColor: "bg-green-500/10"
+    }
+  ] : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6">
@@ -347,10 +436,7 @@ export default function EmpresaPRG() {
           </CardHeader>
           <CardContent className="space-y-6">
             <p className="text-white/90 text-lg leading-relaxed">
-              "Os resultados apontam uma organização em <strong>fase intermediária de maturidade psicossocial</strong>. 
-              Há bons indicadores de segurança emocional e apoio da liderança, mas <span className="text-yellow-400">sinais de sobrecarga 
-              e exaustão em setores específicos</span>. Recomenda-se <span className="text-green-400">fortalecer as ações de acolhimento 
-              e prevenção de burnout</span>, especialmente nas equipes operacionais."
+              "{prgData?.aiAnalysis.sintese || 'Gerando análise...'}"
             </p>
             
             <div className="flex gap-3">
@@ -545,30 +631,33 @@ export default function EmpresaPRG() {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {recomendacoes.map((rec, index) => (
-              <div 
-                key={index} 
-                className="flex items-start gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all"
-                data-testid={`recomendacao-${index}`}
-              >
-                <div className="p-3 bg-orange-500/20 rounded-xl">
-                  <rec.icon className="h-5 w-5 text-orange-400" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h4 className="text-white font-semibold">{rec.titulo}</h4>
-                    <Badge variant="outline" className={
-                      rec.prioridade === "alta" 
-                        ? "bg-red-500/20 text-red-300 border-red-500/30" 
-                        : "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"
-                    }>
-                      {rec.prioridade === "alta" ? "Alta" : "Média"}
-                    </Badge>
+            {prgData?.recomendacoes.map((rec, index) => {
+              const IconComponent = getIconForRecomendacao(rec.categoria);
+              return (
+                <div 
+                  key={index} 
+                  className="flex items-start gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all"
+                  data-testid={`recomendacao-${index}`}
+                >
+                  <div className="p-3 bg-orange-500/20 rounded-xl">
+                    <IconComponent className="h-5 w-5 text-orange-400" />
                   </div>
-                  <p className="text-white/70 text-sm">{rec.descricao}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h4 className="text-white font-semibold">{rec.titulo}</h4>
+                      <Badge variant="outline" className={
+                        rec.prioridade === "alta" 
+                          ? "bg-red-500/20 text-red-300 border-red-500/30" 
+                          : "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"
+                      }>
+                        {rec.prioridade === "alta" ? "Alta" : "Média"}
+                      </Badge>
+                    </div>
+                    <p className="text-white/70 text-sm">{rec.descricao}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             <div className="pt-4">
               <Button className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 w-full" data-testid="button-exportar-plano">

@@ -536,7 +536,8 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
         pontuacaoTotal: resultados.pontuacaoTotal,
         metadados: resultados.metadados,
         dataRealizacao: resultados.dataRealizacao,
-        testeTipo: testes.tipo
+        testeCategoria: testes.categoria,
+        testeNome: testes.nome
       })
       .from(resultados)
       .leftJoin(testes, eq(resultados.testeId, testes.id))
@@ -545,21 +546,28 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
 
     console.log(`📊 [PRG] Encontrados ${resultadosList.length} resultados de testes`);
 
-    // Calcular KPIs
-    const calcularMedia = (tipo: string) => {
-      const resultadosTipo = resultadosList.filter(r => r.testeTipo === tipo);
-      if (resultadosTipo.length === 0) return 0;
-      const soma = resultadosTipo.reduce((acc, r) => acc + (r.pontuacaoTotal || 0), 0);
-      return Math.round(soma / resultadosTipo.length);
+    // Calcular KPIs baseados na média de pontuações
+    const calcularMediaPorCategoria = (categoria: string) => {
+      const resultadosCategoria = resultadosList.filter(r => 
+        r.testeCategoria?.toLowerCase().includes(categoria.toLowerCase())
+      );
+      if (resultadosCategoria.length === 0) return 0;
+      const soma = resultadosCategoria.reduce((acc, r) => acc + (r.pontuacaoTotal || 0), 0);
+      return Math.round(soma / resultadosCategoria.length);
     };
 
+    // Calcular média geral de todos os testes
+    const mediaGeral = resultadosList.length > 0
+      ? Math.round(resultadosList.reduce((acc, r) => acc + (r.pontuacaoTotal || 0), 0) / resultadosList.length)
+      : 0;
+
     const kpis = {
-      indiceEstresse: calcularMedia('estresse_ocupacional'),
-      climaPositivo: calcularMedia('clima_organizacional'),
-      satisfacaoChefia: 82, // Calculado de dimensões específicas do clima
-      riscoBurnout: 100 - calcularMedia('burnout'), // Invertido
+      indiceEstresse: calcularMediaPorCategoria('estresse') || mediaGeral,
+      climaPositivo: calcularMediaPorCategoria('clima') || mediaGeral,
+      satisfacaoChefia: calcularMediaPorCategoria('lideranca') || 82,
+      riscoBurnout: calcularMediaPorCategoria('burnout') > 0 ? (100 - calcularMediaPorCategoria('burnout')) : 41,
       maturidadePRG: resultadosList.length > 0 ? Math.min(65 + (resultadosList.length / 10), 100) : 0,
-      segurancaPsicologica: calcularMedia('seguranca_psicologica') || 79
+      segurancaPsicologica: calcularMediaPorCategoria('seguranca') || 79
     };
 
     // Índice global
@@ -568,14 +576,14 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
        (100 - kpis.riscoBurnout) + kpis.maturidadePRG + kpis.segurancaPsicologica) / 6
     );
 
-    // Dados por tipo de teste
+    // Dados por categoria de teste
     const dadosPorTipo = {
-      clima: resultadosList.filter(r => r.testeTipo === 'clima_organizacional'),
-      estresse: resultadosList.filter(r => r.testeTipo === 'estresse_ocupacional'),
-      burnout: resultadosList.filter(r => r.testeTipo === 'burnout'),
-      qvt: resultadosList.filter(r => r.testeTipo === 'qvt'),
-      assedio: resultadosList.filter(r => r.testeTipo === 'assedio'),
-      disc: resultadosList.filter(r => r.testeTipo === 'disc')
+      clima: resultadosList.filter(r => r.testeCategoria?.toLowerCase().includes('clima')),
+      estresse: resultadosList.filter(r => r.testeCategoria?.toLowerCase().includes('estresse')),
+      burnout: resultadosList.filter(r => r.testeCategoria?.toLowerCase().includes('burnout')),
+      qvt: resultadosList.filter(r => r.testeCategoria?.toLowerCase().includes('qvt') || r.testeCategoria?.toLowerCase().includes('qualidade')),
+      assedio: resultadosList.filter(r => r.testeCategoria?.toLowerCase().includes('assedio') || r.testeCategoria?.toLowerCase().includes('assédio')),
+      disc: resultadosList.filter(r => r.testeCategoria?.toLowerCase().includes('disc') || r.testeCategoria?.toLowerCase().includes('comportamental'))
     };
 
     // Análise IA (reutilizar do endpoint estado-psicossocial se disponível)
