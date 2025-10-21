@@ -3,6 +3,7 @@ import { db } from '../../db';
 import { empresas, colaboradores, convitesColaborador, resultados, testes } from '../../shared/schema';
 import { authenticateToken, requireEmpresa, requireAdmin, AuthRequest } from '../middleware/auth';
 import { eq, and, gt, desc, or } from 'drizzle-orm';
+import { generatePsychosocialAnalysis } from '../services/aiAnalysisService';
 
 const router = express.Router();
 
@@ -465,59 +466,23 @@ router.get('/estado-psicossocial', authenticateToken, async (req: AuthRequest, r
         : 0
     };
 
-    // Recomendações baseadas em IA (análise dos padrões)
-    const recomendacoes: Array<{ categoria: string; prioridade: string; titulo: string; descricao: string }> = [];
-
-    if (indiceGeralBemEstar < 50) {
-      recomendacoes.push({
-        categoria: 'Urgente',
-        prioridade: 'Alta',
-        titulo: 'Intervenção Imediata Necessária',
-        descricao: 'O índice de bem-estar está crítico. Recomenda-se ação imediata com programas de apoio psicológico e revisão das condições de trabalho.'
-      });
-    }
-
-    if (nr1Fatores.some(f => f.nivel === 'Crítico')) {
-      recomendacoes.push({
-        categoria: 'NR1 Compliance',
-        prioridade: 'Alta',
-        titulo: 'Fatores de Risco Críticos Identificados',
-        descricao: 'Foram identificados fatores de risco psicossociais críticos. Implemente medidas preventivas imediatas conforme NR1.'
-      });
-    }
-
-    if (alertasCriticos.length > 0) {
-      recomendacoes.push({
-        categoria: 'Alertas Críticos',
-        prioridade: 'Alta',
-        titulo: 'Situações de Risco Detectadas',
-        descricao: `${alertasCriticos.length} alerta(s) crítico(s) identificado(s). Ações disciplinares e educativas podem ser necessárias.`
-      });
-    }
-
-    if (nr1Compliance.cobertura < 80) {
-      recomendacoes.push({
-        categoria: 'Cobertura',
-        prioridade: 'Média',
-        titulo: 'Aumentar Participação nos Testes',
-        descricao: `Apenas ${nr1Compliance.cobertura}% dos colaboradores realizaram testes. Aumente a cobertura para melhor diagnóstico.`
-      });
-    }
-
-    // Adicionar recomendações preventivas
-    recomendacoes.push({
-      categoria: 'Prevenção',
-      prioridade: 'Média',
-      titulo: 'Programas de Bem-Estar',
-      descricao: 'Implemente programas regulares de mindfulness, atividades físicas e gestão de estresse.'
+    // ✨ ANÁLISE REAL COM IA - Google Gemini
+    console.log('🧠 [API] Gerando análise com IA para empresa:', empresaId);
+    
+    const aiAnalysis = await generatePsychosocialAnalysis({
+      indiceGeralBemEstar,
+      totalColaboradores: colaboradoresList.length,
+      totalTestesRealizados: resultadosList.length,
+      testesUltimos30Dias: resultadosRecentes.length,
+      cobertura: nr1Compliance.cobertura,
+      dimensoes: dimensoesAnalise,
+      nr1Fatores,
+      alertasCriticos: [...new Set(alertasCriticos)]
     });
 
-    recomendacoes.push({
-      categoria: 'Capacitação',
-      prioridade: 'Média',
-      titulo: 'Treinamento de Liderança',
-      descricao: 'Capacite gestores em comunicação não-violenta, mediação de conflitos e inteligência emocional.'
-    });
+    const recomendacoes = aiAnalysis.recomendacoes;
+    
+    console.log('✅ [API] Análise IA gerada com sucesso:', recomendacoes.length, 'recomendações');
 
     res.json({
       analise: {
