@@ -39,13 +39,25 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
 - **Result Visualization**: Unified component for displaying results for all test types, ensuring visual consistency.
 - **Data Isolation**: Each company can only view results of its own employees. Employees can only view their own results.
 - **Authentication Rules**: Employees must log in with their own accounts to perform tests; company logins will not record results for specific employees.
-- **Psychosocial State Monitoring (NEW - October 2025)**:
+- **Psychosocial State Monitoring (IMPLEMENTED - October 21, 2025)**:
     - **Endpoint**: `GET /api/empresas/estado-psicossocial`
-    - **Page**: `/empresa/estado-psicossocial`
+    - **Frontend Page**: `/empresa/estado-psicossocial` (EmpresaEstadoPsicossocial.tsx)
+    - **Route Configuration**: Registered in EmpresaDashboard.tsx
+    - **Sidebar Link**: "Estado Psicossocial da Empresa" in EmpresaSidebar.tsx
     - **Access Control**: Admins and Companies can access. Admins can view any company's data (defaults to first active company if no empresaId query param provided)
+    - **Authentication**: Uses localStorage.getItem('authToken') with Bearer token in headers
+    - **Data Fetching**: useEffect + useState pattern (NOT useQuery) to match other empresa pages
+    - **AI Integration**: Google Gemini API via GOOGLE_API_KEY environment variable
     - **NR1 Compliance**: Tracks psychosocial risk factors (workload, autonomy, harassment, support, work-life balance) as required by Brazilian NR1 regulation (effective May 2025)
     - **LGPD Compliance**: Implements Article 20 requirements for AI-driven analysis with transparency, explainability, and data minimization
     - **ISO 45003 Framework**: Uses international standards for psychological health and safety at work
+    - **UI Design**: Revolutionary glassmorphism design with:
+        - Animated floating particles (20 elements)
+        - Circular progress indicators with dynamic color coding
+        - 4 interactive tabs: AI Analysis (purple), NR1 (blue), Dimensions (green), Actions (orange-red)
+        - Emotional NLP messaging based on well-being scores
+        - Scientific credibility badges (ISO 45003, WHO, Karasek-Siegrist)
+        - Custom animations (float, shimmer, pulse)
     - **Features**:
         - Real-time aggregation of test results across all company employees
         - AI-powered insights with transparent methodology disclosure
@@ -55,6 +67,8 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
         - Critical alerts identification
         - Continuous improvement action plans
     - **Privacy**: All data is aggregated and anonymized; individual employee data is never exposed
+    - **Error Handling**: Comprehensive error states with user-friendly messages
+    - **Loading States**: Animated skeleton screens with glassmorphism effects
 
 ### System Design Choices
 The system migrated from Supabase to a fully local API backend to eliminate external dependencies and ensure greater control over data and authentication. Manual Zod schemas are used due to version incompatibilities with `drizzle-zod`. The API returns camelCase, and the frontend handles conversions to snake_case where necessary.
