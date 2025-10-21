@@ -71,6 +71,13 @@ export default function TesteKarasekSiegristPerguntas() {
     
     buscarPerguntas();
   }, [toast]);
+
+  // Resetar estados quando mudar de pergunta
+  useEffect(() => {
+    setRespostaSalva(false);
+    setErroSalvamento(null);
+    setProcessandoResposta(false);
+  }, [perguntaAtual]);
   
   if (carregandoPerguntas) {
     return (
@@ -312,13 +319,6 @@ export default function TesteKarasekSiegristPerguntas() {
       setPerguntaAtual(prev => prev - 1);
     }
   };
-
-  // Resetar estados quando mudar de pergunta
-  useEffect(() => {
-    setRespostaSalva(false);
-    setErroSalvamento(null);
-    setProcessandoResposta(false);
-  }, [perguntaAtual]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
