@@ -906,35 +906,110 @@ router.get('/prg/publico/:token', async (req, res) => {
       .where(eq(resultados.empresaId, empresaId))
       .orderBy(desc(resultados.dataRealizacao));
 
-    // Processar dimensões dos metadados (mesma lógica da rota principal)
-    const todasDimensoes: Array<{ dimensaoId: string; nome: string; percentual: number; nivel: string; total: number }> = [];
-    
+    // ✨ PROCESSAR METADADOS - MESMA LÓGICA DA ROTA PRINCIPAL
+    const dimensoesAgregadas: Record<string, { total: number; soma: number }> = {};
+    const alertasCriticos: string[] = [];
+
+    // Processar metadados dos resultados (EXATAMENTE como rota principal)
     resultadosList.forEach(resultado => {
-      if (resultado.metadados && typeof resultado.metadados === 'object') {
-        const meta = resultado.metadados as any;
-        if (meta.dimensoes && Array.isArray(meta.dimensoes)) {
-          meta.dimensoes.forEach((dim: any) => {
-            todasDimensoes.push({
-              dimensaoId: dim.dimensao || dim.nome || 'desconhecida',
-              nome: dim.dimensao || dim.nome || 'Desconhecida',
-              percentual: dim.pontuacao || dim.percentual || 0,
-              nivel: dim.nivel || (dim.pontuacao > 70 ? 'Bom' : dim.pontuacao > 50 ? 'Adequado' : 'Crítico'),
-              total: 1
-            });
-          });
-        }
+      const metadados = resultado.metadados as Record<string, any> || {};
+      const analiseCompleta = metadados.analise_completa || {};
+      
+      // Agregar dimensões
+      if (analiseCompleta.dimensoes) {
+        Object.entries(analiseCompleta.dimensoes).forEach(([dimensaoId, dados]: [string, any]) => {
+          if (!dimensoesAgregadas[dimensaoId]) {
+            dimensoesAgregadas[dimensaoId] = { total: 0, soma: 0 };
+          }
+          dimensoesAgregadas[dimensaoId].total++;
+          dimensoesAgregadas[dimensaoId].soma += dados.percentual || dados.media || dados.pontuacao || 0;
+        });
+      }
+
+      // Identificar alertas críticos
+      if (metadados.alertas_criticos && Array.isArray(metadados.alertas_criticos)) {
+        alertasCriticos.push(...metadados.alertas_criticos);
       }
     });
 
-    // Calcular função auxiliar para buscar dimensões
-    const getDimensaoValor = (palavrasChave: string[]) => {
-      const dimensoesEncontradas = todasDimensoes.filter(d => 
-        palavrasChave.some(palavra => d.dimensaoId.toLowerCase().includes(palavra.toLowerCase()))
+    // Mapeamento de nomes (mesmo da rota principal)
+    const nomesDimensoes: Record<string, string> = {
+      'segurancaPsicologica': 'Segurança Psicológica',
+      'comunicacaoInterna': 'Comunicação Interna',
+      'pertencimento': 'Pertencimento e Inclusão',
+      'justicaOrganizacional': 'Justiça Organizacional',
+      'demandas_trabalho': 'Demandas do Trabalho',
+      'autonomia_controle': 'Autonomia e Controle',
+      'apoio_social': 'Apoio Social',
+      'reconhecimento': 'Reconhecimento e Recompensas',
+      'seguranca_emprego': 'Segurança no Emprego',
+      'ambiente_fisico': 'Ambiente Físico e Recursos',
+      'conflito_trabalho_familia': 'Conflito Trabalho-Família',
+      'assedio_violencia': 'Assédio e Violência',
+      'cultura_organizacional': 'Cultura Organizacional',
+      'identificacao-riscos': 'Identificação de Riscos',
+      'avaliacao-impacto': 'Avaliação de Impacto',
+      'medidas-preventivas': 'Medidas Preventivas',
+      'monitoramento-controle': 'Monitoramento e Controle',
+      'capacitacao-desenvolvimento': 'Capacitação e Desenvolvimento',
+      'estresse': 'Estresse Ocupacional',
+      'burnout': 'Burnout',
+      'exaustao': 'Exaustão Emocional',
+      'satisfacao': 'Satisfação no Trabalho',
+      'saude': 'Saúde e Bem-Estar',
+      'lideranca': 'Liderança',
+      'crescimento': 'Crescimento Profissional',
+      'compensacao': 'Compensação',
+      'condicoes': 'Condições de Trabalho',
+      'demanda': 'Demanda Psicológica',
+      'controle': 'Controle sobre o Trabalho',
+      'apoio': 'Apoio Social',
+      'esforco-exigido': 'Esforço Exigido',
+      'recompensas-recebidas': 'Recompensas Recebidas',
+      'comunicacao': 'Comunicação',
+      'prevencao': 'Prevenção',
+      'mapeamento': 'Mapeamento',
+      'clima': 'Clima Organizacional',
+      'ambiente': 'Ambiente de Trabalho',
+      'organizacional': 'Cultura Organizacional'
+    };
+
+    // Calcular médias das dimensões (mesma lógica)
+    const todasDimensoes = Object.entries(dimensoesAgregadas).map(([dimensaoId, dados]) => {
+      const media = dados.total > 0 ? dados.soma / dados.total : 0;
+      let nivel = 'Bom';
+      let cor = 'green';
+      
+      if (media < 40) {
+        nivel = 'Crítico';
+        cor = 'red';
+      } else if (media < 60) {
+        nivel = 'Atenção';
+        cor = 'orange';
+      } else if (media < 75) {
+        nivel = 'Moderado';
+        cor = 'yellow';
+      }
+
+      const nomeFormatado = nomesDimensoes[dimensaoId] || 
+        dimensaoId.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+      return {
+        dimensaoId,
+        nome: nomeFormatado,
+        percentual: Math.round(media),
+        nivel,
+        cor,
+        total: dados.total
+      };
+    });
+
+    // Função helper para buscar dimensão específica
+    const getDimensaoValor = (keywords: string[]): number => {
+      const dimensao = todasDimensoes.find(d => 
+        keywords.some(k => d.dimensaoId.toLowerCase().includes(k.toLowerCase()))
       );
-      if (dimensoesEncontradas.length === 0) return 0;
-      return Math.round(
-        dimensoesEncontradas.reduce((acc, d) => acc + d.percentual, 0) / dimensoesEncontradas.length
-      );
+      return dimensao?.percentual || 0;
     };
 
     // Agrupar resultados por tipo
@@ -985,8 +1060,7 @@ router.get('/prg/publico/:token', async (req, res) => {
       r.dataRealizacao && new Date(r.dataRealizacao) >= trintaDiasAtras
     ).length;
 
-    // Alertas críticos
-    const alertasCriticos: string[] = [];
+    // Adicionar alertas críticos baseados nos KPIs
     if (kpis.indiceEstresse > 70) alertasCriticos.push('Nível de estresse elevado detectado');
     if (kpis.riscoBurnout > 60) alertasCriticos.push('Risco de burnout elevado');
     if (kpis.climaPositivo < 50) alertasCriticos.push('Clima organizacional necessita atenção');
