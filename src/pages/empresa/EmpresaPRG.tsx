@@ -469,27 +469,147 @@ export default function EmpresaPRG() {
           ))}
         </div>
 
-        {/* ANÁLISE INTELIGENTE DA IA */}
-        <Card className="border-0 bg-gradient-to-br from-purple-900/80 to-blue-900/80 backdrop-blur-xl shadow-xl">
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-500/30 rounded-lg">
-                <Brain className="h-6 w-6 text-purple-200" />
+        {/* ANÁLISE INTELIGENTE DA IA - VERSÃO REVOLUCIONÁRIA */}
+        <div className="relative overflow-hidden rounded-3xl border-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 backdrop-blur-xl shadow-2xl">
+          {/* Partículas de fundo animadas */}
+          <div className="absolute inset-0 opacity-20">
+            {[...Array(15)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full bg-white animate-pulse"
+                style={{
+                  width: `${Math.random() * 4 + 2}px`,
+                  height: `${Math.random() * 4 + 2}px`,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  animationDuration: `${Math.random() * 3 + 2}s`
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Header futurista */}
+          <div className="relative p-8 border-b border-white/10">
+            <div className="flex items-start justify-between gap-6 flex-wrap">
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl blur-xl opacity-50 animate-pulse"></div>
+                  <div className="relative p-4 bg-gradient-to-br from-purple-500/30 to-blue-500/30 rounded-2xl backdrop-blur-xl border border-white/20">
+                    <Brain className="h-8 w-8 text-white animate-pulse" />
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-3xl font-black text-white mb-1 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+                    HumaniQ AI - Análise Inteligente
+                  </h2>
+                  <p className="text-white/80 font-medium text-sm">
+                    Powered by Google Gemini AI • ISO 45003:2021 • NR-01 Compliant
+                  </p>
+                </div>
               </div>
-              <div>
-                <CardTitle className="text-white text-2xl font-bold">Síntese da Análise Inteligente – HumaniQ AI</CardTitle>
-                <CardDescription className="text-white/90 font-medium">
-                  Análise automática gerada pela inteligência artificial
-                </CardDescription>
+
+              {/* Badges de credibilidade */}
+              <div className="flex gap-2 flex-wrap">
+                <Badge className="bg-gradient-to-r from-green-500/30 to-emerald-500/30 border border-green-400/30 text-green-100 backdrop-blur-xl px-3 py-1">
+                  <Target className="h-3 w-3 mr-1" />
+                  ISO 45003
+                </Badge>
+                <Badge className="bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/30 text-blue-100 backdrop-blur-xl px-3 py-1">
+                  <Shield className="h-3 w-3 mr-1" />
+                  NR-01
+                </Badge>
+                <Badge className="bg-gradient-to-r from-purple-500/30 to-pink-500/30 border border-purple-400/30 text-purple-100 backdrop-blur-xl px-3 py-1">
+                  <Sparkles className="h-3 w-3 mr-1" />
+                  AI-Powered
+                </Badge>
               </div>
             </div>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <p className="text-white text-lg leading-relaxed font-medium bg-white/5 p-4 rounded-lg border border-white/10">
-              "{prgData?.aiAnalysis.sintese || 'Gerando análise...'}"
-            </p>
-          </CardContent>
-        </Card>
+
+            {/* Mini KPIs */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+              <div className="bg-white/5 backdrop-blur-xl rounded-xl p-3 border border-white/10">
+                <p className="text-white/70 text-xs font-medium mb-1">Colaboradores Avaliados</p>
+                <p className="text-white text-2xl font-bold">{prgData?.totalColaboradores || 0}</p>
+              </div>
+              <div className="bg-white/5 backdrop-blur-xl rounded-xl p-3 border border-white/10">
+                <p className="text-white/70 text-xs font-medium mb-1">Testes Realizados</p>
+                <p className="text-white text-2xl font-bold">{prgData?.totalTestes || 0}</p>
+              </div>
+              <div className="bg-white/5 backdrop-blur-xl rounded-xl p-3 border border-white/10">
+                <p className="text-white/70 text-xs font-medium mb-1">Cobertura Populacional</p>
+                <p className="text-white text-2xl font-bold">{prgData?.cobertura || 0}%</p>
+              </div>
+              <div className="bg-white/5 backdrop-blur-xl rounded-xl p-3 border border-white/10">
+                <p className="text-white/70 text-xs font-medium mb-1">Índice Global PRG</p>
+                <p className={`text-2xl font-bold ${prgData && prgData.indiceGlobal < 40 ? 'text-red-400' : prgData && prgData.indiceGlobal < 60 ? 'text-yellow-400' : 'text-green-400'}`}>
+                  {prgData?.indiceGlobal || 0}%
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Conteúdo principal da análise */}
+          <div className="relative p-8 space-y-6">
+            {/* Texto da análise em formato visual */}
+            <div className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="p-2 bg-blue-500/20 rounded-lg">
+                  <FileText className="h-5 w-5 text-blue-300" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-lg mb-1">Diagnóstico Psicossocial</h3>
+                  <p className="text-white/70 text-sm">Análise técnica baseada em evidências científicas</p>
+                </div>
+              </div>
+              
+              <div className="prose prose-invert max-w-none">
+                <p className="text-white/90 text-base leading-relaxed whitespace-pre-line">
+                  {prgData?.aiAnalysis.sintese || 'Gerando análise inteligente...'}
+                </p>
+              </div>
+            </div>
+
+            {/* Metodologia e Frameworks */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 backdrop-blur-xl rounded-xl p-4 border border-purple-400/20">
+                <div className="flex items-center gap-2 mb-2">
+                  <GraduationCap className="h-5 w-5 text-purple-300" />
+                  <h4 className="text-purple-200 font-bold text-sm">Modelo Karasek-Theorell</h4>
+                </div>
+                <p className="text-purple-100/80 text-xs">Demanda-Controle-Suporte Social (1990)</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 backdrop-blur-xl rounded-xl p-4 border border-blue-400/20">
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="h-5 w-5 text-blue-300" />
+                  <h4 className="text-blue-200 font-bold text-sm">NR-01 (MTP nº 6.730/2020)</h4>
+                </div>
+                <p className="text-blue-100/80 text-xs">Gestão de Riscos Psicossociais</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 backdrop-blur-xl rounded-xl p-4 border border-green-400/20">
+                <div className="flex items-center gap-2 mb-2">
+                  <Target className="h-5 w-5 text-green-300" />
+                  <h4 className="text-green-200 font-bold text-sm">ISO 45003:2021</h4>
+                </div>
+                <p className="text-green-100/80 text-xs">Saúde e Segurança Psicológica</p>
+              </div>
+            </div>
+
+            {/* Footer com timestamp */}
+            <div className="flex items-center justify-between pt-4 border-t border-white/10">
+              <div className="flex items-center gap-2 text-white/60 text-xs">
+                <Calendar className="h-4 w-4" />
+                <span>Última atualização: {new Date().toLocaleString('pt-BR')}</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/60 text-xs">
+                <Sparkles className="h-4 w-4" />
+                <span>Análise em tempo real</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* TABS - RELATÓRIOS DETALHADOS */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
