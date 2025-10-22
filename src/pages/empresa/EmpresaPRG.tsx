@@ -410,13 +410,6 @@ export default function EmpresaPRG() {
           <strong>📈 Impacto Esperado:</strong> ${rec.impactoEsperado}
         </div>
       ` : ''}
-      
-      ${rec.recursos && rec.recursos.length > 0 ? `
-        <div class="recursos-box">
-          <strong>💼 Recursos Necessários:</strong><br>
-          ${rec.recursos.map(r => `• ${r}`).join('<br>')}
-        </div>
-      ` : ''}
     </div>
   `).join('')}
 
@@ -606,9 +599,6 @@ export default function EmpresaPRG() {
     
     .acoes-list { margin: 12px 0 12px 20px; }
     .acoes-list li { margin: 8px 0; color: #555; }
-    
-    .recursos-box { background: linear-gradient(to right, #ecfeff, #faf5ff); border-left: 5px solid #06b6d4; padding: 20px; border-radius: 12px; margin: 14px 0; box-shadow: 0 2px 8px rgba(6,182,212,0.1); }
-    .recursos-box strong { color: #0e7490; font-weight: 700; }
     
     .matriz-table { width: 100%; border-collapse: collapse; margin: 24px 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .matriz-table th, .matriz-table td { border: 1px solid #e2e8f0; padding: 14px 16px; text-align: left; }
@@ -1083,15 +1073,6 @@ export default function EmpresaPRG() {
           <div class="rec-section">
             <div class="rec-section-title">🎯 Impacto Esperado</div>
             <div class="rec-section-content">${rec.impactoEsperado}</div>
-          </div>
-        ` : ''}
-
-        ${rec.recursos && rec.recursos.length > 0 ? `
-          <div class="recursos-box">
-            <strong>💰 Recursos Necessários:</strong>
-            <ul style="margin: 8px 0 0 20px;">
-              ${rec.recursos.map(recurso => `<li>${recurso}</li>`).join('')}
-            </ul>
           </div>
         ` : ''}
       </div>

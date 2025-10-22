@@ -19,7 +19,8 @@ import {
   Briefcase,
   DollarSign,
   ArrowRight,
-  AlertCircle
+  AlertCircle,
+  Brain
 } from "lucide-react";
 import MatrizRisco from "@/components/prg/MatrizRisco";
 import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
