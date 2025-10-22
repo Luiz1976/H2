@@ -297,4 +297,78 @@ router.get('/listar', authenticateToken, async (req: AuthRequest, res) => {
   }
 });
 
+// Cancelar/Excluir convite de colaborador
+router.delete('/colaborador/:token', authenticateToken, requireEmpresa, async (req: AuthRequest, res) => {
+  try {
+    const { token } = req.params;
+
+    // Verificar se o convite existe e pertence à empresa
+    const [convite] = await db
+      .select()
+      .from(convitesColaborador)
+      .where(
+        and(
+          eq(convitesColaborador.token, token),
+          eq(convitesColaborador.empresaId, req.user!.empresaId!)
+        )
+      )
+      .limit(1);
+
+    if (!convite) {
+      return res.status(404).json({ error: 'Convite não encontrado ou você não tem permissão' });
+    }
+
+    // Atualizar status para cancelado
+    await db
+      .update(convitesColaborador)
+      .set({ status: 'cancelado' })
+      .where(eq(convitesColaborador.id, convite.id));
+
+    res.json({ 
+      success: true, 
+      message: 'Convite cancelado com sucesso' 
+    });
+  } catch (error) {
+    console.error('Erro ao cancelar convite colaborador:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Cancelar/Excluir convite de empresa
+router.delete('/empresa/:token', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
+  try {
+    const { token } = req.params;
+
+    // Verificar se o convite existe e pertence ao admin
+    const [convite] = await db
+      .select()
+      .from(convitesEmpresa)
+      .where(
+        and(
+          eq(convitesEmpresa.token, token),
+          eq(convitesEmpresa.adminId, req.user!.userId)
+        )
+      )
+      .limit(1);
+
+    if (!convite) {
+      return res.status(404).json({ error: 'Convite não encontrado ou você não tem permissão' });
+    }
+
+    // Atualizar status para cancelado
+    await db
+      .update(convitesEmpresa)
+      .set({ status: 'cancelado' })
+      .where(eq(convitesEmpresa.id, convite.id));
+
+    res.json({ 
+      success: true, 
+      message: 'Convite cancelado com sucesso' 
+    });
+  } catch (error) {
+    console.error('Erro ao cancelar convite empresa:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 export default router;

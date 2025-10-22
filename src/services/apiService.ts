@@ -126,6 +126,20 @@ class ApiService {
     return this.makeRequest('/api/convites/listar');
   }
 
+  // Cancelar convite de colaborador
+  async cancelarConviteColaborador(token: string): Promise<{ success: boolean; message: string }> {
+    return this.makeRequest(`/api/convites/colaborador/${token}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Cancelar convite de empresa
+  async cancelarConviteEmpresa(token: string): Promise<{ success: boolean; message: string }> {
+    return this.makeRequest(`/api/convites/empresa/${token}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Listar testes disponíveis
   async listarTestes(): Promise<{ testes: any[] }> {
     return this.makeRequest('/api/testes');

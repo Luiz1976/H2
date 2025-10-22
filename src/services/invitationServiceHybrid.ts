@@ -289,21 +289,29 @@ class HybridInvitationService {
   }
 
   /**
-   * Cancelar convite - usa Supabase direto (operação de atualização permitida)
+   * Cancelar convite - usa API backend
    */
   async cancelarConvite(token: string, tipo: 'empresa' | 'colaborador'): Promise<HybridInvitationResponse> {
     try {
-      const response = await originalService.cancelarConvite(token, tipo);
+      console.log('🔄 [HYBRID] Cancelando convite via API backend...', { token, tipo });
+      
+      // Usar API backend
+      const response = tipo === 'colaborador' 
+        ? await apiService.cancelarConviteColaborador(token)
+        : await apiService.cancelarConviteEmpresa(token);
+
+      console.log('✅ [HYBRID] Convite cancelado via API backend:', response);
       return {
-        ...response,
-        source: 'supabase'
+        success: response.success,
+        message: response.message || 'Convite cancelado com sucesso',
+        source: 'api'
       };
     } catch (error) {
       console.error('❌ [HYBRID] Erro ao cancelar convite:', error);
       return {
         success: false,
-        message: 'Erro ao cancelar convite',
-        source: 'supabase'
+        message: error instanceof Error ? error.message : 'Erro ao cancelar convite',
+        source: 'api'
       };
     }
   }
