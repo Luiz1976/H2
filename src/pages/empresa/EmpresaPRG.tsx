@@ -474,27 +474,29 @@ export default function EmpresaPRG() {
         </div>
 
         {/* ANÁLISE INTELIGENTE DA IA */}
-        <Card className="border-0 bg-gradient-to-br from-purple-900/30 to-blue-900/30 backdrop-blur-xl shadow-xl">
+        <Card className="border-0 bg-gradient-to-br from-purple-900/80 to-blue-900/80 backdrop-blur-xl shadow-xl">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Brain className="h-6 w-6 text-purple-400" />
+              <div className="p-2 bg-purple-500/30 rounded-lg">
+                <Brain className="h-6 w-6 text-purple-200" />
+              </div>
               <div>
-                <CardTitle className="text-white text-2xl">Síntese da Análise Inteligente – HumaniQ AI</CardTitle>
-                <CardDescription className="text-white/60">
+                <CardTitle className="text-white text-2xl font-bold">Síntese da Análise Inteligente – HumaniQ AI</CardTitle>
+                <CardDescription className="text-white/90 font-medium">
                   Análise automática gerada pela inteligência artificial
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            <p className="text-white/90 text-lg leading-relaxed">
+            <p className="text-white text-lg leading-relaxed font-medium bg-white/5 p-4 rounded-lg border border-white/10">
               "{prgData?.aiAnalysis.sintese || 'Gerando análise...'}"
             </p>
             
             <div className="flex gap-3">
               <Button 
                 onClick={handleGerarPDF}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" 
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg" 
                 data-testid="button-gerar-pdf"
               >
                 <Download className="h-4 w-4 mr-2" />
@@ -639,13 +641,15 @@ export default function EmpresaPRG() {
         </Tabs>
 
         {/* AÇÕES RECOMENDADAS */}
-        <Card className="border-0 bg-gradient-to-br from-orange-900/30 to-red-900/30 backdrop-blur-xl shadow-xl">
+        <Card className="border-0 bg-gradient-to-br from-orange-900/80 to-red-900/80 backdrop-blur-xl shadow-xl">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Target className="h-6 w-6 text-orange-400" />
+              <div className="p-2 bg-orange-500/30 rounded-lg">
+                <Target className="h-6 w-6 text-orange-200" />
+              </div>
               <div>
-                <CardTitle className="text-white text-2xl">Ações Recomendadas pela IA</CardTitle>
-                <CardDescription className="text-white/60">
+                <CardTitle className="text-white text-2xl font-bold">Ações Recomendadas pela IA</CardTitle>
+                <CardDescription className="text-white/90 font-medium">
                   Plano de ação personalizado baseado nos resultados
                 </CardDescription>
               </div>
@@ -657,32 +661,32 @@ export default function EmpresaPRG() {
               return (
                 <div 
                   key={index} 
-                  className="flex items-start gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all"
+                  className="flex items-start gap-4 p-5 bg-white/10 rounded-xl hover:bg-white/15 transition-all border border-white/10"
                   data-testid={`recomendacao-${index}`}
                 >
-                  <div className="p-3 bg-orange-500/20 rounded-xl">
-                    <IconComponent className="h-5 w-5 text-orange-400" />
+                  <div className="p-3 bg-orange-500/30 rounded-xl">
+                    <IconComponent className="h-6 w-6 text-orange-100" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="text-white font-semibold">{rec.titulo}</h4>
+                    <div className="flex items-center gap-2 mb-2">
+                      <h4 className="text-white font-bold text-lg">{rec.titulo}</h4>
                       <Badge variant="outline" className={
                         rec.prioridade === "alta" 
-                          ? "bg-red-500/20 text-red-300 border-red-500/30" 
-                          : "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"
+                          ? "bg-red-600/90 text-white border-red-400 font-bold" 
+                          : "bg-yellow-600/90 text-white border-yellow-400 font-bold"
                       }>
                         {rec.prioridade === "alta" ? "Alta" : "Média"}
                       </Badge>
                     </div>
-                    <p className="text-white/70 text-sm">{rec.descricao}</p>
+                    <p className="text-white/95 text-base leading-relaxed">{rec.descricao}</p>
                   </div>
                 </div>
               );
             })}
 
             <div className="pt-4">
-              <Button className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 w-full" data-testid="button-exportar-plano">
-                <Download className="h-4 w-4 mr-2" />
+              <Button className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 w-full text-white font-bold text-lg py-6 shadow-lg" data-testid="button-exportar-plano">
+                <Download className="h-5 w-5 mr-2" />
                 Exportar Plano de Ação
               </Button>
             </div>
