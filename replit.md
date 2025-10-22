@@ -1,7 +1,7 @@
 # HumaniQ - Plataforma de Avaliação Psicológica
 
 ## Overview
-HumaniQ is a hierarchical user management system (Admin → Company → Employee) designed to provide psychological assessments in the workplace. The platform aims to streamline the process of conducting and analyzing psychological tests, offering insights into work-life quality, psychosocial risks, organizational climate, and occupational stress. It is built for mass usage, supporting multiple simultaneous users and ensuring data isolation between companies.
+HumaniQ is a hierarchical user management system (Admin → Company → Employee) designed for mass psychological assessments in the workplace. It aims to streamline testing, analyze work-life quality, psychosocial risks, organizational climate, and occupational stress, providing data isolation between companies. The platform offers comprehensive tools for monitoring psychosocial states and managing risks, aligning with regulatory and international standards.
 
 ## User Preferences
 I prefer simple language and clear explanations. I want iterative development with frequent updates. Ask before making major architectural changes. Do not make changes to the `shared` folder without explicit instruction. I prefer detailed explanations for complex features or decisions.
@@ -9,7 +9,7 @@ I prefer simple language and clear explanations. I want iterative development wi
 ## System Architecture
 
 ### UI/UX Decisions
-The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS for a modern and responsive user experience. Components like `ResultadoVisualizacao`, `ResultadoPopup`, and `Resultado.tsx` are designed for consistency in displaying test results across different views, unifying the layout and reducing code duplication.
+The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, responsive design. Key components like `ResultadoVisualizacao` unify the display of test results. Revolutionary glassmorphism designs with animated elements are used for advanced dashboards like "Estado Psicossocial" and "PRG".
 
 ### Technical Implementations
 - **Backend**: Express.js + TypeScript
@@ -20,155 +20,24 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
 - **State Management**: React Query (TanStack Query)
 - **Routing**: Wouter
 - **API Structure**: RESTful API with distinct routes for authentication, invitations, companies, and psychological tests.
-- **Environment Variables**: `DATABASE_URL`, `JWT_SECRET`.
-- **NPM Commands**: `npm run dev` (frontend), `npm run server` (backend), `npm run db:push` (DB sync).
-- **Security**: JWT tokens are valid for 7 days.
-- **Performance**: PostgreSQL connection pool configured for up to 20 simultaneous connections, with optimized timeouts (10s connect, 20s idle). CORS is enabled for multiple origins.
+- **Security**: JWT tokens valid for 7 days.
+- **Performance**: PostgreSQL connection pool (20 simultaneous connections, 10s connect, 20s idle timeout). CORS enabled for multiple origins.
 
 ### Feature Specifications
-- **User Roles**: Admin, Company, Employee with distinct permissions and workflows.
-- **Invitation System**: Hierarchical invitations allowing Admins to invite Companies, and Companies to invite Employees.
-- **Psychological Tests**:
-    - QVT (Qualidade de Vida no Trabalho)
-    - RPO (Riscos Psicossociais Ocupacionais)
-    - Clima e Bem-Estar (Organizational Climate)
-    - Estresse Ocupacional (Occupational Stress)
-    - Karasek-Siegrist (Demand-Control-Support)
-    - PAS (Pesquisa de Ambiente de Segurança)
-    - MGRP (Modelo Geral de Riscos Psicossociais)
-- **Result Visualization**: Unified component for displaying results for all test types, ensuring visual consistency.
-- **Data Isolation**: Each company can only view results of its own employees. Employees can only view their own results.
-- **Authentication Rules**: Employees must log in with their own accounts to perform tests; company logins will not record results for specific employees.
-- **Psychosocial State Monitoring (IMPLEMENTED - October 21, 2025)**:
-    - **Endpoint**: `GET /api/empresas/estado-psicossocial`
-    - **Frontend Page**: `/empresa/estado-psicossocial` (EmpresaEstadoPsicossocial.tsx)
-    - **Route Configuration**: Registered in EmpresaDashboard.tsx
-    - **Sidebar Link**: "Estado Psicossocial da Empresa" in EmpresaSidebar.tsx
-    - **Access Control**: Admins and Companies can access. Admins can view any company's data (defaults to first active company if no empresaId query param provided)
-    - **Authentication**: Uses localStorage.getItem('authToken') with Bearer token in headers
-    - **Data Fetching**: useEffect + useState pattern (NOT useQuery) to match other empresa pages
-    - **AI Integration**: Google Gemini API via GOOGLE_API_KEY environment variable
-    - **NR1 Compliance**: Tracks psychosocial risk factors (workload, autonomy, harassment, support, work-life balance) as required by Brazilian NR1 regulation (effective May 2025)
-    - **LGPD Compliance**: Implements Article 20 requirements for AI-driven analysis with transparency, explainability, and data minimization
-    - **ISO 45003 Framework**: Uses international standards for psychological health and safety at work
-    - **UI Design**: Revolutionary glassmorphism design with:
-        - Animated floating particles (20 elements)
-        - Circular progress indicators with dynamic color coding
-        - 4 interactive tabs: AI Analysis (purple), NR1 (blue), Dimensions (green), Actions (orange-red)
-        - Emotional NLP messaging based on well-being scores
-        - Scientific credibility badges (ISO 45003, WHO, Karasek-Siegrist)
-        - Custom animations (float, shimmer, pulse)
-    - **Features**:
-        - Real-time aggregation of test results across all company employees
-        - AI-powered insights with transparent methodology disclosure
-        - Risk level classification (Critical, Attention, Moderate, Good)
-        - Automated recommendations based on statistical patterns
-        - Coverage metrics and compliance tracking
-        - Critical alerts identification
-        - Continuous improvement action plans
-    - **Privacy**: All data is aggregated and anonymized; individual employee data is never exposed
-    - **Error Handling**: Comprehensive error states with user-friendly messages
-    - **Loading States**: Animated skeleton screens with glassmorphism effects
-- **PRG Module - Programa de Gestão de Riscos Psicossociais (FULLY IMPLEMENTED WITH REAL DATA - October 21, 2025)**:
-    - **Backend Endpoint**: `GET /api/empresas/prg` - Aggregates real test data and calculates KPIs
-    - **Frontend Page**: `/empresa/prg` (EmpresaPRG.tsx, 777 lines)
-    - **Route Configuration**: Registered in EmpresaDashboard.tsx
-    - **Sidebar Link**: "PRG" in EmpresaSidebar.tsx with FileText icon
-    - **Purpose**: Full psychosocial risk management program dashboard with real-time data analysis
-    - **Design**: Glassmorphism design matching EmpresaEstadoPsicossocial
-    - **Header**: Inspired by EmpresaEstadoPsicossocial with circular progress indicator showing global index
-    - **Data Fetching**: useEffect + useState + fetch pattern with authToken (NOT useQuery)
-    - **Auto-Refresh**: Reloads data when filters change (period, sector)
-    - **Features**:
-        - Dynamic filters (Period, Sector, Job Title, Test Type) - auto-reload on change
-        - 6 KPI cards with real-time metrics calculated from test results:
-            * Occupational Stress Index (from estresse category tests)
-            * Positive Organizational Climate (from clima category tests)
-            * Leadership Satisfaction (from lideranca category tests)
-            * Burnout Risk (inverted burnout scores)
-            * PRG Maturity (calculated from test coverage)
-            * Psychological Safety Perception (from seguranca category tests)
-        - AI-powered intelligent analysis using real test data
-        - 6 interactive tabs: Geral, Clima, Estresse, Burnout, QVT, Assédio
-        - 3 embedded charts/graphs for visual data representation
-        - Real AI-generated action recommendations from backend
-        - Export options: PDF Report (window.print), Excel Spreadsheet (CSV download), QR Code (placeholder)
-    - **Backend Calculation Logic**:
-        - Uses `testes.categoria` field to filter results by type
-        - Calculates average scores per category for KPIs
-        - Aggregates all test results for the company
-        - **AI Analysis**: Uses Google Gemini API (model: `gemini-1.5-pro-latest`) for real-time intelligent recommendations with professional fallback system
-        - **Fallback System (UPDATED - October 22, 2025)**: Robust rule-based analysis always available when AI is unavailable, generating professional synthesis with ISO 45003, NR-01 compliance, Karasek-Theorell references, risk classification, and technical recommendations
-        - Returns: indiceGlobal, kpis object, totalColaboradores, totalTestes, cobertura, dadosPorTipo, aiAnalysis, recomendacoes, matrizRiscos, distribuicaoRiscos, dimensoesPsicossociais
-    - **Dynamic Charts (Implemented October 21, 2025)**: 3 interactive React/Recharts components rendering real-time data:
-        - **MatrizRisco.tsx**: Qualitative risk matrix (Severity x Probability) with color-coded cells (Green=Trivial, Lime=Tolerable, Yellow=Moderate, Orange=Substantial, Red=Intolerable)
-        - **GraficoDistribuicaoRiscos.tsx**: Stacked bar chart showing risk distribution by category (Critical, High, Moderate, Low)
-        - **GraficoRadarDimensoes.tsx**: Radar chart for psychosocial dimensions (Autonomy, Social Support, Demands, Recognition, Balance, Safety) with current values vs targets
-        - Components location: `src/components/prg/`
-        - All charts use real backend data, replacing previous static images
-    - **Export Functionality (UPDATED - October 22, 2025)**:
-        - Excel: Downloads CSV file with all KPIs and metrics
-        - QR Code: Placeholder alert (future implementation)
-        - PDF button removed from AI Analysis section per user request
-    - **AI Analysis Section (REVOLUTIONARY REDESIGN - October 22, 2025)**:
-        - **Design**: Futuristic glassmorphism with animated particles background (15 floating elements)
-        - **Header**: Brain icon with pulsing glow effect, gradient text title, ISO/NR-01/AI-Powered badges
-        - **Mini KPIs**: 4 real-time metrics (Colaboradores, Testes, Cobertura, Índice Global) with color coding
-        - **Smart Text Processing**: Automatic detection and formatting of titles, lists, and paragraphs
-        - **Visual Organization**: Text parsed into separate cards for better readability (no asterisks, clean formatting)
-        - **Structured Content**: Backend generates organized sections (RESUMO EXECUTIVO, DIAGNÓSTICO, ÁREAS PRIORITÁRIAS, FATORES DE RISCO, RECOMENDAÇÃO TÉCNICA)
-        - **List Rendering**: Bullet points displayed as visual items with blue dots
-        - **Methodology Cards**: 3 gradient cards showcasing Karasek-Theorell, NR-01, ISO 45003 frameworks
-        - **Footer**: Real-time timestamp and "Análise em tempo real" indicator
-        - **Visual Effects**: Multiple gradient layers, backdrop-blur, border animations, responsive design
-        - **Data Integration**: All metrics pulled from real backend data (prgData)
-    - **Recommendations Section (COMPLETELY ENHANCED - October 22, 2025)**:
-        - **Expandable Cards**: Each recommendation can be clicked to expand/collapse full details
-        - **Comprehensive Data Structure**:
-            * acoesPraticas: Step-by-step practical actions (5-6 specific tasks per recommendation)
-            * prazo: Suggested timeline for implementation
-            * responsavel: Suggested responsible parties (RH, SESMT, Liderança, etc.)
-            * impactoEsperado: Expected impact with quantitative metrics
-            * recursos: Required resources with budget estimates
-        - **Visual Organization**:
-            * Header: Category badge, priority badge, title, description
-            * Quick indicators: Clock icon (timeline), Users icon (responsible)
-            * Expandable section: "Passos para Implementação" with checklist
-            * Impact card: Green background with TrendingUp icon
-            * Resources card: Blue background with Briefcase icon
-        - **Backend Improvements**:
-            * 5 types of robust recommendations based on data analysis
-            * Real budget estimates (R$ ranges) for each action
-            * Compliance references (NR-01, ISO 45003)
-            * Quantitative impact targets (percentages and timelines)
-            * Professional fallback system always available
-        - **Examples of Recommendations**:
-            * Programa de Apoio Psicológico Imediato (if well-being < 50%)
-            * Plano de Ação para Fatores de Risco Críticos (NR-01 compliance)
-            * Treinamento de Lideranças em Saúde Mental (always included)
-            * Programa Integrado de Bem-Estar (ISO 45003)
-            * Campanha de Aumento de Participação (if coverage < 80%)
-    - **Compliance**: NR-01 and WHO guidelines
-    - **UI Components**: Cards, Badges, Progress bars, Tabs, Select dropdowns with loading/error states
-    - **Color Coding**: Green (80-100 Healthy), Yellow (60-79 Attention), Red (0-59 Critical)
-    - **Status**: Fully functional with real backend integration, live data, and dynamic chart visualization using Recharts
-
-- **Colaborador Module (UPDATED - October 21, 2025)**:
-    - **Avatar Field**: Added `avatar` field to colaboradores schema (stores base64 or URL)
-    - **Backend Endpoint**: `GET /api/colaboradores/me` - Returns authenticated collaborator's data (name, cargo, departamento, avatar)
-    - **Service**: colaboradorService.ts migrated from Supabase to local API
-    - **Frontend Display**:
-        - Colaborador.tsx page shows avatar and cargo in main header with badges
-        - AppSidebar.tsx displays avatar (clickable to change) and cargo below user name
-        - AvatarSelector component allows uploading/selecting custom avatars
-        - Falls back to default icon if no avatar is set
-    - **JWT Enhancement**: Token now includes `colaboradorId` field for role='colaborador'
-    - **Data Integrity**: Avatar and cargo are loaded from database and displayed consistently across all colaborador views
+- **User Roles**: Admin, Company, Employee with distinct permissions.
+- **Invitation System**: Hierarchical invitations (Admin invites Company, Company invites Employee).
+- **Psychological Tests**: Supports multiple types including QVT, RPO, Clima e Bem-Estar, Estresse Ocupacional, Karasek-Siegrist, PAS, and MGRP.
+- **Result Visualization**: Unified component for consistent display across all test types.
+- **Data Isolation**: Companies view only their employees' results; employees view only their own.
+- **Psychosocial State Monitoring**: Provides aggregated, anonymized insights into psychosocial risk factors (NR1 compliant, ISO 45003 framework). Features AI-powered analysis (Google Gemini API), risk classification, automated recommendations, and a revolutionary glassmorphism UI.
+- **PRG Module (Programa de Gestão de Riscos Psicossociais)**: Full psychosocial risk management dashboard using real-time data. Includes dynamic filters, 6 KPI cards, AI-powered intelligent analysis with a robust fallback system, 6 interactive tabs, 3 embedded charts (Risk Matrix, Risk Distribution, Radar Chart), and comprehensive export options (CSV, printable HTML Action Plan). Features fully enhanced AI analysis and recommendations sections with structured content, practical actions, timelines, and budget estimates.
+- **Colaborador Module**: Enhanced collaborator profile management including `avatar` field, `GET /api/colaboradores/me` endpoint, and consistent display of collaborator data across the frontend.
 
 ### System Design Choices
-The system migrated from Supabase to a fully local API backend to eliminate external dependencies and ensure greater control over data and authentication. Manual Zod schemas are used due to version incompatibilities with `drizzle-zod`. The API returns camelCase, and the frontend handles conversions to snake_case where necessary.
+Migration from Supabase to a local API backend for enhanced control. Manual Zod schemas are used due to `drizzle-zod` incompatibilities. API returns camelCase, with frontend handling necessary conversions.
 
 ## External Dependencies
 - **Database**: Neon PostgreSQL
-- **Frontend Libraries**: React, Vite, Shadcn/UI, Tailwind CSS, TanStack Query, Wouter
+- **Frontend Libraries**: React, Vite, Shadcn/UI, Tailwind CSS, TanStack Query, Wouter, Recharts
 - **Backend Libraries**: Express.js, TypeScript, Drizzle, bcrypt, jsonwebtoken
+- **AI Integration**: Google Gemini API

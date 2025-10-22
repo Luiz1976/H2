@@ -169,6 +169,264 @@ export default function EmpresaPRG() {
   };
 
   // Funções de exportação
+  const handleExportarPlanoAcao = () => {
+    if (!prgData) return;
+
+    // Gerar documento HTML completo com todas as recomendações
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plano de Ação - PRG HumaniQ</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      color: #333;
+      line-height: 1.6;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      border-bottom: 3px solid #f97316;
+      padding-bottom: 20px;
+    }
+    .header h1 {
+      color: #f97316;
+      margin: 0;
+      font-size: 32px;
+    }
+    .header p {
+      color: #666;
+      margin: 10px 0 0 0;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .metric-card {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #f97316;
+    }
+    .metric-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .metric-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #f97316;
+      margin-top: 5px;
+    }
+    .recomendacao {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      page-break-inside: avoid;
+    }
+    .rec-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .rec-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1f2937;
+      flex: 1;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-alta {
+      background: #ef4444;
+      color: white;
+    }
+    .badge-media {
+      background: #f59e0b;
+      color: white;
+    }
+    .badge-categoria {
+      background: #3b82f6;
+      color: white;
+    }
+    .rec-descricao {
+      color: #4b5563;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+    .rec-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .info-item {
+      background: #f3f4f6;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    .info-label {
+      font-weight: 600;
+      color: #374151;
+    }
+    .section {
+      margin-top: 20px;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #059669;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .acoes-list {
+      list-style: none;
+      padding: 0;
+    }
+    .acoes-list li {
+      padding: 8px 0 8px 20px;
+      position: relative;
+      color: #4b5563;
+    }
+    .acoes-list li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #059669;
+      font-weight: bold;
+    }
+    .impacto-box {
+      background: #d1fae5;
+      border-left: 4px solid #059669;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+    .recursos-box {
+      background: #dbeafe;
+      border-left: 4px solid #3b82f6;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #e5e7eb;
+      text-align: center;
+      color: #6b7280;
+      font-size: 12px;
+    }
+    @media print {
+      body { margin: 20px; }
+      .recomendacao { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📋 Plano de Ação - Programa de Gestão de Riscos Psicossociais</h1>
+    <p>HumaniQ | Gerado em ${new Date().toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric-card">
+      <div class="metric-label">Colaboradores</div>
+      <div class="metric-value">${prgData.totalColaboradores}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Testes Realizados</div>
+      <div class="metric-value">${prgData.totalTestes}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Índice Global PRG</div>
+      <div class="metric-value">${prgData.indiceGlobal}%</div>
+    </div>
+  </div>
+
+  ${prgData.recomendacoes.map((rec, index) => `
+    <div class="recomendacao">
+      <div class="rec-header">
+        <div class="rec-title">${index + 1}. ${rec.titulo}</div>
+        <span class="badge ${rec.prioridade === 'Alta' || rec.prioridade === 'alta' ? 'badge-alta' : 'badge-media'}">${rec.prioridade}</span>
+        <span class="badge badge-categoria">${rec.categoria}</span>
+      </div>
+      
+      <div class="rec-descricao">${rec.descricao}</div>
+      
+      ${rec.prazo || rec.responsavel ? `
+        <div class="rec-info">
+          ${rec.prazo ? `<div class="info-item"><span class="info-label">⏱️ Prazo:</span> ${rec.prazo}</div>` : ''}
+          ${rec.responsavel ? `<div class="info-item"><span class="info-label">👥 Responsável:</span> ${rec.responsavel}</div>` : ''}
+        </div>
+      ` : ''}
+      
+      ${rec.acoesPraticas && rec.acoesPraticas.length > 0 ? `
+        <div class="section">
+          <div class="section-title">✅ Passos para Implementação</div>
+          <ul class="acoes-list">
+            ${rec.acoesPraticas.map(acao => `<li>${acao}</li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+      
+      ${rec.impactoEsperado ? `
+        <div class="impacto-box">
+          <strong>📈 Impacto Esperado:</strong> ${rec.impactoEsperado}
+        </div>
+      ` : ''}
+      
+      ${rec.recursos && rec.recursos.length > 0 ? `
+        <div class="recursos-box">
+          <strong>💼 Recursos Necessários:</strong><br>
+          ${rec.recursos.map(r => `• ${r}`).join('<br>')}
+        </div>
+      ` : ''}
+    </div>
+  `).join('')}
+
+  <div class="footer">
+    <p><strong>HumaniQ</strong> - Plataforma de Avaliação Psicológica</p>
+    <p>Documento gerado automaticamente pelo sistema PRG</p>
+  </div>
+</body>
+</html>
+    `;
+
+    // Criar blob e baixar
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Plano-de-Acao-PRG-${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const handleExportarExcel = () => {
     if (!prgData) return;
     
@@ -946,7 +1204,11 @@ export default function EmpresaPRG() {
             })}
 
             <div className="pt-4">
-              <Button className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 w-full text-white font-bold text-lg py-6 shadow-lg" data-testid="button-exportar-plano">
+              <Button 
+                onClick={handleExportarPlanoAcao}
+                className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 w-full text-white font-bold text-lg py-6 shadow-lg" 
+                data-testid="button-exportar-plano"
+              >
                 <Download className="h-5 w-5 mr-2" />
                 Exportar Plano de Ação
               </Button>
