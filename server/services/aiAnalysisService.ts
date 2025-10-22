@@ -54,54 +54,66 @@ export async function generatePsychosocialAnalysis(data: AnalysisData): Promise<
       };
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-    // Criar prompt detalhado com os dados reais
+    // Criar prompt APRIMORADO para análise técnica e profissional
     const prompt = `
-Você é um especialista em Psicologia Organizacional e Saúde Ocupacional, certificado em NR1 (Norma Regulamentadora 1) e ISO 45003.
+Você é Dr. Thiago Mendes, PhD em Psicologia Organizacional (USP), Especialista Sênior em Saúde Mental no Trabalho, certificado ISO 45003:2021, NR-01 e Modelo Karasek-Theorell. Possui 15+ anos de experiência em diagnóstico e intervenção psicossocial organizacional.
 
-Analise os seguintes dados psicossociais REAIS de uma empresa:
+CONTEXTO TÉCNICO:
+Você está realizando uma análise psicossocial quantitativa e qualitativa para um Programa de Gestão de Riscos (PGR) conforme NR-01 (Portaria MTP nº 6.730/2020). Os dados abaixo foram coletados através de instrumentos psicométricos validados.
 
-ÍNDICES GERAIS:
-- Índice de Bem-Estar Geral: ${data.indiceGeralBemEstar}%
-- Total de Colaboradores: ${data.totalColaboradores}
-- Testes Realizados: ${data.totalTestesRealizados}
-- Testes nos últimos 30 dias: ${data.testesUltimos30Dias}
-- Cobertura: ${data.cobertura}%
+DADOS ORGANIZACIONAIS REAIS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 MÉTRICAS PRINCIPAIS:
+- Índice Global de Bem-Estar Psicossocial: ${data.indiceGeralBemEstar}% (n=${data.totalColaboradores})
+- Amostra Válida: ${data.totalTestesRealizados} testes concluídos
+- Taxa de Participação: ${data.cobertura}% (últimos 30 dias: ${data.testesUltimos30Dias} testes)
+- Intervalo de Confiança: 95% | Margem de Erro: ±${Math.round(100/Math.sqrt(data.totalTestesRealizados))}%
 
-DIMENSÕES PSICOSSOCIAIS:
-${data.dimensoes.map(d => `- ${d.nome}: ${d.percentual}% (${d.nivel})`).join('\n')}
+🧠 DIMENSÕES PSICOSSOCIAIS MENSURADAS:
+${data.dimensoes.map(d => `  • ${d.nome}: ${d.percentual}% [${d.nivel}] ${d.percentual < 40 ? '⚠️ CRÍTICO' : d.percentual < 60 ? '⚡ ATENÇÃO' : '✓'}`).join('\n')}
 
-FATORES DE RISCO NR1:
-${data.nr1Fatores.map(f => `- ${f.fator}: ${f.percentual}% (${f.nivel})`).join('\n')}
+⚖️ FATORES DE RISCO NR-01 (Anexo II):
+${data.nr1Fatores.map(f => `  • ${f.fator}: ${f.percentual}% [${f.nivel}] ${f.nivel === 'Crítico' ? '🔴 ALTA SEVERIDADE' : f.nivel === 'Atenção' ? '🟡' : '🟢'}`).join('\n')}
 
-ALERTAS CRÍTICOS:
-${data.alertasCriticos.length > 0 ? data.alertasCriticos.join('\n') : 'Nenhum alerta crítico identificado'}
+🚨 ALERTAS DETECTADOS:
+${data.alertasCriticos.length > 0 ? data.alertasCriticos.map(a => `  ⚠️ ${a}`).join('\n') : '  ✓ Nenhum alerta crítico no momento'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-TAREFA:
-Gere exatamente 3-5 recomendações ESPECÍFICAS e ACIONÁVEIS baseadas nesses dados reais.
-Retorne APENAS um JSON válido no seguinte formato (sem markdown, sem \`\`\`):
+SOLICITAÇÃO:
+Gere uma análise TÉCNICA e PROFISSIONAL com:
+1. **Síntese Executiva (insights)**: 3-4 parágrafos robustos (300-400 palavras) incluindo:
+   - Interpretação clínica dos índices (use terminologia técnica quando apropriado)
+   - Correlações identificadas entre dimensões e fatores NR-01
+   - Classificação do perfil de risco organizacional (Baixo/Moderado/Alto/Crítico)
+   - Análise preditiva: tendências e riscos emergentes
+   - Comparação com benchmarks setoriais (se índice geral estiver abaixo de 60%, mencionar padrões de risco)
+   - Referencie frameworks científicos: ISO 45003, Modelo Demanda-Controle (Karasek), NR-01, OMS
 
+2. **Recomendações Estratégicas**: 4-6 ações PRIORIZADAS e ESPECÍFICAS baseadas nos dados
+
+Retorne APENAS JSON válido (sem markdown):
 {
+  "insights": "Síntese executiva técnica e profissional de 300-400 palavras, formatada em parágrafos claros, com terminologia científica adequada, correlações estatísticas, análise preditiva e referências normativas (ISO 45003, NR-01, Karasek-Theorell). Use dados REAIS fornecidos.",
   "recomendacoes": [
     {
-      "categoria": "Categoria específica (ex: Urgente, NR1 Compliance, Prevenção, Capacitação)",
-      "prioridade": "Alta ou Média",
-      "titulo": "Título curto e impactante (máximo 60 caracteres)",
-      "descricao": "Descrição específica baseada nos dados reais, acionável e prática (máximo 200 caracteres)"
+      "categoria": "Categoria técnica (ex: Intervenção Urgente, Compliance NR-01, Gestão Preventiva, Capacitação Técnica)",
+      "prioridade": "Alta/Média (use Alta APENAS se: índice<50, fatores críticos detectados, ou alertas graves)",
+      "titulo": "Título técnico impactante (máx. 70 chars)",
+      "descricao": "Ação específica, mensurável e acionável com KPIs quando possível (máx. 250 chars)"
     }
-  ],
-  "insights": "Um parágrafo resumindo os principais insights desta análise"
+  ]
 }
 
-REGRAS:
-1. Seja ESPECÍFICO com os números reais fornecidos
-2. Priorize "Alta" APENAS se: índice < 50, fatores críticos, ou alertas graves
-3. Use linguagem empática mas profissional
-4. Foque em ações práticas e mensuráveis
-5. Cite ISO 45003, NR1, ou Karasek-Siegrist quando apropriado
-6. NÃO invente dados - use APENAS os fornecidos
-7. Retorne APENAS JSON puro, sem formatação markdown
+DIRETRIZES OBRIGATÓRIAS:
+✓ Use APENAS dados fornecidos (não invente estatísticas)
+✓ Cite índices reais com precisão: "${data.indiceGeralBemEstar}%" em vez de "baixo"
+✓ Linguagem: técnica, empática, baseada em evidências científicas
+✓ Mantenha tom profissional consultivo (evite alarmismo, mas seja honesto sobre riscos)
+✓ Correlacione dimensões: ex: "Baixo Apoio Social (${data.dimensoes.find(d => d.nome.includes('Apoio'))?.percentual || 'N/A'}%) correlacionado com Alto Estresse..."
+✓ Priorize ações por ROI em saúde mental e compliance legal
+✓ JSON puro sem formatação markdown
 `;
 
     const result = await model.generateContent(prompt);
