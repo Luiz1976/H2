@@ -452,8 +452,106 @@ export default function EmpresaPRG() {
     document.body.removeChild(link);
   };
 
+  const handleExportarPDF = () => {
+    if (!prgData) return;
+
+    // Gerar relatório PDF completo em HTML
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório PRG Completo - HumaniQ</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .page { padding: 40px; max-width: 210mm; margin: 0 auto; }
+    
+    .cover { text-align: center; padding: 100px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
+    .cover h1 { font-size: 48px; margin-bottom: 20px; }
+    .cover h2 { font-size: 24px; margin-bottom: 40px; font-weight: 300; }
+    
+    h2 { color: #667eea; margin-top: 30px; margin-bottom: 15px; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+    
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0; }
+    .kpi-card { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; border-left: 4px solid #667eea; }
+    .kpi-value { font-size: 36px; font-weight: bold; color: #667eea; margin: 10px 0; }
+    
+    .ai-section { background: #f0f4ff; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 6px solid #667eea; }
+    
+    .rec-item { background: white; border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; page-break-inside: avoid; }
+    .badge-alta { background: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+    .badge-media { background: #f59e0b; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+    
+    @media print { .page { padding: 20mm; } }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <h1>📊 Relatório PRG</h1>
+    <h2>Programa de Gestão de Riscos Psicossociais</h2>
+    <p style="margin-top: 50px; font-size: 20px;">HumaniQ</p>
+    <p>${new Date().toLocaleDateString('pt-BR')}</p>
+  </div>
+
+  <div class="page">
+    <h2>📈 Sumário Executivo</h2>
+    <div class="kpis">
+      <div class="kpi-card"><div>Índice Global</div><div class="kpi-value">${prgData.indiceGlobal}%</div></div>
+      <div class="kpi-card"><div>Colaboradores</div><div class="kpi-value">${prgData.totalColaboradores}</div></div>
+      <div class="kpi-card"><div>Cobertura</div><div class="kpi-value">${prgData.cobertura}%</div></div>
+    </div>
+
+    <h2>🧠 Análise Inteligente</h2>
+    <div class="ai-section">${prgData.aiAnalysis.sintese.split('\n\n').map(p => `<p style="margin: 10px 0;">${p}</p>`).join('')}</div>
+
+    <h2>💡 Recomendações</h2>
+    ${prgData.recomendacoes.map((rec, i) => `
+      <div class="rec-item">
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+          <strong style="flex: 1;">${i + 1}. ${rec.titulo}</strong>
+          <span class="${rec.prioridade === 'Alta' ? 'badge-alta' : 'badge-media'}">${rec.prioridade}</span>
+        </div>
+        <p>${rec.descricao}</p>
+      </div>
+    `).join('')}
+  </div>
+</body>
+</html>
+    `;
+
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Relatorio-PRG-${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const handleGerarQRCode = () => {
-    alert('Funcionalidade de QR Code será implementada em breve');
+    const currentUrl = window.location.origin + '/empresa/prg';
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(currentUrl)}`;
+    
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+    
+    const content = document.createElement('div');
+    content.style.cssText = 'background: white; padding: 30px; border-radius: 16px; text-align: center; max-width: 90%; max-height: 90%; overflow: auto;';
+    content.innerHTML = `
+      <h2 style="color: #667eea; margin-bottom: 20px;">📱 QR Code - Dashboard PRG</h2>
+      <p style="color: #666; margin-bottom: 20px;">Escaneie para visualizar o dashboard online</p>
+      <img src="${qrCodeUrl}" alt="QR Code" style="max-width: 400px; width: 100%; border: 8px solid #f0f0f0; border-radius: 12px;" />
+      <p style="margin-top: 20px; color: #666; font-size: 14px; word-break: break-all;">${currentUrl}</p>
+      <button onclick="this.parentElement.parentElement.remove()" style="margin-top: 20px; padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600;">Fechar</button>
+      <a href="${qrCodeUrl}" download="QRCode-PRG.png" style="display: inline-block; margin-top: 10px; margin-left: 10px; padding: 12px 30px; background: #10b981; color: white; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Baixar QR Code</a>
+    `;
+    
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
   };
 
   const getStatusBadge = (valor: number) => {
@@ -1229,7 +1327,12 @@ export default function EmpresaPRG() {
                 <h3 className="text-white font-bold mb-2">Relatório PDF Completo</h3>
                 <p className="text-white/60 text-sm">Com capa, gráficos e análise descritiva da IA</p>
               </div>
-              <Button variant="outline" className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10">
+              <Button 
+                onClick={handleExportarPDF}
+                variant="outline" 
+                className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10"
+                data-testid="button-baixar-pdf"
+              >
                 Baixar PDF
               </Button>
             </CardContent>
