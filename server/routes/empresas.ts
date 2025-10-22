@@ -112,26 +112,39 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
 
           ultimosResultados.forEach((resultado, index) => {
             const metadados = resultado.metadados as Record<string, any> || {};
-            console.log(`📋 [PSICO] Teste ${index + 1} - Metadados existem:`, !!metadados);
-            console.log(`📋 [PSICO] Teste ${index + 1} - Estrutura metadados:`, JSON.stringify(Object.keys(metadados)));
             
+            // Tentar localizar dimensões em diferentes estruturas
             const analiseCompleta = metadados.analise_completa || {};
-            console.log(`📋 [PSICO] Teste ${index + 1} - Análise completa existe:`, !!analiseCompleta);
-            console.log(`📋 [PSICO] Teste ${index + 1} - Dimensões existem:`, !!analiseCompleta.dimensoes);
-            
-            if (analiseCompleta.dimensoes) {
-              console.log(`📋 [PSICO] Teste ${index + 1} - Total de dimensões:`, Object.keys(analiseCompleta.dimensoes).length);
-            }
+            let dimensoes = analiseCompleta.dimensoes || metadados.dimensoes || {};
 
             // Processar dimensões
-            if (analiseCompleta.dimensoes) {
-              Object.entries(analiseCompleta.dimensoes).forEach(([dimensaoId, dados]: [string, any]) => {
-                if (!dimensoesAgregadas[dimensaoId]) {
-                  dimensoesAgregadas[dimensaoId] = { soma: 0, total: 0 };
-                }
-                dimensoesAgregadas[dimensaoId].soma += dados.percentual || dados.media || dados.pontuacao || 0;
-                dimensoesAgregadas[dimensaoId].total++;
-              });
+            if (dimensoes && typeof dimensoes === 'object') {
+              // Se for array (QVT style), processar diferente
+              if (Array.isArray(dimensoes)) {
+                dimensoes.forEach((dim: any) => {
+                  if (dim.dimensao && dim.pontuacao !== undefined) {
+                    const dimensaoId = dim.dimensao;
+                    if (!dimensoesAgregadas[dimensaoId]) {
+                      dimensoesAgregadas[dimensaoId] = { soma: 0, total: 0 };
+                    }
+                    // QVT usa percentual diretamente
+                    const valor = dim.percentual || dim.pontuacao * 20 || 0; // Converter pontuação para percentual
+                    dimensoesAgregadas[dimensaoId].soma += valor;
+                    dimensoesAgregadas[dimensaoId].total++;
+                  }
+                });
+              } else {
+                // Se for objeto (RPO, PAS style)
+                Object.entries(dimensoes).forEach(([dimensaoId, dados]: [string, any]) => {
+                  if (!dimensoesAgregadas[dimensaoId]) {
+                    dimensoesAgregadas[dimensaoId] = { soma: 0, total: 0 };
+                  }
+                  // Tentar diferentes campos de pontuação
+                  const valor = dados.percentual || (dados.media * 20) || (dados.pontuacao * 20) || 0;
+                  dimensoesAgregadas[dimensaoId].soma += valor;
+                  dimensoesAgregadas[dimensaoId].total++;
+                });
+              }
             }
           });
 

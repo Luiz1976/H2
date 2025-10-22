@@ -193,8 +193,9 @@ class AuthServiceNew {
         ativo: col.ativo,
         created_at: col.createdAt,
         updated_at: col.createdAt,
-        total_testes: col.total_testes || 0,
-        ultimo_teste: col.ultimo_teste,
+        total_testes: col.situacaoPsicossocial?.totalTestes || 0,
+        ultimo_teste: col.situacaoPsicossocial?.ultimoTeste,
+        situacaoPsicossocial: col.situacaoPsicossocial,
       }));
       
       return { success: true, data: colaboradores };
