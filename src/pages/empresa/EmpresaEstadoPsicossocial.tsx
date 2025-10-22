@@ -788,98 +788,202 @@ export default function EmpresaEstadoPsicossocial() {
 
           {/* TAB: PLANO DE AÇÃO */}
           <TabsContent value="acoes" className="space-y-6">
-            <Card className="border-0 bg-white/10 backdrop-blur-2xl shadow-2xl rounded-2xl">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-orange-500/20 rounded-xl backdrop-blur-xl border border-orange-500/30">
-                    <Target className="h-6 w-6 text-orange-300" />
+            {/* Hero Card - Jornada de Transformação */}
+            <Card className="border-0 bg-gradient-to-br from-orange-600/30 to-pink-600/30 backdrop-blur-2xl shadow-2xl rounded-2xl overflow-hidden border-2 border-orange-500/40">
+              <CardContent className="p-8">
+                <div className="flex items-start gap-4">
+                  <div className="p-4 bg-gradient-to-br from-orange-500 to-pink-600 rounded-2xl shadow-xl">
+                    <Target className="h-10 w-10 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <CardTitle className="text-white text-2xl font-black">
-                      Jornada de Transformação
-                    </CardTitle>
-                    <CardDescription className="text-white/70 text-base mt-1">
+                  <div className="flex-1 space-y-2">
+                    <h2 className="text-3xl font-black text-white">Jornada de Transformação</h2>
+                    <p className="text-white/90 text-lg leading-relaxed">
                       Seu roteiro para construir um ambiente extraordinário
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* High Priority Actions */}
-                {analise && analise.recomendacoes.filter(r => r.prioridade === 'Alta').length > 0 && (
-                  <div className="space-y-4">
-                    <h4 className="text-red-300 font-black text-lg flex items-center gap-2">
-                      <Zap className="h-5 w-5" />
-                      Ação Imediata (Próximos 7 Dias)
-                    </h4>
-                    <div className="space-y-3">
-                      {analise.recomendacoes
-                        .filter(r => r.prioridade === 'Alta')
-                        .map((rec, index) => (
-                          <div 
-                            key={index}
-                            className="flex gap-4 p-4 bg-red-600/35 backdrop-blur-xl rounded-xl border-2 border-red-500/40"
-                          >
-                            <CheckCircle className="h-6 w-6 text-red-200 flex-shrink-0 mt-1" />
-                            <div className="flex-1 space-y-1">
-                              <p className="text-red-50 font-bold">{rec.titulo}</p>
-                              <p className="text-red-50/90 text-sm">{rec.descricao}</p>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Medium Priority Actions */}
-                {analise && analise.recomendacoes.filter(r => r.prioridade === 'Média').length > 0 && (
-                  <div className="space-y-4">
-                    <h4 className="text-orange-300 font-black text-lg flex items-center gap-2">
-                      <Clock className="h-5 w-5" />
-                      Próximos 30 Dias
-                    </h4>
-                    <div className="space-y-3">
-                      {analise.recomendacoes
-                        .filter(r => r.prioridade === 'Média')
-                        .map((rec, index) => (
-                          <div 
-                            key={index}
-                            className="flex gap-4 p-4 bg-orange-600/35 backdrop-blur-xl rounded-xl border-2 border-orange-500/40"
-                          >
-                            <CheckCircle className="h-6 w-6 text-orange-200 flex-shrink-0 mt-1" />
-                            <div className="flex-1 space-y-1">
-                              <p className="text-orange-50 font-bold">{rec.titulo}</p>
-                              <p className="text-orange-50/90 text-sm">{rec.descricao}</p>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Best Practices */}
-                <div className="space-y-4">
-                  <h4 className="text-blue-300 font-black text-lg flex items-center gap-2">
-                    <Star className="h-5 w-5" />
-                    Melhores Práticas ISO 45003
-                  </h4>
-                  <div className="space-y-2">
-                    {[
-                      "Avaliações regulares (semestral ideal, anual mínimo)",
-                      "Canais confidenciais para relatos de problemas",
-                      "Capacitação de líderes em saúde mental",
-                      "Políticas claras de prevenção ao assédio",
-                      "Flexibilidade para equilíbrio vida-trabalho"
-                    ].map((pratica, index) => (
-                      <div key={index} className="flex gap-3 text-white/80">
-                        <ChevronRight className="h-5 w-5 text-blue-300 flex-shrink-0" />
-                        <span>{pratica}</span>
-                      </div>
-                    ))}
+                    </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            {/* High Priority Actions - 7 Dias */}
+            {analise && analise.recomendacoes.filter(r => r.prioridade === 'Alta').length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-3 bg-red-600/30 rounded-xl backdrop-blur-xl border-2 border-red-500/50 shadow-xl">
+                    <Zap className="h-6 w-6 text-red-200 animate-pulse" />
+                  </div>
+                  <div>
+                    <h3 className="text-red-200 font-black text-2xl">Ação Imediata (Próximos 7 Dias)</h3>
+                    <p className="text-red-200/70 text-sm">Intervenções urgentes para prevenir agravamento</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {analise.recomendacoes
+                    .filter(r => r.prioridade === 'Alta')
+                    .map((rec, index) => (
+                      <Card 
+                        key={index}
+                        className="border-0 bg-red-600/25 backdrop-blur-xl shadow-xl rounded-2xl overflow-hidden border-2 border-red-500/40 hover:border-red-400/60 transition-all hover:scale-[1.02]"
+                        data-testid={`acao-alta-${index}`}
+                      >
+                        <CardContent className="p-6">
+                          <div className="flex gap-4">
+                            <div className="flex-shrink-0">
+                              <div className="h-12 w-12 rounded-full bg-red-500/30 flex items-center justify-center border-2 border-red-400/50">
+                                <CheckCircle className="h-6 w-6 text-red-200" />
+                              </div>
+                            </div>
+                            <div className="flex-1 space-y-3">
+                              <div className="flex items-start justify-between gap-3">
+                                <h4 className="text-red-50 font-bold text-lg leading-tight">{rec.titulo}</h4>
+                                <Badge className="bg-red-500 text-white border-0 shadow-lg flex-shrink-0">
+                                  Urgente
+                                </Badge>
+                              </div>
+                              <p className="text-red-50/90 leading-relaxed">{rec.descricao}</p>
+                              
+                              {rec.categoria && (
+                                <div className="flex items-center gap-2 pt-2 border-t border-red-400/20">
+                                  <Badge className="bg-red-500/30 text-red-100 border-red-400/40">
+                                    {rec.categoria}
+                                  </Badge>
+                                  <span className="text-red-200/60 text-xs">• Conformidade NR1</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* Medium Priority Actions - 30 Dias */}
+            {analise && analise.recomendacoes.filter(r => r.prioridade === 'Média').length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-3 bg-orange-600/30 rounded-xl backdrop-blur-xl border-2 border-orange-500/50 shadow-xl">
+                    <Clock className="h-6 w-6 text-orange-200" />
+                  </div>
+                  <div>
+                    <h3 className="text-orange-200 font-black text-2xl">Próximos 30 Dias</h3>
+                    <p className="text-orange-200/70 text-sm">Iniciativas estratégicas de médio prazo</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {analise.recomendacoes
+                    .filter(r => r.prioridade === 'Média')
+                    .map((rec, index) => (
+                      <Card 
+                        key={index}
+                        className="border-0 bg-orange-600/25 backdrop-blur-xl shadow-xl rounded-2xl overflow-hidden border-2 border-orange-500/40 hover:border-orange-400/60 transition-all hover:scale-[1.02]"
+                        data-testid={`acao-media-${index}`}
+                      >
+                        <CardContent className="p-6">
+                          <div className="flex gap-4">
+                            <div className="flex-shrink-0">
+                              <div className="h-12 w-12 rounded-full bg-orange-500/30 flex items-center justify-center border-2 border-orange-400/50">
+                                <CheckCircle className="h-6 w-6 text-orange-200" />
+                              </div>
+                            </div>
+                            <div className="flex-1 space-y-3">
+                              <div className="flex items-start justify-between gap-3">
+                                <h4 className="text-orange-50 font-bold text-lg leading-tight">{rec.titulo}</h4>
+                                <Badge className="bg-orange-500 text-white border-0 shadow-lg flex-shrink-0">
+                                  Importante
+                                </Badge>
+                              </div>
+                              <p className="text-orange-50/90 leading-relaxed">{rec.descricao}</p>
+                              
+                              {rec.categoria && (
+                                <div className="flex items-center gap-2 pt-2 border-t border-orange-400/20">
+                                  <Badge className="bg-orange-500/30 text-orange-100 border-orange-400/40">
+                                    {rec.categoria}
+                                  </Badge>
+                                  <span className="text-orange-200/60 text-xs">• ISO 45003</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* Best Practices - ISO 45003 */}
+            <Card className="border-0 bg-blue-600/20 backdrop-blur-2xl shadow-xl rounded-2xl overflow-hidden border-2 border-blue-500/40">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-blue-600/30 rounded-xl backdrop-blur-xl border-2 border-blue-500/50 shadow-xl">
+                    <Star className="h-6 w-6 text-blue-200" />
+                  </div>
+                  <div>
+                    <h3 className="text-blue-100 font-black text-2xl">Melhores Práticas ISO 45003</h3>
+                    <p className="text-blue-200/70 text-sm">Padrões internacionais de saúde mental no trabalho</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {[
+                  {
+                    titulo: "Avaliações regulares (semestral ideal, anual mínimo)",
+                    descricao: "Monitoramento contínuo permite identificar problemas precocemente e medir evolução"
+                  },
+                  {
+                    titulo: "Canais confidenciais para relatos de problemas",
+                    descricao: "Ambientes seguros incentivam colaboradores a compartilhar preocupações sem medo"
+                  },
+                  {
+                    titulo: "Capacitação de líderes em saúde mental",
+                    descricao: "Gestores preparados identificam sinais precoces e oferecem suporte adequado"
+                  },
+                  {
+                    titulo: "Políticas claras de prevenção ao assédio",
+                    descricao: "Diretrizes explícitas criam cultura de respeito e segurança psicológica"
+                  },
+                  {
+                    titulo: "Flexibilidade para equilíbrio vida-trabalho",
+                    descricao: "Autonomia e flexibilidade reduzem estresse e aumentam satisfação no trabalho"
+                  }
+                ].map((pratica, index) => (
+                  <div 
+                    key={index} 
+                    className="p-4 bg-blue-600/15 backdrop-blur-xl rounded-xl border border-blue-500/30 hover:bg-blue-600/20 transition-all"
+                    data-testid={`pratica-${index}`}
+                  >
+                    <div className="flex gap-3">
+                      <ChevronRight className="h-5 w-5 text-blue-300 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1 space-y-1">
+                        <p className="text-blue-50 font-semibold">{pratica.titulo}</p>
+                        <p className="text-blue-100/70 text-sm leading-relaxed">{pratica.descricao}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Informações Adicionais */}
+            <Alert className="border-0 bg-purple-600/20 backdrop-blur-xl shadow-xl border-2 border-purple-500/40">
+              <Info className="h-5 w-5 text-purple-300" />
+              <AlertTitle className="text-purple-100 font-bold text-lg">Por que seguir este plano?</AlertTitle>
+              <AlertDescription className="text-purple-100/80 mt-2 space-y-2">
+                <p>
+                  <strong className="text-purple-50">Reduz riscos legais:</strong> Conformidade com NR1 (Portaria MTP nº 6.730/2020) evita multas e processos trabalhistas.
+                </p>
+                <p>
+                  <strong className="text-purple-50">Aumenta produtividade:</strong> Colaboradores saudáveis são 31% mais produtivos e 3x mais engajados.
+                </p>
+                <p>
+                  <strong className="text-purple-50">Retém talentos:</strong> Empresas com boa saúde mental têm 50% menos turnover.
+                </p>
+              </AlertDescription>
+            </Alert>
           </TabsContent>
         </Tabs>
 
