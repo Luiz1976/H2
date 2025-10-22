@@ -8,20 +8,39 @@ import bcrypt from 'bcryptjs';
 const router = Router();
 
 // URLs pré-configuradas para cada tipo de ERP
+// Nota: URLs Oracle e Microsoft são exemplos genéricos - em produção devem ser substituídas
+// pela URL específica de cada cliente/tenant
 const ERP_API_URLS: Record<string, string> = {
   TOTVS: 'https://api.totvs.com.br/protheus/rest',
   SAP: 'https://api.sap.com/s4hana/v1',
-  ORACLE: 'https://api.oracle.com/cloud/erp/v1',
-  MICROSOFT: 'https://api.dynamics.com/v9.0',
-  SENIOR: 'https://api.senior.com.br/rest',
-  LINX: 'https://api.linx.com.br/v1',
+  ORACLE: 'https://example.oraclecloud.com/fscmRestApi/resources/11.13.18.05', // Formato genérico - ajustar para ambiente do cliente
+  MICROSOFT: 'https://example.api.crm.dynamics.com/api/data/v9.2', // Formato genérico - ajustar para tenant do cliente
+  SENIOR: 'https://platform.senior.com.br/t/senior.com.br/bridge/1.0',
+  LINX: 'https://webapi.linx.com.br/api',
   SANKHYA: 'https://api.sankhya.com.br/gateway',
-  BENNER: 'https://api.benner.com.br/rest',
-  OUTRO: 'https://api.customizado.com.br', // URL genérica para customizações
+  BENNER: 'https://api-saas.benner.com.br',
+  OUTRO: 'https://api-exemplo.suaempresa.com.br/v1', // URL customizada - configurar conforme necessário
+};
+
+// Endpoints de health check específicos para cada ERP
+const ERP_HEALTH_ENDPOINTS: Record<string, string> = {
+  TOTVS: '/api/v1/health',
+  SAP: '/api/v1/health',
+  ORACLE: '/fscmRestApi/resources/latest/healthCheck', // Oracle Cloud health endpoint
+  MICROSOFT: '/api/data/v9.2/WhoAmI', // Dynamics 365 identity check
+  SENIOR: '/rest_api/platform/info', // Senior platform info endpoint
+  LINX: '/api/status', // Linx API status endpoint
+  SANKHYA: '/gateway/health', // Sankhya gateway health
+  BENNER: '/api/health', // Benner health endpoint
+  OUTRO: '/health', // Endpoint customizado genérico
 };
 
 function getErpApiUrl(erpType: string): string {
   return ERP_API_URLS[erpType] || ERP_API_URLS.OUTRO;
+}
+
+function getErpHealthEndpoint(erpType: string): string {
+  return ERP_HEALTH_ENDPOINTS[erpType] || ERP_HEALTH_ENDPOINTS.OUTRO;
 }
 
 const erpLoginSchema = z.object({
@@ -294,11 +313,14 @@ router.get('/test-connections', async (req, res) => {
     for (const erpType of erpTypes) {
       const startTime = Date.now();
       const apiUrl = getErpApiUrl(erpType);
-      const testEndpoint = `${apiUrl}/api/v1/health`;
+      const healthEndpoint = getErpHealthEndpoint(erpType);
+      const testEndpoint = `${apiUrl}${healthEndpoint}`;
       
       let result = {
         erpType,
         apiUrl,
+        healthEndpoint,
+        testEndpoint,
         status: 'unknown',
         responseTime: 0,
         statusCode: 0,
