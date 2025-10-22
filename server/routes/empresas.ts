@@ -833,7 +833,7 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
 
     console.log('✅ [PRG] Dados calculados com sucesso');
 
-    res.json({
+    const responseData = {
       empresa: {
         nome: empresa.nomeEmpresa,
         cnpj: empresa.cnpj || 'Não informado',
@@ -863,7 +863,12 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
         dimensoesPsicossociais,
         ultimaAtualizacao: new Date().toISOString()
       }
-    });
+    };
+
+    console.log('📤 [PRG] Enviando resposta com empresa:', responseData.empresa.nome);
+    console.log('📤 [PRG] Chaves da resposta:', Object.keys(responseData));
+    
+    res.json(responseData);
 
   } catch (error) {
     console.error('❌ [PRG] Erro ao buscar dados do PRG:', error);

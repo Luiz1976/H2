@@ -135,17 +135,14 @@ export default function EmpresaPRG() {
         }
 
         const data = await response.json();
-        console.log('✅ [PRG Frontend] Dados recebidos:', data);
-        console.log('✅ [PRG Frontend] Dados da empresa:', data.empresa);
-        console.log('✅ [PRG Frontend] Dados do PRG:', data.prg);
-        
-        if (!data.prg || !data.empresa) {
-          throw new Error('Dados incompletos recebidos do servidor');
-        }
+        console.log('✅ [PRG Frontend] Dados recebidos COMPLETOS:', JSON.stringify(data, null, 2));
+        console.log('✅ [PRG Frontend] data.empresa existe?', !!data.empresa);
+        console.log('✅ [PRG Frontend] data.prg existe?', !!data.prg);
+        console.log('✅ [PRG Frontend] Chaves do objeto data:', Object.keys(data));
         
         setPrgData(data.prg);
         setEmpresaData(data.empresa);
-        console.log('✅ [PRG Frontend] Estados atualizados - empresaData:', data.empresa);
+        console.log('✅ [PRG Frontend] Estados atualizados');
       } catch (err) {
         console.error('❌ [PRG Frontend] Erro:', err);
         setError(err instanceof Error ? err.message : 'Erro desconhecido');
