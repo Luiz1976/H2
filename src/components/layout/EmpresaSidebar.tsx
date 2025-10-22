@@ -20,8 +20,8 @@ const items = [
     icon: Home,
   },
   { 
-    title: "Gestão de Convites", 
-    url: "/empresa/gestao-convites", 
+    title: "Gerar Convites", 
+    url: "/empresa/gerar-convite", 
     icon: UserPlus,
   },
   { 
