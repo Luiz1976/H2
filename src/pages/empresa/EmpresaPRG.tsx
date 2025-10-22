@@ -465,8 +465,18 @@ export default function EmpresaPRG() {
   };
 
   const handleExportarPDF = () => {
-    if (!prgData || !empresaData) return;
+    console.log('🔍 [PDF] Iniciando exportação do PDF...');
+    console.log('🔍 [PDF] prgData existe?', !!prgData);
+    console.log('🔍 [PDF] empresaData existe?', !!empresaData);
+    console.log('🔍 [PDF] empresaData:', empresaData);
+    
+    if (!prgData || !empresaData) {
+      console.error('❌ [PDF] Dados faltando! prgData:', !!prgData, 'empresaData:', !!empresaData);
+      alert('Erro: Dados da empresa ou PRG não carregados. Por favor, recarregue a página.');
+      return;
+    }
 
+    console.log('✅ [PDF] Dados OK, gerando PDF...');
     const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
     const dataInicial = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
     const dataFinal = new Date().toLocaleDateString('pt-BR');
