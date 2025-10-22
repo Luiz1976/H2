@@ -53,6 +53,8 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
     // Enriquecer com informações de situação psicossocial
     const colaboradoresEnriquecidos = await Promise.all(
       colaboradoresList.map(async (colaborador) => {
+        console.log(`🔍 [PSICO] Buscando resultados para colaborador: ${colaborador.nome} (${colaborador.id})`);
+        
         // Buscar último resultado do colaborador
         const ultimosResultados = await db
           .select({
@@ -61,6 +63,8 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
             dataRealizacao: resultados.dataRealizacao,
             metadados: resultados.metadados,
             testeNome: testes.nome,
+            colaboradorId: resultados.colaboradorId,
+            usuarioId: resultados.usuarioId,
           })
           .from(resultados)
           .leftJoin(testes, eq(resultados.testeId, testes.id))
@@ -76,6 +80,11 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
           )
           .orderBy(desc(resultados.dataRealizacao))
           .limit(5); // Pegar últimos 5 testes para análise
+
+        console.log(`📊 [PSICO] Encontrados ${ultimosResultados.length} resultados para ${colaborador.nome}`);
+        if (ultimosResultados.length > 0) {
+          console.log(`📊 [PSICO] Primeiro resultado - colaboradorId: ${ultimosResultados[0].colaboradorId}, usuarioId: ${ultimosResultados[0].usuarioId}`);
+        }
 
         // Calcular situação psicossocial com base nos últimos testes
         let situacaoPsicossocial: {
