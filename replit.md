@@ -122,6 +122,32 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
         - **Footer**: Real-time timestamp and "Análise em tempo real" indicator
         - **Visual Effects**: Multiple gradient layers, backdrop-blur, border animations, responsive design
         - **Data Integration**: All metrics pulled from real backend data (prgData)
+    - **Recommendations Section (COMPLETELY ENHANCED - October 22, 2025)**:
+        - **Expandable Cards**: Each recommendation can be clicked to expand/collapse full details
+        - **Comprehensive Data Structure**:
+            * acoesPraticas: Step-by-step practical actions (5-6 specific tasks per recommendation)
+            * prazo: Suggested timeline for implementation
+            * responsavel: Suggested responsible parties (RH, SESMT, Liderança, etc.)
+            * impactoEsperado: Expected impact with quantitative metrics
+            * recursos: Required resources with budget estimates
+        - **Visual Organization**:
+            * Header: Category badge, priority badge, title, description
+            * Quick indicators: Clock icon (timeline), Users icon (responsible)
+            * Expandable section: "Passos para Implementação" with checklist
+            * Impact card: Green background with TrendingUp icon
+            * Resources card: Blue background with Briefcase icon
+        - **Backend Improvements**:
+            * 5 types of robust recommendations based on data analysis
+            * Real budget estimates (R$ ranges) for each action
+            * Compliance references (NR-01, ISO 45003)
+            * Quantitative impact targets (percentages and timelines)
+            * Professional fallback system always available
+        - **Examples of Recommendations**:
+            * Programa de Apoio Psicológico Imediato (if well-being < 50%)
+            * Plano de Ação para Fatores de Risco Críticos (NR-01 compliance)
+            * Treinamento de Lideranças em Saúde Mental (always included)
+            * Programa Integrado de Bem-Estar (ISO 45003)
+            * Campanha de Aumento de Participação (if coverage < 80%)
     - **Compliance**: NR-01 and WHO guidelines
     - **UI Components**: Cards, Badges, Progress bars, Tabs, Select dropdowns with loading/error states
     - **Color Coding**: Green (80-100 Healthy), Yellow (60-79 Attention), Red (0-59 Critical)

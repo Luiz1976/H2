@@ -29,13 +29,20 @@ interface AnalysisData {
   alertasCriticos: string[];
 }
 
+interface Recomendacao {
+  categoria: string;
+  prioridade: string;
+  titulo: string;
+  descricao: string;
+  acoesPraticas: string[];
+  prazo: string;
+  responsavel: string;
+  impactoEsperado: string;
+  recursos: string[];
+}
+
 export async function generatePsychosocialAnalysis(data: AnalysisData): Promise<{
-  recomendacoes: Array<{
-    categoria: string;
-    prioridade: string;
-    titulo: string;
-    descricao: string;
-  }>;
+  recomendacoes: Recomendacao[];
   sintese: string;
 }> {
   try {
@@ -48,7 +55,17 @@ export async function generatePsychosocialAnalysis(data: AnalysisData): Promise<
           categoria: 'Dados Insuficientes',
           prioridade: 'Média',
           titulo: 'Coletar Mais Dados',
-          descricao: 'Não há testes realizados ainda. Incentive os colaboradores a participarem das avaliações psicossociais.'
+          descricao: 'Não há testes realizados ainda. Incentive os colaboradores a participarem das avaliações psicossociais.',
+          acoesPraticas: [
+            'Comunicar a importância dos testes em reuniões e canais internos',
+            'Garantir anonimato e confidencialidade absoluta dos dados',
+            'Facilitar acesso através de múltiplos dispositivos',
+            'Liberar tempo do horário de trabalho para realização dos testes'
+          ],
+          prazo: '30 dias',
+          responsavel: 'RH + Comunicação',
+          impactoEsperado: 'Alcançar 80% de participação em 1 mês',
+          recursos: ['Material de comunicação', 'Tempo de equipe']
         }],
         sintese: 'Aguardando dados para análise detalhada.'
       };
@@ -148,47 +165,111 @@ DIRETRIZES OBRIGATÓRIAS:
   } catch (error) {
     console.error('❌ [IA] Erro ao gerar análise:', error);
     
-    // Fallback: Recomendações baseadas em regras se IA falhar
-    const recomendacoes: Array<{
-      categoria: string;
-      prioridade: string;
-      titulo: string;
-      descricao: string;
-    }> = [];
+    // Fallback: Recomendações ROBUSTAS baseadas em regras se IA falhar
+    const recomendacoes: Recomendacao[] = [];
     
     if (data.indiceGeralBemEstar < 50) {
       recomendacoes.push({
-        categoria: 'Urgente',
+        categoria: 'Intervenção Urgente',
         prioridade: 'Alta',
-        titulo: 'Intervenção Imediata Necessária',
-        descricao: `Índice de bem-estar em ${data.indiceGeralBemEstar}%. Ação imediata com programas de apoio psicológico e revisão das condições de trabalho.`
+        titulo: 'Programa de Apoio Psicológico Imediato',
+        descricao: `Índice de bem-estar em ${data.indiceGeralBemEstar}% indica necessidade de intervenção imediata para prevenir agravamento dos riscos psicossociais.`,
+        acoesPraticas: [
+          'Contratar serviço de psicologia organizacional ou ampliar equipe interna',
+          'Disponibilizar atendimento psicológico individual para colaboradores',
+          'Realizar rodas de conversa em grupos pequenos (8-12 pessoas)',
+          'Implementar canal de escuta anônimo e sigiloso',
+          'Revisar carga de trabalho e redistribuir demandas quando necessário'
+        ],
+        prazo: 'Iniciar em 15 dias',
+        responsavel: 'RH + Liderança + SESMT',
+        impactoEsperado: 'Redução de 15-20% nos índices de estresse em 90 dias',
+        recursos: ['Psicólogo organizacional', 'Sala privativa para atendimentos', 'Sistema de agendamento', 'Orçamento: R$ 3.000-5.000/mês']
       });
     }
 
     if (data.nr1Fatores.some(f => f.nivel === 'Crítico')) {
+      const fatoresCrit = data.nr1Fatores.filter(f => f.nivel === 'Crítico');
       recomendacoes.push({
-        categoria: 'NR1 Compliance',
+        categoria: 'Compliance Legal (NR-01)',
         prioridade: 'Alta',
-        titulo: 'Fatores de Risco Críticos Identificados',
-        descricao: 'Fatores de risco psicossociais críticos detectados. Implemente medidas preventivas imediatas conforme NR1.'
+        titulo: 'Plano de Ação para Fatores de Risco Críticos',
+        descricao: `Detectados ${fatoresCrit.length} fatores de risco psicossociais críticos. Implementação de medidas corretivas é obrigatória conforme NR-01 (Portaria MTP nº 6.730/2020).`,
+        acoesPraticas: [
+          'Documentar todos os fatores de risco identificados em relatório técnico',
+          'Elaborar Plano de Ação com cronograma detalhado (NR-01 Anexo II)',
+          'Designar responsáveis específicos para cada ação corretiva',
+          'Estabelecer metas quantitativas de redução de risco (min. 30% em 6 meses)',
+          'Comunicar plano à CIPA e colaboradores de forma transparente',
+          'Implementar sistema de monitoramento mensal dos indicadores'
+        ],
+        prazo: 'Documentação: 7 dias / Implementação: 30 dias',
+        responsavel: 'SESMT + RH + Direção',
+        impactoEsperado: 'Compliance legal + redução de 30-40% dos fatores críticos em 6 meses',
+        recursos: ['Consultor NR-01', 'Software de gestão de riscos', 'Tempo de equipe: 40h/mês', 'Orçamento: R$ 8.000-15.000']
       });
     }
+
+    // Recomendação de capacitação de lideranças (sempre importante)
+    recomendacoes.push({
+      categoria: 'Capacitação Preventiva',
+      prioridade: 'Alta',
+      titulo: 'Treinamento de Lideranças em Saúde Mental',
+      descricao: 'Capacitar gestores e líderes para identificar sinais precoces de sofrimento psíquico e criar ambiente de trabalho saudável.',
+      acoesPraticas: [
+        'Realizar workshop de 8h sobre saúde mental no trabalho (ISO 45003)',
+        'Treinar líderes em comunicação não-violenta e escuta ativa',
+        'Ensinar identificação de sinais de burnout, ansiedade e depressão',
+        'Criar protocolo de ação para situações de crise emocional',
+        'Estabelecer reuniões individuais periódicas (1-on-1) com cada colaborador',
+        'Implementar sistema de feedback 360° com foco em bem-estar'
+      ],
+      prazo: 'Iniciar em 30 dias / Ciclos trimestrais',
+      responsavel: 'RH + Consultoria Externa',
+      impactoEsperado: '40% de melhoria na percepção de suporte da liderança em 4 meses',
+      recursos: ['Instrutor especializado', 'Material didático', 'Espaço de treinamento', 'Orçamento: R$ 5.000-10.000']
+    });
+
+    // Recomendação de programas de bem-estar
+    recomendacoes.push({
+      categoria: 'Qualidade de Vida',
+      prioridade: 'Média',
+      titulo: 'Programa Integrado de Bem-Estar (ISO 45003)',
+      descricao: 'Implementar iniciativas regulares de promoção de saúde física e mental baseadas em evidências científicas.',
+      acoesPraticas: [
+        'Ginástica laboral 2x por semana (15 min) com profissional de educação física',
+        'Meditação e mindfulness guiados 1x por semana (horário de trabalho)',
+        'Palestras mensais sobre gestão de estresse, sono e alimentação',
+        'Criar espaço de descompressão (sala do bem-estar) com poltronas e música',
+        'Flexibilização de horários quando possível (trabalho híbrido)',
+        'Incentivo a pausas regulares (técnica Pomodoro institucionalizada)'
+      ],
+      prazo: 'Implementação gradual: 60 dias',
+      responsavel: 'RH + SESMT + Comitê de Bem-Estar',
+      impactoEsperado: '25% de redução no estresse ocupacional em 6 meses',
+      recursos: ['Profissional de educação física', 'Instrutor de mindfulness', 'Espaço físico', 'Orçamento: R$ 2.000-4.000/mês']
+    });
 
     if (data.cobertura < 80) {
       recomendacoes.push({
-        categoria: 'Cobertura',
+        categoria: 'Engajamento',
         prioridade: 'Média',
-        titulo: 'Aumentar Participação nos Testes',
-        descricao: `Apenas ${data.cobertura}% dos colaboradores participaram. Aumente a cobertura para diagnóstico completo.`
+        titulo: 'Campanha de Aumento de Participação nos Testes',
+        descricao: `Cobertura atual de ${data.cobertura}% está abaixo do ideal (meta: 85%). Aumentar participação é essencial para diagnóstico preciso.`,
+        acoesPraticas: [
+          'Comunicar importância dos testes em reuniões gerais e e-mails',
+          'Garantir anonimato absoluto e confidencialidade dos dados',
+          'Liberar 30 min do horário de trabalho para realização dos testes',
+          'Criar incentivos não-financeiros (reconhecimento, sorteios)',
+          'Facilitar acesso (múltiplos dispositivos, suporte técnico)',
+          'Apresentar resultados agregados para demonstrar transparência'
+        ],
+        prazo: '30 dias',
+        responsavel: 'RH + Comunicação Interna',
+        impactoEsperado: 'Aumentar cobertura para 85-90% em 2 meses',
+        recursos: ['Material de comunicação', 'Tempo de equipe', 'Orçamento: R$ 1.000-2.000']
       });
     }
-
-    recomendacoes.push({
-      categoria: 'Prevenção',
-      prioridade: 'Média',
-      titulo: 'Programas de Bem-Estar',
-      descricao: 'Implemente programas regulares de mindfulness, atividades físicas e gestão de estresse (ISO 45003).'
-    });
 
     // Gerar insights robustos baseados nos dados reais (fallback profissional)
     let insights = `RESUMO EXECUTIVO\n\n`;

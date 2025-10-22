@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,12 @@ import {
   Coffee,
   GraduationCap,
   Calendar,
-  Loader2
+  Loader2,
+  ChevronUp,
+  ChevronDown,
+  CheckCircle,
+  Briefcase,
+  Clock
 } from "lucide-react";
 import MatrizRisco from "@/components/prg/MatrizRisco";
 import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
@@ -60,6 +65,11 @@ interface PRGData {
     prioridade: string;
     titulo: string;
     descricao: string;
+    acoesPraticas?: string[];
+    prazo?: string;
+    responsavel?: string;
+    impactoEsperado?: string;
+    recursos?: string[];
   }>;
   matrizRiscos: Array<{
     nome: string;
@@ -795,7 +805,7 @@ export default function EmpresaPRG() {
           </TabsContent>
         </Tabs>
 
-        {/* AÇÕES RECOMENDADAS */}
+        {/* AÇÕES RECOMENDADAS - VERSÃO APRIMORADA */}
         <Card className="border-0 bg-gradient-to-br from-orange-900/80 to-red-900/80 backdrop-blur-xl shadow-xl">
           <CardHeader>
             <div className="flex items-center gap-3">
@@ -813,28 +823,110 @@ export default function EmpresaPRG() {
           <CardContent className="space-y-4">
             {prgData?.recomendacoes.map((rec, index) => {
               const IconComponent = getIconForRecomendacao(rec.categoria);
+              const [expandida, setExpandida] = React.useState(false);
+              
               return (
                 <div 
                   key={index} 
-                  className="flex items-start gap-4 p-5 bg-white/10 rounded-xl hover:bg-white/15 transition-all border border-white/10"
+                  className="bg-white/10 rounded-xl border border-white/10 overflow-hidden transition-all hover:shadow-lg"
                   data-testid={`recomendacao-${index}`}
                 >
-                  <div className="p-3 bg-orange-500/30 rounded-xl">
-                    <IconComponent className="h-6 w-6 text-orange-100" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h4 className="text-white font-bold text-lg">{rec.titulo}</h4>
-                      <Badge variant="outline" className={
-                        rec.prioridade === "alta" 
-                          ? "bg-red-600/90 text-white border-red-400 font-bold" 
-                          : "bg-yellow-600/90 text-white border-yellow-400 font-bold"
-                      }>
-                        {rec.prioridade === "alta" ? "Alta" : "Média"}
-                      </Badge>
+                  {/* Header da recomendação */}
+                  <div 
+                    className="flex items-start gap-4 p-5 cursor-pointer hover:bg-white/15 transition-all"
+                    onClick={() => setExpandida(!expandida)}
+                  >
+                    <div className="p-3 bg-orange-500/30 rounded-xl">
+                      <IconComponent className="h-6 w-6 text-orange-100" />
                     </div>
-                    <p className="text-white/95 text-base leading-relaxed">{rec.descricao}</p>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <h4 className="text-white font-bold text-lg">{rec.titulo}</h4>
+                        <Badge variant="outline" className={
+                          rec.prioridade === "alta" || rec.prioridade === "Alta"
+                            ? "bg-red-600/90 text-white border-red-400 font-bold" 
+                            : "bg-yellow-600/90 text-white border-yellow-400 font-bold"
+                        }>
+                          {rec.prioridade === "alta" || rec.prioridade === "Alta" ? "Alta" : "Média"}
+                        </Badge>
+                        <Badge variant="outline" className="bg-blue-600/90 text-white border-blue-400">
+                          {rec.categoria}
+                        </Badge>
+                      </div>
+                      <p className="text-white/95 text-sm leading-relaxed">{rec.descricao}</p>
+                      
+                      {/* Indicadores rápidos */}
+                      <div className="flex items-center gap-4 mt-3 text-xs text-white/70">
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          <span>{rec.prazo}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Users className="h-3 w-3" />
+                          <span>{rec.responsavel}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0">
+                      {expandida ? (
+                        <ChevronUp className="h-5 w-5 text-white/60" />
+                      ) : (
+                        <ChevronDown className="h-5 w-5 text-white/60" />
+                      )}
+                    </div>
                   </div>
+
+                  {/* Conteúdo expandido */}
+                  {expandida && (
+                    <div className="px-5 pb-5 space-y-4 border-t border-white/10 pt-4">
+                      {/* Ações Práticas */}
+                      {rec.acoesPraticas && rec.acoesPraticas.length > 0 && (
+                        <div className="bg-white/5 rounded-lg p-4">
+                          <h5 className="text-white font-semibold text-sm mb-3 flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-400" />
+                            Passos para Implementação
+                          </h5>
+                          <div className="space-y-2">
+                            {rec.acoesPraticas.map((acao, i) => (
+                              <div key={i} className="flex items-start gap-2">
+                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0" />
+                                <p className="text-white/90 text-xs leading-relaxed flex-1">{acao}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Grid de informações */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {/* Impacto Esperado */}
+                        {rec.impactoEsperado && (
+                          <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3">
+                            <div className="flex items-center gap-2 mb-1">
+                              <TrendingUp className="h-4 w-4 text-green-400" />
+                              <span className="text-green-300 font-semibold text-xs">Impacto Esperado</span>
+                            </div>
+                            <p className="text-white/90 text-xs">{rec.impactoEsperado}</p>
+                          </div>
+                        )}
+
+                        {/* Recursos Necessários */}
+                        {rec.recursos && rec.recursos.length > 0 && (
+                          <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Briefcase className="h-4 w-4 text-blue-400" />
+                              <span className="text-blue-300 font-semibold text-xs">Recursos Necessários</span>
+                            </div>
+                            <div className="space-y-1">
+                              {rec.recursos.map((recurso, i) => (
+                                <p key={i} className="text-white/90 text-xs">• {recurso}</p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               );
             })}
