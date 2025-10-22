@@ -572,6 +572,43 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       }
     });
 
+    // Mapeamento correto de IDs para nomes com acentuação
+    const nomesDimensoes: Record<string, string> = {
+      // Clima e Bem-Estar
+      'segurancaPsicologica': 'Segurança Psicológica',
+      'comunicacaoInterna': 'Comunicação Interna',
+      'pertencimento': 'Pertencimento e Inclusão',
+      'justicaOrganizacional': 'Justiça Organizacional',
+      // RPO
+      'demandas_trabalho': 'Demandas do Trabalho',
+      'autonomia_controle': 'Autonomia e Controle',
+      'apoio_social': 'Apoio Social',
+      'reconhecimento': 'Reconhecimento e Recompensas',
+      'seguranca_emprego': 'Segurança no Emprego',
+      'ambiente_fisico': 'Ambiente Físico e Recursos',
+      'conflito_trabalho_familia': 'Conflito Trabalho-Família',
+      'assedio_violencia': 'Assédio e Violência',
+      // Estresse
+      'estresse': 'Estresse Ocupacional',
+      'burnout': 'Burnout',
+      'exaustao': 'Exaustão Emocional',
+      // QVT
+      'satisfacao': 'Satisfação no Trabalho',
+      'saude': 'Saúde e Bem-Estar',
+      'lideranca': 'Liderança',
+      'crescimento': 'Crescimento Profissional',
+      'compensacao': 'Compensação',
+      'condicoes': 'Condições de Trabalho',
+      // Karasek
+      'demanda': 'Demanda Psicológica',
+      'controle': 'Controle sobre o Trabalho',
+      'apoio': 'Apoio Social',
+      // Outras
+      'clima': 'Clima Organizacional',
+      'ambiente': 'Ambiente de Trabalho',
+      'organizacional': 'Cultura Organizacional'
+    };
+
     // Calcular médias das dimensões (mesma lógica do estado-psicossocial)
     const todasDimensoes = Object.entries(dimensoesAgregadas).map(([dimensaoId, dados]) => {
       const media = dados.total > 0 ? dados.soma / dados.total : 0;
@@ -589,9 +626,13 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
         cor = 'yellow';
       }
 
+      // Usar nome correto do mapeamento ou formatar o ID como fallback
+      const nomeFormatado = nomesDimensoes[dimensaoId] || 
+        dimensaoId.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
       return {
         dimensaoId,
-        nome: dimensaoId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        nome: nomeFormatado,
         percentual: Math.round(media),
         nivel,
         cor,
