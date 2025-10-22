@@ -305,33 +305,11 @@ export default function EmpresaColaboradores() {
                   </td>
                   <td className="px-6 py-4" data-testid={`situacao-psicossocial-${colaborador.id}`}>
                     {colaborador.situacaoPsicossocial ? (
-                      <div className="space-y-2">
-                        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border ${getCorStatus(colaborador.situacaoPsicossocial.cor)}`}>
-                          {getStatusIcon(colaborador.situacaoPsicossocial.status)}
-                          <span className="text-xs font-semibold">
-                            {colaborador.situacaoPsicossocial.descricao}
-                          </span>
-                        </div>
-                        
-                        {colaborador.situacaoPsicossocial.indicadores && colaborador.situacaoPsicossocial.indicadores.length > 0 && (
-                          <div className="space-y-1 mt-2">
-                            {colaborador.situacaoPsicossocial.indicadores.map((indicador, idx) => (
-                              <div key={idx} className="flex items-center gap-2 text-xs">
-                                <span className="text-gray-600 truncate max-w-[120px]" title={indicador.nome}>
-                                  {indicador.nome}:
-                                </span>
-                                <span className={`font-medium ${
-                                  indicador.nivel === 'Crítico' ? 'text-red-600' :
-                                  indicador.nivel === 'Atenção' ? 'text-yellow-600' :
-                                  indicador.nivel === 'Moderado' ? 'text-blue-600' :
-                                  'text-green-600'
-                                }`}>
-                                  {indicador.valor}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                      <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border ${getCorStatus(colaborador.situacaoPsicossocial.cor)}`}>
+                        {getStatusIcon(colaborador.situacaoPsicossocial.status)}
+                        <span className="text-xs font-semibold">
+                          {colaborador.situacaoPsicossocial.descricao}
+                        </span>
                       </div>
                     ) : (
                       <div className="text-xs text-gray-400 italic">
