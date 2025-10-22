@@ -52,7 +52,6 @@ const EmpresaGerarConvite: React.FC = () => {
   const [showErpLoginModal, setShowErpLoginModal] = useState(false);
   const [erpLoginForm, setErpLoginForm] = useState({
     erpType: 'TOTVS',
-    apiUrl: '',
     username: '',
     password: '',
   });
@@ -74,7 +73,7 @@ const EmpresaGerarConvite: React.FC = () => {
         return;
       }
 
-      if (!erpLoginForm.username || !erpLoginForm.password || !erpLoginForm.apiUrl) {
+      if (!erpLoginForm.username || !erpLoginForm.password) {
         toast.error('Preencha todos os campos obrigatórios');
         return;
       }
@@ -83,7 +82,9 @@ const EmpresaGerarConvite: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...erpLoginForm,
+          erpType: erpLoginForm.erpType,
+          username: erpLoginForm.username,
+          password: erpLoginForm.password,
           empresaId: user.empresaId,
         }),
       });
@@ -152,7 +153,6 @@ const EmpresaGerarConvite: React.FC = () => {
         setErpColaboradores([]);
         setErpLoginForm({
           erpType: 'TOTVS',
-          apiUrl: '',
           username: '',
           password: '',
         });
@@ -655,15 +655,6 @@ const EmpresaGerarConvite: React.FC = () => {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>URL da API do ERP</Label>
-                          <Input
-                            placeholder="https://api.seu-erp.com"
-                            value={erpLoginForm.apiUrl}
-                            onChange={(e) => setErpLoginForm(prev => ({ ...prev, apiUrl: e.target.value }))}
-                            data-testid="input-api-url"
-                          />
-                        </div>
-                        <div className="space-y-2">
                           <Label>Usuário</Label>
                           <Input
                             placeholder="Seu usuário do ERP"
@@ -688,7 +679,7 @@ const EmpresaGerarConvite: React.FC = () => {
                           </Button>
                           <Button 
                             onClick={fazerLoginERP}
-                            disabled={fetchingColaboradores || !erpLoginForm.username || !erpLoginForm.password || !erpLoginForm.apiUrl}
+                            disabled={fetchingColaboradores || !erpLoginForm.username || !erpLoginForm.password}
                             data-testid="button-login-erp"
                           >
                             {fetchingColaboradores ? (
