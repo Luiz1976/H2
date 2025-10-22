@@ -110,9 +110,18 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
           const dimensoesAgregadas: Record<string, { soma: number; total: number }> = {};
           const indicadores: Array<{ nome: string; valor: string; nivel: string }> = [];
 
-          ultimosResultados.forEach((resultado) => {
+          ultimosResultados.forEach((resultado, index) => {
             const metadados = resultado.metadados as Record<string, any> || {};
+            console.log(`📋 [PSICO] Teste ${index + 1} - Metadados existem:`, !!metadados);
+            console.log(`📋 [PSICO] Teste ${index + 1} - Estrutura metadados:`, JSON.stringify(Object.keys(metadados)));
+            
             const analiseCompleta = metadados.analise_completa || {};
+            console.log(`📋 [PSICO] Teste ${index + 1} - Análise completa existe:`, !!analiseCompleta);
+            console.log(`📋 [PSICO] Teste ${index + 1} - Dimensões existem:`, !!analiseCompleta.dimensoes);
+            
+            if (analiseCompleta.dimensoes) {
+              console.log(`📋 [PSICO] Teste ${index + 1} - Total de dimensões:`, Object.keys(analiseCompleta.dimensoes).length);
+            }
 
             // Processar dimensões
             if (analiseCompleta.dimensoes) {
@@ -177,7 +186,14 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
           }
 
           situacaoPsicossocial.indicadores = indicadores;
+          
+          console.log(`✅ [PSICO] Status final para ${colaborador.nome}:`, situacaoPsicossocial.status);
+          console.log(`✅ [PSICO] Total de indicadores:`, indicadores.length);
+        } else {
+          console.log(`❌ [PSICO] Nenhum resultado encontrado para ${colaborador.nome}`);
         }
+
+        console.log(`🎯 [PSICO] Situação final para ${colaborador.nome}:`, JSON.stringify(situacaoPsicossocial));
 
         return {
           ...colaborador,
