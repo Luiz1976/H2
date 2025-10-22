@@ -22,7 +22,7 @@ export default function MatrizRisco({ riscos }: MatrizRiscoProps) {
     { letra: 'D', label: 'PROVÁVEL', desc: 'Controle deficiente' },
     { letra: 'C', label: 'POSSÍVEL', desc: 'Controle com pequenas deficiências' },
     { letra: 'B', label: 'POUCO PROVÁVEL', desc: 'Controle com conformidade legal' },
-    { letra: 'A', label: 'RARA', desc: 'Controle excelente' }
+    { letra: 'A', label: 'RARO', desc: 'Controle excelente' }
   ];
 
   const severidades = [
@@ -228,7 +228,7 @@ export default function MatrizRisco({ riscos }: MatrizRiscoProps) {
                               {risco.probabilidade === 'D' && 'Provável'}
                               {risco.probabilidade === 'C' && 'Possível'}
                               {risco.probabilidade === 'B' && 'Pouco Provável'}
-                              {risco.probabilidade === 'A' && 'Rara'}
+                              {risco.probabilidade === 'A' && 'Raro'}
                             </p>
                           </div>
                           
