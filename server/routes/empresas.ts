@@ -521,6 +521,17 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
 
     console.log('📊 [PRG] Buscando dados do PRG para empresa:', empresaId);
 
+    // Buscar dados da empresa
+    const [empresa] = await db
+      .select()
+      .from(empresas)
+      .where(eq(empresas.id, empresaId))
+      .limit(1);
+
+    if (!empresa) {
+      return res.status(404).json({ error: 'Empresa não encontrada' });
+    }
+
     // Buscar todos os colaboradores da empresa
     const colaboradoresList = await db
       .select()

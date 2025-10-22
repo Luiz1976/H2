@@ -2122,34 +2122,34 @@ export default function EmpresaPRG() {
         </div>
 
         {/* RODAPÉ HUMANIQ AI */}
-        <Card className="border-0 bg-gradient-to-r from-indigo-950/50 via-purple-950/50 to-blue-950/50 backdrop-blur-lg shadow-xl">
+        <Card className="border-0 bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 backdrop-blur-lg shadow-xl">
           <CardContent className="p-6">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
-                <Brain className="h-6 w-6 text-purple-400" />
+                <Brain className="h-6 w-6 text-purple-300" />
                 <h3 className="text-xl font-bold text-white">HumaniQ AI</h3>
               </div>
-              <p className="text-white/80 text-sm max-w-4xl mx-auto leading-relaxed">
+              <p className="text-white text-sm max-w-4xl mx-auto leading-relaxed">
                 A <strong>HumaniQ AI</strong> é uma plataforma inteligente especializada na análise e gestão de riscos psicossociais e ocupacionais, 
                 desenvolvida com base na NR-01 e demais normativas vigentes de Saúde e Segurança do Trabalho (SST). 
                 Utilizando inteligência artificial e metodologia científica, a HumaniQ AI realiza diagnósticos automatizados, 
                 cruzamento de dados de testes psicossociais e comportamentais, e gera relatórios técnicos que subsidiam a construção do PRG 
                 – Programa de Gerenciamento de Riscos, de forma precisa, ética e em conformidade com os princípios da prevenção e melhoria contínua.
               </p>
-              <p className="text-white/60 text-xs">
+              <p className="text-white/90 text-xs">
                 Todos os relatórios da HumaniQ AI são produzidos de forma autônoma e imparcial, com base nos resultados dos colaboradores vinculados à empresa analisada, 
                 garantindo sigilo, integridade dos dados e rastreabilidade completa do processo avaliativo.
               </p>
               <div className="flex items-center justify-center gap-4 pt-4">
-                <Badge variant="outline" className="bg-white/5 border-white/20 text-white/70">
+                <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
                   <Shield className="h-3 w-3 mr-1" />
                   NR-01
                 </Badge>
-                <Badge variant="outline" className="bg-white/5 border-white/20 text-white/70">
+                <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
                   <CheckCircle2 className="h-3 w-3 mr-1" />
                   ISO 45003
                 </Badge>
-                <Badge variant="outline" className="bg-white/5 border-white/20 text-white/70">
+                <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
                   <Brain className="h-3 w-3 mr-1" />
                   IA Ética
                 </Badge>
