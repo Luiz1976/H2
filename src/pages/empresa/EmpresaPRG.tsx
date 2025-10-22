@@ -1841,7 +1841,7 @@ export default function EmpresaPRG() {
         </Card>
 
         {/* RELATÓRIOS EXPORTÁVEIS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all cursor-pointer" data-testid="card-export-pdf">
             <CardContent className="p-6 text-center space-y-4">
               <div className="flex justify-center">
@@ -1860,28 +1860,6 @@ export default function EmpresaPRG() {
                 data-testid="button-baixar-pdf"
               >
                 Baixar PDF
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all cursor-pointer" data-testid="card-export-excel">
-            <CardContent className="p-6 text-center space-y-4">
-              <div className="flex justify-center">
-                <div className="p-4 bg-green-500/20 rounded-2xl">
-                  <FileSpreadsheet className="h-8 w-8 text-green-400" />
-                </div>
-              </div>
-              <div>
-                <h3 className="text-white font-bold mb-2">Planilha Excel</h3>
-                <p className="text-white/60 text-sm">Dados brutos e índices por setor</p>
-              </div>
-              <Button 
-                onClick={handleExportarExcel}
-                variant="outline" 
-                className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10"
-                data-testid="button-baixar-excel"
-              >
-                Baixar Excel
               </Button>
             </CardContent>
           </Card>
