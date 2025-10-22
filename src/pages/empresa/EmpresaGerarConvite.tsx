@@ -23,13 +23,13 @@ interface ConviteColaborador {
   created_at: string;
 }
 
-interface ErpConfig {
-  id: string;
-  erpType: string;
-  apiUrl: string;
-  statusConexao: string;
-  ultimaSincronizacao: string | null;
-  ativo: boolean;
+interface ErpColaborador {
+  nome: string;
+  email: string;
+  cargo?: string;
+  departamento?: string;
+  sexo?: string;
+  selected?: boolean;
 }
 
 const EmpresaGerarConvite: React.FC = () => {
@@ -48,53 +48,41 @@ const EmpresaGerarConvite: React.FC = () => {
   const [enviandoConvite, setEnviandoConvite] = useState(false);
   const { user } = useAuth();
   
-  const [erpConfig, setErpConfig] = useState<ErpConfig | null>(null);
-  const [showErpConfigModal, setShowErpConfigModal] = useState(false);
-  const [erpForm, setErpForm] = useState({
+  const [showErpLoginModal, setShowErpLoginModal] = useState(false);
+  const [erpLoginForm, setErpLoginForm] = useState({
     erpType: 'TOTVS',
     apiUrl: '',
-    apiKey: '',
-    apiSecret: '',
+    username: '',
+    password: '',
   });
-  const [testingConnection, setTestingConnection] = useState(false);
-  const [importing, setImporting] = useState(false);
-  const [loadingErpConfig, setLoadingErpConfig] = useState(true);
+  const [erpColaboradores, setErpColaboradores] = useState<ErpColaborador[]>([]);
+  const [showColaboradoresTable, setShowColaboradoresTable] = useState(false);
+  const [fetchingColaboradores, setFetchingColaboradores] = useState(false);
+  const [generatingInvites, setGeneratingInvites] = useState(false);
 
   useEffect(() => {
     carregarConvites();
-    carregarConfigERP();
   }, []);
 
-  const carregarConfigERP = async () => {
+  const fazerLoginERP = async () => {
     try {
-      setLoadingErpConfig(true);
-      if (!user?.empresaId) return;
-
-      const response = await fetch(`/api/erp/configuration/${user.empresaId}`);
-      const data = await response.json();
-
-      if (data.success && data.data) {
-        setErpConfig(data.data);
-      }
-    } catch (error) {
-      console.error('Erro ao carregar config ERP:', error);
-    } finally {
-      setLoadingErpConfig(false);
-    }
-  };
-
-  const salvarConfigERP = async () => {
-    try {
+      setFetchingColaboradores(true);
+      
       if (!user?.empresaId) {
         toast.error('ID da empresa não encontrado');
         return;
       }
 
-      const response = await fetch('/api/erp/configure', {
+      if (!erpLoginForm.username || !erpLoginForm.password || !erpLoginForm.apiUrl) {
+        toast.error('Preencha todos os campos obrigatórios');
+        return;
+      }
+
+      const response = await fetch('/api/erp/login-and-fetch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...erpForm,
+          ...erpLoginForm,
           empresaId: user.empresaId,
         }),
       });
@@ -102,122 +90,99 @@ const EmpresaGerarConvite: React.FC = () => {
       const data = await response.json();
 
       if (data.success) {
-        toast.success('Configuração salva com sucesso!');
-        setErpConfig(data.data);
-        setShowErpConfigModal(false);
-        setErpForm({
-          erpType: 'TOTVS',
-          apiUrl: '',
-          apiKey: '',
-          apiSecret: '',
+        const colaboradoresComSelecao = data.data.colaboradores.map((col: ErpColaborador) => ({
+          ...col,
+          selected: true,
+        }));
+        
+        setErpColaboradores(colaboradoresComSelecao);
+        setShowErpLoginModal(false);
+        setShowColaboradoresTable(true);
+        
+        toast.success(`${data.data.totalColaboradores} colaboradores encontrados!`, {
+          description: 'Selecione quais deseja convidar',
         });
       } else {
-        toast.error('Erro ao salvar configuração');
-      }
-    } catch (error) {
-      console.error('Erro ao salvar config ERP:', error);
-      toast.error('Erro ao salvar configuração');
-    }
-  };
-
-  const testarConexaoERP = async () => {
-    try {
-      setTestingConnection(true);
-      if (!user?.empresaId) {
-        toast.error('ID da empresa não encontrado');
-        return;
-      }
-
-      const response = await fetch('/api/erp/test-connection', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ empresaId: user.empresaId }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success('Conexão estabelecida com sucesso!', {
-          description: 'Seu ERP está pronto para importação',
-        });
-        carregarConfigERP();
-      } else {
-        toast.error('Falha ao conectar com o ERP', {
+        toast.error('Erro ao conectar com o ERP', {
           description: data.error || 'Verifique suas credenciais',
         });
       }
     } catch (error) {
-      console.error('Erro ao testar conexão:', error);
-      toast.error('Erro ao testar conexão');
+      console.error('Erro ao fazer login no ERP:', error);
+      toast.error('Erro ao conectar com o ERP');
     } finally {
-      setTestingConnection(false);
+      setFetchingColaboradores(false);
     }
   };
 
-  const importarColaboradoresERP = async () => {
+  const gerarConvitesEmMassa = async () => {
     try {
-      setImporting(true);
+      setGeneratingInvites(true);
+      
       if (!user?.empresaId) {
         toast.error('ID da empresa não encontrado');
         return;
       }
 
-      const response = await fetch('/api/erp/import-colaboradores', {
+      const selecionados = erpColaboradores.filter(col => col.selected);
+      
+      if (selecionados.length === 0) {
+        toast.error('Selecione pelo menos um colaborador');
+        return;
+      }
+
+      const response = await fetch('/api/erp/bulk-invite', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ empresaId: user.empresaId }),
+        body: JSON.stringify({
+          empresaId: user.empresaId,
+          colaboradores: selecionados,
+        }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        toast.success(`${data.data.imported} colaboradores importados!`, {
-          description: data.message,
+        toast.success('Convites gerados com sucesso!', {
+          description: `${data.data.invited} convites criados, ${data.data.skipped} ignorados`,
         });
         
-        if (data.data.errors > 0) {
-          toast.warning(`${data.data.errors} erros durante importação`, {
-            description: 'Alguns colaboradores não puderam ser importados',
-          });
-        }
+        setShowColaboradoresTable(false);
+        setErpColaboradores([]);
+        setErpLoginForm({
+          erpType: 'TOTVS',
+          apiUrl: '',
+          username: '',
+          password: '',
+        });
         
-        carregarConfigERP();
+        carregarConvites();
       } else {
-        toast.error('Erro ao importar colaboradores', {
+        toast.error('Erro ao gerar convites', {
           description: data.error,
         });
       }
     } catch (error) {
-      console.error('Erro ao importar:', error);
-      toast.error('Erro ao importar colaboradores');
+      console.error('Erro ao gerar convites em massa:', error);
+      toast.error('Erro ao gerar convites');
     } finally {
-      setImporting(false);
+      setGeneratingInvites(false);
     }
   };
 
-  const removerConfigERP = async () => {
-    try {
-      if (!user?.empresaId) {
-        toast.error('ID da empresa não encontrado');
-        return;
-      }
+  const toggleColaboradorSelecao = (email: string) => {
+    setErpColaboradores(prev => 
+      prev.map(col => 
+        col.email === email ? { ...col, selected: !col.selected } : col
+      )
+    );
+  };
 
-      const response = await fetch(`/api/erp/configuration/${user.empresaId}`, {
-        method: 'DELETE',
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success('Configuração removida com sucesso');
-        setErpConfig(null);
-      } else {
-        toast.error('Erro ao remover configuração');
-      }
-    } catch (error) {
-      console.error('Erro ao remover config:', error);
-      toast.error('Erro ao remover configuração');
-    }
+  const toggleTodosColaboradores = () => {
+    const todosSelecionados = erpColaboradores.every(col => col.selected);
+    setErpColaboradores(prev => 
+      prev.map(col => ({ ...col, selected: !todosSelecionados }))
+    );
   };
 
   const carregarConvites = async () => {
@@ -666,11 +631,7 @@ const EmpresaGerarConvite: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              {loadingErpConfig ? (
-                <div className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400"></div>
-                </div>
-              ) : erpConfig ? (
+              {showColaboradoresTable ? (
                 <div className="space-y-6">
                   {/* Status da Configuração */}
                   <div className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-3">
