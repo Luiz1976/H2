@@ -139,6 +139,10 @@ export default function EmpresaPRG() {
         console.log('✅ [PRG Frontend] Dados da empresa:', data.empresa);
         console.log('✅ [PRG Frontend] Dados do PRG:', data.prg);
         
+        if (!data.prg || !data.empresa) {
+          throw new Error('Dados incompletos recebidos do servidor');
+        }
+        
         setPrgData(data.prg);
         setEmpresaData(data.empresa);
         console.log('✅ [PRG Frontend] Estados atualizados - empresaData:', data.empresa);
