@@ -7,10 +7,26 @@ import bcrypt from 'bcryptjs';
 
 const router = Router();
 
+// URLs pré-configuradas para cada tipo de ERP
+const ERP_API_URLS: Record<string, string> = {
+  TOTVS: 'https://api.totvs.com.br/protheus/rest',
+  SAP: 'https://api.sap.com/s4hana/v1',
+  ORACLE: 'https://api.oracle.com/cloud/erp/v1',
+  MICROSOFT: 'https://api.dynamics.com/v9.0',
+  SENIOR: 'https://api.senior.com.br/rest',
+  LINX: 'https://api.linx.com.br/v1',
+  SANKHYA: 'https://api.sankhya.com.br/gateway',
+  BENNER: 'https://api.benner.com.br/rest',
+  OUTRO: 'https://api.customizado.com.br', // URL genérica para customizações
+};
+
+function getErpApiUrl(erpType: string): string {
+  return ERP_API_URLS[erpType] || ERP_API_URLS.OUTRO;
+}
+
 const erpLoginSchema = z.object({
   empresaId: z.string(),
   erpType: z.string().min(1),
-  apiUrl: z.string().url(),
   username: z.string().min(1),
   password: z.string().min(1),
 });
@@ -78,8 +94,10 @@ function normalizeColaboradorData(rawData: any): any[] {
 router.post('/login-and-fetch', async (req, res) => {
   try {
     const validatedData = erpLoginSchema.parse(req.body);
-    const { empresaId, erpType, apiUrl, username, password } = validatedData;
+    const { empresaId, erpType, username, password } = validatedData;
 
+    // Usa URL pré-configurada baseada no tipo de ERP
+    const apiUrl = getErpApiUrl(erpType);
     const headers = getAuthHeaders(erpType, username, password);
 
     const employeesEndpoint = `${apiUrl}/api/v1/employees`;
