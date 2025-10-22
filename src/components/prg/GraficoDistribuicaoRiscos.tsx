@@ -14,6 +14,8 @@ interface GraficoDistribuicaoRiscosProps {
 }
 
 export default function GraficoDistribuicaoRiscos({ dados }: GraficoDistribuicaoRiscosProps) {
+  console.log(`📊 [Distribuição Riscos] Renderizando ${dados.length} categorias com dados REAIS:`, dados);
+  
   return (
     <Card className="border-0 bg-white/5 backdrop-blur-xl shadow-xl">
       <CardHeader>

@@ -12,6 +12,8 @@ interface GraficoRadarDimensoesProps {
 }
 
 export default function GraficoRadarDimensoes({ dados }: GraficoRadarDimensoesProps) {
+  console.log(`📊 [Radar Chart] Renderizando com ${dados.length} dimensões REAIS:`, dados.slice(0, 5).map(d => `${d.dimensao}: ${d.valor}%`));
+  
   return (
     <Card className="border-0 bg-white/5 backdrop-blur-xl shadow-xl">
       <CardHeader>
