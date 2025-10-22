@@ -1088,28 +1088,54 @@ const EmpresaGerarConvite: React.FC = () => {
                   </div>
 
                   {/* Seção 2: Upload */}
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-white/90 font-medium text-sm">Passo 2: Faça o Upload</span>
                       <Badge className="bg-orange-500/20 text-orange-300 text-xs">Automático</Badge>
                     </div>
-                    <div className="space-y-2">
-                      <Input
+                    
+                    {/* Upload Area */}
+                    <div className="relative">
+                      <input
                         id="upload-excel"
                         type="file"
                         accept=".xlsx,.xls"
                         onChange={processarPlanilha}
                         disabled={processandoPlanilha}
-                        className="w-full bg-white/5 border-white/10 text-white file:mr-4 file:py-3 file:px-6 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gradient-to-r file:from-orange-500 file:to-amber-600 file:text-white hover:file:from-orange-600 hover:file:to-amber-700 cursor-pointer"
+                        className="hidden"
                         data-testid="input-upload-excel"
                       />
-                      {processandoPlanilha && (
-                        <div className="flex items-center gap-2 text-orange-300 text-sm bg-orange-500/10 p-3 rounded-lg">
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500" />
-                          Processando planilha e gerando convites...
+                      <label 
+                        htmlFor="upload-excel"
+                        className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-orange-500/30 rounded-xl bg-orange-500/5 hover:bg-orange-500/10 hover:border-orange-500/50 transition-all cursor-pointer group"
+                      >
+                        <div className="flex flex-col items-center justify-center space-y-2">
+                          <Upload className="h-8 w-8 text-orange-400 group-hover:text-orange-300 transition-colors" />
+                          <div className="text-center">
+                            <p className="text-sm font-medium text-white/90">
+                              Clique para selecionar o arquivo
+                            </p>
+                            <p className="text-xs text-white/50 mt-1">
+                              ou arraste e solte aqui
+                            </p>
+                            <p className="text-xs text-orange-400/80 mt-2">
+                              Arquivos .XLSX ou .XLS
+                            </p>
+                          </div>
                         </div>
-                      )}
+                      </label>
                     </div>
+
+                    {/* Status de processamento */}
+                    {processandoPlanilha && (
+                      <div className="flex items-center gap-3 text-orange-300 text-sm bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/20 p-4 rounded-lg">
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-orange-500 border-t-transparent" />
+                        <div>
+                          <p className="font-medium">Processando planilha...</p>
+                          <p className="text-xs text-white/60 mt-0.5">Gerando convites automaticamente</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Divisor */}
