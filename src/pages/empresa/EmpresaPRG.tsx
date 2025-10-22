@@ -455,67 +455,593 @@ export default function EmpresaPRG() {
   const handleExportarPDF = () => {
     if (!prgData) return;
 
-    // Gerar relatório PDF completo em HTML
     const htmlContent = `
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Relatório PRG Completo - HumaniQ</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-    .page { padding: 40px; max-width: 210mm; margin: 0 auto; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c3e50; background: white; }
     
-    .cover { text-align: center; padding: 100px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
-    .cover h1 { font-size: 48px; margin-bottom: 20px; }
-    .cover h2 { font-size: 24px; margin-bottom: 40px; font-weight: 300; }
+    .cover { 
+      text-align: center; padding: 120px 60px; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+      color: white; min-height: 100vh; 
+      display: flex; flex-direction: column; justify-content: center; 
+      page-break-after: always; 
+    }
+    .cover h1 { font-size: 56px; margin-bottom: 24px; font-weight: 900; letter-spacing: -1px; }
+    .cover h2 { font-size: 28px; margin-bottom: 60px; font-weight: 300; opacity: 0.95; }
+    .cover .meta { margin-top: 80px; font-size: 18px; opacity: 0.9; }
     
-    h2 { color: #667eea; margin-top: 30px; margin-bottom: 15px; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+    .page { padding: 50px 60px; max-width: 210mm; margin: 0 auto; page-break-after: always; }
     
-    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0; }
-    .kpi-card { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; border-left: 4px solid #667eea; }
-    .kpi-value { font-size: 36px; font-weight: bold; color: #667eea; margin: 10px 0; }
+    h1 { color: #667eea; font-size: 32px; margin: 40px 0 20px; border-bottom: 4px solid #667eea; padding-bottom: 12px; }
+    h2 { color: #667eea; font-size: 24px; margin: 30px 0 16px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h3 { color: #555; font-size: 18px; margin: 20px 0 12px; }
     
-    .ai-section { background: #f0f4ff; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 6px solid #667eea; }
+    .indice { margin: 40px 0; }
+    .indice-item { margin: 12px 0; padding: 12px; background: #f8f9fa; border-radius: 6px; }
+    .indice-item a { color: #667eea; text-decoration: none; font-weight: 600; }
     
-    .rec-item { background: white; border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; page-break-inside: avoid; }
-    .badge-alta { background: #ef4444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
-    .badge-media { background: #f59e0b; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 30px 0; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin: 30px 0; }
     
-    @media print { .page { padding: 20mm; } }
+    .kpi-card { 
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+      padding: 28px; border-radius: 12px; text-align: center; 
+      border-left: 6px solid #667eea; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .kpi-label { font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .kpi-value { font-size: 48px; font-weight: 900; color: #667eea; margin: 12px 0; }
+    .kpi-status { display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-top: 8px; }
+    .status-saudavel { background: #d4edda; color: #155724; }
+    .status-atencao { background: #fff3cd; color: #856404; }
+    .status-critico { background: #f8d7da; color: #721c24; }
+    
+    .ai-section { 
+      background: linear-gradient(135deg, #e3f2fd 0%, #f0f4ff 100%); 
+      padding: 32px; border-radius: 16px; margin: 24px 0; 
+      border-left: 8px solid #667eea; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+    .ai-section p { margin: 14px 0; font-size: 15px; }
+    
+    .dimensao-item { 
+      background: white; border: 2px solid #e0e0e0; 
+      border-radius: 12px; padding: 20px; margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .dimensao-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .dimensao-nome { font-weight: 700; font-size: 16px; color: #333; }
+    .dimensao-valores { font-size: 14px; color: #666; }
+    .progress-bar { background: #e0e0e0; height: 24px; border-radius: 12px; overflow: hidden; position: relative; }
+    .progress-fill { background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); height: 100%; transition: width 0.3s; }
+    
+    .rec-item { 
+      background: white; border: 2px solid #e0e0e0; 
+      border-radius: 16px; padding: 28px; margin-bottom: 24px; 
+      page-break-inside: avoid; box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .rec-header { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .rec-numero { 
+      background: #667eea; color: white; 
+      width: 36px; height: 36px; border-radius: 50%; 
+      display: flex; align-items: center; justify-content: center; 
+      font-weight: 900; font-size: 16px;
+    }
+    .rec-titulo { flex: 1; font-size: 18px; font-weight: 700; color: #333; }
+    .badge { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+    .badge-alta { background: #ef4444; color: white; }
+    .badge-media { background: #f59e0b; color: white; }
+    .badge-baixa { background: #10b981; color: white; }
+    
+    .rec-section { margin: 16px 0; }
+    .rec-section-title { font-weight: 600; color: #667eea; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; }
+    .rec-section-content { color: #555; line-height: 1.8; }
+    
+    .acoes-list { margin: 12px 0 12px 20px; }
+    .acoes-list li { margin: 8px 0; color: #555; }
+    
+    .recursos-box { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin: 12px 0; }
+    .recursos-box strong { color: #1e40af; }
+    
+    .matriz-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .matriz-table th, .matriz-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+    .matriz-table th { background: #667eea; color: white; font-weight: 600; }
+    .matriz-table tr:nth-child(even) { background: #f8f9fa; }
+    
+    .compliance-section { background: #f8f9fa; padding: 24px; border-radius: 12px; margin: 20px 0; border: 2px solid #e0e0e0; }
+    .compliance-item { margin: 16px 0; padding: 16px; background: white; border-radius: 8px; border-left: 4px solid #10b981; }
+    
+    .footer { text-align: center; padding: 40px; background: #f8f9fa; color: #666; font-size: 13px; margin-top: 60px; }
+    
+    @media print { 
+      .page { padding: 15mm; } 
+      body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- CAPA -->
   <div class="cover">
-    <h1>📊 Relatório PRG</h1>
+    <div style="font-size: 72px; margin-bottom: 20px;">📊</div>
+    <h1>Relatório PRG Completo</h1>
     <h2>Programa de Gestão de Riscos Psicossociais</h2>
-    <p style="margin-top: 50px; font-size: 20px;">HumaniQ</p>
-    <p>${new Date().toLocaleDateString('pt-BR')}</p>
+    <div class="meta">
+      <p style="font-size: 24px; margin-bottom: 16px;">HumaniQ</p>
+      <p style="font-size: 18px;">Gerado em ${new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+      <p style="font-size: 16px; margin-top: 40px; opacity: 0.8;">Análise Completa de Riscos Psicossociais</p>
+    </div>
   </div>
 
+  <!-- ÍNDICE -->
   <div class="page">
-    <h2>📈 Sumário Executivo</h2>
-    <div class="kpis">
-      <div class="kpi-card"><div>Índice Global</div><div class="kpi-value">${prgData.indiceGlobal}%</div></div>
-      <div class="kpi-card"><div>Colaboradores</div><div class="kpi-value">${prgData.totalColaboradores}</div></div>
-      <div class="kpi-card"><div>Cobertura</div><div class="kpi-value">${prgData.cobertura}%</div></div>
+    <h1>📑 Índice</h1>
+    <div class="indice">
+      <div class="indice-item"><a href="#sumario">1. Sumário Executivo</a></div>
+      <div class="indice-item"><a href="#visao-geral">2. Visão Geral</a></div>
+      <div class="indice-item"><a href="#indicadores">3. Indicadores-Chave (KPIs)</a></div>
+      <div class="indice-item"><a href="#dimensoes">4. Análise por Dimensão Psicossocial</a></div>
+      <div class="indice-item"><a href="#matriz">5. Matriz de Riscos</a></div>
+      <div class="indice-item"><a href="#distribuicao">6. Distribuição de Riscos por Categoria</a></div>
+      <div class="indice-item"><a href="#ia-analise">7. Análise Inteligente (IA)</a></div>
+      <div class="indice-item"><a href="#recomendacoes">8. Recomendações Completas</a></div>
+      <div class="indice-item"><a href="#compliance">9. Compliance e Regulamentações</a></div>
+    </div>
+  </div>
+
+  <!-- 1. SUMÁRIO EXECUTIVO -->
+  <div class="page">
+    <h1 id="sumario">📈 1. Sumário Executivo</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Visão panorâmica dos principais indicadores de saúde psicossocial da organização.
+    </p>
+    
+    <div class="grid-3">
+      <div class="kpi-card">
+        <div class="kpi-label">Índice Global PRG</div>
+        <div class="kpi-value">${prgData.indiceGlobal}%</div>
+        <div class="kpi-status ${prgData.indiceGlobal >= 80 ? 'status-saudavel' : prgData.indiceGlobal >= 60 ? 'status-atencao' : 'status-critico'}">
+          ${prgData.indiceGlobal >= 80 ? 'Saudável' : prgData.indiceGlobal >= 60 ? 'Atenção' : 'Crítico'}
+        </div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="kpi-label">Total de Colaboradores</div>
+        <div class="kpi-value">${prgData.totalColaboradores}</div>
+        <div class="kpi-status status-saudavel">Avaliados</div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="kpi-label">Cobertura da Avaliação</div>
+        <div class="kpi-value">${prgData.cobertura}%</div>
+        <div class="kpi-status ${prgData.cobertura >= 80 ? 'status-saudavel' : prgData.cobertura >= 60 ? 'status-atencao' : 'status-critico'}">
+          ${prgData.cobertura >= 80 ? 'Excelente' : prgData.cobertura >= 60 ? 'Bom' : 'Insuficiente'}
+        </div>
+      </div>
     </div>
 
-    <h2>🧠 Análise Inteligente</h2>
-    <div class="ai-section">${prgData.aiAnalysis.sintese.split('\n\n').map(p => `<p style="margin: 10px 0;">${p}</p>`).join('')}</div>
+    <div class="grid-3" style="margin-top: 24px;">
+      <div class="kpi-card">
+        <div class="kpi-label">Total de Testes Realizados</div>
+        <div class="kpi-value">${prgData.totalTestes}</div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="kpi-label">Testes de Clima</div>
+        <div class="kpi-value">${prgData.dadosPorTipo.clima}</div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="kpi-label">Testes de Estresse</div>
+        <div class="kpi-value">${prgData.dadosPorTipo.estresse}</div>
+      </div>
+    </div>
+  </div>
 
-    <h2>💡 Recomendações</h2>
-    ${prgData.recomendacoes.map((rec, i) => `
-      <div class="rec-item">
-        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
-          <strong style="flex: 1;">${i + 1}. ${rec.titulo}</strong>
-          <span class="${rec.prioridade === 'Alta' ? 'badge-alta' : 'badge-media'}">${rec.prioridade}</span>
+  <!-- 2. VISÃO GERAL -->
+  <div class="page">
+    <h1 id="visao-geral">🎯 2. Visão Geral</h1>
+    
+    <h2>Distribuição de Avaliações por Tipo</h2>
+    <div class="grid-2">
+      <div class="dimensao-item">
+        <div class="dimensao-header">
+          <span class="dimensao-nome">Clima Organizacional</span>
+          <span class="dimensao-valores">${prgData.dadosPorTipo.clima} testes</span>
         </div>
-        <p>${rec.descricao}</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.clima / prgData.totalTestes * 100)}%"></div>
+        </div>
+      </div>
+
+      <div class="dimensao-item">
+        <div class="dimensao-header">
+          <span class="dimensao-nome">Estresse Ocupacional</span>
+          <span class="dimensao-valores">${prgData.dadosPorTipo.estresse} testes</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.estresse / prgData.totalTestes * 100)}%"></div>
+        </div>
+      </div>
+
+      <div class="dimensao-item">
+        <div class="dimensao-header">
+          <span class="dimensao-nome">Risco de Burnout</span>
+          <span class="dimensao-valores">${prgData.dadosPorTipo.burnout} testes</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.burnout / prgData.totalTestes * 100)}%"></div>
+        </div>
+      </div>
+
+      <div class="dimensao-item">
+        <div class="dimensao-header">
+          <span class="dimensao-nome">Qualidade de Vida no Trabalho</span>
+          <span class="dimensao-valores">${prgData.dadosPorTipo.qvt} testes</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.qvt / prgData.totalTestes * 100)}%"></div>
+        </div>
+      </div>
+
+      <div class="dimensao-item">
+        <div class="dimensao-header">
+          <span class="dimensao-nome">Assédio e Segurança</span>
+          <span class="dimensao-valores">${prgData.dadosPorTipo.assedio} testes</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.assedio / prgData.totalTestes * 100)}%"></div>
+        </div>
+      </div>
+
+      <div class="dimensao-item">
+        <div class="dimensao-header">
+          <span class="dimensao-nome">Perfil DISC</span>
+          <span class="dimensao-valores">${prgData.dadosPorTipo.disc} testes</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.disc / prgData.totalTestes * 100)}%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. INDICADORES-CHAVE -->
+  <div class="page">
+    <h1 id="indicadores">📊 3. Indicadores-Chave (KPIs)</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Principais métricas para monitoramento dos riscos psicossociais.
+    </p>
+
+    <div class="grid-2">
+      <div class="kpi-card">
+        <div class="kpi-label">⚡ Índice de Estresse Ocupacional</div>
+        <div class="kpi-value">${prgData.kpis.indiceEstresse}%</div>
+        <div class="kpi-status ${prgData.kpis.indiceEstresse >= 80 ? 'status-saudavel' : prgData.kpis.indiceEstresse >= 60 ? 'status-atencao' : 'status-critico'}">
+          ${prgData.kpis.indiceEstresse >= 80 ? 'Saudável' : prgData.kpis.indiceEstresse >= 60 ? 'Atenção' : 'Crítico'}
+        </div>
+        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+          Mede o nível geral de estresse na organização
+        </p>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">☀️ Clima Organizacional Positivo</div>
+        <div class="kpi-value">${prgData.kpis.climaPositivo}%</div>
+        <div class="kpi-status ${prgData.kpis.climaPositivo >= 80 ? 'status-saudavel' : prgData.kpis.climaPositivo >= 60 ? 'status-atencao' : 'status-critico'}">
+          ${prgData.kpis.climaPositivo >= 80 ? 'Saudável' : prgData.kpis.climaPositivo >= 60 ? 'Atenção' : 'Crítico'}
+        </div>
+        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+          Percepção de ambiente de trabalho positivo
+        </p>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">👔 Satisfação com Chefia</div>
+        <div class="kpi-value">${prgData.kpis.satisfacaoChefia}%</div>
+        <div class="kpi-status ${prgData.kpis.satisfacaoChefia >= 80 ? 'status-saudavel' : prgData.kpis.satisfacaoChefia >= 60 ? 'status-atencao' : 'status-critico'}">
+          ${prgData.kpis.satisfacaoChefia >= 80 ? 'Saudável' : prgData.kpis.satisfacaoChefia >= 60 ? 'Atenção' : 'Crítico'}
+        </div>
+        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+          Qualidade da liderança e gestão
+        </p>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">🔥 Risco de Burnout</div>
+        <div class="kpi-value">${prgData.kpis.riscoBurnout}%</div>
+        <div class="kpi-status ${prgData.kpis.riscoBurnout < 40 ? 'status-saudavel' : prgData.kpis.riscoBurnout < 60 ? 'status-atencao' : 'status-critico'}">
+          ${prgData.kpis.riscoBurnout < 40 ? 'Baixo' : prgData.kpis.riscoBurnout < 60 ? 'Moderado' : 'Alto'}
+        </div>
+        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+          Probabilidade de esgotamento profissional
+        </p>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">📈 Maturidade do PRG</div>
+        <div class="kpi-value">${prgData.kpis.maturidadePRG}%</div>
+        <div class="kpi-status ${prgData.kpis.maturidadePRG >= 80 ? 'status-saudavel' : prgData.kpis.maturidadePRG >= 60 ? 'status-atencao' : 'status-critico'}">
+          ${prgData.kpis.maturidadePRG >= 80 ? 'Maduro' : prgData.kpis.maturidadePRG >= 60 ? 'Em Desenvolvimento' : 'Inicial'}
+        </div>
+        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+          Nível de implementação do programa
+        </p>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">🛡️ Segurança Psicológica</div>
+        <div class="kpi-value">${prgData.kpis.segurancaPsicologica}%</div>
+        <div class="kpi-status ${prgData.kpis.segurancaPsicologica >= 80 ? 'status-saudavel' : prgData.kpis.segurancaPsicologica >= 60 ? 'status-atencao' : 'status-critico'}">
+          ${prgData.kpis.segurancaPsicologica >= 80 ? 'Saudável' : prgData.kpis.segurancaPsicologica >= 60 ? 'Atenção' : 'Crítico'}
+        </div>
+        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+          Liberdade para expressar opiniões sem medo
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. DIMENSÕES PSICOSSOCIAIS -->
+  <div class="page">
+    <h1 id="dimensoes">🧠 4. Análise por Dimensão Psicossocial</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Detalhamento de todas as dimensões avaliadas com valores atuais e metas estabelecidas.
+    </p>
+
+    ${prgData.dimensoesPsicossociais.map((dim, i) => `
+      <div class="dimensao-item">
+        <div class="dimensao-header">
+          <span class="dimensao-nome">${i + 1}. ${dim.dimensao}</span>
+          <span class="dimensao-valores">
+            <strong style="color: #667eea;">${dim.valor}%</strong> / 
+            <span style="color: #999;">Meta: ${dim.meta}%</span>
+          </span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${dim.valor}%"></div>
+        </div>
+        <p style="margin-top: 8px; font-size: 13px; color: ${dim.valor >= dim.meta ? '#10b981' : '#ef4444'};">
+          ${dim.valor >= dim.meta 
+            ? `✓ Meta atingida (${(dim.valor - dim.meta).toFixed(1)}% acima)` 
+            : `⚠ Abaixo da meta (${(dim.meta - dim.valor).toFixed(1)}% para atingir)`
+          }
+        </p>
       </div>
     `).join('')}
   </div>
+
+  <!-- 5. MATRIZ DE RISCOS -->
+  <div class="page">
+    <h1 id="matriz">⚠️ 5. Matriz de Riscos</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Mapeamento completo dos riscos psicossociais identificados com probabilidade e severidade.
+    </p>
+
+    <table class="matriz-table">
+      <thead>
+        <tr>
+          <th>Risco Identificado</th>
+          <th>Categoria</th>
+          <th>Probabilidade</th>
+          <th>Severidade</th>
+          <th>Classificação</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${prgData.matrizRiscos.map(risco => {
+          const nivel = risco.probabilidade <= 'B' && risco.severidade <= 2 ? 'Baixo' 
+                      : risco.probabilidade <= 'C' && risco.severidade <= 3 ? 'Moderado'
+                      : risco.probabilidade <= 'D' && risco.severidade <= 4 ? 'Alto' 
+                      : 'Crítico';
+          const cor = nivel === 'Baixo' ? '#10b981' : nivel === 'Moderado' ? '#f59e0b' : nivel === 'Alto' ? '#ef4444' : '#991b1b';
+          
+          return `
+            <tr>
+              <td><strong>${risco.nome}</strong></td>
+              <td>${risco.categoria}</td>
+              <td style="text-align: center;">${risco.probabilidade}</td>
+              <td style="text-align: center;">${risco.severidade}</td>
+              <td style="color: ${cor}; font-weight: 600; text-align: center;">${nivel}</td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. DISTRIBUIÇÃO DE RISCOS -->
+  <div class="page">
+    <h1 id="distribuicao">📊 6. Distribuição de Riscos por Categoria</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Quantidade de riscos por categoria e nível de criticidade.
+    </p>
+
+    ${prgData.distribuicaoRiscos.map((dist, i) => `
+      <div class="dimensao-item">
+        <h3>${i + 1}. ${dist.categoria}</h3>
+        <div class="grid-2" style="margin-top: 16px;">
+          <div style="text-align: center; padding: 16px; background: #fee2e2; border-radius: 8px;">
+            <div style="font-size: 32px; font-weight: 900; color: #991b1b;">${dist.critico}</div>
+            <div style="font-size: 13px; color: #7f1d1d; margin-top: 4px;">Crítico</div>
+          </div>
+          <div style="text-align: center; padding: 16px; background: #fed7aa; border-radius: 8px;">
+            <div style="font-size: 32px; font-weight: 900; color: #c2410c;">${dist.alto}</div>
+            <div style="font-size: 13px; color: #7c2d12; margin-top: 4px;">Alto</div>
+          </div>
+          <div style="text-align: center; padding: 16px; background: #fef3c7; border-radius: 8px;">
+            <div style="font-size: 32px; font-weight: 900; color: #b45309;">${dist.moderado}</div>
+            <div style="font-size: 13px; color: #78350f; margin-top: 4px;">Moderado</div>
+          </div>
+          <div style="text-align: center; padding: 16px; background: #d1fae5; border-radius: 8px;">
+            <div style="font-size: 32px; font-weight: 900; color: #047857;">${dist.baixo}</div>
+            <div style="font-size: 13px; color: #065f46; margin-top: 4px;">Baixo</div>
+          </div>
+        </div>
+      </div>
+    `).join('')}
+  </div>
+
+  <!-- 7. ANÁLISE INTELIGENTE -->
+  <div class="page">
+    <h1 id="ia-analise">🤖 7. Análise Inteligente (IA)</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Análise automatizada utilizando Inteligência Artificial para interpretação dos dados coletados.
+    </p>
+    
+    <div class="ai-section">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <div style="font-size: 32px;">🧠</div>
+        <div>
+          <div style="font-weight: 700; font-size: 18px; color: #667eea;">Síntese da Análise</div>
+          <div style="font-size: 13px; color: #666;">Gerado em ${new Date(prgData.aiAnalysis.dataGeracao).toLocaleDateString('pt-BR')}</div>
+        </div>
+      </div>
+      
+      ${prgData.aiAnalysis.sintese.split('\n\n').map(paragrafo => 
+        `<p style="margin: 16px 0; text-align: justify;">${paragrafo}</p>`
+      ).join('')}
+    </div>
+  </div>
+
+  <!-- 8. RECOMENDAÇÕES COMPLETAS -->
+  <div class="page">
+    <h1 id="recomendacoes">💡 8. Recomendações Completas</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Plano de ação detalhado com todas as recomendações priorizadas e estruturadas.
+    </p>
+
+    ${prgData.recomendacoes.map((rec, i) => `
+      <div class="rec-item">
+        <div class="rec-header">
+          <div class="rec-numero">${i + 1}</div>
+          <div class="rec-titulo">${rec.titulo}</div>
+          <span class="badge badge-${rec.prioridade.toLowerCase()}">${rec.prioridade}</span>
+          <span class="badge" style="background: #e0e7ff; color: #4338ca;">${rec.categoria}</span>
+        </div>
+
+        <div class="rec-section">
+          <div class="rec-section-title">📝 Descrição</div>
+          <div class="rec-section-content">${rec.descricao}</div>
+        </div>
+
+        ${rec.acoesPraticas && rec.acoesPraticas.length > 0 ? `
+          <div class="rec-section">
+            <div class="rec-section-title">✅ Ações Práticas</div>
+            <ol class="acoes-list">
+              ${rec.acoesPraticas.map(acao => `<li>${acao}</li>`).join('')}
+            </ol>
+          </div>
+        ` : ''}
+
+        <div class="grid-2" style="margin-top: 16px;">
+          ${rec.prazo ? `
+            <div class="rec-section">
+              <div class="rec-section-title">⏰ Prazo</div>
+              <div class="rec-section-content">${rec.prazo}</div>
+            </div>
+          ` : ''}
+
+          ${rec.responsavel ? `
+            <div class="rec-section">
+              <div class="rec-section-title">👤 Responsável</div>
+              <div class="rec-section-content">${rec.responsavel}</div>
+            </div>
+          ` : ''}
+        </div>
+
+        ${rec.impactoEsperado ? `
+          <div class="rec-section">
+            <div class="rec-section-title">🎯 Impacto Esperado</div>
+            <div class="rec-section-content">${rec.impactoEsperado}</div>
+          </div>
+        ` : ''}
+
+        ${rec.recursos && rec.recursos.length > 0 ? `
+          <div class="recursos-box">
+            <strong>💰 Recursos Necessários:</strong>
+            <ul style="margin: 8px 0 0 20px;">
+              ${rec.recursos.map(recurso => `<li>${recurso}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+      </div>
+    `).join('')}
+  </div>
+
+  <!-- 9. COMPLIANCE -->
+  <div class="page">
+    <h1 id="compliance">📋 9. Compliance e Regulamentações</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Conformidade com normas e regulamentações aplicáveis.
+    </p>
+
+    <div class="compliance-section">
+      <div class="compliance-item">
+        <h3 style="color: #10b981; margin-bottom: 12px;">✓ NR-01 - Disposições Gerais e Gerenciamento de Riscos Ocupacionais</h3>
+        <p style="color: #555; line-height: 1.8;">
+          Este relatório está em conformidade com a NR-01, atualizada pela Portaria MTP n.º 6.730/2020, 
+          que estabelece as diretrizes para o gerenciamento de riscos ocupacionais, incluindo os riscos psicossociais. 
+          O PRG (Programa de Gestão de Riscos Psicossociais) integra o PGR (Programa de Gerenciamento de Riscos) 
+          da organização, conforme determinado pela legislação brasileira.
+        </p>
+      </div>
+
+      <div class="compliance-item">
+        <h3 style="color: #10b981; margin-bottom: 12px;">✓ ISO 45003:2021 - Gestão de Saúde e Segurança Ocupacional</h3>
+        <p style="color: #555; line-height: 1.8;">
+          As diretrizes deste relatório seguem as recomendações da norma ISO 45003:2021, que fornece orientações 
+          específicas para o gerenciamento de riscos psicossociais no ambiente de trabalho. A norma estabelece 
+          um framework internacional para identificação, avaliação e controle desses riscos.
+        </p>
+      </div>
+
+      <div class="compliance-item">
+        <h3 style="color: #10b981; margin-bottom: 12px;">✓ LGPD - Lei Geral de Proteção de Dados (Lei 13.709/2018)</h3>
+        <p style="color: #555; line-height: 1.8;">
+          Todos os dados coletados e apresentados neste relatório foram tratados em conformidade com a LGPD. 
+          As informações são anonimizadas e agregadas, garantindo a privacidade dos colaboradores. 
+          Nenhum dado individual identificável é divulgado neste documento, respeitando os princípios 
+          de finalidade, adequação, necessidade e segurança da informação.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px; padding: 24px; background: #f0f4ff; border-radius: 12px; border-left: 6px solid #667eea;">
+      <h3 style="color: #667eea; margin-bottom: 12px;">📌 Observações Importantes</h3>
+      <ul style="margin-left: 24px; color: #555; line-height: 2;">
+        <li>Este relatório deve ser revisado periodicamente (mínimo semestral)</li>
+        <li>As recomendações devem ser implementadas conforme cronograma estabelecido</li>
+        <li>É fundamental o envolvimento da alta gestão na execução do PRG</li>
+        <li>Recomenda-se comunicar os resultados de forma transparente aos colaboradores</li>
+        <li>Mantenha registros de todas as ações implementadas para auditorias futuras</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p style="font-weight: 600; margin-bottom: 8px;">HumaniQ - Plataforma de Avaliação Psicológica</p>
+    <p>Programa de Gestão de Riscos Psicossociais (PRG)</p>
+    <p style="margin-top: 16px; font-size: 12px;">
+      Relatório gerado automaticamente em ${new Date().toLocaleDateString('pt-BR', { 
+        day: '2-digit', 
+        month: 'long', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })}
+    </p>
+    <p style="margin-top: 8px; font-size: 11px; color: #999;">
+      © ${new Date().getFullYear()} HumaniQ. Todos os direitos reservados. | Conforme NR-01, ISO 45003 e LGPD
+    </p>
+  </div>
+
 </body>
 </html>
     `;
@@ -524,7 +1050,7 @@ export default function EmpresaPRG() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Relatorio-PRG-${new Date().toISOString().split('T')[0]}.html`;
+    a.download = `Relatorio-PRG-Completo-${new Date().toISOString().split('T')[0]}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
