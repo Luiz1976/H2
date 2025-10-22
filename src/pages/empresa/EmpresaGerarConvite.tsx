@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, Mail, Calendar, Clock, CheckCircle, AlertTriangle, Copy, Send, Eye, Trash2, Plus, Database, Upload, FileSpreadsheet, Link as LinkIcon } from 'lucide-react';
+import { UserPlus, Mail, Calendar, Clock, CheckCircle, AlertTriangle, Copy, Send, Eye, Trash2, Plus, Database, Upload, FileSpreadsheet, Link as LinkIcon, Download } from 'lucide-react';
+import * as XLSX from 'xlsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +34,21 @@ interface ErpColaborador {
   selected?: boolean;
 }
 
+interface ColaboradorPlanilha {
+  nome: string;
+  cargo: string;
+  setor: string;
+  idade: number;
+  sexo: string;
+}
+
+interface ConviteGerado {
+  nome: string;
+  cargo: string;
+  setor: string;
+  link: string;
+}
+
 const EmpresaGerarConvite: React.FC = () => {
   const [convites, setConvites] = useState<ConviteColaborador[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,6 +76,11 @@ const EmpresaGerarConvite: React.FC = () => {
   const [showColaboradoresTable, setShowColaboradoresTable] = useState(false);
   const [fetchingColaboradores, setFetchingColaboradores] = useState(false);
   const [generatingInvites, setGeneratingInvites] = useState(false);
+  
+  // Estados para importação via Excel
+  const [processandoPlanilha, setProcessandoPlanilha] = useState(false);
+  const [convitesGerados, setConvitesGerados] = useState<ConviteGerado[]>([]);
+  const [showConvitesGerados, setShowConvitesGerados] = useState(false);
 
   useEffect(() => {
     carregarConvites();
@@ -187,6 +208,155 @@ const EmpresaGerarConvite: React.FC = () => {
     setErpColaboradores(prev => 
       prev.map(col => ({ ...col, selected: !todosSelecionados }))
     );
+  };
+
+  // Funções para importação via Excel
+  const baixarModeloPlanilha = () => {
+    // Criar dados de exemplo para o modelo
+    const dadosModelo = [
+      { Nome: 'João Silva', Cargo: 'Analista de TI', Setor: 'Tecnologia', Idade: 30, Sexo: 'Masculino' },
+      { Nome: 'Maria Santos', Cargo: 'Gerente de RH', Setor: 'Recursos Humanos', Idade: 35, Sexo: 'Feminino' },
+      { Nome: 'Pedro Oliveira', Cargo: 'Contador', Setor: 'Financeiro', Idade: 28, Sexo: 'Masculino' },
+    ];
+
+    // Criar workbook e worksheet
+    const ws = XLSX.utils.json_to_sheet(dadosModelo);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Colaboradores');
+
+    // Baixar arquivo
+    XLSX.writeFile(wb, 'modelo_convites_colaboradores.xlsx');
+    
+    toast.success('Modelo baixado com sucesso!', {
+      description: 'Preencha a planilha e faça o upload',
+    });
+  };
+
+  const processarPlanilha = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setProcessandoPlanilha(true);
+
+      // Ler arquivo
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet) as any[];
+
+      if (jsonData.length === 0) {
+        toast.error('Planilha vazia', {
+          description: 'A planilha não contém dados',
+        });
+        return;
+      }
+
+      // Validar colunas
+      const primeiraLinha = jsonData[0];
+      const colunasEsperadas = ['Nome', 'Cargo', 'Setor', 'Idade', 'Sexo'];
+      const colunasFaltando = colunasEsperadas.filter(col => !primeiraLinha.hasOwnProperty(col));
+
+      if (colunasFaltando.length > 0) {
+        toast.error('Planilha inválida', {
+          description: `Colunas faltando: ${colunasFaltando.join(', ')}`,
+        });
+        return;
+      }
+
+      // Processar dados e gerar convites
+      if (!user?.empresaId) {
+        toast.error('ID da empresa não encontrado');
+        return;
+      }
+
+      const convitesParaGerar = jsonData.map((linha: any) => ({
+        nome: String(linha.Nome || '').trim(),
+        cargo: String(linha.Cargo || '').trim(),
+        setor: String(linha.Setor || '').trim(),
+        idade: parseInt(linha.Idade) || 0,
+        sexo: String(linha.Sexo || '').trim(),
+      }));
+
+      // Filtrar linhas vazias
+      const colaboradoresValidos = convitesParaGerar.filter(c => c.nome && c.cargo && c.setor);
+
+      if (colaboradoresValidos.length === 0) {
+        toast.error('Nenhum colaborador válido encontrado', {
+          description: 'Verifique os dados da planilha',
+        });
+        return;
+      }
+
+      // Gerar convites
+      const convitesComLinks: ConviteGerado[] = [];
+
+      for (const colaborador of colaboradoresValidos) {
+        try {
+          const response = await fetch('/api/convites/colaborador', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              nome: colaborador.nome,
+              email: `${colaborador.nome.toLowerCase().replace(/\s+/g, '.')}@temp.com`, // Email temporário
+              cargo: colaborador.cargo,
+              departamento: colaborador.setor,
+              empresa_id: user.empresaId,
+              dias_expiracao: 30,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.success && data.data?.token) {
+            const linkConvite = `${window.location.origin}/convite/${data.data.token}`;
+            convitesComLinks.push({
+              nome: colaborador.nome,
+              cargo: colaborador.cargo,
+              setor: colaborador.setor,
+              link: linkConvite,
+            });
+          }
+        } catch (error) {
+          console.error(`Erro ao gerar convite para ${colaborador.nome}:`, error);
+        }
+      }
+
+      setConvitesGerados(convitesComLinks);
+      setShowConvitesGerados(true);
+
+      toast.success('Convites gerados com sucesso!', {
+        description: `${convitesComLinks.length} de ${colaboradoresValidos.length} convites criados`,
+      });
+
+      // Limpar input
+      event.target.value = '';
+      
+      // Recarregar lista de convites
+      carregarConvites();
+    } catch (error) {
+      console.error('Erro ao processar planilha:', error);
+      toast.error('Erro ao processar planilha', {
+        description: 'Verifique se o arquivo está no formato correto',
+      });
+    } finally {
+      setProcessandoPlanilha(false);
+    }
+  };
+
+  const copiarLink = (link: string, nome: string) => {
+    navigator.clipboard.writeText(link);
+    toast.success('Link copiado!', {
+      description: `Link de ${nome} copiado para área de transferência`,
+    });
+  };
+
+  const copiarTodosLinks = () => {
+    const todosLinks = convitesGerados.map(c => `${c.nome}: ${c.link}`).join('\n\n');
+    navigator.clipboard.writeText(todosLinks);
+    toast.success('Todos os links copiados!', {
+      description: `${convitesGerados.length} links copiados para área de transferência`,
+    });
   };
 
   const carregarConvites = async () => {
@@ -364,7 +534,7 @@ const EmpresaGerarConvite: React.FC = () => {
           <p className="text-white/60">Crie e gerencie convites para colaboradores</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
           {/* CARD 1: Convites Individuais */}
           <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl">
             <CardHeader className="border-b border-white/10">
@@ -740,6 +910,163 @@ const EmpresaGerarConvite: React.FC = () => {
                       </div>
                     </DialogContent>
                   </Dialog>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* CARD 3: Importação via Planilha Excel */}
+          <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl">
+            <CardHeader className="border-b border-white/10">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg">
+                  <FileSpreadsheet className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl text-white" data-testid="text-card-excel-title">Importação via Planilha</CardTitle>
+                  <CardDescription className="text-white/60">
+                    Importe múltiplos colaboradores através de arquivo Excel
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6">
+              {showConvitesGerados ? (
+                <div className="space-y-4">
+                  {/* Header com total e botão fechar */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-white text-sm font-medium">
+                      {convitesGerados.length} convites gerados
+                    </span>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={copiarTodosLinks}
+                        variant="outline"
+                        className="text-orange-400 border-orange-400/50 hover:bg-orange-400/10"
+                        size="sm"
+                        data-testid="button-copiar-todos-links"
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        Copiar Todos
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setShowConvitesGerados(false);
+                          setConvitesGerados([]);
+                        }}
+                        variant="ghost"
+                        className="text-white/60 hover:text-white"
+                        size="sm"
+                      >
+                        Fechar
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Lista de links gerados */}
+                  <div className="bg-white/5 border border-white/10 rounded-lg max-h-96 overflow-y-auto">
+                    {convitesGerados.map((convite, index) => (
+                      <div 
+                        key={index}
+                        className="p-3 border-b border-white/5 last:border-0 hover:bg-white/5"
+                        data-testid={`convite-gerado-${index}`}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white font-medium">{convite.nome}</p>
+                            <p className="text-white/60 text-sm">{convite.cargo} • {convite.setor}</p>
+                            <p className="text-white/40 text-xs mt-1 truncate">{convite.link}</p>
+                          </div>
+                          <Button
+                            onClick={() => copiarLink(convite.link, convite.nome)}
+                            variant="ghost"
+                            size="sm"
+                            className="text-orange-400 hover:text-orange-300 hover:bg-orange-400/10 flex-shrink-0"
+                            data-testid={`button-copiar-link-${index}`}
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Alert className="bg-orange-500/10 border-orange-500/20">
+                    <AlertDescription className="text-white/80 text-sm">
+                      <strong>Próximos passos:</strong> Copie os links e envie para cada colaborador por email, WhatsApp ou outro meio de comunicação.
+                    </AlertDescription>
+                  </Alert>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {/* Botão baixar modelo */}
+                  <Button 
+                    onClick={baixarModeloPlanilha}
+                    className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white shadow-lg"
+                    data-testid="button-baixar-modelo"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Baixar Modelo Excel
+                  </Button>
+
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-white/10" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-transparent px-2 text-white/40">ou</span>
+                    </div>
+                  </div>
+
+                  {/* Upload de arquivo */}
+                  <div className="space-y-3">
+                    <Label htmlFor="upload-excel" className="text-white text-sm">
+                      Fazer Upload da Planilha Preenchida
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="upload-excel"
+                        type="file"
+                        accept=".xlsx,.xls"
+                        onChange={processarPlanilha}
+                        disabled={processandoPlanilha}
+                        className="bg-white/5 border-white/10 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
+                        data-testid="input-upload-excel"
+                      />
+                    </div>
+                    {processandoPlanilha && (
+                      <div className="flex items-center gap-2 text-white/60 text-sm">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500" />
+                        Processando planilha...
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Instruções */}
+                  <Alert className="bg-orange-500/10 border-orange-500/20">
+                    <AlertDescription className="text-white/80 text-sm space-y-2">
+                      <p><strong>Como usar:</strong></p>
+                      <ol className="list-decimal list-inside space-y-1 text-xs">
+                        <li>Baixe o modelo Excel</li>
+                        <li>Preencha com os dados dos colaboradores (Nome, Cargo, Setor, Idade, Sexo)</li>
+                        <li>Salve o arquivo</li>
+                        <li>Faça o upload aqui</li>
+                        <li>Os convites serão gerados automaticamente</li>
+                      </ol>
+                    </AlertDescription>
+                  </Alert>
+
+                  {/* Estatísticas */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-3">
+                      <p className="text-sm text-white/60">Formato</p>
+                      <p className="text-lg font-bold text-white">.XLSX</p>
+                    </div>
+                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                      <p className="text-sm text-white/60">Colunas</p>
+                      <p className="text-lg font-bold text-white">5</p>
+                    </div>
+                  </div>
                 </div>
               )}
             </CardContent>
