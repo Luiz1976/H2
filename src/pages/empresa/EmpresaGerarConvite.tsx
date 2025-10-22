@@ -1059,73 +1059,85 @@ const EmpresaGerarConvite: React.FC = () => {
                   </Alert>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {/* Botão baixar modelo */}
-                  <Button 
-                    onClick={baixarModeloPlanilha}
-                    className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white shadow-lg hover:shadow-orange-500/50 font-semibold text-base py-6 transition-all duration-300"
-                    data-testid="button-baixar-modelo"
-                  >
-                    <Download className="h-5 w-5 mr-2" />
-                    Baixar Modelo Grátis
-                  </Button>
+                <div className="space-y-6">
+                  {/* Seção 1: Download do Modelo */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/90 font-medium text-sm">Passo 1: Obtenha o Modelo</span>
+                      <Badge className="bg-orange-500/20 text-orange-300 text-xs">Gratuito</Badge>
+                    </div>
+                    <Button 
+                      onClick={baixarModeloPlanilha}
+                      className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white shadow-lg hover:shadow-orange-500/50 font-semibold text-base py-6 transition-all duration-300"
+                      data-testid="button-baixar-modelo"
+                    >
+                      <Download className="h-5 w-5 mr-2" />
+                      Baixar Modelo Excel
+                    </Button>
+                    <p className="text-white/50 text-xs text-center">Arquivo .XLSX com 5 colunas prontas</p>
+                  </div>
 
-                  <div className="relative">
+                  {/* Divisor */}
+                  <div className="relative py-2">
                     <div className="absolute inset-0 flex items-center">
                       <span className="w-full border-t border-white/10" />
                     </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-transparent px-2 text-white/40">ou</span>
+                    <div className="relative flex justify-center">
+                      <span className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 px-4 text-sm text-white/40">Em seguida</span>
                     </div>
                   </div>
 
-                  {/* Upload de arquivo */}
+                  {/* Seção 2: Upload */}
                   <div className="space-y-3">
-                    <Label htmlFor="upload-excel" className="text-white text-sm">
-                      Fazer Upload da Planilha Preenchida
-                    </Label>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/90 font-medium text-sm">Passo 2: Faça o Upload</span>
+                      <Badge className="bg-orange-500/20 text-orange-300 text-xs">Automático</Badge>
+                    </div>
+                    <div className="space-y-2">
                       <Input
                         id="upload-excel"
                         type="file"
                         accept=".xlsx,.xls"
                         onChange={processarPlanilha}
                         disabled={processandoPlanilha}
-                        className="bg-white/5 border-white/10 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
+                        className="w-full bg-white/5 border-white/10 text-white file:mr-4 file:py-3 file:px-6 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gradient-to-r file:from-orange-500 file:to-amber-600 file:text-white hover:file:from-orange-600 hover:file:to-amber-700 cursor-pointer"
                         data-testid="input-upload-excel"
                       />
+                      {processandoPlanilha && (
+                        <div className="flex items-center gap-2 text-orange-300 text-sm bg-orange-500/10 p-3 rounded-lg">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500" />
+                          Processando planilha e gerando convites...
+                        </div>
+                      )}
                     </div>
-                    {processandoPlanilha && (
-                      <div className="flex items-center gap-2 text-white/60 text-sm">
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500" />
-                        Processando planilha...
-                      </div>
-                    )}
                   </div>
 
-                  {/* Instruções */}
-                  <Alert className="bg-orange-500/10 border-orange-500/20">
-                    <AlertDescription className="text-white/80 text-sm space-y-2">
-                      <p><strong>Como usar:</strong></p>
-                      <ol className="list-decimal list-inside space-y-1 text-xs">
-                        <li>Baixe o modelo Excel</li>
-                        <li>Preencha com os dados dos colaboradores (Nome, Cargo, Setor, Idade, Sexo)</li>
-                        <li>Salve o arquivo</li>
-                        <li>Faça o upload aqui</li>
-                        <li>Os convites serão gerados automaticamente</li>
-                      </ol>
-                    </AlertDescription>
-                  </Alert>
+                  {/* Divisor */}
+                  <div className="border-t border-white/10"></div>
 
-                  {/* Estatísticas */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-3">
-                      <p className="text-sm text-white/60">Formato</p>
-                      <p className="text-lg font-bold text-white">.XLSX</p>
-                    </div>
-                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
-                      <p className="text-sm text-white/60">Colunas</p>
-                      <p className="text-lg font-bold text-white">5</p>
+                  {/* Seção 3: Informações */}
+                  <div className="space-y-4">
+                    {/* Requisitos do Arquivo */}
+                    <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4">
+                      <h4 className="text-white font-semibold text-sm mb-3 flex items-center gap-2">
+                        <FileSpreadsheet className="h-4 w-4 text-orange-400" />
+                        Requisitos da Planilha
+                      </h4>
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <div className="bg-orange-500/10 rounded-lg p-3 text-center">
+                          <p className="text-xs text-white/50 mb-1">Formato</p>
+                          <p className="text-white font-bold">.XLSX</p>
+                        </div>
+                        <div className="bg-amber-500/10 rounded-lg p-3 text-center">
+                          <p className="text-xs text-white/50 mb-1">Colunas</p>
+                          <p className="text-white font-bold">5</p>
+                        </div>
+                      </div>
+                      <div className="text-xs text-white/60 space-y-1">
+                        <p>✓ Nome, Cargo, Setor, Idade, Sexo</p>
+                        <p>✓ Preencha todos os campos</p>
+                        <p>✓ Uma linha por colaborador</p>
+                      </div>
                     </div>
                   </div>
                 </div>
