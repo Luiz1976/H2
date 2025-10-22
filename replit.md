@@ -97,7 +97,8 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
         - Uses `testes.categoria` field to filter results by type
         - Calculates average scores per category for KPIs
         - Aggregates all test results for the company
-        - **AI Analysis**: Uses Google Gemini API (same function as Estado Psicossocial) for real-time intelligent recommendations
+        - **AI Analysis**: Uses Google Gemini API (model: `gemini-1.5-pro-latest`) for real-time intelligent recommendations with professional fallback system
+        - **Fallback System (UPDATED - October 22, 2025)**: Robust rule-based analysis always available when AI is unavailable, generating professional synthesis with ISO 45003, NR-01 compliance, Karasek-Theorell references, risk classification, and technical recommendations
         - Returns: indiceGlobal, kpis object, totalColaboradores, totalTestes, cobertura, dadosPorTipo, aiAnalysis, recomendacoes, matrizRiscos, distribuicaoRiscos, dimensoesPsicossociais
     - **Dynamic Charts (Implemented October 21, 2025)**: 3 interactive React/Recharts components rendering real-time data:
         - **MatrizRisco.tsx**: Qualitative risk matrix (Severity x Probability) with color-coded cells (Green=Trivial, Lime=Tolerable, Yellow=Moderate, Orange=Substantial, Red=Intolerable)
@@ -105,10 +106,10 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
         - **GraficoRadarDimensoes.tsx**: Radar chart for psychosocial dimensions (Autonomy, Social Support, Demands, Recognition, Balance, Safety) with current values vs targets
         - Components location: `src/components/prg/`
         - All charts use real backend data, replacing previous static images
-    - **Export Functionality**:
-        - PDF: Opens browser print dialog (can save as PDF)
+    - **Export Functionality (UPDATED - October 22, 2025)**:
         - Excel: Downloads CSV file with all KPIs and metrics
         - QR Code: Placeholder alert (future implementation)
+        - PDF button removed from AI Analysis section per user request
     - **Compliance**: NR-01 and WHO guidelines
     - **UI Components**: Cards, Badges, Progress bars, Tabs, Select dropdowns with loading/error states
     - **Color Coding**: Green (80-100 Healthy), Yellow (60-79 Attention), Red (0-59 Critical)
