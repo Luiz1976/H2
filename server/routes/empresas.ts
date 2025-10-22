@@ -678,27 +678,83 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
     
     console.log('✅ [PRG] Análise IA gerada com sucesso:', recomendacoes.length, 'recomendações');
 
-    // Dados para Matriz de Risco
-    const matrizRiscos = [
-      { nome: 'Sobrecarga de trabalho', probabilidade: 'D' as const, severidade: 4 as const, categoria: 'estresse' },
-      { nome: 'Assédio moral', probabilidade: 'B' as const, severidade: 5 as const, categoria: 'assedio' },
-      { nome: 'Conflitos interpessoais', probabilidade: 'C' as const, severidade: 3 as const, categoria: 'clima' },
-      { nome: 'Falta de autonomia', probabilidade: 'C' as const, severidade: 2 as const, categoria: 'lideranca' },
-      { nome: 'Jornada excessiva', probabilidade: 'D' as const, severidade: 4 as const, categoria: 'qvt' },
-      { nome: 'Burnout', probabilidade: 'C' as const, severidade: 5 as const, categoria: 'burnout' },
-      { nome: 'Comunicação deficiente', probabilidade: 'D' as const, severidade: 2 as const, categoria: 'clima' },
-      { nome: 'Pressão por metas', probabilidade: 'E' as const, severidade: 3 as const, categoria: 'estresse' }
-    ];
+    // 🔥 GERAR MATRIZ DE RISCO COM DADOS REAIS
+    const matrizRiscos: Array<{ nome: string; probabilidade: 'A' | 'B' | 'C' | 'D' | 'E'; severidade: 1 | 2 | 3 | 4 | 5; categoria: string }> = [];
+    
+    // Analisar dimensões para identificar riscos
+    const riscosIdentificados = todasDimensoes.filter(d => d.percentual < 60); // Dimensões abaixo de 60% são riscos
+    
+    riscosIdentificados.forEach(risco => {
+      const percentual = risco.percentual;
+      
+      // Calcular SEVERIDADE baseado na pontuação (quanto menor, mais severo)
+      let severidade: 1 | 2 | 3 | 4 | 5;
+      if (percentual < 20) severidade = 5; // EXTREMA
+      else if (percentual < 35) severidade = 4; // MAIOR
+      else if (percentual < 50) severidade = 3; // MODERADA
+      else if (percentual < 60) severidade = 2; // MENOR
+      else severidade = 1; // LEVE
+      
+      // Calcular PROBABILIDADE baseado na quantidade de testes/frequência
+      let probabilidade: 'A' | 'B' | 'C' | 'D' | 'E';
+      const totalTestes = risco.total || 0;
+      if (totalTestes >= 10) probabilidade = 'E'; // MUITO PROVÁVEL
+      else if (totalTestes >= 7) probabilidade = 'D'; // PROVÁVEL
+      else if (totalTestes >= 4) probabilidade = 'C'; // POSSÍVEL
+      else if (totalTestes >= 2) probabilidade = 'B'; // POUCO PROVÁVEL
+      else probabilidade = 'A'; // RARA
+      
+      // Mapear categoria baseado na dimensão
+      let categoria = 'geral';
+      const dim = risco.dimensaoId.toLowerCase();
+      if (dim.includes('estresse') || dim.includes('demanda') || dim.includes('carga')) categoria = 'estresse';
+      else if (dim.includes('clima') || dim.includes('ambiente')) categoria = 'clima';
+      else if (dim.includes('burnout') || dim.includes('exaustao')) categoria = 'burnout';
+      else if (dim.includes('qualidade') || dim.includes('qvt')) categoria = 'qvt';
+      else if (dim.includes('assedio') || dim.includes('assédio')) categoria = 'assedio';
+      else if (dim.includes('lideranca') || dim.includes('chefia')) categoria = 'lideranca';
+      
+      matrizRiscos.push({
+        nome: risco.nome,
+        probabilidade,
+        severidade,
+        categoria
+      });
+    });
 
-    // Dados para Distribuição de Riscos
-    const distribuicaoRiscos = [
-      { categoria: 'Estresse', critico: 2, alto: 3, moderado: 1, baixo: 0 },
-      { categoria: 'Clima', critico: 0, alto: 1, moderado: 2, baixo: 1 },
-      { categoria: 'Burnout', critico: 1, alto: 2, moderado: 1, baixo: 0 },
-      { categoria: 'QVT', critico: 1, alto: 1, moderado: 1, baixo: 1 },
-      { categoria: 'Assédio', critico: 1, alto: 0, moderado: 0, baixo: 2 },
-      { categoria: 'Liderança', critico: 0, alto: 0, moderado: 2, baixo: 2 }
-    ];
+    console.log(`🔥 [PRG] Matriz de riscos gerada com ${matrizRiscos.length} riscos reais dos testes`);
+
+    // 📊 GERAR DISTRIBUIÇÃO DE RISCOS COM DADOS REAIS
+    const distribuicaoPorCategoria: Record<string, { critico: number; alto: number; moderado: number; baixo: number }> = {
+      'Estresse': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'Clima': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'Burnout': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'QVT': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'Assédio': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'Liderança': { critico: 0, alto: 0, moderado: 0, baixo: 0 }
+    };
+    
+    // Contar riscos por categoria e nível
+    matrizRiscos.forEach(risco => {
+      const categoriaNome = risco.categoria.charAt(0).toUpperCase() + risco.categoria.slice(1);
+      const chave = Object.keys(distribuicaoPorCategoria).find(k => k.toLowerCase().includes(risco.categoria));
+      
+      if (chave) {
+        // Classificar risco baseado em probabilidade x severidade
+        const score = 'ABCDE'.indexOf(risco.probabilidade) + risco.severidade;
+        if (score >= 8) distribuicaoPorCategoria[chave].critico++;
+        else if (score >= 6) distribuicaoPorCategoria[chave].alto++;
+        else if (score >= 4) distribuicaoPorCategoria[chave].moderado++;
+        else distribuicaoPorCategoria[chave].baixo++;
+      }
+    });
+    
+    const distribuicaoRiscos = Object.entries(distribuicaoPorCategoria).map(([categoria, dados]) => ({
+      categoria,
+      ...dados
+    }));
+
+    console.log(`📊 [PRG] Distribuição de riscos calculada para ${distribuicaoRiscos.length} categorias`);
 
     // Dados para Gráfico Radar (Dimensões Psicossociais)
     const dimensoesPsicossociais = [
