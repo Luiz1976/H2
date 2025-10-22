@@ -896,9 +896,9 @@ router.get('/prg/publico/:token', async (req, res) => {
         id: resultados.id,
         colaboradorId: resultados.colaboradorId,
         pontuacaoTotal: resultados.pontuacaoTotal,
-        resultadoDetalhado: resultados.resultadoDetalhado,
+        metadados: resultados.metadados,
         dataRealizacao: resultados.dataRealizacao,
-        tipoTeste: testes.tipoTeste,
+        categoria: testes.categoria,
         nome: testes.nome
       })
       .from(resultados)
@@ -908,12 +908,12 @@ router.get('/prg/publico/:token', async (req, res) => {
 
     // Agrupar resultados por tipo
     const dadosPorTipo = {
-      clima: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('clima') || r.nome?.toLowerCase().includes('clima')),
-      estresse: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('estresse') || r.nome?.toLowerCase().includes('estresse')),
-      burnout: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('burnout') || r.nome?.toLowerCase().includes('burnout')),
-      qvt: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('qvt') || r.nome?.toLowerCase().includes('qualidade')),
-      assedio: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('assedio') || r.nome?.toLowerCase().includes('pas') || r.tipoTeste?.toLowerCase().includes('pas')),
-      disc: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('disc') || r.nome?.toLowerCase().includes('disc'))
+      clima: resultadosList.filter(r => r.categoria?.toLowerCase().includes('clima') || r.nome?.toLowerCase().includes('clima')),
+      estresse: resultadosList.filter(r => r.categoria?.toLowerCase().includes('estresse') || r.nome?.toLowerCase().includes('estresse')),
+      burnout: resultadosList.filter(r => r.categoria?.toLowerCase().includes('burnout') || r.nome?.toLowerCase().includes('burnout')),
+      qvt: resultadosList.filter(r => r.categoria?.toLowerCase().includes('qvt') || r.nome?.toLowerCase().includes('qualidade')),
+      assedio: resultadosList.filter(r => r.categoria?.toLowerCase().includes('assedio') || r.nome?.toLowerCase().includes('pas') || r.categoria?.toLowerCase().includes('pas')),
+      disc: resultadosList.filter(r => r.categoria?.toLowerCase().includes('disc') || r.nome?.toLowerCase().includes('disc'))
     };
 
     // Calcular KPIs (mesma lógica)
@@ -938,12 +938,12 @@ router.get('/prg/publico/:token', async (req, res) => {
     );
 
     // Gerar análise IA
-    const aiAnalysis = await generatePsychosocialAnalysis(
-      resultadosList.length,
+    const aiAnalysis = await generatePsychosocialAnalysis({
+      totalTestes: resultadosList.length,
       indiceGlobal,
       kpis,
-      colaboradoresList.length
-    );
+      totalColaboradores: colaboradoresList.length
+    });
 
     // Gerar recomendações (versão simplificada)
     const recomendacoes = aiAnalysis.recomendacoes || [];
