@@ -551,24 +551,74 @@ export default function EmpresaPRG() {
 
           {/* Conteúdo principal da análise */}
           <div className="relative p-8 space-y-6">
-            {/* Texto da análise em formato visual */}
-            <div className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <FileText className="h-5 w-5 text-blue-300" />
-                </div>
-                <div>
-                  <h3 className="text-white font-bold text-lg mb-1">Diagnóstico Psicossocial</h3>
-                  <p className="text-white/70 text-sm">Análise técnica baseada em evidências científicas</p>
+            {/* Análise Visual Organizada */}
+            {prgData?.aiAnalysis.sintese ? (
+              <div className="space-y-4">
+                {/* Processar e exibir a análise de forma estruturada */}
+                {(() => {
+                  const texto = prgData.aiAnalysis.sintese
+                    .replace(/\*\*/g, '') // Remover asteriscos
+                    .replace(/\*/g, '');
+                  
+                  // Dividir por parágrafos
+                  const paragrafos = texto.split('\n\n').filter(p => p.trim());
+                  
+                  return paragrafos.map((paragrafo, idx) => {
+                    // Detectar se é um título (começa com letra maiúscula e tem menos de 80 chars sem ponto final)
+                    const ehTitulo = paragrafo.length < 80 && !paragrafo.endsWith('.') && paragrafo === paragrafo.toUpperCase();
+                    
+                    // Detectar listas (linhas que começam com •, -, ou número)
+                    const linhas = paragrafo.split('\n');
+                    const ehLista = linhas.some(l => l.trim().match(/^[•\-\d]/));
+                    
+                    if (ehTitulo) {
+                      return (
+                        <div key={idx} className="flex items-center gap-3 pt-4 pb-2">
+                          <div className="p-2 bg-blue-500/20 rounded-lg">
+                            <Target className="h-4 w-4 text-blue-300" />
+                          </div>
+                          <h4 className="text-white font-bold text-base">{paragrafo}</h4>
+                        </div>
+                      );
+                    }
+                    
+                    if (ehLista) {
+                      return (
+                        <div key={idx} className="bg-white/5 backdrop-blur-xl rounded-xl p-5 border border-white/10">
+                          <div className="space-y-2">
+                            {linhas.map((linha, i) => {
+                              const textoLimpo = linha.trim().replace(/^[•\-\d\.]+\s*/, '');
+                              if (!textoLimpo) return null;
+                              
+                              return (
+                                <div key={i} className="flex items-start gap-3">
+                                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
+                                  <p className="text-white/85 text-sm leading-relaxed flex-1">{textoLimpo}</p>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    }
+                    
+                    // Parágrafo normal
+                    return (
+                      <div key={idx} className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-xl p-5 border border-white/10">
+                        <p className="text-white/90 text-sm leading-relaxed">{paragrafo}</p>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            ) : (
+              <div className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
+                <div className="flex items-center justify-center gap-3 py-8">
+                  <Loader2 className="h-6 w-6 text-blue-300 animate-spin" />
+                  <p className="text-white/70 text-sm">Gerando análise inteligente...</p>
                 </div>
               </div>
-              
-              <div className="prose prose-invert max-w-none">
-                <p className="text-white/90 text-base leading-relaxed whitespace-pre-line">
-                  {prgData?.aiAnalysis.sintese || 'Gerando análise inteligente...'}
-                </p>
-              </div>
-            </div>
+            )}
 
             {/* Metodologia e Frameworks */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

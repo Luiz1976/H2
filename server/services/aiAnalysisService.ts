@@ -191,37 +191,57 @@ DIRETRIZES OBRIGATÓRIAS:
     });
 
     // Gerar insights robustos baseados nos dados reais (fallback profissional)
-    let insights = `**Análise Psicossocial Automatizada - HumaniQ PRG**\n\n`;
+    let insights = `RESUMO EXECUTIVO\n\n`;
     
-    insights += `Com base nos dados coletados de ${data.totalColaboradores} colaboradores (${data.totalTestesRealizados} testes realizados, cobertura de ${data.cobertura}%), identificamos um Índice Global de Bem-Estar de ${data.indiceGeralBemEstar}%. `;
+    insights += `Foram avaliados ${data.totalColaboradores} colaboradores através de ${data.totalTestesRealizados} testes psicossociais, alcançando uma cobertura de ${data.cobertura}% da população. O Índice Global de Bem-Estar identificado foi de ${data.indiceGeralBemEstar}%.\n\n`;
     
+    // Classificação do índice
+    insights += `DIAGNÓSTICO\n\n`;
     if (data.indiceGeralBemEstar < 40) {
-      insights += `Este índice enquadra-se na faixa **CRÍTICA** segundo parâmetros da ISO 45003:2021, demandando intervenção imediata. `;
+      insights += `O índice encontra-se em nível CRÍTICO segundo os parâmetros da ISO 45003:2021. Esta situação demanda intervenção imediata da gestão. É necessário implementar ações corretivas urgentes para prevenir agravamento dos riscos psicossociais.\n\n`;
     } else if (data.indiceGeralBemEstar < 60) {
-      insights += `Este índice situa-se na faixa de **ATENÇÃO** conforme diretrizes da NR-01, requerendo ações preventivas estruturadas. `;
+      insights += `O índice situa-se em nível de ATENÇÃO conforme as diretrizes da NR-01. Recomenda-se a implementação de ações preventivas estruturadas para evitar deterioração do ambiente psicossocial.\n\n`;
     } else if (data.indiceGeralBemEstar < 75) {
-      insights += `Este índice encontra-se em nível **MODERADO**, indicando necessidade de fortalecimento das políticas de saúde mental. `;
+      insights += `O índice encontra-se em nível MODERADO. A organização apresenta bases sólidas, porém é recomendado fortalecer as políticas de saúde mental e bem-estar para alcançar excelência.\n\n`;
     } else {
-      insights += `Este índice demonstra condição **SAUDÁVEL** do ambiente psicossocial, porém oportunidades de melhoria contínua foram identificadas. `;
+      insights += `O índice demonstra condição SAUDÁVEL do ambiente psicossocial. A organização possui práticas efetivas de gestão de pessoas. Recomenda-se manter e aprimorar continuamente estas políticas.\n\n`;
     }
     
     // Análise das dimensões críticas
     const dimensoesCriticas = data.dimensoes.filter(d => d.percentual < 50);
     if (dimensoesCriticas.length > 0) {
-      insights += `\n\n**Dimensões com Maior Necessidade de Intervenção:** ${dimensoesCriticas.map(d => `${d.nome} (${d.percentual}%)`).join(', ')}. `;
+      insights += `ÁREAS PRIORITÁRIAS PARA INTERVENÇÃO\n\n`;
+      insights += `Foram identificadas ${dimensoesCriticas.length} dimensões que requerem atenção especial:\n`;
+      dimensoesCriticas.forEach(d => {
+        insights += `• ${d.nome}: ${d.percentual}% (${d.nivel})\n`;
+      });
+      insights += `\nEstas áreas demandam ações específicas para melhoria dos indicadores.\n\n`;
     }
     
     // Análise dos fatores NR-01
     const fatoresCriticos = data.nr1Fatores.filter(f => f.nivel === 'Crítico');
     if (fatoresCriticos.length > 0) {
-      insights += `\n\n**Fatores de Risco NR-01 Críticos:** ${fatoresCriticos.map(f => f.fator).join(', ')}. Estes fatores requerem plano de ação imediato conforme Anexo II da Portaria MTP nº 6.730/2020. `;
+      insights += `FATORES DE RISCO CRÍTICOS (NR-01)\n\n`;
+      insights += `Conforme Anexo II da Portaria MTP nº 6.730/2020, foram detectados fatores de risco críticos:\n`;
+      fatoresCriticos.forEach(f => {
+        insights += `• ${f.fator}\n`;
+      });
+      insights += `\nEstes fatores exigem elaboração de plano de ação imediato.\n\n`;
     }
     
-    insights += `\n\n**Recomendação Técnica:** Implementação de Programa de Gestão de Riscos Psicossociais (PRG) alinhado às diretrizes da NR-01, com monitoramento contínuo via indicadores quantitativos e intervenções baseadas no Modelo Demanda-Controle-Suporte (Karasek-Theorell, 1990).`;
+    // Recomendação técnica
+    insights += `RECOMENDAÇÃO TÉCNICA\n\n`;
+    insights += `Implementar Programa de Gestão de Riscos Psicossociais (PRG) alinhado às diretrizes da NR-01. O programa deve incluir:\n\n`;
+    insights += `• Monitoramento contínuo através de indicadores quantitativos\n`;
+    insights += `• Intervenções baseadas no Modelo Demanda-Controle-Suporte (Karasek-Theorell, 1990)\n`;
+    insights += `• Capacitação de lideranças em gestão de saúde mental\n`;
+    insights += `• Revisão periódica dos resultados com periodicidade trimestral\n`;
+    insights += `• Canais de escuta e suporte aos colaboradores\n\n`;
+    insights += `Todas as ações devem estar documentadas e acompanhadas de cronograma de execução, conforme exigências da legislação vigente.`;
     
     return {
       recomendacoes,
-      sintese: insights  // Frontend espera "sintese", não "insights"
+      sintese: insights
     };
   }
 }

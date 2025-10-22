@@ -114,7 +114,10 @@ The frontend utilizes React with Vite, styled using Shadcn/UI and Tailwind CSS f
         - **Design**: Futuristic glassmorphism with animated particles background (15 floating elements)
         - **Header**: Brain icon with pulsing glow effect, gradient text title, ISO/NR-01/AI-Powered badges
         - **Mini KPIs**: 4 real-time metrics (Colaboradores, Testes, Cobertura, Índice Global) with color coding
-        - **Diagnosis Card**: Professional layout with FileText icon, technical subtitle, formatted text with whitespace-pre-line
+        - **Smart Text Processing**: Automatic detection and formatting of titles, lists, and paragraphs
+        - **Visual Organization**: Text parsed into separate cards for better readability (no asterisks, clean formatting)
+        - **Structured Content**: Backend generates organized sections (RESUMO EXECUTIVO, DIAGNÓSTICO, ÁREAS PRIORITÁRIAS, FATORES DE RISCO, RECOMENDAÇÃO TÉCNICA)
+        - **List Rendering**: Bullet points displayed as visual items with blue dots
         - **Methodology Cards**: 3 gradient cards showcasing Karasek-Theorell, NR-01, ISO 45003 frameworks
         - **Footer**: Real-time timestamp and "Análise em tempo real" indicator
         - **Visual Effects**: Multiple gradient layers, backdrop-blur, border animations, responsive design
