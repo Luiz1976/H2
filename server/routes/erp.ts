@@ -283,4 +283,139 @@ router.post('/bulk-invite', async (req, res) => {
   }
 });
 
+// Endpoint para testar conectividade com todos os ERPs
+router.get('/test-connections', async (req, res) => {
+  try {
+    const testResults = [];
+    const erpTypes = Object.keys(ERP_API_URLS);
+
+    console.log('🧪 Iniciando testes de conexão com ERPs...');
+
+    for (const erpType of erpTypes) {
+      const startTime = Date.now();
+      const apiUrl = getErpApiUrl(erpType);
+      const testEndpoint = `${apiUrl}/api/v1/health`;
+      
+      let result = {
+        erpType,
+        apiUrl,
+        status: 'unknown',
+        responseTime: 0,
+        statusCode: 0,
+        message: '',
+        details: '',
+        timestamp: new Date().toISOString(),
+      };
+
+      try {
+        console.log(`🔍 Testando ${erpType} em ${apiUrl}...`);
+        
+        const response = await fetch(testEndpoint, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'User-Agent': 'HumaniQ-ERP-Integration-Test/1.0',
+          },
+          signal: AbortSignal.timeout(5000),
+        });
+
+        const endTime = Date.now();
+        result.responseTime = endTime - startTime;
+        result.statusCode = response.status;
+
+        if (response.ok) {
+          result.status = 'online';
+          result.message = 'Conexão estabelecida com sucesso';
+          console.log(`✅ ${erpType}: ONLINE (${result.responseTime}ms)`);
+        } else if (response.status === 401 || response.status === 403) {
+          result.status = 'autenticação_necessária';
+          result.message = 'API acessível, mas requer autenticação';
+          result.details = `Status ${response.status} - Autenticação necessária`;
+          console.log(`🔐 ${erpType}: REQUER AUTH (${result.responseTime}ms)`);
+        } else if (response.status === 404) {
+          result.status = 'endpoint_não_encontrado';
+          result.message = 'URL configurada, mas endpoint de teste não existe';
+          result.details = 'Pode ser necessário ajustar o endpoint de teste';
+          console.log(`❓ ${erpType}: ENDPOINT NÃO ENCONTRADO (${result.responseTime}ms)`);
+        } else {
+          result.status = 'erro_http';
+          result.message = `Erro HTTP ${response.status}`;
+          result.details = response.statusText;
+          console.log(`⚠️ ${erpType}: ERRO HTTP ${response.status} (${result.responseTime}ms)`);
+        }
+
+      } catch (error: any) {
+        const endTime = Date.now();
+        result.responseTime = endTime - startTime;
+
+        if (error.name === 'AbortError') {
+          result.status = 'timeout';
+          result.message = 'Tempo limite excedido (5s)';
+          result.details = 'Servidor não respondeu no tempo esperado';
+          console.log(`⏱️ ${erpType}: TIMEOUT (${result.responseTime}ms)`);
+        } else if (error.cause?.code === 'ENOTFOUND') {
+          result.status = 'dns_falhou';
+          result.message = 'Domínio não encontrado';
+          result.details = 'DNS não conseguiu resolver o domínio';
+          console.log(`🌐 ${erpType}: DNS FALHOU`);
+        } else if (error.cause?.code === 'ECONNREFUSED') {
+          result.status = 'conexão_recusada';
+          result.message = 'Conexão recusada pelo servidor';
+          result.details = 'Servidor pode estar offline ou com firewall';
+          console.log(`🚫 ${erpType}: CONEXÃO RECUSADA`);
+        } else {
+          result.status = 'erro';
+          result.message = 'Erro ao tentar conectar';
+          result.details = error.message || 'Erro desconhecido';
+          console.log(`❌ ${erpType}: ERRO - ${error.message}`);
+        }
+      }
+
+      testResults.push(result);
+    }
+
+    // Estatísticas gerais
+    const stats = {
+      total: testResults.length,
+      online: testResults.filter(r => r.status === 'online').length,
+      autenticação_necessária: testResults.filter(r => r.status === 'autenticação_necessária').length,
+      endpoint_não_encontrado: testResults.filter(r => r.status === 'endpoint_não_encontrado').length,
+      timeout: testResults.filter(r => r.status === 'timeout').length,
+      dns_falhou: testResults.filter(r => r.status === 'dns_falhou').length,
+      conexão_recusada: testResults.filter(r => r.status === 'conexão_recusada').length,
+      erro_http: testResults.filter(r => r.status === 'erro_http').length,
+      erro: testResults.filter(r => r.status === 'erro').length,
+      tempoMedio: Math.round(testResults.reduce((acc, r) => acc + r.responseTime, 0) / testResults.length),
+    };
+
+    console.log('📊 Relatório Final:');
+    console.log(`   Total: ${stats.total} ERPs testados`);
+    console.log(`   ✅ Online: ${stats.online}`);
+    console.log(`   🔐 Requer Auth: ${stats.autenticação_necessária}`);
+    console.log(`   ❓ Endpoint não encontrado: ${stats.endpoint_não_encontrado}`);
+    console.log(`   ⏱️ Timeout: ${stats.timeout}`);
+    console.log(`   🌐 DNS Falhou: ${stats.dns_falhou}`);
+    console.log(`   🚫 Conexão Recusada: ${stats.conexão_recusada}`);
+    console.log(`   ⚠️ Erro HTTP: ${stats.erro_http}`);
+    console.log(`   ❌ Outros Erros: ${stats.erro}`);
+    console.log(`   ⚡ Tempo Médio: ${stats.tempoMedio}ms`);
+
+    return res.json({
+      success: true,
+      message: 'Testes de conexão concluídos',
+      timestamp: new Date().toISOString(),
+      stats,
+      results: testResults,
+    });
+
+  } catch (error: any) {
+    console.error('❌ Erro ao testar conexões ERP:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Erro ao executar testes de conexão',
+      message: error.message,
+    });
+  }
+});
+
 export default router;
