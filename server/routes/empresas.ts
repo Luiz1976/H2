@@ -906,6 +906,37 @@ router.get('/prg/publico/:token', async (req, res) => {
       .where(eq(resultados.empresaId, empresaId))
       .orderBy(desc(resultados.dataRealizacao));
 
+    // Processar dimensões dos metadados (mesma lógica da rota principal)
+    const todasDimensoes: Array<{ dimensaoId: string; nome: string; percentual: number; nivel: string; total: number }> = [];
+    
+    resultadosList.forEach(resultado => {
+      if (resultado.metadados && typeof resultado.metadados === 'object') {
+        const meta = resultado.metadados as any;
+        if (meta.dimensoes && Array.isArray(meta.dimensoes)) {
+          meta.dimensoes.forEach((dim: any) => {
+            todasDimensoes.push({
+              dimensaoId: dim.dimensao || dim.nome || 'desconhecida',
+              nome: dim.dimensao || dim.nome || 'Desconhecida',
+              percentual: dim.pontuacao || dim.percentual || 0,
+              nivel: dim.nivel || (dim.pontuacao > 70 ? 'Bom' : dim.pontuacao > 50 ? 'Adequado' : 'Crítico'),
+              total: 1
+            });
+          });
+        }
+      }
+    });
+
+    // Calcular função auxiliar para buscar dimensões
+    const getDimensaoValor = (palavrasChave: string[]) => {
+      const dimensoesEncontradas = todasDimensoes.filter(d => 
+        palavrasChave.some(palavra => d.dimensaoId.toLowerCase().includes(palavra.toLowerCase()))
+      );
+      if (dimensoesEncontradas.length === 0) return 0;
+      return Math.round(
+        dimensoesEncontradas.reduce((acc, d) => acc + d.percentual, 0) / dimensoesEncontradas.length
+      );
+    };
+
     // Agrupar resultados por tipo
     const dadosPorTipo = {
       clima: resultadosList.filter(r => r.categoria?.toLowerCase().includes('clima') || r.nome?.toLowerCase().includes('clima')),
@@ -916,33 +947,60 @@ router.get('/prg/publico/:token', async (req, res) => {
       disc: resultadosList.filter(r => r.categoria?.toLowerCase().includes('disc') || r.nome?.toLowerCase().includes('disc'))
     };
 
-    // Calcular KPIs (mesma lógica)
-    const calcularMedia = (arr: typeof resultadosList) => {
-      if (arr.length === 0) return 0;
-      const soma = arr.reduce((acc, r) => acc + (r.pontuacaoTotal || 0), 0);
-      return Math.round((soma / arr.length));
-    };
-
+    // Calcular KPIs baseados nas dimensões reais
     const kpis = {
-      indiceEstresse: calcularMedia(dadosPorTipo.estresse),
-      climaPositivo: calcularMedia(dadosPorTipo.clima),
-      satisfacaoChefia: 78,
-      riscoBurnout: calcularMedia(dadosPorTipo.burnout),
-      maturidadePRG: 72,
-      segurancaPsicologica: calcularMedia(dadosPorTipo.assedio)
+      indiceEstresse: getDimensaoValor(['estresse', 'demanda', 'carga']) || 0,
+      climaPositivo: getDimensaoValor(['clima', 'ambiente', 'organizacional']) || 0,
+      satisfacaoChefia: getDimensaoValor(['lideranca', 'chefia', 'lider', 'gestor']) || 0,
+      riscoBurnout: Math.max(0, 100 - getDimensaoValor(['burnout', 'exaustao', 'esgotamento'])),
+      maturidadePRG: resultadosList.length > 0 ? Math.min(65 + (resultadosList.length / 10), 100) : 0,
+      segurancaPsicologica: getDimensaoValor(['seguranca', 'psicologica', 'apoio']) || 0
     };
 
-    const indiceGlobal = Math.round(
-      (kpis.indiceEstresse + kpis.climaPositivo + kpis.satisfacaoChefia + 
-       (100 - kpis.riscoBurnout) + kpis.maturidadePRG + kpis.segurancaPsicologica) / 6
-    );
+    const indiceGlobal = todasDimensoes.length > 0
+      ? Math.round(todasDimensoes.reduce((acc, d) => acc + d.percentual, 0) / todasDimensoes.length)
+      : 0;
 
-    // Gerar análise IA
+    // Preparar dimensões para análise IA
+    const dimensoesAnalise = todasDimensoes.slice(0, 10);
+
+    // Preparar fatores NR1
+    const nr1Fatores = [
+      { fator: 'Carga de Trabalho', nivel: kpis.indiceEstresse > 70 ? 'Crítico' : kpis.indiceEstresse > 50 ? 'Atenção' : 'Bom', percentual: kpis.indiceEstresse },
+      { fator: 'Autonomia e Controle', nivel: kpis.maturidadePRG < 60 ? 'Crítico' : kpis.maturidadePRG < 75 ? 'Atenção' : 'Bom', percentual: kpis.maturidadePRG },
+      { fator: 'Suporte Social', nivel: kpis.climaPositivo < 60 ? 'Crítico' : kpis.climaPositivo < 75 ? 'Atenção' : 'Bom', percentual: kpis.climaPositivo },
+      { fator: 'Assédio e Violência', nivel: dadosPorTipo.assedio.length > 0 ? 'Bom' : 'Não avaliado', percentual: dadosPorTipo.assedio.length > 0 ? 80 : 0 },
+      { fator: 'Equilíbrio Trabalho-Vida', nivel: kpis.riscoBurnout > 60 ? 'Crítico' : kpis.riscoBurnout > 40 ? 'Atenção' : 'Bom', percentual: 100 - kpis.riscoBurnout }
+    ];
+
+    // Calcular cobertura
+    const cobertura = colaboradoresList.length > 0 
+      ? Math.round((new Set(resultadosList.map(r => r.colaboradorId)).size / colaboradoresList.length) * 100)
+      : 0;
+
+    // Calcular últimos 30 dias
+    const trintaDiasAtras = new Date();
+    trintaDiasAtras.setDate(trintaDiasAtras.getDate() - 30);
+    const testesUltimos30Dias = resultadosList.filter(r => 
+      r.dataRealizacao && new Date(r.dataRealizacao) >= trintaDiasAtras
+    ).length;
+
+    // Alertas críticos
+    const alertasCriticos: string[] = [];
+    if (kpis.indiceEstresse > 70) alertasCriticos.push('Nível de estresse elevado detectado');
+    if (kpis.riscoBurnout > 60) alertasCriticos.push('Risco de burnout elevado');
+    if (kpis.climaPositivo < 50) alertasCriticos.push('Clima organizacional necessita atenção');
+
+    // Gerar análise IA com dados completos
     const aiAnalysis = await generatePsychosocialAnalysis({
-      totalTestes: resultadosList.length,
-      indiceGlobal,
-      kpis,
-      totalColaboradores: colaboradoresList.length
+      indiceGeralBemEstar: indiceGlobal,
+      totalColaboradores: colaboradoresList.length,
+      totalTestesRealizados: resultadosList.length,
+      testesUltimos30Dias,
+      cobertura,
+      dimensoes: dimensoesAnalise,
+      nr1Fatores,
+      alertasCriticos
     });
 
     // Gerar recomendações (versão simplificada)
