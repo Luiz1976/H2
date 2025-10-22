@@ -34,6 +34,8 @@ import {
 import MatrizRisco from "@/components/prg/MatrizRisco";
 import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
 import GraficoRadarDimensoes from "@/components/prg/GraficoRadarDimensoes";
+import GraficoParliament from "@/components/prg/GraficoParliament";
+import GraficoSankey from "@/components/prg/GraficoSankey";
 
 interface EmpresaData {
   nome: string;
@@ -98,6 +100,16 @@ interface PRGData {
     nivel?: string; // Opcional: Crítico, Atenção, Moderado, Bom
     cor?: string;   // Opcional: red, orange, yellow, green
   }>;
+  dadosParliament: Array<{
+    categoria: string;
+    quantidade: number;
+    cor: string;
+    label?: string;
+  }>;
+  dadosSankey: {
+    nodes: Array<{ name: string }>;
+    links: Array<{ source: number; target: number; value: number }>;
+  };
 }
 
 export default function EmpresaPRG() {
@@ -1761,6 +1773,12 @@ export default function EmpresaPRG() {
 
           {/* GERAL - Gráfico de Radar */}
           <TabsContent value="geral" className="space-y-6">
+            {/* 📊 GRÁFICO PARLIAMENT - Distribuição de Colaboradores */}
+            {prgData && <GraficoParliament dados={prgData.dadosParliament} />}
+
+            {/* 📊 GRÁFICO SANKEY - Fluxo entre Estados */}
+            {prgData && <GraficoSankey dados={prgData.dadosSankey} />}
+
             {/* Gráfico Radar - Dimensões Psicossociais */}
             {prgData && <GraficoRadarDimensoes dados={prgData.dimensoesPsicossociais} />}
 

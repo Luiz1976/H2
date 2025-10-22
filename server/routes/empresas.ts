@@ -833,6 +833,59 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
 
     console.log(`✅ [PRG] Dados calculados com sucesso - ${dimensoesPsicossociais.length} dimensões reais`);
 
+    // 📊 GRÁFICO PARLIAMENT - Distribuição de Colaboradores por Nível de Risco
+    const colaboradoresPorRisco: Record<string, number> = {
+      'critico': 0,
+      'alto': 0,
+      'moderado': 0,
+      'baixo': 0,
+      'saudavel': 0
+    };
+
+    // Classificar cada colaborador baseado nas médias de suas dimensões
+    const colaboradoresComTestes = new Set(resultadosList.map(r => r.colaboradorId));
+    colaboradoresComTestes.forEach(colabId => {
+      const testesDoColab = resultadosList.filter(r => r.colaboradorId === colabId);
+      const mediaPontuacao = testesDoColab.reduce((acc, t) => acc + (t.pontuacaoTotal || 50), 0) / testesDoColab.length;
+      
+      if (mediaPontuacao < 35) colaboradoresPorRisco.critico++;
+      else if (mediaPontuacao < 55) colaboradoresPorRisco.alto++;
+      else if (mediaPontuacao < 70) colaboradoresPorRisco.moderado++;
+      else if (mediaPontuacao < 85) colaboradoresPorRisco.baixo++;
+      else colaboradoresPorRisco.saudavel++;
+    });
+
+    const dadosParliament = [
+      { categoria: 'Crítico', quantidade: colaboradoresPorRisco.critico, cor: '#dc2626', label: 'Risco Crítico' },
+      { categoria: 'Alto', quantidade: colaboradoresPorRisco.alto, cor: '#f97316', label: 'Risco Alto' },
+      { categoria: 'Moderado', quantidade: colaboradoresPorRisco.moderado, cor: '#eab308', label: 'Risco Moderado' },
+      { categoria: 'Baixo', quantidade: colaboradoresPorRisco.baixo, cor: '#22c55e', label: 'Risco Baixo' },
+      { categoria: 'Saudável', quantidade: colaboradoresPorRisco.saudavel, cor: '#10b981', label: 'Saudável' }
+    ];
+
+    console.log(`📊 [Parliament] Distribuição: ${JSON.stringify(colaboradoresPorRisco)}`);
+
+    // 📊 GRÁFICO SANKEY - Fluxo entre Estados de Bem-Estar
+    // Simular transições baseado nos dados disponíveis
+    const dadosSankey = {
+      nodes: [
+        { name: 'Risco Alto' },      // 0
+        { name: 'Risco Moderado' },  // 1
+        { name: 'Risco Baixo' },     // 2
+        { name: 'Clima Negativo' },  // 3
+        { name: 'Clima Neutro' },    // 4
+        { name: 'Clima Positivo' }   // 5
+      ],
+      links: [
+        // De riscos para clima
+        { source: 0, target: 3, value: Math.max(colaboradoresPorRisco.critico + colaboradoresPorRisco.alto, 1) },
+        { source: 1, target: 4, value: Math.max(colaboradoresPorRisco.moderado, 1) },
+        { source: 2, target: 5, value: Math.max(colaboradoresPorRisco.baixo + colaboradoresPorRisco.saudavel, 1) }
+      ]
+    };
+
+    console.log(`📊 [Sankey] Fluxo gerado com ${dadosSankey.nodes.length} nós e ${dadosSankey.links.length} conexões`);
+
     const responseData = {
       empresa: {
         nome: empresa.nomeEmpresa,
@@ -861,6 +914,8 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
         matrizRiscos,
         distribuicaoRiscos,
         dimensoesPsicossociais,
+        dadosParliament,
+        dadosSankey,
         ultimaAtualizacao: new Date().toISOString()
       }
     };
@@ -1162,6 +1217,52 @@ router.get('/prg/publico/:token', async (req, res) => {
 
     console.log(`✅ [PRG Público] Dados calculados com ${dimensoesPsicossociais.length} dimensões reais`);
 
+    // 📊 GRÁFICO PARLIAMENT - Distribuição de Colaboradores (rota pública)
+    const colaboradoresPorRisco: Record<string, number> = {
+      'critico': 0,
+      'alto': 0,
+      'moderado': 0,
+      'baixo': 0,
+      'saudavel': 0
+    };
+
+    const colaboradoresComTestes = new Set(resultadosList.map(r => r.colaboradorId));
+    colaboradoresComTestes.forEach(colabId => {
+      const testesDoColab = resultadosList.filter(r => r.colaboradorId === colabId);
+      const mediaPontuacao = testesDoColab.reduce((acc, t) => acc + (t.pontuacaoTotal || 50), 0) / testesDoColab.length;
+      
+      if (mediaPontuacao < 35) colaboradoresPorRisco.critico++;
+      else if (mediaPontuacao < 55) colaboradoresPorRisco.alto++;
+      else if (mediaPontuacao < 70) colaboradoresPorRisco.moderado++;
+      else if (mediaPontuacao < 85) colaboradoresPorRisco.baixo++;
+      else colaboradoresPorRisco.saudavel++;
+    });
+
+    const dadosParliament = [
+      { categoria: 'Crítico', quantidade: colaboradoresPorRisco.critico, cor: '#dc2626', label: 'Risco Crítico' },
+      { categoria: 'Alto', quantidade: colaboradoresPorRisco.alto, cor: '#f97316', label: 'Risco Alto' },
+      { categoria: 'Moderado', quantidade: colaboradoresPorRisco.moderado, cor: '#eab308', label: 'Risco Moderado' },
+      { categoria: 'Baixo', quantidade: colaboradoresPorRisco.baixo, cor: '#22c55e', label: 'Risco Baixo' },
+      { categoria: 'Saudável', quantidade: colaboradoresPorRisco.saudavel, cor: '#10b981', label: 'Saudável' }
+    ];
+
+    // 📊 GRÁFICO SANKEY - Fluxo entre Estados (rota pública)
+    const dadosSankey = {
+      nodes: [
+        { name: 'Risco Alto' },
+        { name: 'Risco Moderado' },
+        { name: 'Risco Baixo' },
+        { name: 'Clima Negativo' },
+        { name: 'Clima Neutro' },
+        { name: 'Clima Positivo' }
+      ],
+      links: [
+        { source: 0, target: 3, value: Math.max(colaboradoresPorRisco.critico + colaboradoresPorRisco.alto, 1) },
+        { source: 1, target: 4, value: Math.max(colaboradoresPorRisco.moderado, 1) },
+        { source: 2, target: 5, value: Math.max(colaboradoresPorRisco.baixo + colaboradoresPorRisco.saudavel, 1) }
+      ]
+    };
+
     res.json({
       empresa: {
         nome: empresa.nomeEmpresa,
@@ -1188,7 +1289,9 @@ router.get('/prg/publico/:token', async (req, res) => {
       recomendacoes,
       matrizRiscos,
       distribuicaoRiscos,
-      dimensoesPsicossociais
+      dimensoesPsicossociais,
+      dadosParliament,
+      dadosSankey
     });
 
   } catch (error) {
