@@ -6,6 +6,7 @@ import convitesRouter from './routes/convites';
 import empresasRouter from './routes/empresas';
 import testesRouter from './routes/testes';
 import colaboradoresRouter from './routes/colaboradores';
+import erpRouter from './routes/erp';
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ app.use('/api/convites', convitesRouter);
 app.use('/api/empresas', empresasRouter);
 app.use('/api/testes', testesRouter);
 app.use('/api/colaboradores', colaboradoresRouter);
+app.use('/api/erp', erpRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado' });

@@ -268,3 +268,35 @@ export const insertRespostaSchema = z.object({
 });
 
 export type InsertResposta = z.infer<typeof insertRespostaSchema>;
+
+export const erpConfigurations = pgTable('erp_configurations', {
+  id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+  empresaId: uuid('empresa_id').references(() => empresas.id, { onDelete: 'cascade' }).notNull(),
+  erpType: varchar('erp_type', { length: 100 }).notNull(),
+  apiUrl: text('api_url').notNull(),
+  apiKey: text('api_key').notNull(),
+  apiSecret: text('api_secret'),
+  configuracoes: jsonb('configuracoes').default({}),
+  ativo: boolean('ativo').default(true),
+  ultimaSincronizacao: timestamp('ultima_sincronizacao', { withTimezone: true }),
+  statusConexao: varchar('status_conexao', { length: 50 }).default('nao_testado'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  empresaIdx: index('idx_erp_configurations_empresa_id').on(table.empresaId),
+  erpTypeIdx: index('idx_erp_configurations_erp_type').on(table.erpType),
+}));
+
+export type ErpConfiguration = typeof erpConfigurations.$inferSelect;
+
+export const insertErpConfigurationSchema = z.object({
+  empresaId: z.string().uuid(),
+  erpType: z.string().min(1),
+  apiUrl: z.string().url(),
+  apiKey: z.string().min(1),
+  apiSecret: z.string().optional().nullable(),
+  configuracoes: z.any().optional(),
+  ativo: z.boolean().optional(),
+})
+
+export type InsertErpConfiguration = z.infer<typeof insertErpConfigurationSchema>;
