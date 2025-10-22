@@ -50,7 +50,134 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
       .from(colaboradores)
       .where(eq(colaboradores.empresaId, req.user!.empresaId!));
 
-    res.json({ colaboradores: colaboradoresList, total: colaboradoresList.length });
+    // Enriquecer com informações de situação psicossocial
+    const colaboradoresEnriquecidos = await Promise.all(
+      colaboradoresList.map(async (colaborador) => {
+        // Buscar último resultado do colaborador
+        const ultimosResultados = await db
+          .select({
+            id: resultados.id,
+            pontuacaoTotal: resultados.pontuacaoTotal,
+            dataRealizacao: resultados.dataRealizacao,
+            metadados: resultados.metadados,
+            testeNome: testes.nome,
+          })
+          .from(resultados)
+          .leftJoin(testes, eq(resultados.testeId, testes.id))
+          .where(
+            and(
+              or(
+                eq(resultados.colaboradorId, colaborador.id),
+                eq(resultados.usuarioId, colaborador.id)
+              ),
+              eq(resultados.empresaId, req.user!.empresaId!),
+              eq(resultados.status, 'concluido')
+            )
+          )
+          .orderBy(desc(resultados.dataRealizacao))
+          .limit(5); // Pegar últimos 5 testes para análise
+
+        // Calcular situação psicossocial com base nos últimos testes
+        let situacaoPsicossocial: {
+          status: 'excelente' | 'bom' | 'atencao' | 'critico' | 'nao_avaliado';
+          descricao: string;
+          cor: string;
+          totalTestes: number;
+          ultimoTeste?: string;
+          indicadores?: { nome: string; valor: string; nivel: string }[];
+        } = {
+          status: 'nao_avaliado',
+          descricao: 'Nenhum teste realizado',
+          cor: 'gray',
+          totalTestes: 0,
+        };
+
+        if (ultimosResultados.length > 0) {
+          const totalTestes = ultimosResultados.length;
+          situacaoPsicossocial.totalTestes = totalTestes;
+          situacaoPsicossocial.ultimoTeste = ultimosResultados[0].dataRealizacao.toISOString();
+
+          // Agregar análise de todos os resultados
+          const dimensoesAgregadas: Record<string, { soma: number; total: number }> = {};
+          const indicadores: Array<{ nome: string; valor: string; nivel: string }> = [];
+
+          ultimosResultados.forEach((resultado) => {
+            const metadados = resultado.metadados as Record<string, any> || {};
+            const analiseCompleta = metadados.analise_completa || {};
+
+            // Processar dimensões
+            if (analiseCompleta.dimensoes) {
+              Object.entries(analiseCompleta.dimensoes).forEach(([dimensaoId, dados]: [string, any]) => {
+                if (!dimensoesAgregadas[dimensaoId]) {
+                  dimensoesAgregadas[dimensaoId] = { soma: 0, total: 0 };
+                }
+                dimensoesAgregadas[dimensaoId].soma += dados.percentual || dados.media || dados.pontuacao || 0;
+                dimensoesAgregadas[dimensaoId].total++;
+              });
+            }
+          });
+
+          // Calcular média geral
+          let somaTotal = 0;
+          let contadorDimensoes = 0;
+          
+          Object.entries(dimensoesAgregadas).forEach(([dimensaoId, dados]) => {
+            const media = dados.total > 0 ? dados.soma / dados.total : 0;
+            somaTotal += media;
+            contadorDimensoes++;
+
+            // Adicionar indicadores principais (máximo 3)
+            if (indicadores.length < 3) {
+              let nivel = 'Bom';
+              if (media < 40) nivel = 'Crítico';
+              else if (media < 60) nivel = 'Atenção';
+              else if (media < 75) nivel = 'Moderado';
+
+              const nomeDimensao = dimensaoId
+                .replace(/-/g, ' ')
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, (l) => l.toUpperCase());
+
+              indicadores.push({
+                nome: nomeDimensao,
+                valor: `${Math.round(media)}%`,
+                nivel,
+              });
+            }
+          });
+
+          const mediaGeral = contadorDimensoes > 0 ? somaTotal / contadorDimensoes : 0;
+
+          // Determinar status geral
+          if (mediaGeral >= 75) {
+            situacaoPsicossocial.status = 'excelente';
+            situacaoPsicossocial.descricao = 'Situação psicossocial excelente';
+            situacaoPsicossocial.cor = 'green';
+          } else if (mediaGeral >= 60) {
+            situacaoPsicossocial.status = 'bom';
+            situacaoPsicossocial.descricao = 'Situação psicossocial boa';
+            situacaoPsicossocial.cor = 'blue';
+          } else if (mediaGeral >= 40) {
+            situacaoPsicossocial.status = 'atencao';
+            situacaoPsicossocial.descricao = 'Requer atenção';
+            situacaoPsicossocial.cor = 'yellow';
+          } else {
+            situacaoPsicossocial.status = 'critico';
+            situacaoPsicossocial.descricao = 'Situação crítica - ação necessária';
+            situacaoPsicossocial.cor = 'red';
+          }
+
+          situacaoPsicossocial.indicadores = indicadores;
+        }
+
+        return {
+          ...colaborador,
+          situacaoPsicossocial,
+        };
+      })
+    );
+
+    res.json({ colaboradores: colaboradoresEnriquecidos, total: colaboradoresEnriquecidos.length });
   } catch (error) {
     console.error('Erro ao listar colaboradores:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });

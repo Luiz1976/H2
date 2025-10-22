@@ -10,12 +10,26 @@ import {
   UserPlus,
   Mail,
   Phone,
-  Calendar
+  Calendar,
+  Activity,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  AlertTriangle
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '@/services/authService';
 import { hybridInvitationService } from '@/services/invitationServiceHybrid';
+
+interface SituacaoPsicossocial {
+  status: 'excelente' | 'bom' | 'atencao' | 'critico' | 'nao_avaliado';
+  descricao: string;
+  cor: string;
+  totalTestes: number;
+  ultimoTeste?: string;
+  indicadores?: { nome: string; valor: string; nivel: string }[];
+}
 
 interface Colaborador {
   id: string;
@@ -28,6 +42,7 @@ interface Colaborador {
   updated_at: string;
   total_testes?: number;
   ultimo_teste?: string;
+  situacaoPsicossocial?: SituacaoPsicossocial;
 }
 
 export default function EmpresaColaboradores() {
@@ -108,6 +123,36 @@ export default function EmpresaColaboradores() {
 
   const formatarData = (data: string) => {
     return new Date(data).toLocaleDateString('pt-BR');
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'excelente':
+        return <CheckCircle className="w-4 h-4" />;
+      case 'bom':
+        return <Activity className="w-4 h-4" />;
+      case 'atencao':
+        return <AlertTriangle className="w-4 h-4" />;
+      case 'critico':
+        return <XCircle className="w-4 h-4" />;
+      default:
+        return <AlertCircle className="w-4 h-4" />;
+    }
+  };
+
+  const getCorStatus = (cor: string) => {
+    switch (cor) {
+      case 'green':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'blue':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'yellow':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'red':
+        return 'bg-red-100 text-red-800 border-red-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
   };
 
   const colaboradoresFiltrados = colaboradores.filter(colaborador => {
@@ -191,6 +236,9 @@ export default function EmpresaColaboradores() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Testes
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Situação Psicossocial
+                </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Ações
                 </th>
@@ -247,11 +295,47 @@ export default function EmpresaColaboradores() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     <div className="text-sm text-gray-900">
-                      {colaborador.total_testes || 0} realizados
+                      {colaborador.situacaoPsicossocial?.totalTestes || 0} realizados
                     </div>
-                    {colaborador.ultimo_teste && (
+                    {colaborador.situacaoPsicossocial?.ultimoTeste && (
                       <div className="text-xs text-gray-500">
-                        Último: {formatarData(colaborador.ultimo_teste)}
+                        Último: {formatarData(colaborador.situacaoPsicossocial.ultimoTeste)}
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4" data-testid={`situacao-psicossocial-${colaborador.id}`}>
+                    {colaborador.situacaoPsicossocial ? (
+                      <div className="space-y-2">
+                        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border ${getCorStatus(colaborador.situacaoPsicossocial.cor)}`}>
+                          {getStatusIcon(colaborador.situacaoPsicossocial.status)}
+                          <span className="text-xs font-semibold">
+                            {colaborador.situacaoPsicossocial.descricao}
+                          </span>
+                        </div>
+                        
+                        {colaborador.situacaoPsicossocial.indicadores && colaborador.situacaoPsicossocial.indicadores.length > 0 && (
+                          <div className="space-y-1 mt-2">
+                            {colaborador.situacaoPsicossocial.indicadores.map((indicador, idx) => (
+                              <div key={idx} className="flex items-center gap-2 text-xs">
+                                <span className="text-gray-600 truncate max-w-[120px]" title={indicador.nome}>
+                                  {indicador.nome}:
+                                </span>
+                                <span className={`font-medium ${
+                                  indicador.nivel === 'Crítico' ? 'text-red-600' :
+                                  indicador.nivel === 'Atenção' ? 'text-yellow-600' :
+                                  indicador.nivel === 'Moderado' ? 'text-blue-600' :
+                                  'text-green-600'
+                                }`}>
+                                  {indicador.valor}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-xs text-gray-400 italic">
+                        Aguardando testes
                       </div>
                     )}
                   </td>
