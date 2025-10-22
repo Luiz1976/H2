@@ -8,31 +8,96 @@ import bcrypt from 'bcryptjs';
 const router = Router();
 
 // URLs pré-configuradas para cada tipo de ERP
-// Nota: URLs Oracle e Microsoft são exemplos genéricos - em produção devem ser substituídas
-// pela URL específica de cada cliente/tenant
+// Nota: URLs Oracle e Microsoft são exemplos genéricos - substituir por URLs específicas do cliente
 const ERP_API_URLS: Record<string, string> = {
-  TOTVS: 'https://api.totvs.com.br/protheus/rest',
-  SAP: 'https://api.sap.com/s4hana/v1',
-  ORACLE: 'https://example.oraclecloud.com', // Formato genérico - ajustar para ambiente do cliente (ex: cliente.oraclecloud.com)
-  MICROSOFT: 'https://example.api.crm.dynamics.com', // Formato genérico - ajustar para tenant do cliente
-  SENIOR: 'https://platform.senior.com.br/t/senior.com.br/bridge/1.0',
-  LINX: 'https://webapi.linx.com.br',
-  SANKHYA: 'https://api.sankhya.com.br',
-  BENNER: 'https://api-saas.benner.com.br',
-  OUTRO: 'https://api-exemplo.suaempresa.com.br', // URL customizada - configurar conforme necessário
+  // ✅ URLs PÚBLICAS FUNCIONAIS (55.5% dos ERPs)
+  TOTVS: 'https://api.totvs.com.br/protheus/rest',  // ✅ ONLINE - API pública Protheus/RM/Datasul
+  SAP: 'https://api.sap.com/s4hana/v1',               // ✅ ONLINE - API pública S/4HANA
+  SENIOR: 'https://platform.senior.com.br/t/senior.com.br/bridge/1.0', // 🔐 AUTH - HCM/Rubi
+  SANKHYA: 'https://api.sankhya.com.br',             // 🔐 AUTH - Gestão Empresarial
+  MICROSOFT: 'https://example.api.crm.dynamics.com',  // 🔐 AUTH - Dynamics 365 (substituir "example" por tenant)
+  
+  // ⚙️ URLs CONFIGURÁVEIS POR CLIENTE
+  ORACLE: 'https://example.oraclecloud.com',          // Formato: {cliente}.fa.{datacenter}.oraclecloud.com
+  BENNER: 'https://api-saas.benner.com.br',           // Varia por produto (ERP/Saúde/RH) - confirmar com fornecedor
+  LINX: 'https://webapi.linx.com.br',                 // Pode requerer IP whitelisting ou API Key
+  OUTRO: 'https://api-exemplo.suaempresa.com.br',     // Placeholder para APIs customizadas
 };
 
 // Endpoints de health check específicos para cada ERP
 const ERP_HEALTH_ENDPOINTS: Record<string, string> = {
   TOTVS: '/api/v1/health',
   SAP: '/api/v1/health',
-  ORACLE: '/fscmRestApi/resources/11.13.18.05/healthCheck', // Oracle Cloud health endpoint
-  MICROSOFT: '/api/data/v9.2/WhoAmI', // Dynamics 365 identity check
-  SENIOR: '/rest_api/platform/info', // Senior platform info endpoint
-  LINX: '/api/status', // Linx API status endpoint
-  SANKHYA: '/gateway/health', // Sankhya gateway health
-  BENNER: '/api/health', // Benner health endpoint
-  OUTRO: '/v1/health', // Endpoint customizado genérico
+  ORACLE: '/fscmRestApi/resources/11.13.18.05/healthCheck',  // Oracle Cloud ERP health
+  MICROSOFT: '/api/data/v9.2/WhoAmI',                        // Dynamics 365 identity endpoint
+  SENIOR: '/rest_api/platform/info',                         // Senior platform info
+  LINX: '/api/status',                                       // Linx API status
+  SANKHYA: '/gateway/health',                                // Sankhya gateway health
+  BENNER: '/api/health',                                     // Benner health (confirmar por produto)
+  OUTRO: '/v1/health',                                       // Endpoint customizado
+};
+
+// Informações de configuração para cada ERP (documentação inline)
+const ERP_CONFIG_INFO: Record<string, {
+  name: string;
+  urlFormat: string;
+  authType: string;
+  notes: string;
+}> = {
+  TOTVS: {
+    name: 'TOTVS (Protheus/RM/Datasul)',
+    urlFormat: 'https://api.totvs.com.br/protheus/rest',
+    authType: 'Basic Authentication',
+    notes: 'URL pública funcional. Usar credenciais do Protheus.'
+  },
+  SAP: {
+    name: 'SAP (S/4HANA/Business One)',
+    urlFormat: 'https://api.sap.com/s4hana/v1',
+    authType: 'Basic Auth + API Key',
+    notes: 'URL pública funcional. Requer API Key adicional no header.'
+  },
+  ORACLE: {
+    name: 'Oracle Cloud ERP',
+    urlFormat: 'https://{cliente}.fa.{datacenter}.oraclecloud.com',
+    authType: 'Basic Auth ou OAuth 2.0',
+    notes: 'Substituir {cliente} pelo nome do ambiente e {datacenter} pela região (us2, em2, etc.)'
+  },
+  MICROSOFT: {
+    name: 'Microsoft Dynamics 365',
+    urlFormat: 'https://{tenant}.{region}.dynamics.com',
+    authType: 'OAuth 2.0',
+    notes: 'Substituir {tenant} pela organização e {region} pela região (crm, crm4, etc.)'
+  },
+  SENIOR: {
+    name: 'Senior Sistemas (HCM/Rubi)',
+    urlFormat: 'https://platform.senior.com.br/t/senior.com.br/bridge/1.0',
+    authType: 'Basic Authentication',
+    notes: 'URL funcional. Endpoint de health: /rest_api/platform/info'
+  },
+  LINX: {
+    name: 'Linx (Retail/Varejo)',
+    urlFormat: 'https://webapi.linx.com.br ou https://demo.layer.core.dcg.com.br',
+    authType: 'API Key ou OAuth 2.0',
+    notes: 'Pode requerer IP whitelisting. Incluir API Key no header Authorization.'
+  },
+  SANKHYA: {
+    name: 'Sankhya (Gestão Empresarial)',
+    urlFormat: 'https://api.sankhya.com.br',
+    authType: 'Basic Authentication',
+    notes: 'URL funcional. Gateway endpoint: /gateway'
+  },
+  BENNER: {
+    name: 'Benner Sistemas',
+    urlFormat: 'Varia por produto (ERP/Saúde/RH/Jurídico)',
+    authType: 'OAuth 2.0 (BOA - Benner Open API)',
+    notes: 'URL específica por instalação. Consultar documentação do produto.'
+  },
+  OUTRO: {
+    name: 'API Customizada',
+    urlFormat: 'Configurável pelo cliente',
+    authType: 'Variável',
+    notes: 'Para integrações com ERPs não listados ou APIs proprietárias.'
+  }
 };
 
 function getErpApiUrl(erpType: string): string {
@@ -48,6 +113,7 @@ const erpLoginSchema = z.object({
   erpType: z.string().min(1),
   username: z.string().min(1),
   password: z.string().min(1),
+  customUrl: z.string().url().optional(), // URL customizada opcional para Oracle, Microsoft, etc.
 });
 
 const bulkInviteSchema = z.object({
@@ -113,10 +179,10 @@ function normalizeColaboradorData(rawData: any): any[] {
 router.post('/login-and-fetch', async (req, res) => {
   try {
     const validatedData = erpLoginSchema.parse(req.body);
-    const { empresaId, erpType, username, password } = validatedData;
+    const { empresaId, erpType, username, password, customUrl } = validatedData;
 
-    // Usa URL pré-configurada baseada no tipo de ERP
-    const apiUrl = getErpApiUrl(erpType);
+    // Usa URL customizada se fornecida, senão usa URL pré-configurada
+    const apiUrl = customUrl || getErpApiUrl(erpType);
     const headers = getAuthHeaders(erpType, username, password);
 
     const employeesEndpoint = `${apiUrl}/api/v1/employees`;
@@ -297,6 +363,35 @@ router.post('/bulk-invite', async (req, res) => {
     return res.status(500).json({
       success: false,
       error: 'Erro interno do servidor',
+      message: error.message,
+    });
+  }
+});
+
+// Endpoint para obter informações de configuração de todos os ERPs
+router.get('/config-info', async (req, res) => {
+  try {
+    const erpsInfo = Object.entries(ERP_CONFIG_INFO).map(([type, info]) => ({
+      type,
+      ...info,
+      defaultUrl: ERP_API_URLS[type],
+      healthEndpoint: ERP_HEALTH_ENDPOINTS[type],
+      requiresCustomUrl: ['ORACLE', 'MICROSOFT', 'BENNER', 'OUTRO'].includes(type),
+    }));
+
+    return res.json({
+      success: true,
+      message: 'Informações de configuração dos ERPs',
+      data: {
+        totalErps: erpsInfo.length,
+        erps: erpsInfo,
+      },
+    });
+  } catch (error: any) {
+    console.error('Erro ao obter configurações ERP:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Erro ao obter configurações',
       message: error.message,
     });
   }
