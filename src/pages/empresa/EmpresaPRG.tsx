@@ -98,6 +98,7 @@ export default function EmpresaPRG() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [prgData, setPrgData] = useState<PRGData | null>(null);
+  const [recomendacoesExpandidas, setRecomendacoesExpandidas] = useState<Set<number>>(new Set());
 
   // Buscar dados do PRG ao carregar a página
   useEffect(() => {
@@ -139,6 +140,19 @@ export default function EmpresaPRG() {
 
     fetchPRGData();
   }, [periodo, setor]); // Recarregar quando filtros mudarem
+
+  // Toggle expansão de recomendação
+  const toggleRecomendacao = (index: number) => {
+    setRecomendacoesExpandidas(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
 
   // Mapear ícones para recomendações
   const getIconForRecomendacao = (categoria: string) => {
@@ -823,7 +837,7 @@ export default function EmpresaPRG() {
           <CardContent className="space-y-4">
             {prgData?.recomendacoes.map((rec, index) => {
               const IconComponent = getIconForRecomendacao(rec.categoria);
-              const [expandida, setExpandida] = React.useState(false);
+              const expandida = recomendacoesExpandidas.has(index);
               
               return (
                 <div 
@@ -834,7 +848,7 @@ export default function EmpresaPRG() {
                   {/* Header da recomendação */}
                   <div 
                     className="flex items-start gap-4 p-5 cursor-pointer hover:bg-white/15 transition-all"
-                    onClick={() => setExpandida(!expandida)}
+                    onClick={() => toggleRecomendacao(index)}
                   >
                     <div className="p-3 bg-orange-500/30 rounded-xl">
                       <IconComponent className="h-6 w-6 text-orange-100" />
