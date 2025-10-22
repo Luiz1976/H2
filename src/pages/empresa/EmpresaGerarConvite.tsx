@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from 'sonner';
 import { hybridInvitationService } from '../../services/invitationServiceHybrid';
 import { useAuth } from '../../hooks/AuthContext';
@@ -212,35 +213,46 @@ const EmpresaGerarConvite: React.FC = () => {
       toast.error('Erro ao carregar convites', {
         description: 'Tente novamente em alguns instantes'
       });
+      setConvites([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const criarConvite = async () => {
+  const handleCriarConvite = async () => {
     try {
       setEnviandoConvite(true);
-      console.log('🔄 Criando novo convite...', novoConvite);
 
       if (!user?.empresaId) {
-        toast.error('Erro', { description: 'ID da empresa não encontrado' });
+        toast.error('ID da empresa não encontrado');
         return;
       }
 
-      const response = await hybridInvitationService.criarConviteColaborador({
-        empresa_id: user.empresaId,
-        email: novoConvite.email,
-        nome: novoConvite.nome,
-        dias_expiracao: novoConvite.dias_expiracao
+      if (!novoConvite.email || !novoConvite.nome) {
+        toast.error('Preencha todos os campos obrigatórios');
+        return;
+      }
+
+      const response = await fetch('/api/convites/colaborador', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: novoConvite.nome,
+          email: novoConvite.email,
+          cargo: novoConvite.cargo,
+          departamento: novoConvite.departamento,
+          empresa_id: user.empresaId,
+          dias_expiracao: novoConvite.dias_expiracao
+        }),
       });
 
-      console.log('✅ Convite criado:', response);
-      
-      if (response.success) {
-        toast.success('Convite criado com sucesso!', {
-          description: `Convite enviado para ${novoConvite.nome}`
-        });
+      const data = await response.json();
 
+      if (data.success) {
+        toast.success('Convite criado com sucesso!', {
+          description: `Enviado para ${novoConvite.email}`
+        });
+        setShowNovoConviteModal(false);
         setNovoConvite({
           email: '',
           nome: '',
@@ -248,15 +260,12 @@ const EmpresaGerarConvite: React.FC = () => {
           departamento: '',
           dias_expiracao: 7
         });
-
-        setShowNovoConviteModal(false);
         carregarConvites();
       } else {
         toast.error('Erro ao criar convite', {
-          description: response.message
+          description: data.message || 'Erro desconhecido'
         });
       }
-
     } catch (error) {
       console.error('❌ Erro ao criar convite:', error);
       toast.error('Erro ao criar convite', {
@@ -267,125 +276,93 @@ const EmpresaGerarConvite: React.FC = () => {
     }
   };
 
-  const copiarLinkConvite = (token: string) => {
-    const link = `${window.location.origin}/convite/${token}`;
+  const handleCopiarLink = (token: string) => {
+    const link = `${window.location.origin}/aceitar-convite/${token}`;
     navigator.clipboard.writeText(link);
     toast.success('Link copiado!', {
       description: 'Link do convite copiado para a área de transferência'
     });
   };
 
-  const reenviarConvite = async (conviteId: string) => {
+  const handleDeletarConvite = async (id: string) => {
     try {
-      toast.info('Funcionalidade em desenvolvimento', {
-        description: 'O reenvio de convites será implementado em breve'
+      const response = await fetch(`/api/convites/colaborador/${id}`, {
+        method: 'DELETE',
       });
-    } catch (error) {
-      console.error('❌ Erro ao reenviar convite:', error);
-      toast.error('Erro ao reenviar convite', {
-        description: 'Tente novamente em alguns instantes'
-      });
-    }
-  };
-
-  const excluirConvite = async (conviteToken: string) => {
-    try {
-      console.log('🗑️ Excluindo convite com token:', conviteToken);
+      const data = await response.json();
       
-      const response = await hybridInvitationService.cancelarConvite(conviteToken, 'colaborador');
-      
-      if (response.success) {
-        toast.success('Convite excluído com sucesso', {
-          description: 'O convite foi cancelado e não poderá mais ser usado'
-        });
-        
-        await carregarConvites();
+      if (data.success) {
+        toast.success('Convite deletado com sucesso');
+        carregarConvites();
       } else {
-        console.error('❌ Erro na resposta:', response.message);
-        toast.error('Erro ao excluir convite', {
-          description: response.message || 'Tente novamente em alguns instantes'
-        });
+        toast.error('Erro ao deletar convite');
       }
     } catch (error) {
-      console.error('❌ Erro ao excluir convite:', error);
-      toast.error('Erro ao excluir convite', {
-        description: 'Tente novamente em alguns instantes'
-      });
+      console.error('Erro ao deletar convite:', error);
+      toast.error('Erro ao deletar convite');
     }
   };
 
   const getStatusConvite = (convite: ConviteColaborador): StatusConvite => {
-    if (convite.status === 'cancelado') return 'cancelado' as StatusConvite;
-    if (convite.status === StatusConvite.ACEITO) return StatusConvite.ACEITO;
-    if (new Date(convite.validade) < new Date()) return StatusConvite.EXPIRADO;
+    if (convite.status === StatusConvite.ACEITO) {
+      return StatusConvite.ACEITO;
+    }
+    
+    const agora = new Date();
+    const validade = new Date(convite.validade);
+    
+    if (agora > validade) {
+      return StatusConvite.EXPIRADO;
+    }
+    
     return StatusConvite.PENDENTE;
   };
 
   const getStatusBadge = (status: StatusConvite) => {
     switch (status) {
-      case StatusConvite.ACEITO:
-        return <Badge variant="default" className="bg-green-100 text-green-800" data-testid="badge-usado">Usado</Badge>;
-      case StatusConvite.EXPIRADO:
-        return <Badge variant="destructive" data-testid="badge-expirado">Expirado</Badge>;
-      case 'cancelado' as StatusConvite:
-        return <Badge variant="outline" className="bg-gray-100 text-gray-800" data-testid="badge-cancelado">Cancelado</Badge>;
       case StatusConvite.PENDENTE:
-        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800" data-testid="badge-pendente">Pendente</Badge>;
+        return <Badge className="bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/30">Pendente</Badge>;
+      case StatusConvite.ACEITO:
+        return <Badge className="bg-green-500/20 text-green-300 hover:bg-green-500/30">Aceito</Badge>;
+      case StatusConvite.EXPIRADO:
+        return <Badge className="bg-red-500/20 text-red-300 hover:bg-red-500/30">Expirado</Badge>;
       default:
-        return <Badge variant="outline" data-testid="badge-desconhecido">Desconhecido</Badge>;
+        return <Badge className="bg-gray-500/20 text-gray-300">Desconhecido</Badge>;
     }
   };
 
   const convitesFiltrados = convites.filter(convite => {
-    const matchesSearch = convite.nome.toLowerCase().includes(filtro.toLowerCase()) ||
-                         convite.email.toLowerCase().includes(filtro.toLowerCase());
+    const matchFiltro = !filtro || 
+      convite.nome.toLowerCase().includes(filtro.toLowerCase()) ||
+      convite.email.toLowerCase().includes(filtro.toLowerCase());
     
     const status = getStatusConvite(convite);
-    const matchesStatus = statusFiltro === 'todos' || status === statusFiltro;
+    const matchStatus = statusFiltro === 'todos' || status === statusFiltro;
     
-    return matchesSearch && matchesStatus;
+    return matchFiltro && matchStatus;
   });
-
-  const formatarData = (dataString: string) => {
-    return new Date(dataString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
-          <p className="text-white/70 text-lg">Carregando...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto"></div>
+          <p className="mt-4 text-white/60">Carregando convites...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg">
-              <UserPlus className="h-6 w-6" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white" data-testid="text-page-title">Gerar Convites</h1>
-              <p className="text-white/70">Escolha como deseja convidar colaboradores</p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">Gerar Convites</h1>
+          <p className="text-white/60">Crie e gerencie convites para colaboradores</p>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* CARD 1: Convite Individual */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* CARD 1: Convites Individuais */}
           <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl">
             <CardHeader className="border-b border-white/10">
               <div className="flex items-center gap-3">
@@ -395,35 +372,37 @@ const EmpresaGerarConvite: React.FC = () => {
                 <div>
                   <CardTitle className="text-xl text-white" data-testid="text-card-individual-title">Convite Individual</CardTitle>
                   <CardDescription className="text-white/60">
-                    Gere convites personalizados para colaboradores específicos
+                    Gere convites um por vez com dados personalizados
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              {/* Botão Novo Convite */}
+            <CardContent className="p-6">
               <Dialog open={showNovoConviteModal} onOpenChange={setShowNovoConviteModal}>
                 <DialogTrigger asChild>
-                  <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg" data-testid="button-novo-convite">
+                  <Button 
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg mb-6"
+                    data-testid="button-novo-convite"
+                  >
                     <Plus className="h-4 w-4 mr-2" />
-                    Criar Novo Convite
+                    Novo Convite
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
+                <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Criar Novo Convite</DialogTitle>
                     <DialogDescription>
-                      Preencha os dados do colaborador para enviar um convite
+                      Preencha os dados do colaborador para gerar o convite
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="nome">Nome do Colaborador *</Label>
+                      <Label htmlFor="nome">Nome Completo *</Label>
                       <Input
                         id="nome"
+                        placeholder="João Silva"
                         value={novoConvite.nome}
                         onChange={(e) => setNovoConvite(prev => ({ ...prev, nome: e.target.value }))}
-                        placeholder="Digite o nome completo"
                         data-testid="input-nome"
                       />
                     </div>
@@ -432,9 +411,9 @@ const EmpresaGerarConvite: React.FC = () => {
                       <Input
                         id="email"
                         type="email"
+                        placeholder="joao@empresa.com"
                         value={novoConvite.email}
                         onChange={(e) => setNovoConvite(prev => ({ ...prev, email: e.target.value }))}
-                        placeholder="colaborador@empresa.com"
                         data-testid="input-email"
                       />
                     </div>
@@ -442,9 +421,9 @@ const EmpresaGerarConvite: React.FC = () => {
                       <Label htmlFor="cargo">Cargo</Label>
                       <Input
                         id="cargo"
+                        placeholder="Analista"
                         value={novoConvite.cargo}
                         onChange={(e) => setNovoConvite(prev => ({ ...prev, cargo: e.target.value }))}
-                        placeholder="Ex: Analista, Gerente..."
                         data-testid="input-cargo"
                       />
                     </div>
@@ -452,143 +431,41 @@ const EmpresaGerarConvite: React.FC = () => {
                       <Label htmlFor="departamento">Departamento</Label>
                       <Input
                         id="departamento"
+                        placeholder="TI"
                         value={novoConvite.departamento}
                         onChange={(e) => setNovoConvite(prev => ({ ...prev, departamento: e.target.value }))}
-                        placeholder="Ex: TI, RH, Vendas..."
                         data-testid="input-departamento"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="dias">Dias para Expiração</Label>
-                      <Select
-                        value={novoConvite.dias_expiracao.toString()}
-                        onValueChange={(value) => setNovoConvite(prev => ({ ...prev, dias_expiracao: parseInt(value) }))}
-                      >
-                        <SelectTrigger data-testid="select-dias-expiracao">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="3">3 dias</SelectItem>
-                          <SelectItem value="7">7 dias</SelectItem>
-                          <SelectItem value="15">15 dias</SelectItem>
-                          <SelectItem value="30">30 dias</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Label htmlFor="dias_expiracao">Dias de Validade</Label>
+                      <Input
+                        id="dias_expiracao"
+                        type="number"
+                        min="1"
+                        max="30"
+                        value={novoConvite.dias_expiracao}
+                        onChange={(e) => setNovoConvite(prev => ({ ...prev, dias_expiracao: parseInt(e.target.value) }))}
+                        data-testid="input-dias-expiracao"
+                      />
                     </div>
-                    <div className="flex justify-end space-x-2 pt-4">
-                      <Button variant="outline" onClick={() => setShowNovoConviteModal(false)} data-testid="button-cancelar">
+                    <div className="flex justify-end gap-2 pt-4">
+                      <Button variant="outline" onClick={() => setShowNovoConviteModal(false)}>
                         Cancelar
                       </Button>
                       <Button 
-                        onClick={criarConvite}
-                        disabled={enviandoConvite || !novoConvite.nome || !novoConvite.email}
-                        data-testid="button-criar-convite"
+                        onClick={handleCriarConvite}
+                        disabled={enviandoConvite || !novoConvite.email || !novoConvite.nome}
+                        data-testid="button-enviar-convite"
                       >
-                        {enviandoConvite ? 'Enviando...' : 'Criar Convite'}
+                        {enviandoConvite ? 'Enviando...' : 'Enviar Convite'}
                       </Button>
                     </div>
                   </div>
                 </DialogContent>
               </Dialog>
 
-              {/* Filtros */}
-              <div className="space-y-3">
-                <Input
-                  placeholder="Buscar por nome ou email..."
-                  value={filtro}
-                  onChange={(e) => setFiltro(e.target.value)}
-                  className="bg-white/5 border-white/20 text-white placeholder:text-white/40"
-                  data-testid="input-buscar"
-                />
-                <Select value={statusFiltro} onValueChange={(value: any) => setStatusFiltro(value)}>
-                  <SelectTrigger className="bg-white/5 border-white/20 text-white" data-testid="select-status-filtro">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="todos">Todos os Status</SelectItem>
-                    <SelectItem value={StatusConvite.PENDENTE}>Pendentes</SelectItem>
-                    <SelectItem value={StatusConvite.ACEITO}>Usados</SelectItem>
-                    <SelectItem value={StatusConvite.EXPIRADO}>Expirados</SelectItem>
-                    <SelectItem value="cancelado">Cancelados</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Lista de Convites */}
-              <div className="space-y-3 max-h-96 overflow-y-auto">
-                {convitesFiltrados.length === 0 ? (
-                  <Alert className="bg-yellow-500/10 border-yellow-500/20">
-                    <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                    <AlertDescription className="text-white/70">
-                      {convites.length === 0 
-                        ? 'Nenhum convite foi enviado ainda.'
-                        : 'Nenhum convite encontrado com os filtros aplicados.'
-                      }
-                    </AlertDescription>
-                  </Alert>
-                ) : (
-                  convitesFiltrados.map((convite) => (
-                    <div key={convite.id} className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors" data-testid={`card-convite-${convite.id}`}>
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <h3 className="font-semibold text-white" data-testid={`text-nome-${convite.id}`}>{convite.nome}</h3>
-                            {getStatusBadge(getStatusConvite(convite))}
-                          </div>
-                          <p className="text-sm text-white/60 mb-1" data-testid={`text-email-${convite.id}`}>{convite.email}</p>
-                          <div className="flex items-center gap-4 text-xs text-white/50">
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              {formatarData(convite.created_at)}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              Expira: {formatarData(convite.validade)}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => copiarLinkConvite(convite.token)}
-                            title="Copiar link do convite"
-                            className="bg-white/5 border-white/20 hover:bg-white/10"
-                            data-testid={`button-copiar-${convite.id}`}
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                          {convite.status === StatusConvite.PENDENTE && getStatusConvite(convite) !== StatusConvite.EXPIRADO && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => reenviarConvite(convite.id)}
-                              title="Reenviar convite"
-                              className="bg-white/5 border-white/20 hover:bg-white/10"
-                              data-testid={`button-reenviar-${convite.id}`}
-                            >
-                              <Send className="h-4 w-4" />
-                            </Button>
-                          )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => excluirConvite(convite.token)}
-                            title="Excluir convite"
-                            className="bg-white/5 border-red-500/20 hover:bg-red-500/10 text-red-400"
-                            data-testid={`button-excluir-${convite.id}`}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              {/* Estatísticas */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-4 gap-3">
                 <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3">
                   <p className="text-sm text-white/60">Total</p>
                   <p className="text-2xl font-bold text-white" data-testid="text-total-convites">{convites.length}</p>
@@ -632,176 +509,77 @@ const EmpresaGerarConvite: React.FC = () => {
             </CardHeader>
             <CardContent className="p-6">
               {showColaboradoresTable ? (
-                <div className="space-y-6">
-                  {/* Status da Configuração */}
-                  <div className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-white/60">Tipo de ERP</p>
-                        <p className="text-lg font-semibold text-white">{erpConfig.erpType}</p>
-                      </div>
-                      <Badge 
-                        variant={erpConfig.statusConexao === 'conectado' ? 'default' : 'secondary'}
-                        className={erpConfig.statusConexao === 'conectado' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}
-                        data-testid="badge-status-erp"
+                <div className="space-y-4">
+                  {/* Header com seleção e botão */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        checked={erpColaboradores.every(col => col.selected)}
+                        onCheckedChange={toggleTodosColaboradores}
+                        data-testid="checkbox-select-all"
+                      />
+                      <span className="text-white text-sm">
+                        {erpColaboradores.filter(col => col.selected).length} de {erpColaboradores.length} selecionados
+                      </span>
+                    </div>
+                    <Button
+                      onClick={() => {
+                        setShowColaboradoresTable(false);
+                        setErpColaboradores([]);
+                      }}
+                      variant="ghost"
+                      className="text-white/60 hover:text-white"
+                      size="sm"
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+
+                  {/* Tabela de colaboradores */}
+                  <div className="bg-white/5 border border-white/10 rounded-lg max-h-96 overflow-y-auto">
+                    {erpColaboradores.map((col, index) => (
+                      <div 
+                        key={col.email}
+                        className="flex items-center gap-3 p-3 border-b border-white/5 last:border-0 hover:bg-white/5"
+                        data-testid={`colaborador-row-${index}`}
                       >
-                        {erpConfig.statusConexao === 'conectado' ? 'Conectado' : 'Não Testado'}
-                      </Badge>
-                    </div>
-                    <div>
-                      <p className="text-sm text-white/60">URL da API</p>
-                      <p className="text-sm text-white font-mono truncate">{erpConfig.apiUrl}</p>
-                    </div>
-                    {erpConfig.ultimaSincronizacao && (
-                      <div>
-                        <p className="text-sm text-white/60">Última Sincronização</p>
-                        <p className="text-sm text-white">
-                          {new Date(erpConfig.ultimaSincronizacao).toLocaleString('pt-BR')}
-                        </p>
+                        <Checkbox
+                          checked={col.selected}
+                          onCheckedChange={() => toggleColaboradorSelecao(col.email)}
+                          data-testid={`checkbox-${col.email}`}
+                        />
+                        <div className="flex-1">
+                          <p className="text-white font-medium">{col.nome}</p>
+                          <p className="text-white/60 text-sm">{col.email}</p>
+                          {(col.cargo || col.departamento) && (
+                            <p className="text-white/40 text-xs mt-1">
+                              {[col.cargo, col.departamento].filter(Boolean).join(' • ')}
+                            </p>
+                          )}
+                        </div>
                       </div>
+                    ))}
+                  </div>
+
+                  {/* Botão de ação */}
+                  <Button
+                    className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg"
+                    onClick={gerarConvitesEmMassa}
+                    disabled={generatingInvites || erpColaboradores.filter(col => col.selected).length === 0}
+                    data-testid="button-gerar-convites-massa"
+                  >
+                    {generatingInvites ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                        Gerando Convites...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        Gerar {erpColaboradores.filter(col => col.selected).length} Convites
+                      </>
                     )}
-                  </div>
-
-                  {/* Ações */}
-                  <div className="space-y-3">
-                    <Button
-                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
-                      onClick={testarConexaoERP}
-                      disabled={testingConnection}
-                      data-testid="button-testar-conexao"
-                    >
-                      {testingConnection ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                          Testando...
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          Testar Conexão
-                        </>
-                      )}
-                    </Button>
-
-                    <Button
-                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
-                      onClick={importarColaboradoresERP}
-                      disabled={importing || erpConfig.statusConexao !== 'conectado'}
-                      data-testid="button-importar-colaboradores"
-                    >
-                      {importing ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                          Importando...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="h-4 w-4 mr-2" />
-                          Importar Colaboradores
-                        </>
-                      )}
-                    </Button>
-
-                    <div className="flex gap-2">
-                      <Dialog open={showErpConfigModal} onOpenChange={setShowErpConfigModal}>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="flex-1 bg-white/5 border-white/20 hover:bg-white/10 text-white"
-                            data-testid="button-editar-config"
-                          >
-                            Editar
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Configurar Integração ERP</DialogTitle>
-                            <DialogDescription>
-                              Configure os detalhes de conexão com seu sistema ERP
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="space-y-4">
-                            <div className="space-y-2">
-                              <Label>Tipo de ERP</Label>
-                              <Select value={erpForm.erpType} onValueChange={(value) => setErpForm(prev => ({ ...prev, erpType: value }))}>
-                                <SelectTrigger data-testid="select-tipo-erp">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="TOTVS">TOTVS (Protheus/RM/Datasul)</SelectItem>
-                                  <SelectItem value="SAP">SAP (S/4HANA/Business One)</SelectItem>
-                                  <SelectItem value="ORACLE">Oracle Cloud ERP</SelectItem>
-                                  <SelectItem value="MICROSOFT">Microsoft Dynamics 365</SelectItem>
-                                  <SelectItem value="SENIOR">Senior</SelectItem>
-                                  <SelectItem value="LINX">Linx</SelectItem>
-                                  <SelectItem value="SANKHYA">Sankhya</SelectItem>
-                                  <SelectItem value="BENNER">Benner</SelectItem>
-                                  <SelectItem value="OUTRO">Outro</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div className="space-y-2">
-                              <Label>URL da API</Label>
-                              <Input
-                                placeholder="https://api.seu-erp.com"
-                                value={erpForm.apiUrl}
-                                onChange={(e) => setErpForm(prev => ({ ...prev, apiUrl: e.target.value }))}
-                                data-testid="input-api-url"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>API Key</Label>
-                              <Input
-                                type="password"
-                                placeholder="Sua chave de API"
-                                value={erpForm.apiKey}
-                                onChange={(e) => setErpForm(prev => ({ ...prev, apiKey: e.target.value }))}
-                                data-testid="input-api-key"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>API Secret (Opcional)</Label>
-                              <Input
-                                type="password"
-                                placeholder="Seu secret de API (se necessário)"
-                                value={erpForm.apiSecret}
-                                onChange={(e) => setErpForm(prev => ({ ...prev, apiSecret: e.target.value }))}
-                                data-testid="input-api-secret"
-                              />
-                            </div>
-                            <div className="flex justify-end gap-2 pt-4">
-                              <Button variant="outline" onClick={() => setShowErpConfigModal(false)}>
-                                Cancelar
-                              </Button>
-                              <Button 
-                                onClick={salvarConfigERP}
-                                disabled={!erpForm.erpType || !erpForm.apiUrl || !erpForm.apiKey}
-                                data-testid="button-salvar-config"
-                              >
-                                Salvar Configuração
-                              </Button>
-                            </div>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                      <Button
-                        variant="outline"
-                        className="flex-1 bg-red-500/10 border-red-500/20 hover:bg-red-500/20 text-red-400"
-                        onClick={removerConfigERP}
-                        data-testid="button-remover-config"
-                      >
-                        Remover
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Informações */}
-                  <Alert className="bg-blue-500/10 border-blue-500/20">
-                    <Database className="h-4 w-4 text-blue-400" />
-                    <AlertDescription className="text-white/70 text-sm">
-                      <strong>Dica:</strong> Teste a conexão antes de importar colaboradores. A importação criará automaticamente usuários com senhas temporárias.
-                    </AlertDescription>
-                  </Alert>
+                  </Button>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -809,7 +587,7 @@ const EmpresaGerarConvite: React.FC = () => {
                   <Alert className="bg-emerald-500/10 border-emerald-500/20">
                     <Database className="h-4 w-4 text-emerald-400" />
                     <AlertDescription className="text-white/70">
-                      <strong className="text-white">Conecte seu ERP</strong> e importe colaboradores automaticamente com sincronização em tempo real.
+                      <strong className="text-white">Faça login no seu ERP</strong> e importe colaboradores automaticamente.
                     </AlertDescription>
                   </Alert>
 
@@ -818,49 +596,49 @@ const EmpresaGerarConvite: React.FC = () => {
                     <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
                       <LinkIcon className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                       <div>
-                        <h4 className="font-medium text-white">Conexão Direta</h4>
-                        <p className="text-sm text-white/60">Configure a conexão com seu sistema ERP de forma segura</p>
+                        <h4 className="font-medium text-white">Login Direto</h4>
+                        <p className="text-sm text-white/60">Use suas credenciais habituais do ERP</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
                       <Upload className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                       <div>
                         <h4 className="font-medium text-white">Importação em Lote</h4>
-                        <p className="text-sm text-white/60">Importe múltiplos colaboradores de uma vez</p>
+                        <p className="text-sm text-white/60">Busque e selecione múltiplos colaboradores</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
                       <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                       <div>
-                        <h4 className="font-medium text-white">Validação de Dados</h4>
-                        <p className="text-sm text-white/60">Verificação automática de dados duplicados e inválidos</p>
+                        <h4 className="font-medium text-white">Validação Automática</h4>
+                        <p className="text-sm text-white/60">Verifica duplicatas e dados inválidos</p>
                       </div>
                     </div>
                   </div>
 
                   {/* CTA */}
-                  <Dialog open={showErpConfigModal} onOpenChange={setShowErpConfigModal}>
+                  <Dialog open={showErpLoginModal} onOpenChange={setShowErpLoginModal}>
                     <DialogTrigger asChild>
                       <Button 
                         className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg"
-                        data-testid="button-configurar-erp"
+                        data-testid="button-conectar-erp"
                       >
                         <Database className="h-4 w-4 mr-2" />
-                        Configurar ERP
+                        Conectar ao ERP
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Configurar Integração ERP</DialogTitle>
+                        <DialogTitle>Login no ERP</DialogTitle>
                         <DialogDescription>
-                          Configure os detalhes de conexão com seu sistema ERP
+                          Entre com suas credenciais do sistema ERP
                         </DialogDescription>
                       </DialogHeader>
                       <div className="space-y-4">
                         <div className="space-y-2">
                           <Label>Tipo de ERP</Label>
-                          <Select value={erpForm.erpType} onValueChange={(value) => setErpForm(prev => ({ ...prev, erpType: value }))}>
-                            <SelectTrigger data-testid="select-tipo-erp-new">
+                          <Select value={erpLoginForm.erpType} onValueChange={(value) => setErpLoginForm(prev => ({ ...prev, erpType: value }))}>
+                            <SelectTrigger data-testid="select-tipo-erp">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -877,44 +655,53 @@ const EmpresaGerarConvite: React.FC = () => {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label>URL da API</Label>
+                          <Label>URL da API do ERP</Label>
                           <Input
                             placeholder="https://api.seu-erp.com"
-                            value={erpForm.apiUrl}
-                            onChange={(e) => setErpForm(prev => ({ ...prev, apiUrl: e.target.value }))}
-                            data-testid="input-api-url-new"
+                            value={erpLoginForm.apiUrl}
+                            onChange={(e) => setErpLoginForm(prev => ({ ...prev, apiUrl: e.target.value }))}
+                            data-testid="input-api-url"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label>API Key</Label>
+                          <Label>Usuário</Label>
                           <Input
-                            type="password"
-                            placeholder="Sua chave de API"
-                            value={erpForm.apiKey}
-                            onChange={(e) => setErpForm(prev => ({ ...prev, apiKey: e.target.value }))}
-                            data-testid="input-api-key-new"
+                            placeholder="Seu usuário do ERP"
+                            value={erpLoginForm.username}
+                            onChange={(e) => setErpLoginForm(prev => ({ ...prev, username: e.target.value }))}
+                            data-testid="input-username"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label>API Secret (Opcional)</Label>
+                          <Label>Senha</Label>
                           <Input
                             type="password"
-                            placeholder="Seu secret de API (se necessário)"
-                            value={erpForm.apiSecret}
-                            onChange={(e) => setErpForm(prev => ({ ...prev, apiSecret: e.target.value }))}
-                            data-testid="input-api-secret-new"
+                            placeholder="Sua senha do ERP"
+                            value={erpLoginForm.password}
+                            onChange={(e) => setErpLoginForm(prev => ({ ...prev, password: e.target.value }))}
+                            data-testid="input-password"
                           />
                         </div>
                         <div className="flex justify-end gap-2 pt-4">
-                          <Button variant="outline" onClick={() => setShowErpConfigModal(false)}>
+                          <Button variant="outline" onClick={() => setShowErpLoginModal(false)}>
                             Cancelar
                           </Button>
                           <Button 
-                            onClick={salvarConfigERP}
-                            disabled={!erpForm.erpType || !erpForm.apiUrl || !erpForm.apiKey}
-                            data-testid="button-salvar-config-new"
+                            onClick={fazerLoginERP}
+                            disabled={fetchingColaboradores || !erpLoginForm.username || !erpLoginForm.password || !erpLoginForm.apiUrl}
+                            data-testid="button-login-erp"
                           >
-                            Salvar Configuração
+                            {fetchingColaboradores ? (
+                              <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                                Conectando...
+                              </>
+                            ) : (
+                              <>
+                                <Database className="h-4 w-4 mr-2" />
+                                Conectar e Buscar
+                              </>
+                            )}
                           </Button>
                         </div>
                       </div>
@@ -925,6 +712,99 @@ const EmpresaGerarConvite: React.FC = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Lista de Convites Existentes */}
+        <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl">
+          <CardHeader>
+            <CardTitle className="text-white">Convites Criados</CardTitle>
+            <CardDescription className="text-white/60">
+              Gerencie todos os convites enviados
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <Input
+                  placeholder="Buscar por nome ou email..."
+                  value={filtro}
+                  onChange={(e) => setFiltro(e.target.value)}
+                  className="flex-1 bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                  data-testid="input-filtro"
+                />
+                <Select value={statusFiltro} onValueChange={(value: any) => setStatusFiltro(value)}>
+                  <SelectTrigger className="w-48 bg-white/5 border-white/10 text-white" data-testid="select-status-filtro">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="todos">Todos os Status</SelectItem>
+                    <SelectItem value={StatusConvite.PENDENTE}>Pendentes</SelectItem>
+                    <SelectItem value={StatusConvite.ACEITO}>Aceitos</SelectItem>
+                    <SelectItem value={StatusConvite.EXPIRADO}>Expirados</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {convitesFiltrados.length === 0 ? (
+                <div className="text-center py-12">
+                  <Mail className="h-16 w-16 text-white/20 mx-auto mb-4" />
+                  <p className="text-white/60">Nenhum convite encontrado</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {convitesFiltrados.map((convite) => {
+                    const status = getStatusConvite(convite);
+                    return (
+                      <div
+                        key={convite.id}
+                        className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
+                        data-testid={`convite-${convite.id}`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="font-semibold text-white">{convite.nome}</h3>
+                              {getStatusBadge(status)}
+                            </div>
+                            <p className="text-sm text-white/60 mb-1">
+                              <Mail className="inline h-3 w-3 mr-1" />
+                              {convite.email}
+                            </p>
+                            <p className="text-xs text-white/40">
+                              <Calendar className="inline h-3 w-3 mr-1" />
+                              Expira em: {new Date(convite.validade).toLocaleDateString('pt-BR')}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleCopiarLink(convite.token)}
+                              className="bg-white/5 border-white/20 hover:bg-white/10 text-white"
+                              data-testid={`button-copiar-${convite.id}`}
+                            >
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                            {status === StatusConvite.PENDENTE && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleDeletarConvite(convite.id)}
+                                className="bg-red-500/10 border-red-500/20 hover:bg-red-500/20 text-red-400"
+                                data-testid={`button-deletar-${convite.id}`}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
