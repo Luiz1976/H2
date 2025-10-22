@@ -527,25 +527,76 @@ const EmpresaGerarConvite: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Gerar Convites</h1>
-          <p className="text-white/60">Crie e gerencie convites para colaboradores</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+      {/* Elementos decorativos de fundo */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        <div className="mb-12 text-center">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full px-4 py-2 mb-4">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-sm text-purple-300 font-medium">Sistema Ativo e Operacional</span>
+          </div>
+          
+          <h1 className="text-5xl font-bold text-white mb-4 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+            Central de Convites Inteligente
+          </h1>
+          <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
+            Escolha o método ideal para sua empresa e gere convites profissionais em segundos.
+            <span className="block text-purple-300 font-medium mt-2">
+              3 formas poderosas, resultados imediatos.
+            </span>
+          </p>
+        </div>
+
+        {/* Seção destacando as 3 formas */}
+        <div className="grid md:grid-cols-3 gap-6 mb-6">
+          <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-2xl p-6 text-center backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-3xl font-bold text-white">1</span>
+            </div>
+            <h3 className="text-white font-bold text-lg mb-2">Convite Individual</h3>
+            <p className="text-white/60 text-sm">Personalização total para colaboradores específicos</p>
+          </div>
+          
+          <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-2xl p-6 text-center backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-3xl font-bold text-white">2</span>
+            </div>
+            <h3 className="text-white font-bold text-lg mb-2">Integração ERP</h3>
+            <p className="text-white/60 text-sm">Importação automática e sincronizada</p>
+          </div>
+          
+          <div className="bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/20 rounded-2xl p-6 text-center backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-3xl font-bold text-white">3</span>
+            </div>
+            <h3 className="text-white font-bold text-lg mb-2">Importação Excel</h3>
+            <p className="text-white/60 text-sm">Escala e praticidade em segundos</p>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {/* CARD 1: Convites Individuais */}
-          <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl">
-            <CardHeader className="border-b border-white/10">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-                  <UserPlus className="h-6 w-6 text-white" />
+          <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 group">
+            <CardHeader className="border-b border-white/10 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
+              <div className="flex items-start gap-4">
+                <div className="p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <UserPlus className="h-7 w-7 text-white" />
                 </div>
-                <div>
-                  <CardTitle className="text-xl text-white" data-testid="text-card-individual-title">Convite Individual</CardTitle>
-                  <CardDescription className="text-white/60">
-                    Gere convites um por vez com dados personalizados
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CardTitle className="text-xl text-white" data-testid="text-card-individual-title">Convite Personalizado</CardTitle>
+                    <Badge className="bg-blue-500/20 text-blue-300 text-xs">Método 1</Badge>
+                  </div>
+                  <CardDescription className="text-white/70 leading-relaxed">
+                    <strong className="text-purple-300">Atenção individual,</strong> resultados excepcionais.
+                    <br />
+                    Ideal para colaboradores VIP e casos especiais.
                   </CardDescription>
                 </div>
               </div>
@@ -554,11 +605,11 @@ const EmpresaGerarConvite: React.FC = () => {
               <Dialog open={showNovoConviteModal} onOpenChange={setShowNovoConviteModal}>
                 <DialogTrigger asChild>
                   <Button 
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg mb-6"
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-purple-500/50 mb-6 font-semibold text-base py-6 transition-all duration-300"
                     data-testid="button-novo-convite"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Novo Convite
+                    <Plus className="h-5 w-5 mr-2" />
+                    Criar Convite Agora
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -666,16 +717,21 @@ const EmpresaGerarConvite: React.FC = () => {
           </Card>
 
           {/* CARD 2: Integração com ERP */}
-          <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl">
-            <CardHeader className="border-b border-white/10">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg">
-                  <Database className="h-6 w-6 text-white" />
+          <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300 group">
+            <CardHeader className="border-b border-white/10 bg-gradient-to-br from-emerald-500/5 to-teal-500/5">
+              <div className="flex items-start gap-4">
+                <div className="p-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Database className="h-7 w-7 text-white" />
                 </div>
-                <div>
-                  <CardTitle className="text-xl text-white" data-testid="text-card-erp-title">Integração com ERP</CardTitle>
-                  <CardDescription className="text-white/60">
-                    Importe colaboradores diretamente do seu sistema ERP
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CardTitle className="text-xl text-white" data-testid="text-card-erp-title">Conexão ERP</CardTitle>
+                    <Badge className="bg-emerald-500/20 text-emerald-300 text-xs">Método 2</Badge>
+                  </div>
+                  <CardDescription className="text-white/70 leading-relaxed">
+                    <strong className="text-emerald-300">Automação inteligente,</strong> zero esforço manual.
+                    <br />
+                    Sincronize com TOTVS, SAP, Senior e mais.
                   </CardDescription>
                 </div>
               </div>
@@ -793,11 +849,11 @@ const EmpresaGerarConvite: React.FC = () => {
                   <Dialog open={showErpLoginModal} onOpenChange={setShowErpLoginModal}>
                     <DialogTrigger asChild>
                       <Button 
-                        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg"
+                        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-emerald-500/50 font-semibold text-base py-6 transition-all duration-300"
                         data-testid="button-conectar-erp"
                       >
-                        <Database className="h-4 w-4 mr-2" />
-                        Conectar ao ERP
+                        <Database className="h-5 w-5 mr-2" />
+                        Conectar Agora
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -916,16 +972,21 @@ const EmpresaGerarConvite: React.FC = () => {
           </Card>
 
           {/* CARD 3: Importação via Planilha Excel */}
-          <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl">
-            <CardHeader className="border-b border-white/10">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg">
-                  <FileSpreadsheet className="h-6 w-6 text-white" />
+          <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-2xl hover:shadow-orange-500/20 transition-all duration-300 group">
+            <CardHeader className="border-b border-white/10 bg-gradient-to-br from-orange-500/5 to-amber-500/5">
+              <div className="flex items-start gap-4">
+                <div className="p-4 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <FileSpreadsheet className="h-7 w-7 text-white" />
                 </div>
-                <div>
-                  <CardTitle className="text-xl text-white" data-testid="text-card-excel-title">Importação via Planilha</CardTitle>
-                  <CardDescription className="text-white/60">
-                    Importe múltiplos colaboradores através de arquivo Excel
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CardTitle className="text-xl text-white" data-testid="text-card-excel-title">Importação em Massa</CardTitle>
+                    <Badge className="bg-orange-500/20 text-orange-300 text-xs">Método 3</Badge>
+                  </div>
+                  <CardDescription className="text-white/70 leading-relaxed">
+                    <strong className="text-orange-300">Escala total,</strong> centenas em minutos.
+                    <br />
+                    Perfeito para onboarding de grandes equipes.
                   </CardDescription>
                 </div>
               </div>
@@ -1002,11 +1063,11 @@ const EmpresaGerarConvite: React.FC = () => {
                   {/* Botão baixar modelo */}
                   <Button 
                     onClick={baixarModeloPlanilha}
-                    className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white shadow-lg"
+                    className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white shadow-lg hover:shadow-orange-500/50 font-semibold text-base py-6 transition-all duration-300"
                     data-testid="button-baixar-modelo"
                   >
-                    <Download className="h-4 w-4 mr-2" />
-                    Baixar Modelo Excel
+                    <Download className="h-5 w-5 mr-2" />
+                    Baixar Modelo Grátis
                   </Button>
 
                   <div className="relative">

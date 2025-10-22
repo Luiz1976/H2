@@ -123,6 +123,34 @@ All colors MUST be HSL.
   100% { transform: scale(1); }
 }
 
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -20px) scale(1.1);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  75% {
+    transform: translate(20px, 20px) scale(1.05);
+  }
+}
+
+/* Utilitários para animações */
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
 /* Classes de animação */
 .avatar-modal-enter {
   animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
