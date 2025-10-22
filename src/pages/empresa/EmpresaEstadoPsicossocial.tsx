@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { authService } from '@/services/authService';
+import RiskGauge from '@/components/RiskGauge';
 
 interface PsychosocialAnalysis {
   indiceGeralBemEstar: number;
@@ -290,7 +291,7 @@ export default function EmpresaEstadoPsicossocial() {
             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-500/30 to-cyan-500/30 rounded-full blur-3xl -z-10 -translate-x-1/2 translate-y-1/2"></div>
             
-            <CardContent className="p-12">
+            <CardContent className="p-8 md:p-12">
               <div className="flex items-start justify-between gap-8 flex-wrap">
                 <div className="flex-1 min-w-[300px] space-y-6">
                   {/* Icon & Title */}
@@ -344,18 +345,13 @@ export default function EmpresaEstadoPsicossocial() {
                   </div>
                 </div>
 
-                {/* Circular Progress - Visual Anchor */}
+                {/* Risk Gauge - Energy Efficiency Style */}
                 <div className="flex items-center justify-center">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/50 to-purple-600/50 rounded-full blur-2xl animate-pulse"></div>
-                    <CircularProgress 
-                      value={analise?.indiceGeralBemEstar || 0}
-                      size={200}
-                      strokeWidth={16}
-                      label="Bem-Estar"
-                      sublabel={`${analise?.totalTestesRealizados || 0} avaliações`}
-                    />
-                  </div>
+                  <RiskGauge 
+                    value={analise?.indiceGeralBemEstar || 0}
+                    totalTests={analise?.totalTestesRealizados || 0}
+                    size="medium"
+                  />
                 </div>
               </div>
             </CardContent>

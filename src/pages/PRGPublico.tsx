@@ -25,6 +25,7 @@ import {
 import MatrizRisco from "@/components/prg/MatrizRisco";
 import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
 import GraficoRadarDimensoes from "@/components/prg/GraficoRadarDimensoes";
+import RiskGauge from "@/components/RiskGauge";
 
 interface EmpresaData {
   nome: string;
@@ -302,15 +303,12 @@ export default function PRGPublico() {
                   </div>
                 </div>
 
-                <div className="w-full lg:w-auto flex flex-col items-center justify-center bg-white/5 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-white/10 min-w-[200px]">
-                  <p className="text-white/60 text-xs md:text-sm mb-2 md:mb-3 uppercase tracking-wider text-center">Índice Global</p>
-                  <div className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 md:mb-4">{indiceGlobal}%</div>
-                  <Badge className={`${statusGlobal.color} border px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base backdrop-blur-xl`}>
-                    {statusGlobal.label}
-                  </Badge>
-                  <p className="text-white/40 text-xs mt-3 text-center">
-                    Baseado em {prgData.totalTestes} avaliações
-                  </p>
+                <div className="w-full lg:w-auto flex items-center justify-center">
+                  <RiskGauge 
+                    value={indiceGlobal}
+                    totalTests={prgData.totalTestes}
+                    size="medium"
+                  />
                 </div>
               </div>
             </CardContent>
