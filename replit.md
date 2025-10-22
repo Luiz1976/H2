@@ -61,6 +61,18 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
   - **Company Data Integration**: Database fields `cnpj`, `endereco`, `setor` added to empresas table. Both authenticated (`/api/empresas/prg`) and public (`/api/empresas/prg/publico/:token`) endpoints return complete company data (nomeEmpresa, cnpj, endereco, setor) for professional headers and PDF generation.
   Features fully enhanced AI analysis and recommendations sections with structured content, practical actions, timelines, and budget estimates. All exports functional and working with complete professional branding.
 - **Colaborador Module**: Enhanced collaborator profile management including `avatar` field, `GET /api/colaboradores/me` endpoint, and consistent display of collaborator data across the frontend.
+- **ERP Integration Module**: Comprehensive integration with 9 major Brazilian ERPs for bulk employee invite generation. Uses direct login credentials (username/password) instead of API keys. Pre-configured API URLs and health check endpoints for each ERP type:
+  - **Functional ERPs (5 = 55.5%)**: TOTVS (200 OK), SAP (200 OK), SENIOR (401 auth ready), SANKHYA (401 auth ready), MICROSOFT Dynamics 365 (401 auth ready with tenant-specific URL)
+  - **Configuration Required (3)**: ORACLE (requires client-specific URL: `{client}.oraclecloud.com`), BENNER (URL to be confirmed), OUTRO (custom placeholder)
+  - **Under Investigation (1)**: LINX (connection error - may require IP whitelisting or SSL certificate)
+  - **Backend Endpoints**: 
+    - `POST /api/erp/login-and-fetch` - Authenticates with ERP and fetches employee data (name, email, position, department, gender)
+    - `POST /api/erp/bulk-invite` - Creates mass invitations for imported employees
+    - `GET /api/erp/test-connections` - Tests connectivity with all 9 ERPs (health checks, timeout 5s)
+  - **Frontend**: Simplified modal interface requiring only 3 fields (ERP type, username, password). Automatic URL selection based on ERP type. No manual URL configuration needed.
+  - **Security**: Credentials not persisted, 30s timeout for data fetch, Basic Auth by ERP type, health checks with 5s timeout
+  - **Performance**: Average response time 569ms, 0 timeouts, endpoint-specific health checks
+  - **Test Results**: Comprehensive connectivity testing with detailed status reports (see `relatorio_teste_erp_ajustado.md`)
 
 ### System Design Choices
 Migration from Supabase to a local API backend for enhanced control. Manual Zod schemas are used due to `drizzle-zod` incompatibilities. API returns camelCase, with frontend handling necessary conversions.
