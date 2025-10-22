@@ -1751,7 +1751,34 @@ export default function EmpresaPRG() {
                   // Dividir por parágrafos
                   const paragrafos = texto.split('\n\n').filter(p => p.trim());
                   
+                  // Filtrar para remover a seção de "ÁREAS PRIORITÁRIAS PARA INTERVENÇÃO"
+                  // pois agora temos um componente visual moderno para isso
+                  let pularProximo = false;
+                  
                   return paragrafos.map((paragrafo, idx) => {
+                    // Detectar se é a seção de áreas prioritárias
+                    const ehSecaoAreasPrioritarias = paragrafo.includes('ÁREAS PRIORITÁRIAS') || 
+                                                      paragrafo.includes('áreas prioritárias') ||
+                                                      paragrafo.includes('Foram identificadas') && paragrafo.includes('dimensões');
+                    
+                    // Se encontrou o título, pular este e o próximo (que é a lista)
+                    if (ehSecaoAreasPrioritarias) {
+                      pularProximo = true;
+                      return null;
+                    }
+                    
+                    // Se deve pular este parágrafo (é a lista de áreas prioritárias)
+                    if (pularProximo) {
+                      const linhas = paragrafo.split('\n');
+                      const temListaDePercentuais = linhas.some(l => l.match(/\d+%\s*\(/));
+                      
+                      if (temListaDePercentuais) {
+                        pularProximo = false;
+                        return null;
+                      }
+                      pularProximo = false;
+                    }
+                    
                     // Detectar se é um título (começa com letra maiúscula e tem menos de 80 chars sem ponto final)
                     const ehTitulo = paragrafo.length < 80 && !paragrafo.endsWith('.') && paragrafo === paragrafo.toUpperCase();
                     
