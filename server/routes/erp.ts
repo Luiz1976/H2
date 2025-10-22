@@ -13,26 +13,26 @@ const router = Router();
 const ERP_API_URLS: Record<string, string> = {
   TOTVS: 'https://api.totvs.com.br/protheus/rest',
   SAP: 'https://api.sap.com/s4hana/v1',
-  ORACLE: 'https://example.oraclecloud.com/fscmRestApi/resources/11.13.18.05', // Formato genérico - ajustar para ambiente do cliente
-  MICROSOFT: 'https://example.api.crm.dynamics.com/api/data/v9.2', // Formato genérico - ajustar para tenant do cliente
+  ORACLE: 'https://example.oraclecloud.com', // Formato genérico - ajustar para ambiente do cliente (ex: cliente.oraclecloud.com)
+  MICROSOFT: 'https://example.api.crm.dynamics.com', // Formato genérico - ajustar para tenant do cliente
   SENIOR: 'https://platform.senior.com.br/t/senior.com.br/bridge/1.0',
-  LINX: 'https://webapi.linx.com.br/api',
-  SANKHYA: 'https://api.sankhya.com.br/gateway',
+  LINX: 'https://webapi.linx.com.br',
+  SANKHYA: 'https://api.sankhya.com.br',
   BENNER: 'https://api-saas.benner.com.br',
-  OUTRO: 'https://api-exemplo.suaempresa.com.br/v1', // URL customizada - configurar conforme necessário
+  OUTRO: 'https://api-exemplo.suaempresa.com.br', // URL customizada - configurar conforme necessário
 };
 
 // Endpoints de health check específicos para cada ERP
 const ERP_HEALTH_ENDPOINTS: Record<string, string> = {
   TOTVS: '/api/v1/health',
   SAP: '/api/v1/health',
-  ORACLE: '/fscmRestApi/resources/latest/healthCheck', // Oracle Cloud health endpoint
+  ORACLE: '/fscmRestApi/resources/11.13.18.05/healthCheck', // Oracle Cloud health endpoint
   MICROSOFT: '/api/data/v9.2/WhoAmI', // Dynamics 365 identity check
   SENIOR: '/rest_api/platform/info', // Senior platform info endpoint
   LINX: '/api/status', // Linx API status endpoint
   SANKHYA: '/gateway/health', // Sankhya gateway health
   BENNER: '/api/health', // Benner health endpoint
-  OUTRO: '/health', // Endpoint customizado genérico
+  OUTRO: '/v1/health', // Endpoint customizado genérico
 };
 
 function getErpApiUrl(erpType: string): string {
