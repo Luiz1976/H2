@@ -37,6 +37,7 @@ import GraficoRadarDimensoes from "@/components/prg/GraficoRadarDimensoes";
 import GraficoParliament from "@/components/prg/GraficoParliament";
 import GraficoSankey from "@/components/prg/GraficoSankey";
 import AreasPrioritarias from "@/components/prg/AreasPrioritarias";
+import RiskGauge from "@/components/RiskGauge";
 
 interface EmpresaData {
   nome: string;
@@ -1517,48 +1518,13 @@ export default function EmpresaPRG() {
                   </div>
                 </div>
 
-                {/* Circular Progress - Índice Global */}
+                {/* Risk Gauge - Energy Efficiency Style */}
                 <div className="flex items-center justify-center">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-purple-600/30 rounded-full blur-2xl animate-pulse"></div>
-                    <div className="relative w-64 h-64 flex items-center justify-center">
-                      <svg className="transform -rotate-90 w-full h-full">
-                        <circle
-                          cx="128"
-                          cy="128"
-                          r="110"
-                          stroke="currentColor"
-                          strokeWidth="16"
-                          fill="none"
-                          className="text-white/10"
-                        />
-                        <circle
-                          cx="128"
-                          cy="128"
-                          r="110"
-                          stroke="url(#gradient)"
-                          strokeWidth="16"
-                          fill="none"
-                          strokeDasharray={`${2 * Math.PI * 110}`}
-                          strokeDashoffset={`${2 * Math.PI * 110 * (1 - indiceGlobal / 100)}`}
-                          strokeLinecap="round"
-                          className="transition-all duration-1000"
-                        />
-                        <defs>
-                          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#3b82f6" />
-                            <stop offset="100%" stopColor="#8b5cf6" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-6xl font-black text-white mb-2">{indiceGlobal}%</span>
-                        <Badge className={statusGlobal.color + " backdrop-blur-xl"}>
-                          {statusGlobal.label}
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
+                  <RiskGauge 
+                    value={indiceGlobal}
+                    totalTests={prgData?.totalTestes || 0}
+                    size="medium"
+                  />
                 </div>
               </div>
             </CardContent>
