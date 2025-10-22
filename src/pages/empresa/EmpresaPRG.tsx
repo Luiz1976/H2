@@ -697,14 +697,13 @@ export default function EmpresaPRG() {
     <h1>📑 Índice</h1>
     <div class="indice">
       <div class="indice-item"><a href="#sumario">1. Sumário Executivo</a></div>
-      <div class="indice-item"><a href="#visao-geral">2. Visão Geral</a></div>
-      <div class="indice-item"><a href="#indicadores">3. Indicadores-Chave (KPIs)</a></div>
-      <div class="indice-item"><a href="#dimensoes">4. Análise por Dimensão Psicossocial</a></div>
-      <div class="indice-item"><a href="#matriz">5. Matriz de Riscos</a></div>
-      <div class="indice-item"><a href="#distribuicao">6. Distribuição de Riscos por Categoria</a></div>
-      <div class="indice-item"><a href="#ia-analise">7. Análise Inteligente (IA)</a></div>
-      <div class="indice-item"><a href="#recomendacoes">8. Recomendações Completas</a></div>
-      <div class="indice-item"><a href="#compliance">9. Compliance e Regulamentações</a></div>
+      <div class="indice-item"><a href="#indicadores">2. Indicadores-Chave (KPIs)</a></div>
+      <div class="indice-item"><a href="#dimensoes">3. Análise por Dimensão Psicossocial</a></div>
+      <div class="indice-item"><a href="#matriz">4. Matriz de Riscos</a></div>
+      <div class="indice-item"><a href="#distribuicao">5. Distribuição de Riscos por Categoria</a></div>
+      <div class="indice-item"><a href="#ia-analise">6. Análise Inteligente (IA)</a></div>
+      <div class="indice-item"><a href="#recomendacoes">7. Recomendações Completas</a></div>
+      <div class="indice-item"><a href="#compliance">8. Compliance e Regulamentações</a></div>
     </div>
   </div>
 
@@ -757,77 +756,9 @@ export default function EmpresaPRG() {
     </div>
   </div>
 
-  <!-- 2. VISÃO GERAL -->
+  <!-- 2. INDICADORES-CHAVE -->
   <div class="page">
-    <h1 id="visao-geral">🎯 2. Visão Geral</h1>
-    
-    <h2>Distribuição de Avaliações por Tipo</h2>
-    <div class="grid-2">
-      <div class="dimensao-item">
-        <div class="dimensao-header">
-          <span class="dimensao-nome">Clima Organizacional</span>
-          <span class="dimensao-valores">${prgData.dadosPorTipo.clima} testes</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.clima / prgData.totalTestes * 100)}%"></div>
-        </div>
-      </div>
-
-      <div class="dimensao-item">
-        <div class="dimensao-header">
-          <span class="dimensao-nome">Estresse Ocupacional</span>
-          <span class="dimensao-valores">${prgData.dadosPorTipo.estresse} testes</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.estresse / prgData.totalTestes * 100)}%"></div>
-        </div>
-      </div>
-
-      <div class="dimensao-item">
-        <div class="dimensao-header">
-          <span class="dimensao-nome">Risco de Burnout</span>
-          <span class="dimensao-valores">${prgData.dadosPorTipo.burnout} testes</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.burnout / prgData.totalTestes * 100)}%"></div>
-        </div>
-      </div>
-
-      <div class="dimensao-item">
-        <div class="dimensao-header">
-          <span class="dimensao-nome">Qualidade de Vida no Trabalho</span>
-          <span class="dimensao-valores">${prgData.dadosPorTipo.qvt} testes</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.qvt / prgData.totalTestes * 100)}%"></div>
-        </div>
-      </div>
-
-      <div class="dimensao-item">
-        <div class="dimensao-header">
-          <span class="dimensao-nome">Assédio e Segurança</span>
-          <span class="dimensao-valores">${prgData.dadosPorTipo.assedio} testes</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.assedio / prgData.totalTestes * 100)}%"></div>
-        </div>
-      </div>
-
-      <div class="dimensao-item">
-        <div class="dimensao-header">
-          <span class="dimensao-nome">Perfil DISC</span>
-          <span class="dimensao-valores">${prgData.dadosPorTipo.disc} testes</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: ${(prgData.dadosPorTipo.disc / prgData.totalTestes * 100)}%"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. INDICADORES-CHAVE -->
-  <div class="page">
-    <h1 id="indicadores">📊 3. Indicadores-Chave (KPIs)</h1>
+    <h1 id="indicadores">📊 2. Indicadores-Chave (KPIs)</h1>
     <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
       Principais métricas para monitoramento dos riscos psicossociais.
     </p>
@@ -903,7 +834,7 @@ export default function EmpresaPRG() {
 
   <!-- 4. DIMENSÕES PSICOSSOCIAIS -->
   <div class="page">
-    <h1 id="dimensoes">🧠 4. Análise por Dimensão Psicossocial</h1>
+    <h1 id="dimensoes">🧠 3. Análise por Dimensão Psicossocial</h1>
     <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
       Detalhamento de todas as dimensões avaliadas com valores atuais e metas estabelecidas.
     </p>
@@ -932,7 +863,7 @@ export default function EmpresaPRG() {
 
   <!-- 5. MATRIZ DE RISCOS -->
   <div class="page">
-    <h1 id="matriz">⚠️ 5. Matriz de Riscos</h1>
+    <h1 id="matriz">⚠️ 4. Matriz de Riscos</h1>
     <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
       Mapeamento completo dos riscos psicossociais identificados com probabilidade e severidade.
     </p>
@@ -971,7 +902,7 @@ export default function EmpresaPRG() {
 
   <!-- 6. DISTRIBUIÇÃO DE RISCOS -->
   <div class="page">
-    <h1 id="distribuicao">📊 6. Distribuição de Riscos por Categoria</h1>
+    <h1 id="distribuicao">📊 5. Distribuição de Riscos por Categoria</h1>
     <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
       Quantidade de riscos por categoria e nível de criticidade.
     </p>
@@ -1003,7 +934,7 @@ export default function EmpresaPRG() {
 
   <!-- 7. ANÁLISE INTELIGENTE -->
   <div class="page">
-    <h1 id="ia-analise">🤖 7. Análise Inteligente (IA)</h1>
+    <h1 id="ia-analise">🤖 6. Análise Inteligente (IA)</h1>
     <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
       Análise automatizada utilizando Inteligência Artificial para interpretação dos dados coletados.
     </p>
@@ -1025,7 +956,7 @@ export default function EmpresaPRG() {
 
   <!-- 8. RECOMENDAÇÕES COMPLETAS -->
   <div class="page">
-    <h1 id="recomendacoes">💡 8. Recomendações Completas</h1>
+    <h1 id="recomendacoes">💡 7. Recomendações Completas</h1>
     <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
       Plano de ação detalhado com todas as recomendações priorizadas e estruturadas.
     </p>
@@ -1081,7 +1012,7 @@ export default function EmpresaPRG() {
 
   <!-- 9. COMPLIANCE -->
   <div class="page">
-    <h1 id="compliance">📋 9. Compliance e Regulamentações</h1>
+    <h1 id="compliance">📋 8. Compliance e Regulamentações</h1>
     <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
       Conformidade com normas e regulamentações aplicáveis.
     </p>
