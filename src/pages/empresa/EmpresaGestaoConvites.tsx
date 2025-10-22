@@ -173,6 +173,8 @@ const EmpresaGestaoConvites: React.FC = () => {
   };
 
   const getStatusConvite = (convite: ConviteColaborador): StatusConvite => {
+    // Verificar se foi cancelado primeiro
+    if (convite.status === 'cancelado') return 'cancelado' as StatusConvite;
     if (convite.status === StatusConvite.ACEITO) return StatusConvite.ACEITO;
     if (new Date(convite.validade) < new Date()) return StatusConvite.EXPIRADO;
     return StatusConvite.PENDENTE;
@@ -184,6 +186,8 @@ const EmpresaGestaoConvites: React.FC = () => {
         return <Badge variant="default" className="bg-green-100 text-green-800">Usado</Badge>;
       case StatusConvite.EXPIRADO:
         return <Badge variant="destructive">Expirado</Badge>;
+      case 'cancelado' as StatusConvite:
+        return <Badge variant="outline" className="bg-gray-100 text-gray-800">Cancelado</Badge>;
       case StatusConvite.PENDENTE:
         return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Pendente</Badge>;
       default:
@@ -344,6 +348,7 @@ const EmpresaGestaoConvites: React.FC = () => {
                 <SelectItem value={StatusConvite.PENDENTE}>Pendentes</SelectItem>
                 <SelectItem value={StatusConvite.ACEITO}>Usados</SelectItem>
                 <SelectItem value={StatusConvite.EXPIRADO}>Expirados</SelectItem>
+                <SelectItem value="cancelado">Cancelados</SelectItem>
               </SelectContent>
             </Select>
           </div>
