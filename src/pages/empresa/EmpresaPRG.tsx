@@ -136,9 +136,12 @@ export default function EmpresaPRG() {
 
         const data = await response.json();
         console.log('✅ [PRG Frontend] Dados recebidos:', data);
+        console.log('✅ [PRG Frontend] Dados da empresa:', data.empresa);
+        console.log('✅ [PRG Frontend] Dados do PRG:', data.prg);
         
         setPrgData(data.prg);
         setEmpresaData(data.empresa);
+        console.log('✅ [PRG Frontend] Estados atualizados - empresaData:', data.empresa);
       } catch (err) {
         console.error('❌ [PRG Frontend] Erro:', err);
         setError(err instanceof Error ? err.message : 'Erro desconhecido');
