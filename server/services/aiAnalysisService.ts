@@ -36,7 +36,7 @@ export async function generatePsychosocialAnalysis(data: AnalysisData): Promise<
     titulo: string;
     descricao: string;
   }>;
-  insights: string;
+  sintese: string;
 }> {
   try {
     console.log('🧠 [IA] Iniciando análise psicossocial com Google Gemini...');
@@ -50,7 +50,7 @@ export async function generatePsychosocialAnalysis(data: AnalysisData): Promise<
           titulo: 'Coletar Mais Dados',
           descricao: 'Não há testes realizados ainda. Incentive os colaboradores a participarem das avaliações psicossociais.'
         }],
-        insights: 'Aguardando dados para análise detalhada.'
+        sintese: 'Aguardando dados para análise detalhada.'
       };
     }
 
@@ -102,7 +102,7 @@ Gere uma análise TÉCNICA e PROFISSIONAL com:
 
 Retorne APENAS JSON válido (sem markdown):
 {
-  "insights": "Síntese executiva técnica e profissional de 300-400 palavras, formatada em parágrafos claros, com terminologia científica adequada, correlações estatísticas, análise preditiva e referências normativas (ISO 45003, NR-01, Karasek-Theorell). Use dados REAIS fornecidos.",
+  "sintese": "Síntese executiva técnica e profissional de 300-400 palavras, formatada em parágrafos claros, com terminologia científica adequada, correlações estatísticas, análise preditiva e referências normativas (ISO 45003, NR-01, Karasek-Theorell). Use dados REAIS fornecidos.",
   "recomendacoes": [
     {
       "categoria": "Categoria técnica (ex: Intervenção Urgente, Compliance NR-01, Gestão Preventiva, Capacitação Técnica)",
@@ -221,7 +221,7 @@ DIRETRIZES OBRIGATÓRIAS:
     
     return {
       recomendacoes,
-      insights
+      sintese: insights  // Frontend espera "sintese", não "insights"
     };
   }
 }
