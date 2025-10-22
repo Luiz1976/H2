@@ -1828,11 +1828,62 @@ export default function EmpresaPRG() {
               <CardHeader>
                 <CardTitle className="text-white text-xl">Burnout e Resiliência</CardTitle>
                 <CardDescription className="text-white/60">
-                  Mapa de calor por setor
+                  Indicadores de esgotamento e capacidade de recuperação
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-white/60 text-center py-8">Dados em processamento...</p>
+              <CardContent className="space-y-6">
+                {/* KPI Principal */}
+                <div className="bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/30 rounded-xl p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-white font-bold text-lg">Risco de Burnout</h3>
+                    <Badge className={`${
+                      (prgData?.kpis.riscoBurnout || 0) > 60 ? 'bg-red-500' : 
+                      (prgData?.kpis.riscoBurnout || 0) > 40 ? 'bg-yellow-500' : 'bg-green-500'
+                    } text-white`}>
+                      {(prgData?.kpis.riscoBurnout || 0) > 60 ? 'Crítico' : 
+                       (prgData?.kpis.riscoBurnout || 0) > 40 ? 'Atenção' : 'Controlado'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <span className="text-white text-5xl font-bold">{prgData?.kpis.riscoBurnout}%</span>
+                    <span className="text-white/60 mb-2">da força de trabalho</span>
+                  </div>
+                </div>
+
+                {/* Dimensões Relacionadas */}
+                <div className="grid grid-cols-2 gap-4">
+                  {prgData?.dimensoesPsicossociais
+                    .filter(d => ['Burnout', 'Exaustão Emocional', 'Esgotamento'].some(termo => d.nome.includes(termo)))
+                    .slice(0, 4)
+                    .map((dimensao, idx) => (
+                      <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                        <p className="text-white/70 text-sm mb-2">{dimensao.nome}</p>
+                        <div className="flex items-end gap-2">
+                          <span className={`text-2xl font-bold ${
+                            dimensao.percentual > 70 ? 'text-green-400' :
+                            dimensao.percentual > 50 ? 'text-yellow-400' : 'text-red-400'
+                          }`}>{dimensao.percentual}%</span>
+                          <Badge className={`mb-1 text-xs ${
+                            dimensao.nivel === 'Crítico' ? 'bg-red-500/80' :
+                            dimensao.nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
+                          }`}>{dimensao.nivel}</Badge>
+                        </div>
+                        <Progress value={dimensao.percentual} className="h-2 mt-2" />
+                      </div>
+                    ))
+                  }
+                </div>
+
+                {/* Se não houver dimensões específicas de burnout */}
+                {prgData?.dimensoesPsicossociais.filter(d => 
+                  ['Burnout', 'Exaustão', 'Esgotamento'].some(termo => d.nome.includes(termo))
+                ).length === 0 && (
+                  <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
+                    <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
+                    <p className="text-white/70">Aguardando testes específicos de burnout</p>
+                    <p className="text-white/50 text-sm mt-1">O risco atual é calculado com base nos indicadores gerais de estresse</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -1843,11 +1894,64 @@ export default function EmpresaPRG() {
               <CardHeader>
                 <CardTitle className="text-white text-xl">Qualidade de Vida no Trabalho</CardTitle>
                 <CardDescription className="text-white/60">
-                  Radar de satisfação
+                  Indicadores de satisfação e bem-estar
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-white/60 text-center py-8">Dados em processamento...</p>
+              <CardContent className="space-y-6">
+                {/* Dimensões de QVT */}
+                <div className="grid grid-cols-2 gap-4">
+                  {prgData?.dimensoesPsicossociais
+                    .filter(d => ['Satisfação', 'Saúde e Bem-Estar', 'Crescimento Profissional', 'Compensação', 'Condições de Trabalho'].some(termo => d.nome.includes(termo)))
+                    .slice(0, 6)
+                    .map((dimensao, idx) => (
+                      <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                        <p className="text-white/70 text-sm mb-2">{dimensao.nome}</p>
+                        <div className="flex items-end gap-2">
+                          <span className={`text-2xl font-bold ${
+                            dimensao.percentual > 70 ? 'text-green-400' :
+                            dimensao.percentual > 50 ? 'text-yellow-400' : 'text-red-400'
+                          }`}>{dimensao.percentual}%</span>
+                          <Badge className={`mb-1 text-xs ${
+                            dimensao.nivel === 'Crítico' ? 'bg-red-500/80' :
+                            dimensao.nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
+                          }`}>{dimensao.nivel}</Badge>
+                        </div>
+                        <Progress value={dimensao.percentual} className="h-2 mt-2" />
+                      </div>
+                    ))
+                  }
+                </div>
+
+                {/* Indicador Geral de QVT */}
+                {prgData?.dimensoesPsicossociais.filter(d => 
+                  ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.nome.includes(termo))
+                ).length > 0 && (
+                  <div className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-xl p-6">
+                    <h3 className="text-white font-bold text-lg mb-4">Índice Geral de QVT</h3>
+                    <div className="flex items-end gap-2">
+                      <span className="text-white text-5xl font-bold">
+                        {Math.round(
+                          prgData.dimensoesPsicossociais
+                            .filter(d => ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.nome.includes(termo)))
+                            .reduce((acc, d) => acc + d.percentual, 0) / 
+                          prgData.dimensoesPsicossociais.filter(d => ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.nome.includes(termo))).length
+                        )}%
+                      </span>
+                      <span className="text-white/60 mb-2">média geral</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Se não houver dimensões específicas de QVT */}
+                {prgData?.dimensoesPsicossociais.filter(d => 
+                  ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.nome.includes(termo))
+                ).length === 0 && (
+                  <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
+                    <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
+                    <p className="text-white/70">Aguardando testes de Qualidade de Vida no Trabalho</p>
+                    <p className="text-white/50 text-sm mt-1">Realize avaliações de QVT para ver indicadores detalhados aqui</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -1858,11 +1962,77 @@ export default function EmpresaPRG() {
               <CardHeader>
                 <CardTitle className="text-white text-xl">Assédio Moral e Sexual</CardTitle>
                 <CardDescription className="text-white/60">
-                  Índice de percepção de segurança
+                  Índice de percepção de segurança e proteção
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-white/60 text-center py-8">Dados em processamento...</p>
+              <CardContent className="space-y-6">
+                {/* KPI Principal - Segurança Psicológica */}
+                <div className="bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 rounded-xl p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-white font-bold text-lg">Segurança Psicológica</h3>
+                    <Badge className={`${
+                      (prgData?.kpis.segurancaPsicologica || 0) > 70 ? 'bg-green-500' : 
+                      (prgData?.kpis.segurancaPsicologica || 0) > 50 ? 'bg-yellow-500' : 'bg-red-500'
+                    } text-white`}>
+                      {(prgData?.kpis.segurancaPsicologica || 0) > 70 ? 'Saudável' : 
+                       (prgData?.kpis.segurancaPsicologica || 0) > 50 ? 'Atenção' : 'Crítico'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-end gap-2 mb-4">
+                    <span className="text-white text-5xl font-bold">{prgData?.kpis.segurancaPsicologica}%</span>
+                    <span className="text-white/60 mb-2">dos colaboradores se sentem seguros</span>
+                  </div>
+                  <Progress value={prgData?.kpis.segurancaPsicologica} className="h-3" />
+                </div>
+
+                {/* Dimensões Relacionadas */}
+                <div className="grid grid-cols-2 gap-4">
+                  {prgData?.dimensoesPsicossociais
+                    .filter(d => ['Assédio', 'Violência', 'Segurança Psicológica', 'Justiça Organizacional'].some(termo => d.nome.includes(termo)))
+                    .slice(0, 4)
+                    .map((dimensao, idx) => (
+                      <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                        <p className="text-white/70 text-sm mb-2">{dimensao.nome}</p>
+                        <div className="flex items-end gap-2">
+                          <span className={`text-2xl font-bold ${
+                            dimensao.percentual > 70 ? 'text-green-400' :
+                            dimensao.percentual > 50 ? 'text-yellow-400' : 'text-red-400'
+                          }`}>{dimensao.percentual}%</span>
+                          <Badge className={`mb-1 text-xs ${
+                            dimensao.nivel === 'Crítico' ? 'bg-red-500/80' :
+                            dimensao.nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
+                          }`}>{dimensao.nivel}</Badge>
+                        </div>
+                        <Progress value={dimensao.percentual} className="h-2 mt-2" />
+                      </div>
+                    ))
+                  }
+                </div>
+
+                {/* Alerta de Compliance */}
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
+                  <div className="flex items-start gap-3">
+                    <Shield className="h-5 w-5 text-blue-400 mt-0.5" />
+                    <div>
+                      <p className="text-white font-semibold mb-1">Conformidade Legal</p>
+                      <p className="text-white/70 text-sm">
+                        A empresa mantém canais de denúncia confidenciais e políticas claras de prevenção ao assédio, 
+                        em conformidade com a Lei nº 14.457/2022 e NR-01.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Se não houver dimensões específicas */}
+                {prgData?.dimensoesPsicossociais.filter(d => 
+                  ['Assédio', 'Violência', 'Segurança Psicológica'].some(termo => d.nome.includes(termo))
+                ).length === 0 && (
+                  <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
+                    <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
+                    <p className="text-white/70">Aguardando testes específicos de assédio e segurança</p>
+                    <p className="text-white/50 text-sm mt-1">O indicador atual é baseado em segurança psicológica geral</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
