@@ -588,6 +588,14 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       'ambiente_fisico': 'Ambiente Físico e Recursos',
       'conflito_trabalho_familia': 'Conflito Trabalho-Família',
       'assedio_violencia': 'Assédio e Violência',
+      'cultura_organizacional': 'Cultura Organizacional',
+      // MGRP - Maturidade em Gestão de Riscos
+      'identificacao-riscos': 'Identificação de Riscos',
+      'avaliacao-impacto': 'Avaliação de Impacto',
+      'medidas-preventivas': 'Medidas Preventivas',
+      'monitoramento-controle': 'Monitoramento e Controle',
+      'cultura-organizacional': 'Cultura Organizacional',
+      'capacitacao-desenvolvimento': 'Capacitação e Desenvolvimento',
       // Estresse
       'estresse': 'Estresse Ocupacional',
       'burnout': 'Burnout',
@@ -603,7 +611,12 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       'demanda': 'Demanda Psicológica',
       'controle': 'Controle sobre o Trabalho',
       'apoio': 'Apoio Social',
-      // Outras
+      'esforco-exigido': 'Esforço Exigido',
+      'recompensas-recebidas': 'Recompensas Recebidas',
+      // Genéricas
+      'comunicacao': 'Comunicação',
+      'prevencao': 'Prevenção',
+      'mapeamento': 'Mapeamento',
       'clima': 'Clima Organizacional',
       'ambiente': 'Ambiente de Trabalho',
       'organizacional': 'Cultura Organizacional'
