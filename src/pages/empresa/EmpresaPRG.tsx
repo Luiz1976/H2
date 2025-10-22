@@ -462,7 +462,11 @@ export default function EmpresaPRG() {
   };
 
   const handleExportarPDF = () => {
-    if (!prgData) return;
+    if (!prgData || !empresaData) return;
+
+    const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    const dataInicial = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR');
+    const dataFinal = new Date().toLocaleDateString('pt-BR');
 
     const htmlContent = `
 <!DOCTYPE html>
@@ -470,21 +474,50 @@ export default function EmpresaPRG() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório PRG Completo - HumaniQ</title>
+  <title>PGR – Programa de Gerenciamento de Riscos Ocupacionais</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c3e50; background: white; }
     
     .cover { 
-      text-align: center; padding: 120px 60px; 
+      padding: 40px 60px; 
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
       color: white; min-height: 100vh; 
-      display: flex; flex-direction: column; justify-content: center; 
+      display: flex; flex-direction: column; justify-content: flex-start; 
       page-break-after: always; 
     }
-    .cover h1 { font-size: 56px; margin-bottom: 24px; font-weight: 900; letter-spacing: -1px; }
-    .cover h2 { font-size: 28px; margin-bottom: 60px; font-weight: 300; opacity: 0.95; }
-    .cover .meta { margin-top: 80px; font-size: 18px; opacity: 0.9; }
+    .cover-header { 
+      display: flex; justify-content: space-between; align-items: flex-start; 
+      margin-bottom: 40px; padding-bottom: 20px; 
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+    }
+    .cover-logo { 
+      width: 80px; height: 80px; background: white; 
+      border-radius: 12px; display: flex; align-items: center; 
+      justify-content: center; font-size: 36px; font-weight: 900; 
+      color: #667eea; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .cover-title-section { text-align: center; flex: 1; margin: 60px 0; }
+    .cover h1 { font-size: 42px; margin-bottom: 16px; font-weight: 900; letter-spacing: -0.5px; }
+    .cover h2 { font-size: 20px; margin-bottom: 40px; font-weight: 300; opacity: 0.95; line-height: 1.4; }
+    .cover-info-grid { 
+      background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); 
+      padding: 30px; border-radius: 16px; margin-top: 40px; 
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .cover-info-row { 
+      display: flex; justify-content: space-between; 
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.2); 
+    }
+    .cover-info-row:last-child { border-bottom: none; }
+    .cover-info-label { font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; }
+    .cover-info-value { font-weight: 400; font-size: 15px; text-align: right; }
+    .cover-footer { 
+      margin-top: auto; padding-top: 30px; 
+      border-top: 2px solid rgba(255,255,255,0.3); 
+      font-size: 12px; opacity: 0.8; text-align: center; 
+      line-height: 1.6;
+    }
     
     .page { padding: 50px 60px; max-width: 210mm; margin: 0 auto; page-break-after: always; }
     
@@ -575,15 +608,76 @@ export default function EmpresaPRG() {
 </head>
 <body>
 
-  <!-- CAPA -->
+  <!-- CAPA PROFISSIONAL PGR -->
   <div class="cover">
-    <div style="font-size: 72px; margin-bottom: 20px;">📊</div>
-    <h1>Relatório PRG Completo</h1>
-    <h2>Programa de Gestão de Riscos Psicossociais</h2>
-    <div class="meta">
-      <p style="font-size: 24px; margin-bottom: 16px;">HumaniQ</p>
-      <p style="font-size: 18px;">Gerado em ${new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
-      <p style="font-size: 16px; margin-top: 40px; opacity: 0.8;">Análise Completa de Riscos Psicossociais</p>
+    <!-- Logos -->
+    <div class="cover-header">
+      <div class="cover-logo">🏢</div>
+      <div class="cover-logo" style="background: transparent; border: 2px solid white; color: white;">AI</div>
+    </div>
+
+    <!-- Título Principal -->
+    <div class="cover-title-section">
+      <h1>PGR – Programa de Gerenciamento de Riscos Ocupacionais</h1>
+      <h2>Relatório Analítico Gerado pela Plataforma HumaniQ AI – Inteligência em Saúde e Segurança Psicossocial</h2>
+    </div>
+
+    <!-- Informações da Empresa e do Relatório -->
+    <div class="cover-info-grid">
+      <div style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid rgba(255,255,255,0.3);">
+        <h3 style="font-size: 18px; margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Empresa Avaliada</h3>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Nome</span>
+          <span class="cover-info-value">${empresaData.nome}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">CNPJ</span>
+          <span class="cover-info-value">${empresaData.cnpj}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Endereço</span>
+          <span class="cover-info-value">${empresaData.endereco}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Setor / Unidade</span>
+          <span class="cover-info-value">${empresaData.setor}</span>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size: 18px; margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Informações do Relatório</h3>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Data do Relatório</span>
+          <span class="cover-info-value">${dataAtual}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Versão</span>
+          <span class="cover-info-value">1.0</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Período de Análise</span>
+          <span class="cover-info-value">${dataInicial} – ${dataFinal}</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Responsável Técnico</span>
+          <span class="cover-info-value">Sistema HumaniQ AI</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Plataforma Geradora</span>
+          <span class="cover-info-value">HumaniQ AI</span>
+        </div>
+        <div class="cover-info-row">
+          <span class="cover-info-label">Tipo de Relatório</span>
+          <span class="cover-info-value">PGR – Programa de Gerenciamento de Riscos (NR-01)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé de Confidencialidade -->
+    <div class="cover-footer">
+      <p><strong>DOCUMENTO CONFIDENCIAL</strong></p>
+      <p>Uso exclusivo da empresa avaliada e do responsável técnico conforme NR-01 e NR-09.</p>
+      <p>Este documento contém informações sensíveis e protegidas pela LGPD (Lei 13.709/2018).</p>
     </div>
   </div>
 
@@ -1033,9 +1127,73 @@ export default function EmpresaPRG() {
     </div>
   </div>
 
+  <!-- SOBRE A HUMANIQ AI -->
+  <div class="page">
+    <h1>📱 Sobre a HumaniQ AI</h1>
+    
+    <div class="ai-section" style="background: linear-gradient(135deg, #f0f4ff 0%, #e3f2fd 100%); margin-bottom: 30px;">
+      <h3 style="color: #667eea; font-size: 20px; margin-bottom: 16px;">🧠 Plataforma Inteligente de Gestão Psicossocial</h3>
+      <p>
+        A <strong>HumaniQ AI</strong> é uma plataforma inteligente especializada na análise e gestão de riscos psicossociais 
+        e ocupacionais, desenvolvida com base na NR-01 e demais normativas vigentes de Saúde e Segurança do Trabalho (SST).
+      </p>
+      <p>
+        Utilizando inteligência artificial e metodologia científica, a HumaniQ AI realiza diagnósticos automatizados, 
+        cruzamento de dados de testes psicossociais e comportamentais, e gera relatórios técnicos que subsidiam a construção 
+        do PGR – Programa de Gerenciamento de Riscos, de forma precisa, ética e em conformidade com os princípios da 
+        prevenção e melhoria contínua.
+      </p>
+    </div>
+
+    <div class="compliance-section">
+      <h3 style="color: #667eea; margin-bottom: 16px;">🔒 Compromissos e Garantias</h3>
+      
+      <div class="compliance-item" style="border-left-color: #10b981;">
+        <strong>✓ Autonomia e Imparcialidade</strong>
+        <p style="margin-top: 8px; color: #666;">
+          Todos os relatórios da HumaniQ AI são produzidos de forma autônoma e imparcial, sem interferência externa, 
+          baseando-se exclusivamente nos resultados dos colaboradores vinculados à empresa analisada.
+        </p>
+      </div>
+
+      <div class="compliance-item" style="border-left-color: #3b82f6;">
+        <strong>✓ Sigilo e Confidencialidade</strong>
+        <p style="margin-top: 8px; color: #666;">
+          Garantimos sigilo absoluto das informações individuais, com acesso restrito e proteção integral dos dados 
+          conforme LGPD (Lei 13.709/2018).
+        </p>
+      </div>
+
+      <div class="compliance-item" style="border-left-color: #f59e0b;">
+        <strong>✓ Integridade dos Dados</strong>
+        <p style="margin-top: 8px; color: #666;">
+          Todos os dados são processados com rigorosos controles de qualidade, validação cruzada e rastreabilidade 
+          completa do processo avaliativo.
+        </p>
+      </div>
+
+      <div class="compliance-item" style="border-left-color: #8b5cf6;">
+        <strong>✓ Conformidade Normativa</strong>
+        <p style="margin-top: 8px; color: #666;">
+          Metodologia alinhada com NR-01, NR-09, ISO 45003:2021, diretrizes da OMS e legislação brasileira de SST.
+        </p>
+      </div>
+    </div>
+
+    <div style="background: #f8f9fa; padding: 24px; border-radius: 12px; margin-top: 24px; border: 2px solid #e0e0e0;">
+      <p style="font-size: 14px; color: #666; line-height: 1.8; margin: 0;">
+        <strong>Nota Técnica:</strong> Este relatório foi gerado automaticamente pelo sistema HumaniQ AI através da 
+        análise integrada de ${prgData.totalTestes} avaliações psicossociais realizadas com ${prgData.totalColaboradores} 
+        colaboradores, utilizando algoritmos de inteligência artificial validados cientificamente e processamento 
+        estatístico avançado. Os resultados refletem o estado psicossocial atual da organização com base nos dados 
+        coletados no período de análise especificado.
+      </p>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <div class="footer">
-    <p style="font-weight: 600; margin-bottom: 8px;">HumaniQ - Plataforma de Avaliação Psicológica</p>
+    <p style="font-weight: 600; margin-bottom: 8px;">HumaniQ AI - Plataforma de Avaliação Psicológica</p>
     <p>Programa de Gestão de Riscos Psicossociais (PRG)</p>
     <p style="margin-top: 16px; font-size: 12px;">
       Relatório gerado automaticamente em ${new Date().toLocaleDateString('pt-BR', { 
@@ -1047,7 +1205,7 @@ export default function EmpresaPRG() {
       })}
     </p>
     <p style="margin-top: 8px; font-size: 11px; color: #999;">
-      © ${new Date().getFullYear()} HumaniQ. Todos os direitos reservados. | Conforme NR-01, ISO 45003 e LGPD
+      © ${new Date().getFullYear()} HumaniQ AI. Todos os direitos reservados. | Conforme NR-01, ISO 45003 e LGPD
     </p>
   </div>
 
