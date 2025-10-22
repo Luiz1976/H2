@@ -145,10 +145,6 @@ export default function EmpresaPRG() {
   };
 
   // Funções de exportação
-  const handleGerarPDF = () => {
-    window.print(); // Abre diálogo de impressão (pode salvar como PDF)
-  };
-
   const handleExportarExcel = () => {
     if (!prgData) return;
     
@@ -492,17 +488,6 @@ export default function EmpresaPRG() {
             <p className="text-white text-lg leading-relaxed font-medium bg-white/5 p-4 rounded-lg border border-white/10">
               "{prgData?.aiAnalysis.sintese || 'Gerando análise...'}"
             </p>
-            
-            <div className="flex gap-3">
-              <Button 
-                onClick={handleGerarPDF}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg" 
-                data-testid="button-gerar-pdf"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Gerar Relatório Técnico PDF
-              </Button>
-            </div>
           </CardContent>
         </Card>
 
