@@ -60,9 +60,6 @@ const EmpresaGerarConvite: React.FC = () => {
   const [showColaboradoresTable, setShowColaboradoresTable] = useState(false);
   const [fetchingColaboradores, setFetchingColaboradores] = useState(false);
   const [generatingInvites, setGeneratingInvites] = useState(false);
-  
-  // ERPs que requerem URL customizada
-  const erpsRequiremCustomUrl = ['ORACLE', 'MICROSOFT', 'BENNER', 'OUTRO'];
 
   useEffect(() => {
     carregarConvites();
@@ -659,60 +656,35 @@ const EmpresaGerarConvite: React.FC = () => {
                               <SelectItem value="SAP">✅ SAP (S/4HANA/Business One)</SelectItem>
                               <SelectItem value="SENIOR">🔐 Senior Sistemas</SelectItem>
                               <SelectItem value="SANKHYA">🔐 Sankhya</SelectItem>
-                              <SelectItem value="MICROSOFT">⚙️ Microsoft Dynamics 365 (requer URL)</SelectItem>
-                              <SelectItem value="ORACLE">⚙️ Oracle Cloud ERP (requer URL)</SelectItem>
-                              <SelectItem value="LINX">⚠️ Linx (em investigação)</SelectItem>
-                              <SelectItem value="BENNER">⚙️ Benner</SelectItem>
-                              <SelectItem value="OUTRO">⚙️ Outro</SelectItem>
+                              <SelectItem value="MICROSOFT">⚙️ Microsoft Dynamics 365</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
 
-                        {/* Campo de URL Customizada - Apenas para Oracle e Microsoft */}
-                        {(erpLoginForm.erpType === 'ORACLE' || erpLoginForm.erpType === 'MICROSOFT') && (
+                        {/* Campo de URL Customizada - Apenas para Microsoft */}
+                        {erpLoginForm.erpType === 'MICROSOFT' && (
                           <div className="space-y-2">
-                            <Label>URL do {erpLoginForm.erpType === 'ORACLE' ? 'Ambiente Oracle' : 'Tenant Dynamics 365'} *</Label>
+                            <Label>URL do Tenant Dynamics 365 *</Label>
                             <Input
-                              placeholder={
-                                erpLoginForm.erpType === 'ORACLE' 
-                                  ? 'https://suaempresa.fa.us2.oraclecloud.com'
-                                  : 'https://suaorg.crm4.dynamics.com'
-                              }
+                              placeholder="https://suaorg.crm4.dynamics.com"
                               value={erpLoginForm.customUrl}
                               onChange={(e) => setErpLoginForm(prev => ({ ...prev, customUrl: e.target.value }))}
                               data-testid="input-custom-url"
                             />
                             <Alert className="bg-blue-50 border-blue-200">
                               <AlertDescription className="text-sm text-blue-800">
-                                {erpLoginForm.erpType === 'ORACLE' ? (
-                                  <>
-                                    <strong>Como obter a URL Oracle:</strong>
-                                    <br />
-                                    1. Faça login no Oracle Cloud
-                                    <br />
-                                    2. A URL no navegador é algo como: <code className="bg-blue-100 px-1 rounded">https://suaempresa.fa.us2.oraclecloud.com</code>
-                                    <br />
-                                    3. Copie até <code className="bg-blue-100 px-1 rounded">.oraclecloud.com</code>
-                                    <br />
-                                    <br />
-                                    <strong>Formato:</strong> <code className="bg-blue-100 px-1 rounded">https://{'{'}{'{'}cliente{'}'}.fa.{'{'}{'{'}região{'}'}.oraclecloud.com</code>
-                                  </>
-                                ) : (
-                                  <>
-                                    <strong>Como obter a URL Dynamics 365:</strong>
-                                    <br />
-                                    1. Faça login no Dynamics 365
-                                    <br />
-                                    2. A URL no navegador é algo como: <code className="bg-blue-100 px-1 rounded">https://contoso.crm4.dynamics.com</code>
-                                    <br />
-                                    3. Copie até <code className="bg-blue-100 px-1 rounded">.dynamics.com</code>
-                                    <br />
-                                    <br />
-                                    <strong>Formato:</strong> <code className="bg-blue-100 px-1 rounded">https://{'{'}{'{'}organização{'}'}.{'{'}{'{'}região{'}'}.dynamics.com</code>
-                                    <br />
-                                    <strong>Regiões:</strong> crm (EUA), crm2 (América do Sul), crm4 (EMEA), crm5 (Ásia)
-                                  </>
-                                )}
+                                <strong>Como obter a URL Dynamics 365:</strong>
+                                <br />
+                                1. Faça login no Dynamics 365
+                                <br />
+                                2. A URL no navegador é algo como: <code className="bg-blue-100 px-1 rounded">https://contoso.crm4.dynamics.com</code>
+                                <br />
+                                3. Copie até <code className="bg-blue-100 px-1 rounded">.dynamics.com</code>
+                                <br />
+                                <br />
+                                <strong>Formato:</strong> <code className="bg-blue-100 px-1 rounded">https://{'{'}{'{'}organização{'}'}.{'{'}{'{'}região{'}'}.dynamics.com</code>
+                                <br />
+                                <strong>Regiões:</strong> crm (EUA), crm2 (América do Sul), crm4 (EMEA), crm5 (Ásia)
                               </AlertDescription>
                             </Alert>
                           </div>
@@ -747,8 +719,8 @@ const EmpresaGerarConvite: React.FC = () => {
                               fetchingColaboradores || 
                               !erpLoginForm.username || 
                               !erpLoginForm.password ||
-                              // Requer URL customizada para Oracle e Microsoft
-                              ((erpLoginForm.erpType === 'ORACLE' || erpLoginForm.erpType === 'MICROSOFT') && !erpLoginForm.customUrl)
+                              // Requer URL customizada para Microsoft
+                              (erpLoginForm.erpType === 'MICROSOFT' && !erpLoginForm.customUrl)
                             }
                             data-testid="button-login-erp"
                           >
