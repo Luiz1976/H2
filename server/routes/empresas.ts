@@ -55,7 +55,7 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
       colaboradoresList.map(async (colaborador) => {
         console.log(`🔍 [PSICO] Buscando resultados para colaborador: ${colaborador.nome} (${colaborador.id})`);
         
-        // Buscar último resultado do colaborador
+        // Buscar TODOS os resultados do colaborador
         const ultimosResultados = await db
           .select({
             id: resultados.id,
@@ -78,8 +78,7 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
               eq(resultados.status, 'concluido')
             )
           )
-          .orderBy(desc(resultados.dataRealizacao))
-          .limit(5); // Pegar últimos 5 testes para análise
+          .orderBy(desc(resultados.dataRealizacao));
 
         console.log(`📊 [PSICO] Encontrados ${ultimosResultados.length} resultados para ${colaborador.nome}`);
         if (ultimosResultados.length > 0) {
