@@ -54,11 +54,15 @@ const EmpresaGerarConvite: React.FC = () => {
     erpType: 'TOTVS',
     username: '',
     password: '',
+    customUrl: '', // URL customizada para Oracle, Microsoft, Benner, etc.
   });
   const [erpColaboradores, setErpColaboradores] = useState<ErpColaborador[]>([]);
   const [showColaboradoresTable, setShowColaboradoresTable] = useState(false);
   const [fetchingColaboradores, setFetchingColaboradores] = useState(false);
   const [generatingInvites, setGeneratingInvites] = useState(false);
+  
+  // ERPs que requerem URL customizada
+  const erpsRequiremCustomUrl = ['ORACLE', 'MICROSOFT', 'BENNER', 'OUTRO'];
 
   useEffect(() => {
     carregarConvites();
@@ -86,6 +90,7 @@ const EmpresaGerarConvite: React.FC = () => {
           username: erpLoginForm.username,
           password: erpLoginForm.password,
           empresaId: user.empresaId,
+          ...(erpLoginForm.customUrl && { customUrl: erpLoginForm.customUrl }), // Envia URL customizada se fornecida
         }),
       });
 
