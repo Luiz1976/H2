@@ -1853,30 +1853,33 @@ export default function EmpresaPRG() {
                 {/* Dimensões Relacionadas */}
                 <div className="grid grid-cols-2 gap-4">
                   {prgData?.dimensoesPsicossociais
-                    .filter(d => ['Burnout', 'Exaustão Emocional', 'Esgotamento'].some(termo => d.nome.includes(termo)))
+                    .filter(d => d.dimensao && ['Burnout', 'Exaustão', 'Esgotamento'].some(termo => d.dimensao.includes(termo)))
                     .slice(0, 4)
-                    .map((dimensao, idx) => (
-                      <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
-                        <p className="text-white/70 text-sm mb-2">{dimensao.nome}</p>
-                        <div className="flex items-end gap-2">
-                          <span className={`text-2xl font-bold ${
-                            dimensao.percentual > 70 ? 'text-green-400' :
-                            dimensao.percentual > 50 ? 'text-yellow-400' : 'text-red-400'
-                          }`}>{dimensao.percentual}%</span>
-                          <Badge className={`mb-1 text-xs ${
-                            dimensao.nivel === 'Crítico' ? 'bg-red-500/80' :
-                            dimensao.nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
-                          }`}>{dimensao.nivel}</Badge>
+                    .map((dimensao, idx) => {
+                      const nivel = dimensao.valor > 70 ? 'Bom' : dimensao.valor > 50 ? 'Atenção' : 'Crítico';
+                      return (
+                        <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                          <p className="text-white/70 text-sm mb-2">{dimensao.dimensao}</p>
+                          <div className="flex items-end gap-2">
+                            <span className={`text-2xl font-bold ${
+                              dimensao.valor > 70 ? 'text-green-400' :
+                              dimensao.valor > 50 ? 'text-yellow-400' : 'text-red-400'
+                            }`}>{Math.round(dimensao.valor)}%</span>
+                            <Badge className={`mb-1 text-xs ${
+                              nivel === 'Crítico' ? 'bg-red-500/80' :
+                              nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
+                            }`}>{nivel}</Badge>
+                          </div>
+                          <Progress value={dimensao.valor} className="h-2 mt-2" />
                         </div>
-                        <Progress value={dimensao.percentual} className="h-2 mt-2" />
-                      </div>
-                    ))
+                      );
+                    })
                   }
                 </div>
 
                 {/* Se não houver dimensões específicas de burnout */}
                 {prgData?.dimensoesPsicossociais.filter(d => 
-                  ['Burnout', 'Exaustão', 'Esgotamento'].some(termo => d.nome.includes(termo))
+                  d.dimensao && ['Burnout', 'Exaustão', 'Esgotamento'].some(termo => d.dimensao.includes(termo))
                 ).length === 0 && (
                   <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
                     <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
@@ -1901,30 +1904,33 @@ export default function EmpresaPRG() {
                 {/* Dimensões de QVT */}
                 <div className="grid grid-cols-2 gap-4">
                   {prgData?.dimensoesPsicossociais
-                    .filter(d => ['Satisfação', 'Saúde e Bem-Estar', 'Crescimento Profissional', 'Compensação', 'Condições de Trabalho'].some(termo => d.nome.includes(termo)))
+                    .filter(d => d.dimensao && ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.dimensao.includes(termo)))
                     .slice(0, 6)
-                    .map((dimensao, idx) => (
-                      <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
-                        <p className="text-white/70 text-sm mb-2">{dimensao.nome}</p>
-                        <div className="flex items-end gap-2">
-                          <span className={`text-2xl font-bold ${
-                            dimensao.percentual > 70 ? 'text-green-400' :
-                            dimensao.percentual > 50 ? 'text-yellow-400' : 'text-red-400'
-                          }`}>{dimensao.percentual}%</span>
-                          <Badge className={`mb-1 text-xs ${
-                            dimensao.nivel === 'Crítico' ? 'bg-red-500/80' :
-                            dimensao.nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
-                          }`}>{dimensao.nivel}</Badge>
+                    .map((dimensao, idx) => {
+                      const nivel = dimensao.valor > 70 ? 'Bom' : dimensao.valor > 50 ? 'Atenção' : 'Crítico';
+                      return (
+                        <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                          <p className="text-white/70 text-sm mb-2">{dimensao.dimensao}</p>
+                          <div className="flex items-end gap-2">
+                            <span className={`text-2xl font-bold ${
+                              dimensao.valor > 70 ? 'text-green-400' :
+                              dimensao.valor > 50 ? 'text-yellow-400' : 'text-red-400'
+                            }`}>{Math.round(dimensao.valor)}%</span>
+                            <Badge className={`mb-1 text-xs ${
+                              nivel === 'Crítico' ? 'bg-red-500/80' :
+                              nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
+                            }`}>{nivel}</Badge>
+                          </div>
+                          <Progress value={dimensao.valor} className="h-2 mt-2" />
                         </div>
-                        <Progress value={dimensao.percentual} className="h-2 mt-2" />
-                      </div>
-                    ))
+                      );
+                    })
                   }
                 </div>
 
                 {/* Indicador Geral de QVT */}
                 {prgData?.dimensoesPsicossociais.filter(d => 
-                  ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.nome.includes(termo))
+                  d.dimensao && ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.dimensao.includes(termo))
                 ).length > 0 && (
                   <div className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-xl p-6">
                     <h3 className="text-white font-bold text-lg mb-4">Índice Geral de QVT</h3>
@@ -1932,9 +1938,9 @@ export default function EmpresaPRG() {
                       <span className="text-white text-5xl font-bold">
                         {Math.round(
                           prgData.dimensoesPsicossociais
-                            .filter(d => ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.nome.includes(termo)))
-                            .reduce((acc, d) => acc + d.percentual, 0) / 
-                          prgData.dimensoesPsicossociais.filter(d => ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.nome.includes(termo))).length
+                            .filter(d => d.dimensao && ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.dimensao.includes(termo)))
+                            .reduce((acc, d) => acc + d.valor, 0) / 
+                          prgData.dimensoesPsicossociais.filter(d => d.dimensao && ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.dimensao.includes(termo))).length
                         )}%
                       </span>
                       <span className="text-white/60 mb-2">média geral</span>
@@ -1944,7 +1950,7 @@ export default function EmpresaPRG() {
 
                 {/* Se não houver dimensões específicas de QVT */}
                 {prgData?.dimensoesPsicossociais.filter(d => 
-                  ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.nome.includes(termo))
+                  d.dimensao && ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.dimensao.includes(termo))
                 ).length === 0 && (
                   <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
                     <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
@@ -1988,24 +1994,27 @@ export default function EmpresaPRG() {
                 {/* Dimensões Relacionadas */}
                 <div className="grid grid-cols-2 gap-4">
                   {prgData?.dimensoesPsicossociais
-                    .filter(d => ['Assédio', 'Violência', 'Segurança Psicológica', 'Justiça Organizacional'].some(termo => d.nome.includes(termo)))
+                    .filter(d => d.dimensao && ['Assédio', 'Violência', 'Segurança Psicológica', 'Justiça'].some(termo => d.dimensao.includes(termo)))
                     .slice(0, 4)
-                    .map((dimensao, idx) => (
-                      <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
-                        <p className="text-white/70 text-sm mb-2">{dimensao.nome}</p>
-                        <div className="flex items-end gap-2">
-                          <span className={`text-2xl font-bold ${
-                            dimensao.percentual > 70 ? 'text-green-400' :
-                            dimensao.percentual > 50 ? 'text-yellow-400' : 'text-red-400'
-                          }`}>{dimensao.percentual}%</span>
-                          <Badge className={`mb-1 text-xs ${
-                            dimensao.nivel === 'Crítico' ? 'bg-red-500/80' :
-                            dimensao.nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
-                          }`}>{dimensao.nivel}</Badge>
+                    .map((dimensao, idx) => {
+                      const nivel = dimensao.valor > 70 ? 'Bom' : dimensao.valor > 50 ? 'Atenção' : 'Crítico';
+                      return (
+                        <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                          <p className="text-white/70 text-sm mb-2">{dimensao.dimensao}</p>
+                          <div className="flex items-end gap-2">
+                            <span className={`text-2xl font-bold ${
+                              dimensao.valor > 70 ? 'text-green-400' :
+                              dimensao.valor > 50 ? 'text-yellow-400' : 'text-red-400'
+                            }`}>{Math.round(dimensao.valor)}%</span>
+                            <Badge className={`mb-1 text-xs ${
+                              nivel === 'Crítico' ? 'bg-red-500/80' :
+                              nivel === 'Atenção' ? 'bg-yellow-500/80' : 'bg-green-500/80'
+                            }`}>{nivel}</Badge>
+                          </div>
+                          <Progress value={dimensao.valor} className="h-2 mt-2" />
                         </div>
-                        <Progress value={dimensao.percentual} className="h-2 mt-2" />
-                      </div>
-                    ))
+                      );
+                    })
                   }
                 </div>
 
@@ -2025,7 +2034,7 @@ export default function EmpresaPRG() {
 
                 {/* Se não houver dimensões específicas */}
                 {prgData?.dimensoesPsicossociais.filter(d => 
-                  ['Assédio', 'Violência', 'Segurança Psicológica'].some(termo => d.nome.includes(termo))
+                  d.dimensao && ['Assédio', 'Violência', 'Segurança Psicológica'].some(termo => d.dimensao.includes(termo))
                 ).length === 0 && (
                   <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
                     <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
