@@ -22,6 +22,7 @@ import EmpresaOverview from "./pages/empresa/EmpresaOverview";
 import EmpresaColaboradores from "./pages/empresa/EmpresaColaboradores";
 import EmpresaConvites from "./pages/empresa/EmpresaConvites";
 import EmpresaGestaoConvites from "./pages/empresa/EmpresaGestaoConvites";
+import EmpresaGerarConvite from "./pages/empresa/EmpresaGerarConvite";
 import EmpresaResultados from "./pages/empresa/EmpresaResultados";
 import EmpresaColaboradorResultados from "./pages/empresa/EmpresaColaboradorResultados";
 import EmpresaEstadoPsicossocial from "./pages/empresa/EmpresaEstadoPsicossocial";
@@ -159,6 +160,7 @@ function App() {
                 <Route path="gestao-colaboradores" element={<EmpresaColaboradores />} />
                 <Route path="convites" element={<EmpresaConvites />} />
                 <Route path="gestao-convites" element={<EmpresaGestaoConvites />} />
+                <Route path="gerar-convite" element={<EmpresaGerarConvite />} />
                 <Route path="estado-psicossocial" element={<EmpresaEstadoPsicossocial />} />
                 <Route path="prg" element={<EmpresaPRG />} />
                 <Route path="resultados" element={<EmpresaResultados />} />
