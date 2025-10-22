@@ -23,6 +23,15 @@ interface ConviteColaborador {
   created_at: string;
 }
 
+interface ErpConfig {
+  id: string;
+  erpType: string;
+  apiUrl: string;
+  statusConexao: string;
+  ultimaSincronizacao: string | null;
+  ativo: boolean;
+}
+
 const EmpresaGerarConvite: React.FC = () => {
   const [convites, setConvites] = useState<ConviteColaborador[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,10 +47,178 @@ const EmpresaGerarConvite: React.FC = () => {
   });
   const [enviandoConvite, setEnviandoConvite] = useState(false);
   const { user } = useAuth();
+  
+  const [erpConfig, setErpConfig] = useState<ErpConfig | null>(null);
+  const [showErpConfigModal, setShowErpConfigModal] = useState(false);
+  const [erpForm, setErpForm] = useState({
+    erpType: 'TOTVS',
+    apiUrl: '',
+    apiKey: '',
+    apiSecret: '',
+  });
+  const [testingConnection, setTestingConnection] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [loadingErpConfig, setLoadingErpConfig] = useState(true);
 
   useEffect(() => {
     carregarConvites();
+    carregarConfigERP();
   }, []);
+
+  const carregarConfigERP = async () => {
+    try {
+      setLoadingErpConfig(true);
+      if (!user?.empresaId) return;
+
+      const response = await fetch(`/api/erp/configuration/${user.empresaId}`);
+      const data = await response.json();
+
+      if (data.success && data.data) {
+        setErpConfig(data.data);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar config ERP:', error);
+    } finally {
+      setLoadingErpConfig(false);
+    }
+  };
+
+  const salvarConfigERP = async () => {
+    try {
+      if (!user?.empresaId) {
+        toast.error('ID da empresa não encontrado');
+        return;
+      }
+
+      const response = await fetch('/api/erp/configure', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...erpForm,
+          empresaId: user.empresaId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success('Configuração salva com sucesso!');
+        setErpConfig(data.data);
+        setShowErpConfigModal(false);
+        setErpForm({
+          erpType: 'TOTVS',
+          apiUrl: '',
+          apiKey: '',
+          apiSecret: '',
+        });
+      } else {
+        toast.error('Erro ao salvar configuração');
+      }
+    } catch (error) {
+      console.error('Erro ao salvar config ERP:', error);
+      toast.error('Erro ao salvar configuração');
+    }
+  };
+
+  const testarConexaoERP = async () => {
+    try {
+      setTestingConnection(true);
+      if (!user?.empresaId) {
+        toast.error('ID da empresa não encontrado');
+        return;
+      }
+
+      const response = await fetch('/api/erp/test-connection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ empresaId: user.empresaId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success('Conexão estabelecida com sucesso!', {
+          description: 'Seu ERP está pronto para importação',
+        });
+        carregarConfigERP();
+      } else {
+        toast.error('Falha ao conectar com o ERP', {
+          description: data.error || 'Verifique suas credenciais',
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao testar conexão:', error);
+      toast.error('Erro ao testar conexão');
+    } finally {
+      setTestingConnection(false);
+    }
+  };
+
+  const importarColaboradoresERP = async () => {
+    try {
+      setImporting(true);
+      if (!user?.empresaId) {
+        toast.error('ID da empresa não encontrado');
+        return;
+      }
+
+      const response = await fetch('/api/erp/import-colaboradores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ empresaId: user.empresaId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success(`${data.data.imported} colaboradores importados!`, {
+          description: data.message,
+        });
+        
+        if (data.data.errors > 0) {
+          toast.warning(`${data.data.errors} erros durante importação`, {
+            description: 'Alguns colaboradores não puderam ser importados',
+          });
+        }
+        
+        carregarConfigERP();
+      } else {
+        toast.error('Erro ao importar colaboradores', {
+          description: data.error,
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao importar:', error);
+      toast.error('Erro ao importar colaboradores');
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const removerConfigERP = async () => {
+    try {
+      if (!user?.empresaId) {
+        toast.error('ID da empresa não encontrado');
+        return;
+      }
+
+      const response = await fetch(`/api/erp/configuration/${user.empresaId}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success('Configuração removida com sucesso');
+        setErpConfig(null);
+      } else {
+        toast.error('Erro ao remover configuração');
+      }
+    } catch (error) {
+      console.error('Erro ao remover config:', error);
+      toast.error('Erro ao remover configuração');
+    }
+  };
 
   const carregarConvites = async () => {
     try {
@@ -489,69 +666,301 @@ const EmpresaGerarConvite: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="space-y-6">
-                {/* Informativo */}
-                <Alert className="bg-emerald-500/10 border-emerald-500/20">
-                  <Database className="h-4 w-4 text-emerald-400" />
-                  <AlertDescription className="text-white/70">
-                    <strong className="text-white">Em breve:</strong> Conecte seu ERP e importe colaboradores automaticamente com sincronização em tempo real.
-                  </AlertDescription>
-                </Alert>
+              {loadingErpConfig ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400"></div>
+                </div>
+              ) : erpConfig ? (
+                <div className="space-y-6">
+                  {/* Status da Configuração */}
+                  <div className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-white/60">Tipo de ERP</p>
+                        <p className="text-lg font-semibold text-white">{erpConfig.erpType}</p>
+                      </div>
+                      <Badge 
+                        variant={erpConfig.statusConexao === 'conectado' ? 'default' : 'secondary'}
+                        className={erpConfig.statusConexao === 'conectado' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}
+                        data-testid="badge-status-erp"
+                      >
+                        {erpConfig.statusConexao === 'conectado' ? 'Conectado' : 'Não Testado'}
+                      </Badge>
+                    </div>
+                    <div>
+                      <p className="text-sm text-white/60">URL da API</p>
+                      <p className="text-sm text-white font-mono truncate">{erpConfig.apiUrl}</p>
+                    </div>
+                    {erpConfig.ultimaSincronizacao && (
+                      <div>
+                        <p className="text-sm text-white/60">Última Sincronização</p>
+                        <p className="text-sm text-white">
+                          {new Date(erpConfig.ultimaSincronizacao).toLocaleString('pt-BR')}
+                        </p>
+                      </div>
+                    )}
+                  </div>
 
-                {/* Features futuras */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-white">Funcionalidades Planejadas:</h3>
-                  
+                  {/* Ações */}
+                  <div className="space-y-3">
+                    <Button
+                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+                      onClick={testarConexaoERP}
+                      disabled={testingConnection}
+                      data-testid="button-testar-conexao"
+                    >
+                      {testingConnection ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                          Testando...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Testar Conexão
+                        </>
+                      )}
+                    </Button>
+
+                    <Button
+                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
+                      onClick={importarColaboradoresERP}
+                      disabled={importing || erpConfig.statusConexao !== 'conectado'}
+                      data-testid="button-importar-colaboradores"
+                    >
+                      {importing ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                          Importando...
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="h-4 w-4 mr-2" />
+                          Importar Colaboradores
+                        </>
+                      )}
+                    </Button>
+
+                    <div className="flex gap-2">
+                      <Dialog open={showErpConfigModal} onOpenChange={setShowErpConfigModal}>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="flex-1 bg-white/5 border-white/20 hover:bg-white/10 text-white"
+                            data-testid="button-editar-config"
+                          >
+                            Editar
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Configurar Integração ERP</DialogTitle>
+                            <DialogDescription>
+                              Configure os detalhes de conexão com seu sistema ERP
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div className="space-y-2">
+                              <Label>Tipo de ERP</Label>
+                              <Select value={erpForm.erpType} onValueChange={(value) => setErpForm(prev => ({ ...prev, erpType: value }))}>
+                                <SelectTrigger data-testid="select-tipo-erp">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="TOTVS">TOTVS (Protheus/RM/Datasul)</SelectItem>
+                                  <SelectItem value="SAP">SAP (S/4HANA/Business One)</SelectItem>
+                                  <SelectItem value="ORACLE">Oracle Cloud ERP</SelectItem>
+                                  <SelectItem value="MICROSOFT">Microsoft Dynamics 365</SelectItem>
+                                  <SelectItem value="SENIOR">Senior</SelectItem>
+                                  <SelectItem value="LINX">Linx</SelectItem>
+                                  <SelectItem value="SANKHYA">Sankhya</SelectItem>
+                                  <SelectItem value="BENNER">Benner</SelectItem>
+                                  <SelectItem value="OUTRO">Outro</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>URL da API</Label>
+                              <Input
+                                placeholder="https://api.seu-erp.com"
+                                value={erpForm.apiUrl}
+                                onChange={(e) => setErpForm(prev => ({ ...prev, apiUrl: e.target.value }))}
+                                data-testid="input-api-url"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>API Key</Label>
+                              <Input
+                                type="password"
+                                placeholder="Sua chave de API"
+                                value={erpForm.apiKey}
+                                onChange={(e) => setErpForm(prev => ({ ...prev, apiKey: e.target.value }))}
+                                data-testid="input-api-key"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>API Secret (Opcional)</Label>
+                              <Input
+                                type="password"
+                                placeholder="Seu secret de API (se necessário)"
+                                value={erpForm.apiSecret}
+                                onChange={(e) => setErpForm(prev => ({ ...prev, apiSecret: e.target.value }))}
+                                data-testid="input-api-secret"
+                              />
+                            </div>
+                            <div className="flex justify-end gap-2 pt-4">
+                              <Button variant="outline" onClick={() => setShowErpConfigModal(false)}>
+                                Cancelar
+                              </Button>
+                              <Button 
+                                onClick={salvarConfigERP}
+                                disabled={!erpForm.erpType || !erpForm.apiUrl || !erpForm.apiKey}
+                                data-testid="button-salvar-config"
+                              >
+                                Salvar Configuração
+                              </Button>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                      <Button
+                        variant="outline"
+                        className="flex-1 bg-red-500/10 border-red-500/20 hover:bg-red-500/20 text-red-400"
+                        onClick={removerConfigERP}
+                        data-testid="button-remover-config"
+                      >
+                        Remover
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Informações */}
+                  <Alert className="bg-blue-500/10 border-blue-500/20">
+                    <Database className="h-4 w-4 text-blue-400" />
+                    <AlertDescription className="text-white/70 text-sm">
+                      <strong>Dica:</strong> Teste a conexão antes de importar colaboradores. A importação criará automaticamente usuários com senhas temporárias.
+                    </AlertDescription>
+                  </Alert>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Informativo */}
+                  <Alert className="bg-emerald-500/10 border-emerald-500/20">
+                    <Database className="h-4 w-4 text-emerald-400" />
+                    <AlertDescription className="text-white/70">
+                      <strong className="text-white">Conecte seu ERP</strong> e importe colaboradores automaticamente com sincronização em tempo real.
+                    </AlertDescription>
+                  </Alert>
+
+                  {/* Features */}
                   <div className="space-y-3">
                     <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
-                      <LinkIcon className="h-5 w-5 text-emerald-400 mt-0.5" />
+                      <LinkIcon className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                       <div>
                         <h4 className="font-medium text-white">Conexão Direta</h4>
                         <p className="text-sm text-white/60">Configure a conexão com seu sistema ERP de forma segura</p>
                       </div>
                     </div>
-
                     <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
-                      <Upload className="h-5 w-5 text-emerald-400 mt-0.5" />
+                      <Upload className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                       <div>
                         <h4 className="font-medium text-white">Importação em Lote</h4>
                         <p className="text-sm text-white/60">Importe múltiplos colaboradores de uma vez</p>
                       </div>
                     </div>
-
                     <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
-                      <FileSpreadsheet className="h-5 w-5 text-emerald-400 mt-0.5" />
-                      <div>
-                        <h4 className="font-medium text-white">Sincronização Automática</h4>
-                        <p className="text-sm text-white/60">Mantenha os dados sempre atualizados automaticamente</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
-                      <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5" />
+                      <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                       <div>
                         <h4 className="font-medium text-white">Validação de Dados</h4>
                         <p className="text-sm text-white/60">Verificação automática de dados duplicados e inválidos</p>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* CTA */}
-                <div className="pt-4">
-                  <Button 
-                    className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg opacity-50 cursor-not-allowed"
-                    disabled
-                    data-testid="button-conectar-erp"
-                  >
-                    <Database className="h-4 w-4 mr-2" />
-                    Conectar ERP (Em breve)
-                  </Button>
-                  <p className="text-center text-xs text-white/40 mt-2">
-                    Aguarde as próximas atualizações
-                  </p>
+                  {/* CTA */}
+                  <Dialog open={showErpConfigModal} onOpenChange={setShowErpConfigModal}>
+                    <DialogTrigger asChild>
+                      <Button 
+                        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg"
+                        data-testid="button-configurar-erp"
+                      >
+                        <Database className="h-4 w-4 mr-2" />
+                        Configurar ERP
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Configurar Integração ERP</DialogTitle>
+                        <DialogDescription>
+                          Configure os detalhes de conexão com seu sistema ERP
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Tipo de ERP</Label>
+                          <Select value={erpForm.erpType} onValueChange={(value) => setErpForm(prev => ({ ...prev, erpType: value }))}>
+                            <SelectTrigger data-testid="select-tipo-erp-new">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="TOTVS">TOTVS (Protheus/RM/Datasul)</SelectItem>
+                              <SelectItem value="SAP">SAP (S/4HANA/Business One)</SelectItem>
+                              <SelectItem value="ORACLE">Oracle Cloud ERP</SelectItem>
+                              <SelectItem value="MICROSOFT">Microsoft Dynamics 365</SelectItem>
+                              <SelectItem value="SENIOR">Senior</SelectItem>
+                              <SelectItem value="LINX">Linx</SelectItem>
+                              <SelectItem value="SANKHYA">Sankhya</SelectItem>
+                              <SelectItem value="BENNER">Benner</SelectItem>
+                              <SelectItem value="OUTRO">Outro</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>URL da API</Label>
+                          <Input
+                            placeholder="https://api.seu-erp.com"
+                            value={erpForm.apiUrl}
+                            onChange={(e) => setErpForm(prev => ({ ...prev, apiUrl: e.target.value }))}
+                            data-testid="input-api-url-new"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>API Key</Label>
+                          <Input
+                            type="password"
+                            placeholder="Sua chave de API"
+                            value={erpForm.apiKey}
+                            onChange={(e) => setErpForm(prev => ({ ...prev, apiKey: e.target.value }))}
+                            data-testid="input-api-key-new"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>API Secret (Opcional)</Label>
+                          <Input
+                            type="password"
+                            placeholder="Seu secret de API (se necessário)"
+                            value={erpForm.apiSecret}
+                            onChange={(e) => setErpForm(prev => ({ ...prev, apiSecret: e.target.value }))}
+                            data-testid="input-api-secret-new"
+                          />
+                        </div>
+                        <div className="flex justify-end gap-2 pt-4">
+                          <Button variant="outline" onClick={() => setShowErpConfigModal(false)}>
+                            Cancelar
+                          </Button>
+                          <Button 
+                            onClick={salvarConfigERP}
+                            disabled={!erpForm.erpType || !erpForm.apiUrl || !erpForm.apiKey}
+                            data-testid="button-salvar-config-new"
+                          >
+                            Salvar Configuração
+                          </Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </div>
