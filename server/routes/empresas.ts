@@ -854,4 +854,187 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
   }
 });
 
+// 🔓 ROTA PÚBLICA - Acessar PRG via QR Code (SEM AUTENTICAÇÃO)
+router.get('/prg/publico/:token', async (req, res) => {
+  try {
+    console.log('🔓 [PRG Público] Requisição recebida para token:', req.params.token);
+
+    const { token } = req.params;
+    
+    // Validar formato do token: empresaId-timestamp (formato: uuid-timestamp)
+    const tokenParts = token.split('-');
+    if (tokenParts.length < 2) {
+      return res.status(401).json({ error: 'Token de compartilhamento inválido' });
+    }
+
+    // Extrair ID da empresa do token (todos os parts exceto o último são o ID)
+    const empresaId = tokenParts.slice(0, -1).join('-');
+    console.log('🔓 [PRG Público] Empresa ID extraído:', empresaId);
+
+    // Buscar empresa
+    const [empresa] = await db
+      .select()
+      .from(empresas)
+      .where(eq(empresas.id, empresaId))
+      .limit(1);
+
+    if (!empresa) {
+      console.log('❌ [PRG Público] Empresa não encontrada');
+      return res.status(404).json({ error: 'Empresa não encontrada' });
+    }
+
+    console.log('✅ [PRG Público] Empresa encontrada:', empresa.nomeEmpresa);
+
+    // Buscar colaboradores e resultados (mesma lógica do endpoint autenticado)
+    const colaboradoresList = await db
+      .select()
+      .from(colaboradores)
+      .where(eq(colaboradores.empresaId, empresaId));
+
+    const resultadosList = await db
+      .select({
+        id: resultados.id,
+        colaboradorId: resultados.colaboradorId,
+        pontuacaoTotal: resultados.pontuacaoTotal,
+        resultadoDetalhado: resultados.resultadoDetalhado,
+        dataRealizacao: resultados.dataRealizacao,
+        tipoTeste: testes.tipoTeste,
+        nome: testes.nome
+      })
+      .from(resultados)
+      .leftJoin(testes, eq(resultados.testeId, testes.id))
+      .where(eq(resultados.empresaId, empresaId))
+      .orderBy(desc(resultados.dataRealizacao));
+
+    // Agrupar resultados por tipo
+    const dadosPorTipo = {
+      clima: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('clima') || r.nome?.toLowerCase().includes('clima')),
+      estresse: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('estresse') || r.nome?.toLowerCase().includes('estresse')),
+      burnout: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('burnout') || r.nome?.toLowerCase().includes('burnout')),
+      qvt: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('qvt') || r.nome?.toLowerCase().includes('qualidade')),
+      assedio: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('assedio') || r.nome?.toLowerCase().includes('pas') || r.tipoTeste?.toLowerCase().includes('pas')),
+      disc: resultadosList.filter(r => r.tipoTeste?.toLowerCase().includes('disc') || r.nome?.toLowerCase().includes('disc'))
+    };
+
+    // Calcular KPIs (mesma lógica)
+    const calcularMedia = (arr: typeof resultadosList) => {
+      if (arr.length === 0) return 0;
+      const soma = arr.reduce((acc, r) => acc + (r.pontuacaoTotal || 0), 0);
+      return Math.round((soma / arr.length));
+    };
+
+    const kpis = {
+      indiceEstresse: calcularMedia(dadosPorTipo.estresse),
+      climaPositivo: calcularMedia(dadosPorTipo.clima),
+      satisfacaoChefia: 78,
+      riscoBurnout: calcularMedia(dadosPorTipo.burnout),
+      maturidadePRG: 72,
+      segurancaPsicologica: calcularMedia(dadosPorTipo.assedio)
+    };
+
+    const indiceGlobal = Math.round(
+      (kpis.indiceEstresse + kpis.climaPositivo + kpis.satisfacaoChefia + 
+       (100 - kpis.riscoBurnout) + kpis.maturidadePRG + kpis.segurancaPsicologica) / 6
+    );
+
+    // Gerar análise IA
+    const aiAnalysis = await generatePsychosocialAnalysis(
+      resultadosList.length,
+      indiceGlobal,
+      kpis,
+      colaboradoresList.length
+    );
+
+    // Gerar recomendações (versão simplificada)
+    const recomendacoes = aiAnalysis.recomendacoes || [];
+
+    // Gerar matriz de riscos
+    const matrizRiscos = resultadosList.map((r, idx) => {
+      const score = r.pontuacaoTotal || 50;
+      let probabilidade: 'A' | 'B' | 'C' | 'D' | 'E';
+      let severidade: 1 | 2 | 3 | 4 | 5;
+
+      if (score < 40) { probabilidade = 'E'; severidade = 5; }
+      else if (score < 55) { probabilidade = 'D'; severidade = 4; }
+      else if (score < 70) { probabilidade = 'C'; severidade = 3; }
+      else if (score < 85) { probabilidade = 'B'; severidade = 2; }
+      else { probabilidade = 'A'; severidade = 1; }
+
+      const categorias = ['estresse', 'clima', 'burnout', 'qvt', 'assedio', 'liderança'];
+      const categoria = categorias[idx % categorias.length];
+
+      return {
+        nome: r.nome || `Risco ${idx + 1}`,
+        probabilidade,
+        severidade,
+        categoria
+      };
+    });
+
+    // Distribuição de riscos
+    const distribuicaoPorCategoria: Record<string, { critico: number; alto: number; moderado: number; baixo: number }> = {
+      'Estresse': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'Clima': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'Burnout': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'QVT': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'Assédio': { critico: 0, alto: 0, moderado: 0, baixo: 0 },
+      'Liderança': { critico: 0, alto: 0, moderado: 0, baixo: 0 }
+    };
+    
+    matrizRiscos.forEach(risco => {
+      const chave = Object.keys(distribuicaoPorCategoria).find(k => k.toLowerCase().includes(risco.categoria));
+      if (chave) {
+        const score = 'ABCDE'.indexOf(risco.probabilidade) + risco.severidade;
+        if (score >= 8) distribuicaoPorCategoria[chave].critico++;
+        else if (score >= 6) distribuicaoPorCategoria[chave].alto++;
+        else if (score >= 4) distribuicaoPorCategoria[chave].moderado++;
+        else distribuicaoPorCategoria[chave].baixo++;
+      }
+    });
+    
+    const distribuicaoRiscos = Object.entries(distribuicaoPorCategoria).map(([categoria, dados]) => ({
+      categoria,
+      ...dados
+    }));
+
+    const dimensoesPsicossociais = [
+      { dimensao: 'Autonomia', valor: kpis.maturidadePRG, meta: 80 },
+      { dimensao: 'Apoio Social', valor: kpis.climaPositivo, meta: 85 },
+      { dimensao: 'Demandas', valor: 100 - kpis.indiceEstresse, meta: 75 },
+      { dimensao: 'Reconhecimento', valor: kpis.satisfacaoChefia, meta: 80 },
+      { dimensao: 'Equilíbrio', valor: 100 - kpis.riscoBurnout, meta: 85 },
+      { dimensao: 'Segurança', valor: kpis.segurancaPsicologica, meta: 90 }
+    ];
+
+    console.log('✅ [PRG Público] Dados calculados e enviados com sucesso');
+
+    res.json({
+      indiceGlobal,
+      kpis,
+      totalColaboradores: colaboradoresList.length,
+      totalTestes: resultadosList.length,
+      cobertura: colaboradoresList.length > 0 
+        ? Math.round((new Set(resultadosList.map(r => r.colaboradorId)).size / colaboradoresList.length) * 100)
+        : 0,
+      dadosPorTipo: {
+        clima: dadosPorTipo.clima.length,
+        estresse: dadosPorTipo.estresse.length,
+        burnout: dadosPorTipo.burnout.length,
+        qvt: dadosPorTipo.qvt.length,
+        assedio: dadosPorTipo.assedio.length,
+        disc: dadosPorTipo.disc.length
+      },
+      aiAnalysis,
+      recomendacoes,
+      matrizRiscos,
+      distribuicaoRiscos,
+      dimensoesPsicossociais
+    });
+
+  } catch (error) {
+    console.error('❌ [PRG Público] Erro ao buscar dados:', error);
+    res.status(500).json({ error: 'Erro ao carregar dados do PRG' });
+  }
+});
+
 export default router;

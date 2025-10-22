@@ -1057,27 +1057,74 @@ export default function EmpresaPRG() {
     URL.revokeObjectURL(url);
   };
 
-  const handleGerarQRCode = () => {
-    const currentUrl = window.location.origin + '/empresa/prg';
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(currentUrl)}`;
-    
-    const modal = document.createElement('div');
-    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;';
-    
-    const content = document.createElement('div');
-    content.style.cssText = 'background: white; padding: 30px; border-radius: 16px; text-align: center; max-width: 90%; max-height: 90%; overflow: auto;';
-    content.innerHTML = `
-      <h2 style="color: #667eea; margin-bottom: 20px;">📱 QR Code - Dashboard PRG</h2>
-      <p style="color: #666; margin-bottom: 20px;">Escaneie para visualizar o dashboard online</p>
-      <img src="${qrCodeUrl}" alt="QR Code" style="max-width: 400px; width: 100%; border: 8px solid #f0f0f0; border-radius: 12px;" />
-      <p style="margin-top: 20px; color: #666; font-size: 14px; word-break: break-all;">${currentUrl}</p>
-      <button onclick="this.parentElement.parentElement.remove()" style="margin-top: 20px; padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600;">Fechar</button>
-      <a href="${qrCodeUrl}" download="QRCode-PRG.png" style="display: inline-block; margin-top: 10px; margin-left: 10px; padding: 12px 30px; background: #10b981; color: white; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Baixar QR Code</a>
-    `;
-    
-    modal.appendChild(content);
-    document.body.appendChild(modal);
-    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+  const handleGerarQRCode = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        alert('Erro: Token de autenticação não encontrado');
+        return;
+      }
+
+      // Buscar dados da empresa para obter o ID
+      const empresaResponse = await fetch('/api/empresas/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!empresaResponse.ok) {
+        alert('Erro ao buscar dados da empresa');
+        return;
+      }
+
+      const empresaData = await empresaResponse.json();
+      const empresaId = empresaData.empresa.id;
+
+      // Gerar token compartilhável: empresaId-timestamp
+      const shareToken = `${empresaId}-${Date.now()}`;
+      
+      // URL pública para compartilhamento
+      const publicUrl = `${window.location.origin}/prg/compartilhado/${shareToken}`;
+      
+      // Gerar QR Code
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(publicUrl)}`;
+      
+      const modal = document.createElement('div');
+      modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+      
+      const content = document.createElement('div');
+      content.style.cssText = 'background: white; padding: 30px; border-radius: 16px; text-align: center; max-width: 90%; max-height: 90%; overflow: auto;';
+      content.innerHTML = `
+        <h2 style="color: #667eea; margin-bottom: 12px;">📱 QR Code - Dashboard PRG Público</h2>
+        <p style="color: #10b981; margin-bottom: 16px; font-weight: 600; background: #d4edda; padding: 12px; border-radius: 8px;">
+          ✓ Acesso LIVRE sem login - Somente via QR Code
+        </p>
+        <p style="color: #666; margin-bottom: 20px;">
+          Compartilhe este QR Code para visualização pública do dashboard PRG
+        </p>
+        <img src="${qrCodeUrl}" alt="QR Code" style="max-width: 400px; width: 100%; border: 8px solid #f0f0f0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+        <div style="margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+          <p style="color: #666; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Link de Acesso Público:</p>
+          <p style="color: #667eea; font-size: 12px; word-break: break-all; font-family: monospace;">${publicUrl}</p>
+        </div>
+        <div style="margin-top: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button onclick="this.parentElement.parentElement.parentElement.remove()" style="padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600;">Fechar</button>
+          <a href="${qrCodeUrl}" download="QRCode-PRG-Publico.png" style="display: inline-block; padding: 12px 30px; background: #10b981; color: white; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Baixar QR Code</a>
+        </div>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+      console.log('✅ [QR Code] Token de compartilhamento gerado:', shareToken);
+      console.log('✅ [QR Code] URL pública:', publicUrl);
+      
+    } catch (error) {
+      console.error('❌ [QR Code] Erro ao gerar QR Code:', error);
+      alert('Erro ao gerar QR Code. Tente novamente.');
+    }
   };
 
   const getStatusBadge = (valor: number) => {

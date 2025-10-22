@@ -26,6 +26,7 @@ import EmpresaResultados from "./pages/empresa/EmpresaResultados";
 import EmpresaColaboradorResultados from "./pages/empresa/EmpresaColaboradorResultados";
 import EmpresaEstadoPsicossocial from "./pages/empresa/EmpresaEstadoPsicossocial";
 import EmpresaPRG from "./pages/empresa/EmpresaPRG";
+import PRGPublico from "./pages/PRGPublico";
 import GestaoAI from "./pages/GestaoAI";
 import GestaoConvite from "./pages/GestaoConvite";
 import AcessoConvite from "./pages/AcessoConvite";
@@ -82,6 +83,7 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/aceitar-convite/:token" element={<AcessoConvite />} />
+              <Route path="/prg/compartilhado/:token" element={<PRGPublico />} />
               <Route 
                 path="/post-login-animation" 
                 element={
