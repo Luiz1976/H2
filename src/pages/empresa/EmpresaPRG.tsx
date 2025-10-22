@@ -712,6 +712,8 @@ export default function EmpresaPRG() {
     <div class="indice">
       <div class="indice-item"><a href="#sumario">1. Sumário Executivo</a></div>
       <div class="indice-item"><a href="#indicadores">2. Indicadores-Chave (KPIs)</a></div>
+      <div class="indice-item"><a href="#parliament">2.1. Distribuição de Colaboradores</a></div>
+      <div class="indice-item"><a href="#sankey">2.2. Fluxo de Transição entre Estados</a></div>
       <div class="indice-item"><a href="#dimensoes">3. Análise por Dimensão Psicossocial</a></div>
       <div class="indice-item"><a href="#matriz">4. Matriz de Riscos</a></div>
       <div class="indice-item"><a href="#distribuicao">5. Distribuição de Riscos por Categoria</a></div>
@@ -842,6 +844,104 @@ export default function EmpresaPRG() {
         <p style="margin-top: 12px; font-size: 14px; color: #666;">
           Liberdade para expressar opiniões sem medo
         </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.1 GRÁFICO PARLIAMENT - Distribuição de Colaboradores -->
+  <div class="page">
+    <h1 id="parliament">👥 2.1. Distribuição de Colaboradores por Nível de Risco</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Visualização em semicírculo da distribuição dos colaboradores classificados por nível de risco psicossocial.
+    </p>
+
+    <div style="text-align: center; margin: 40px 0;">
+      <svg width="100%" height="350" viewBox="0 0 500 300" style="max-width: 700px; margin: 0 auto;">
+        ${(() => {
+          const total = prgData.dadosParliament.reduce((acc, d) => acc + d.quantidade, 0);
+          let currentIndex = 0;
+          const circles: string[] = [];
+          
+          prgData.dadosParliament.forEach(categoria => {
+            for (let i = 0; i < categoria.quantidade; i++) {
+              const angle = Math.PI - (currentIndex / total) * Math.PI;
+              const radius = 120 + (Math.floor(currentIndex / 15) * 20);
+              const x = 250 + radius * Math.cos(angle);
+              const y = 240 - radius * Math.sin(angle);
+              circles.push(`<circle cx="${x}" cy="${y}" r="5" fill="${categoria.cor}" opacity="0.85" />`);
+              currentIndex++;
+            }
+          });
+          
+          return circles.join('') + `
+            <text x="250" y="230" text-anchor="middle" font-size="48" font-weight="900" fill="#667eea">${total}</text>
+            <text x="250" y="255" text-anchor="middle" font-size="14" fill="#666">colaboradores avaliados</text>
+          `;
+        })()}
+      </svg>
+    </div>
+
+    <div class="grid-2" style="margin-top: 30px;">
+      ${prgData.dadosParliament.map(cat => `
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 8px;">
+          <div style="width: 16px; height: 16px; border-radius: 50%; background: ${cat.cor};"></div>
+          <div style="flex: 1;">
+            <div style="font-weight: 600; color: #1e293b;">${cat.label || cat.categoria}</div>
+            <div style="font-size: 13px; color: #64748b;">${cat.quantidade} colaboradores (${((cat.quantidade / prgData.dadosParliament.reduce((acc, d) => acc + d.quantidade, 0)) * 100).toFixed(1)}%)</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+
+  <!-- 2.2 GRÁFICO SANKEY - Fluxo entre Estados -->
+  <div class="page">
+    <h1 id="sankey">🔄 2.2. Fluxo de Transição entre Estados de Bem-Estar</h1>
+    <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+      Diagrama de fluxo mostrando a transição dos colaboradores entre diferentes níveis de risco e clima organizacional.
+    </p>
+
+    <div style="background: linear-gradient(135deg, #667eea20 0%, #764ba250 100%); padding: 40px; border-radius: 12px; margin: 20px 0;">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h3 style="color: #667eea; font-size: 18px; margin-bottom: 8px;">Interpretação do Fluxo</h3>
+        <p style="color: #666; font-size: 14px;">
+          Os fluxos mostram como os colaboradores em diferentes níveis de risco psicossocial se correlacionam 
+          com a percepção do clima organizacional. Quanto maior o fluxo, maior a correlação entre os estados.
+        </p>
+      </div>
+
+      <div class="grid-2" style="gap: 20px;">
+        ${prgData.dadosSankey.links.map((link, idx) => {
+          const sourceNode = prgData.dadosSankey.nodes[link.source];
+          const targetNode = prgData.dadosSankey.nodes[link.target];
+          const colors = ['#60a5fa', '#f97316', '#10b981'];
+          const color = colors[idx % colors.length];
+          
+          return `
+            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid ${color};">
+              <div style="font-weight: 700; color: #1e293b; margin-bottom: 8px;">
+                ${sourceNode.name} → ${targetNode.name}
+              </div>
+              <div style="font-size: 24px; font-weight: 900; color: ${color}; margin: 8px 0;">
+                ${link.value} <span style="font-size: 14px; font-weight: 500; color: #64748b;">colaboradores</span>
+              </div>
+              <div style="font-size: 13px; color: #64748b;">
+                Fluxo de transição identificado
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.9); border-radius: 8px;">
+        <h4 style="color: #667eea; font-size: 14px; margin-bottom: 12px;">📋 Estados Mapeados:</h4>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+          ${prgData.dadosSankey.nodes.map(node => `
+            <span style="padding: 6px 12px; background: #f1f5f9; border-radius: 6px; font-size: 13px; color: #475569; font-weight: 500;">
+              ${node.name}
+            </span>
+          `).join('')}
+        </div>
       </div>
     </div>
   </div>
