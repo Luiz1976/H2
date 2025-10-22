@@ -286,7 +286,7 @@ router.post('/bulk-invite', async (req, res) => {
 // Endpoint para testar conectividade com todos os ERPs
 router.get('/test-connections', async (req, res) => {
   try {
-    const testResults = [];
+    const testResults: any[] = [];
     const erpTypes = Object.keys(ERP_API_URLS);
 
     console.log('🧪 Iniciando testes de conexão com ERPs...');
