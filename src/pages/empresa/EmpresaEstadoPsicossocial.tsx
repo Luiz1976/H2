@@ -152,12 +152,6 @@ export default function EmpresaEstadoPsicossocial() {
   const [error, setError] = useState<Error | null>(null);
   const [activeTab, setActiveTab] = useState("ia");
 
-  const handleImplementarMudancas = () => {
-    setActiveTab("acoes");
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    toast.success('Navegando para o plano de ação!');
-  };
-
   useEffect(() => {
     const carregarAnalise = async () => {
       const token = localStorage.getItem('authToken');
@@ -588,19 +582,6 @@ export default function EmpresaEstadoPsicossocial() {
                                     {rec.descricao}
                                   </p>
                                 </div>
-                                
-                                <Button 
-                                  onClick={handleImplementarMudancas}
-                                  className={`${
-                                    isPriority 
-                                      ? 'bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700' 
-                                      : 'bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700'
-                                  } text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300`}
-                                  data-testid="button-agir-agora"
-                                >
-                                  Agir Agora
-                                  <ArrowRight className="h-4 w-4 ml-2" />
-                                </Button>
                               </div>
                             </div>
                           </div>
@@ -986,31 +967,6 @@ export default function EmpresaEstadoPsicossocial() {
             </Alert>
           </TabsContent>
         </Tabs>
-
-        {/* FOOTER - Call to Action Final */}
-        <Card className="border-0 bg-gradient-to-r from-purple-600/35 to-pink-600/35 backdrop-blur-2xl shadow-2xl rounded-2xl overflow-hidden border-2 border-purple-500/40">
-          <CardContent className="p-8">
-            <div className="flex items-center justify-between gap-6 flex-wrap">
-              <div className="flex-1 min-w-[300px] space-y-3">
-                <h3 className="text-2xl font-black text-purple-50">
-                  Pronto para Transformar Sua Organização?
-                </h3>
-                <p className="text-purple-50/95 text-lg">
-                  Cada ação que você toma hoje constrói o futuro que seus colaboradores merecem. 
-                  Vamos juntos nessa jornada de cuidado e evolução.
-                </p>
-              </div>
-              <Button 
-                onClick={handleImplementarMudancas}
-                className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white border-0 shadow-2xl hover:shadow-purple-500/50 px-8 py-6 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105"
-                data-testid="button-implementar-mudancas"
-              >
-                Implementar Mudanças
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Última Atualização */}
         {analise && (
