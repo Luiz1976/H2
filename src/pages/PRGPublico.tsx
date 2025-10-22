@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -13,7 +13,13 @@ import {
   Users,
   Shield,
   TrendingUp,
-  CheckCircle2
+  CheckCircle2,
+  Clock,
+  Target,
+  Briefcase,
+  DollarSign,
+  ArrowRight,
+  AlertCircle
 } from "lucide-react";
 import MatrizRisco from "@/components/prg/MatrizRisco";
 import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
@@ -80,7 +86,7 @@ export default function PRGPublico() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [prgData, setPrgData] = useState<PRGData | null>(null);
-  const [activeTab, setActiveTab] = useState("geral");
+  const [activeTab, setActiveTab] = useState("resumo");
 
   useEffect(() => {
     const fetchPRGData = async () => {
@@ -122,20 +128,32 @@ export default function PRGPublico() {
 
   const getStatusBadge = (valor: number) => {
     if (valor >= 80) {
-      return { label: "Saudável", color: "bg-green-500/20 text-green-300 border-green-500/30" };
+      return { label: "Excelente", color: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" };
     } else if (valor >= 60) {
+      return { label: "Adequado", color: "bg-blue-500/20 text-blue-300 border-blue-500/30" };
+    } else if (valor >= 40) {
       return { label: "Atenção", color: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30" };
     } else {
       return { label: "Crítico", color: "bg-red-500/20 text-red-300 border-red-500/30" };
     }
   };
 
+  const getRiskBadge = (valor: number) => {
+    if (valor >= 70) {
+      return { label: "Risco Alto", color: "bg-red-500/20 text-red-300 border-red-500/30" };
+    } else if (valor >= 40) {
+      return { label: "Risco Moderado", color: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30" };
+    } else {
+      return { label: "Risco Baixo", color: "bg-green-500/20 text-green-300 border-green-500/30" };
+    }
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-4 md:p-6 flex items-center justify-center">
         <div className="text-center space-y-4">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto" />
-          <p className="text-white/70 text-lg">Carregando dashboard compartilhado...</p>
+          <p className="text-white/70 text-base md:text-lg">Carregando relatório executivo...</p>
         </div>
       </div>
     );
@@ -143,7 +161,7 @@ export default function PRGPublico() {
 
   if (error || !prgData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-4 md:p-6 flex items-center justify-center">
         <Card className="border-red-500/50 bg-red-950/20 backdrop-blur-xl max-w-md">
           <CardContent className="p-6 text-center space-y-4">
             <AlertTriangle className="h-12 w-12 text-red-400 mx-auto" />
@@ -158,225 +176,492 @@ export default function PRGPublico() {
   const indiceGlobal = prgData.indiceGlobal;
   const statusGlobal = getStatusBadge(indiceGlobal);
 
-  const kpis = [
+  const kpisData = [
     {
-      titulo: "Índice de Estresse Ocupacional",
+      titulo: "Estresse Ocupacional",
+      subtitulo: "Nível de pressão e demanda no trabalho",
       valor: prgData.kpis.indiceEstresse,
       icon: Activity,
-      color: prgData.kpis.indiceEstresse >= 60 ? "text-yellow-500" : "text-green-500",
-      bgColor: prgData.kpis.indiceEstresse >= 60 ? "bg-yellow-500/10" : "bg-green-500/10"
+      color: "text-blue-400",
+      bgColor: "bg-blue-500/10",
+      interpretacao: prgData.kpis.indiceEstresse >= 70 ? "Nível elevado - requer atenção imediata" : prgData.kpis.indiceEstresse >= 50 ? "Nível moderado - monitoramento recomendado" : "Nível controlado"
     },
     {
-      titulo: "Clima Organizacional Positivo",
+      titulo: "Clima Organizacional",
+      subtitulo: "Qualidade do ambiente de trabalho",
       valor: prgData.kpis.climaPositivo,
       icon: Users,
-      color: prgData.kpis.climaPositivo >= 60 ? "text-yellow-500" : "text-green-500",
-      bgColor: prgData.kpis.climaPositivo >= 60 ? "bg-yellow-500/10" : "bg-green-500/10"
+      color: "text-green-400",
+      bgColor: "bg-green-500/10",
+      interpretacao: prgData.kpis.climaPositivo >= 70 ? "Ambiente saudável e produtivo" : prgData.kpis.climaPositivo >= 50 ? "Ambiente adequado com potencial de melhoria" : "Requer intervenção urgente"
     },
     {
-      titulo: "Satisfação com Chefia",
+      titulo: "Satisfação com Liderança",
+      subtitulo: "Percepção sobre gestão e chefia",
       valor: prgData.kpis.satisfacaoChefia,
       icon: CheckCircle2,
-      color: "text-green-500",
-      bgColor: "bg-green-500/10"
+      color: "text-purple-400",
+      bgColor: "bg-purple-500/10",
+      interpretacao: prgData.kpis.satisfacaoChefia >= 70 ? "Liderança bem avaliada" : prgData.kpis.satisfacaoChefia >= 50 ? "Avaliação moderada" : "Necessita desenvolvimento de lideranças"
     },
     {
       titulo: "Risco de Burnout",
+      subtitulo: "Probabilidade de esgotamento profissional",
       valor: prgData.kpis.riscoBurnout,
       icon: AlertTriangle,
-      color: prgData.kpis.riscoBurnout >= 60 ? "text-red-500" : "text-yellow-500",
-      bgColor: prgData.kpis.riscoBurnout >= 60 ? "bg-red-500/10" : "bg-yellow-500/10"
+      color: "text-orange-400",
+      bgColor: "bg-orange-500/10",
+      interpretacao: prgData.kpis.riscoBurnout >= 60 ? "Risco elevado - ação imediata necessária" : prgData.kpis.riscoBurnout >= 40 ? "Risco moderado - prevenção recomendada" : "Risco controlado",
+      isRisk: true
     },
     {
       titulo: "Maturidade do PRG",
+      subtitulo: "Nível de implementação do programa",
       valor: prgData.kpis.maturidadePRG,
       icon: TrendingUp,
-      color: "text-blue-500",
-      bgColor: "bg-blue-500/10"
+      color: "text-cyan-400",
+      bgColor: "bg-cyan-500/10",
+      interpretacao: prgData.kpis.maturidadePRG >= 75 ? "Programa maduro e estruturado" : prgData.kpis.maturidadePRG >= 50 ? "Programa em desenvolvimento" : "Programa inicial - requer estruturação"
     },
     {
-      titulo: "Percepção de Segurança Psicológica",
+      titulo: "Segurança Psicológica",
+      subtitulo: "Sensação de proteção e apoio",
       valor: prgData.kpis.segurancaPsicologica,
       icon: Shield,
-      color: "text-green-500",
-      bgColor: "bg-green-500/10"
+      color: "text-emerald-400",
+      bgColor: "bg-emerald-500/10",
+      interpretacao: prgData.kpis.segurancaPsicologica >= 70 ? "Ambiente seguro e acolhedor" : prgData.kpis.segurancaPsicologica >= 50 ? "Segurança adequada" : "Requer fortalecimento"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-3 md:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
         
-        {/* HEADER */}
+        {/* HEADER EXECUTIVO */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl -z-10"></div>
           
-          <Card className="border-0 bg-white/10 backdrop-blur-2xl shadow-2xl rounded-3xl overflow-hidden">
-            <CardContent className="p-12">
-              <div className="flex items-start justify-between gap-8 flex-wrap">
-                <div className="flex-1 min-w-[300px] space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="relative">
+          <Card className="border-0 bg-white/10 backdrop-blur-2xl shadow-2xl rounded-2xl md:rounded-3xl overflow-hidden">
+            <CardContent className="p-6 md:p-12">
+              <div className="flex flex-col lg:flex-row items-start justify-between gap-6 lg:gap-8">
+                <div className="flex-1 min-w-0 space-y-4 md:space-y-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <div className="relative shrink-0">
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl blur-lg opacity-75 animate-pulse"></div>
-                      <div className="relative p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl">
-                        <FileText className="h-12 w-12 text-white" />
+                      <div className="relative p-3 md:p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl">
+                        <FileText className="h-8 w-8 md:h-12 md:w-12 text-white" />
                       </div>
                     </div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-4xl font-black text-white">
-                          PRG - Dashboard Compartilhado
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
+                        <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight">
+                          Relatório Executivo PRG
                         </h1>
-                        <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 backdrop-blur-xl">
+                        <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 backdrop-blur-xl shrink-0">
                           <Sparkles className="h-3 w-3 mr-1" />
-                          Visualização Pública
+                          Público
                         </Badge>
                       </div>
-                      <p className="text-white/70 text-lg font-medium">
+                      <p className="text-white/70 text-sm md:text-base lg:text-lg font-medium">
                         Programa de Gestão de Riscos Psicossociais
+                      </p>
+                      <p className="text-white/50 text-xs md:text-sm mt-2">
+                        Conforme NR-01 e ISO 45003
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-xl rounded-2xl p-8 border border-white/10 min-w-[250px]">
-                  <p className="text-white/60 text-sm mb-3 uppercase tracking-wider">Índice Global PRG</p>
-                  <div className="text-7xl font-black text-white mb-4">{indiceGlobal}%</div>
-                  <Badge className={`${statusGlobal.color} border px-4 py-2 text-base backdrop-blur-xl`}>
+                <div className="w-full lg:w-auto flex flex-col items-center justify-center bg-white/5 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-white/10 min-w-[200px]">
+                  <p className="text-white/60 text-xs md:text-sm mb-2 md:mb-3 uppercase tracking-wider text-center">Índice Global</p>
+                  <div className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-3 md:mb-4">{indiceGlobal}%</div>
+                  <Badge className={`${statusGlobal.color} border px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base backdrop-blur-xl`}>
                     {statusGlobal.label}
                   </Badge>
+                  <p className="text-white/40 text-xs mt-3 text-center">
+                    Baseado em {prgData.totalTestes} avaliações
+                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* KPIs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {kpis.map((kpi, index) => {
-            const Icon = kpi.icon;
-            const status = getStatusBadge(kpi.valor);
-            
-            return (
-              <Card key={index} className="border-0 bg-white/10 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`p-3 rounded-xl ${kpi.bgColor}`}>
-                      <Icon className={`h-6 w-6 ${kpi.color}`} />
-                    </div>
-                    <Badge className={`${status.color} border backdrop-blur-xl`}>
-                      {status.label}
-                    </Badge>
-                  </div>
-                  <h3 className="text-white/80 text-sm mb-2 font-medium">{kpi.titulo}</h3>
-                  <div className="flex items-end gap-2">
-                    <span className="text-4xl font-bold text-white">{kpi.valor}%</span>
-                  </div>
-                  <Progress value={kpi.valor} className="mt-3 h-2 bg-white/10" />
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* TABS */}
-        <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-xl">
-          <CardContent className="p-6">
+        {/* TABS PRINCIPAIS */}
+        <Card className="border-0 bg-white/10 backdrop-blur-xl shadow-xl rounded-2xl">
+          <CardContent className="p-3 md:p-6">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-3 md:grid-cols-6 gap-2 bg-white/5 p-2 rounded-xl mb-6">
-                <TabsTrigger value="geral" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-white/60">
-                  Visão Geral
-                </TabsTrigger>
-                <TabsTrigger value="dimensoes" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-white/60">
-                  Dimensões
-                </TabsTrigger>
-                <TabsTrigger value="riscos" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-white/60">
-                  Riscos
-                </TabsTrigger>
-                <TabsTrigger value="matriz" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-white/60">
-                  Matriz
-                </TabsTrigger>
-                <TabsTrigger value="ia" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-white/60">
-                  Análise IA
-                </TabsTrigger>
-                <TabsTrigger value="recomendacoes" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-white/60">
-                  Recomendações
-                </TabsTrigger>
-              </TabsList>
+              <div className="overflow-x-auto -mx-3 md:mx-0 px-3 md:px-0">
+                <TabsList className="grid grid-cols-3 lg:grid-cols-6 gap-1 md:gap-2 bg-white/5 p-1.5 md:p-2 rounded-xl mb-4 md:mb-6 min-w-max lg:min-w-0">
+                  <TabsTrigger 
+                    value="resumo" 
+                    className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white text-white/60 text-xs md:text-sm whitespace-nowrap px-2 md:px-4"
+                  >
+                    Resumo
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="indicadores" 
+                    className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white text-white/60 text-xs md:text-sm whitespace-nowrap px-2 md:px-4"
+                  >
+                    Indicadores
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="dimensoes" 
+                    className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white text-white/60 text-xs md:text-sm whitespace-nowrap px-2 md:px-4"
+                  >
+                    Dimensões
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="riscos" 
+                    className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white text-white/60 text-xs md:text-sm whitespace-nowrap px-2 md:px-4"
+                  >
+                    Riscos
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="analise" 
+                    className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white text-white/60 text-xs md:text-sm whitespace-nowrap px-2 md:px-4"
+                  >
+                    Análise
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="acoes" 
+                    className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white text-white/60 text-xs md:text-sm whitespace-nowrap px-2 md:px-4"
+                  >
+                    Ações
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
-              <TabsContent value="geral" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Card className="bg-white/5 border-white/10">
-                    <CardContent className="p-4 text-center">
-                      <p className="text-white/60 text-sm mb-1">Colaboradores</p>
-                      <p className="text-3xl font-bold text-white">{prgData.totalColaboradores}</p>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-white/5 border-white/10">
-                    <CardContent className="p-4 text-center">
-                      <p className="text-white/60 text-sm mb-1">Total de Testes</p>
-                      <p className="text-3xl font-bold text-white">{prgData.totalTestes}</p>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-white/5 border-white/10">
-                    <CardContent className="p-4 text-center">
-                      <p className="text-white/60 text-sm mb-1">Cobertura</p>
-                      <p className="text-3xl font-bold text-white">{prgData.cobertura}%</p>
+              {/* ABA: RESUMO EXECUTIVO */}
+              <TabsContent value="resumo" className="space-y-4 md:space-y-6 mt-4">
+                <div className="space-y-4">
+                  <h2 className="text-xl md:text-2xl font-bold text-white">Resumo Executivo</h2>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                    <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 border-blue-500/30 backdrop-blur-xl">
+                      <CardContent className="p-4 md:p-6 text-center">
+                        <Users className="h-8 w-8 md:h-10 md:w-10 text-blue-400 mx-auto mb-2" />
+                        <p className="text-white/60 text-xs md:text-sm mb-1">Colaboradores</p>
+                        <p className="text-3xl md:text-4xl font-bold text-white">{prgData.totalColaboradores}</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border-purple-500/30 backdrop-blur-xl">
+                      <CardContent className="p-4 md:p-6 text-center">
+                        <FileText className="h-8 w-8 md:h-10 md:w-10 text-purple-400 mx-auto mb-2" />
+                        <p className="text-white/60 text-xs md:text-sm mb-1">Avaliações Realizadas</p>
+                        <p className="text-3xl md:text-4xl font-bold text-white">{prgData.totalTestes}</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-br from-green-500/20 to-green-600/10 border-green-500/30 backdrop-blur-xl">
+                      <CardContent className="p-4 md:p-6 text-center">
+                        <CheckCircle2 className="h-8 w-8 md:h-10 md:w-10 text-green-400 mx-auto mb-2" />
+                        <p className="text-white/60 text-xs md:text-sm mb-1">Taxa de Participação</p>
+                        <p className="text-3xl md:text-4xl font-bold text-white">{prgData.cobertura}%</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-br from-orange-500/20 to-orange-600/10 border-orange-500/30 backdrop-blur-xl">
+                      <CardContent className="p-4 md:p-6 text-center">
+                        <Activity className="h-8 w-8 md:h-10 md:w-10 text-orange-400 mx-auto mb-2" />
+                        <p className="text-white/60 text-xs md:text-sm mb-1">Status Geral</p>
+                        <p className="text-2xl md:text-3xl font-bold text-white">{statusGlobal.label}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <Card className="bg-gradient-to-br from-white/5 to-white/10 border-white/20 backdrop-blur-xl">
+                    <CardHeader>
+                      <CardTitle className="text-white text-lg md:text-xl flex items-center gap-2">
+                        <AlertCircle className="h-5 w-5 md:h-6 md:w-6" />
+                        O que é o PRG?
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-white/80 space-y-3 text-sm md:text-base leading-relaxed">
+                      <p>
+                        O <strong>Programa de Gestão de Riscos Psicossociais (PRG)</strong> é uma ferramenta estratégica para identificar, 
+                        avaliar e mitigar fatores que podem afetar a saúde mental e o bem-estar dos colaboradores.
+                      </p>
+                      <p>
+                        Este relatório apresenta uma visão completa da situação atual da organização, incluindo indicadores-chave, 
+                        análise de riscos e recomendações práticas para melhoria contínua.
+                      </p>
+                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 md:p-4 mt-4">
+                        <p className="text-blue-200 text-xs md:text-sm">
+                          <strong>Conformidade:</strong> Este programa está alinhado com a NR-01 (Portaria MTP nº 6.730/2020) 
+                          e ISO 45003:2021 para gestão de saúde e segurança ocupacional.
+                        </p>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
               </TabsContent>
 
-              <TabsContent value="dimensoes">
-                <GraficoRadarDimensoes dados={prgData.dimensoesPsicossociais} />
+              {/* ABA: INDICADORES DETALHADOS */}
+              <TabsContent value="indicadores" className="space-y-4 mt-4">
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Indicadores-Chave de Desempenho</h2>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {kpisData.map((kpi, index) => {
+                    const Icon = kpi.icon;
+                    const status = kpi.isRisk ? getRiskBadge(kpi.valor) : getStatusBadge(kpi.valor);
+                    
+                    return (
+                      <Card key={index} className="border-0 bg-white/10 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all">
+                        <CardContent className="p-4 md:p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className={`p-2 md:p-3 rounded-xl ${kpi.bgColor} shrink-0`}>
+                              <Icon className={`h-5 w-5 md:h-6 md:w-6 ${kpi.color}`} />
+                            </div>
+                            <Badge className={`${status.color} border backdrop-blur-xl text-xs`}>
+                              {status.label}
+                            </Badge>
+                          </div>
+                          
+                          <h3 className="text-white font-bold text-base md:text-lg mb-1">{kpi.titulo}</h3>
+                          <p className="text-white/60 text-xs md:text-sm mb-3">{kpi.subtitulo}</p>
+                          
+                          <div className="flex items-end gap-2 mb-3">
+                            <span className="text-4xl md:text-5xl font-black text-white">{kpi.valor}%</span>
+                          </div>
+                          
+                          <Progress value={kpi.valor} className="mt-3 h-2 md:h-3 bg-white/10" />
+                          
+                          <div className="mt-4 pt-4 border-t border-white/10">
+                            <p className="text-white/70 text-xs md:text-sm">
+                              <strong className="text-white">Interpretação:</strong> {kpi.interpretacao}
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
               </TabsContent>
 
-              <TabsContent value="riscos">
-                <GraficoDistribuicaoRiscos dados={prgData.distribuicaoRiscos} />
+              {/* ABA: DIMENSÕES PSICOSSOCIAIS */}
+              <TabsContent value="dimensoes" className="space-y-4 mt-4">
+                <div className="space-y-4">
+                  <div>
+                    <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Dimensões Psicossociais</h2>
+                    <p className="text-white/60 text-sm md:text-base">
+                      Análise comparativa entre situação atual e metas estabelecidas
+                    </p>
+                  </div>
+                  
+                  <GraficoRadarDimensoes dados={prgData.dimensoesPsicossociais} />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-4">
+                    {prgData.dimensoesPsicossociais.map((dim, idx) => {
+                      const gap = dim.meta - dim.valor;
+                      const percentualMeta = (dim.valor / dim.meta) * 100;
+                      
+                      return (
+                        <Card key={idx} className="bg-white/5 border-white/10 backdrop-blur-xl">
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="text-white font-semibold text-sm md:text-base">{dim.dimensao}</h4>
+                              <Badge className={percentualMeta >= 90 ? "bg-green-500/20 text-green-300 border-green-500/30" : percentualMeta >= 70 ? "bg-yellow-500/20 text-yellow-300 border-yellow-500/30" : "bg-red-500/20 text-red-300 border-red-500/30"}>
+                                {percentualMeta.toFixed(0)}% da meta
+                              </Badge>
+                            </div>
+                            <div className="flex items-baseline gap-2 mb-2">
+                              <span className="text-2xl md:text-3xl font-bold text-white">{dim.valor}%</span>
+                              <span className="text-white/50 text-sm">/ Meta: {dim.meta}%</span>
+                            </div>
+                            <Progress value={percentualMeta} className="h-2 bg-white/10" />
+                            {gap > 0 && (
+                              <p className="text-white/60 text-xs mt-2">
+                                Gap de {gap}% para atingir a meta
+                              </p>
+                            )}
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
               </TabsContent>
 
-              <TabsContent value="matriz">
-                <MatrizRisco riscos={prgData.matrizRiscos} />
+              {/* ABA: ANÁLISE DE RISCOS */}
+              <TabsContent value="riscos" className="space-y-4 mt-4">
+                <div className="space-y-4">
+                  <h2 className="text-xl md:text-2xl font-bold text-white">Análise de Riscos</h2>
+                  
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-white mb-3">Distribuição por Categoria</h3>
+                      <GraficoDistribuicaoRiscos dados={prgData.distribuicaoRiscos} />
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-lg font-semibold text-white mb-3">Matriz de Riscos</h3>
+                      <MatrizRisco riscos={prgData.matrizRiscos} />
+                    </div>
+                  </div>
+
+                  <Card className="bg-white/5 border-white/10 backdrop-blur-xl">
+                    <CardHeader>
+                      <CardTitle className="text-white text-base md:text-lg">Legenda da Matriz</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm md:text-base">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <p className="text-white font-semibold mb-2">Probabilidade:</p>
+                          <ul className="text-white/70 space-y-1 text-xs md:text-sm">
+                            <li>A - Rara (até 20%)</li>
+                            <li>B - Improvável (20-40%)</li>
+                            <li>C - Possível (40-60%)</li>
+                            <li>D - Provável (60-80%)</li>
+                            <li>E - Quase certa (acima de 80%)</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <p className="text-white font-semibold mb-2">Severidade:</p>
+                          <ul className="text-white/70 space-y-1 text-xs md:text-sm">
+                            <li>1 - Leve (impacto mínimo)</li>
+                            <li>2 - Menor (impacto baixo)</li>
+                            <li>3 - Moderada (impacto médio)</li>
+                            <li>4 - Maior (impacto alto)</li>
+                            <li>5 - Extrema (impacto crítico)</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </TabsContent>
 
-              <TabsContent value="ia" className="space-y-4">
-                <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/20">
-                  <CardContent className="p-6">
-                    <h3 className="text-white font-bold text-lg mb-4">🤖 Análise Inteligente</h3>
-                    <div className="text-white/80 space-y-3 leading-relaxed">
-                      {prgData.aiAnalysis.sintese.split('\n\n').map((paragrafo, i) => (
-                        <p key={i}>{paragrafo}</p>
-                      ))}
+              {/* ABA: ANÁLISE IA */}
+              <TabsContent value="analise" className="space-y-4 mt-4">
+                <Card className="bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 border-blue-500/20 backdrop-blur-xl">
+                  <CardHeader>
+                    <CardTitle className="text-white text-lg md:text-xl flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 md:h-6 md:w-6" />
+                      Análise Inteligente com IA
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="bg-white/5 rounded-xl p-4 md:p-6 border border-white/10">
+                      <div className="text-white/90 space-y-4 leading-relaxed text-sm md:text-base">
+                        {prgData.aiAnalysis.sintese.split('\n\n').map((paragrafo, i) => (
+                          <p key={i} className="text-justify">{paragrafo}</p>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 pt-4 border-t border-white/10">
+                      <p className="text-white/50 text-xs md:text-sm">
+                        Análise gerada por Inteligência Artificial • {new Date(prgData.aiAnalysis.dataGeracao).toLocaleDateString('pt-BR')}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="recomendacoes" className="space-y-4">
-                {prgData.recomendacoes.map((rec, index) => (
-                  <Card key={index} className="bg-white/5 border-white/10">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4 mb-3">
-                        <Badge className={rec.prioridade === 'Alta' ? 'bg-red-500' : 'bg-yellow-500'}>
-                          {rec.prioridade}
-                        </Badge>
-                        <h4 className="text-white font-bold flex-1">{rec.titulo}</h4>
-                      </div>
-                      <p className="text-white/70 mb-3">{rec.descricao}</p>
-                      {rec.prazo && (
-                        <p className="text-white/60 text-sm">⏰ Prazo: {rec.prazo}</p>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
+              {/* ABA: PLANO DE AÇÕES */}
+              <TabsContent value="acoes" className="space-y-4 mt-4">
+                <div className="space-y-4">
+                  <div>
+                    <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Plano de Ações Recomendadas</h2>
+                    <p className="text-white/60 text-sm md:text-base">
+                      {prgData.recomendacoes.length} recomendações estratégicas baseadas nos dados coletados
+                    </p>
+                  </div>
+
+                  {prgData.recomendacoes.map((rec, index) => (
+                    <Card key={index} className="bg-white/5 border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all">
+                      <CardContent className="p-4 md:p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-3 md:gap-4 mb-4">
+                          <Badge className={rec.prioridade === 'Alta' ? 'bg-red-500/20 text-red-300 border-red-500/30 shrink-0' : 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30 shrink-0'}>
+                            {rec.prioridade === 'Alta' ? '🔴' : '🟡'} {rec.prioridade}
+                          </Badge>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-white font-bold text-base md:text-lg mb-1">{rec.titulo}</h4>
+                            <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30 text-xs">
+                              {rec.categoria}
+                            </Badge>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div>
+                            <p className="text-white/80 text-sm md:text-base leading-relaxed">{rec.descricao}</p>
+                          </div>
+
+                          {rec.acoesPraticas && rec.acoesPraticas.length > 0 && (
+                            <div className="bg-white/5 rounded-lg p-3 md:p-4 border border-white/10">
+                              <h5 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
+                                <ArrowRight className="h-4 w-4" />
+                                Ações Práticas:
+                              </h5>
+                              <ul className="space-y-2">
+                                {rec.acoesPraticas.map((acao, i) => (
+                                  <li key={i} className="text-white/70 text-xs md:text-sm flex items-start gap-2">
+                                    <span className="text-blue-400 shrink-0">•</span>
+                                    <span>{acao}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            {rec.prazo && (
+                              <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+                                <p className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  Prazo
+                                </p>
+                                <p className="text-white text-sm font-semibold">{rec.prazo}</p>
+                              </div>
+                            )}
+                            
+                            {rec.responsavel && (
+                              <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+                                <p className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                                  <Briefcase className="h-3 w-3" />
+                                  Responsável
+                                </p>
+                                <p className="text-white text-sm font-semibold">{rec.responsavel}</p>
+                              </div>
+                            )}
+                            
+                            {rec.impactoEsperado && (
+                              <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+                                <p className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                                  <Target className="h-3 w-3" />
+                                  Impacto Esperado
+                                </p>
+                                <p className="text-white text-sm font-semibold">{rec.impactoEsperado}</p>
+                              </div>
+                            )}
+                            
+                            {rec.recursos && rec.recursos.length > 0 && (
+                              <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+                                <p className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                                  <DollarSign className="h-3 w-3" />
+                                  Recursos
+                                </p>
+                                <p className="text-white text-sm font-semibold">{rec.recursos.join(', ')}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </TabsContent>
+
             </Tabs>
           </CardContent>
         </Card>
 
         {/* FOOTER */}
-        <div className="text-center text-white/40 text-sm py-6">
-          <p>Dashboard compartilhado via QR Code • HumaniQ • Acesso somente visualização</p>
+        <div className="text-center text-white/40 text-xs md:text-sm py-4 md:py-6 space-y-2">
+          <p className="font-semibold">Relatório Executivo PRG • Acesso via QR Code</p>
+          <p>HumaniQ • Programa de Gestão de Riscos Psicossociais</p>
+          <p className="text-white/30">Conforme NR-01 e ISO 45003:2021</p>
         </div>
 
       </div>
