@@ -35,6 +35,13 @@ import MatrizRisco from "@/components/prg/MatrizRisco";
 import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
 import GraficoRadarDimensoes from "@/components/prg/GraficoRadarDimensoes";
 
+interface EmpresaData {
+  nome: string;
+  cnpj: string;
+  endereco: string;
+  setor: string;
+}
+
 interface PRGData {
   indiceGlobal: number;
   kpis: {
@@ -98,6 +105,7 @@ export default function EmpresaPRG() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [prgData, setPrgData] = useState<PRGData | null>(null);
+  const [empresaData, setEmpresaData] = useState<EmpresaData | null>(null);
   const [recomendacoesExpandidas, setRecomendacoesExpandidas] = useState<Set<number>>(new Set());
 
   // Buscar dados do PRG ao carregar a página
@@ -130,6 +138,7 @@ export default function EmpresaPRG() {
         console.log('✅ [PRG Frontend] Dados recebidos:', data);
         
         setPrgData(data.prg);
+        setEmpresaData(data.empresa);
       } catch (err) {
         console.error('❌ [PRG Frontend] Erro:', err);
         setError(err instanceof Error ? err.message : 'Erro desconhecido');
@@ -1220,6 +1229,26 @@ export default function EmpresaPRG() {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         
+        {/* IDENTIFICAÇÃO DA EMPRESA */}
+        {empresaData && (
+          <Card className="border-0 bg-white/5 backdrop-blur-md shadow-lg">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-white">{empresaData.nome}</h2>
+                  <div className="flex gap-4 text-sm text-white/70 mt-1">
+                    <span>CNPJ: {empresaData.cnpj}</span>
+                    {empresaData.setor !== 'Não informado' && <span>Setor: {empresaData.setor}</span>}
+                  </div>
+                </div>
+                <Badge className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-white border-white/20">
+                  Relatório PRG
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* HEADER - Inspirado no EmpresaEstadoPsicossocial */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl -z-10"></div>
@@ -1933,6 +1962,43 @@ export default function EmpresaPRG() {
             </CardContent>
           </Card>
         </div>
+
+        {/* RODAPÉ HUMANIQ AI */}
+        <Card className="border-0 bg-gradient-to-r from-indigo-950/50 via-purple-950/50 to-blue-950/50 backdrop-blur-lg shadow-xl">
+          <CardContent className="p-6">
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-2">
+                <Brain className="h-6 w-6 text-purple-400" />
+                <h3 className="text-xl font-bold text-white">HumaniQ AI</h3>
+              </div>
+              <p className="text-white/80 text-sm max-w-4xl mx-auto leading-relaxed">
+                A <strong>HumaniQ AI</strong> é uma plataforma inteligente especializada na análise e gestão de riscos psicossociais e ocupacionais, 
+                desenvolvida com base na NR-01 e demais normativas vigentes de Saúde e Segurança do Trabalho (SST). 
+                Utilizando inteligência artificial e metodologia científica, a HumaniQ AI realiza diagnósticos automatizados, 
+                cruzamento de dados de testes psicossociais e comportamentais, e gera relatórios técnicos que subsidiam a construção do PRG 
+                – Programa de Gerenciamento de Riscos, de forma precisa, ética e em conformidade com os princípios da prevenção e melhoria contínua.
+              </p>
+              <p className="text-white/60 text-xs">
+                Todos os relatórios da HumaniQ AI são produzidos de forma autônoma e imparcial, com base nos resultados dos colaboradores vinculados à empresa analisada, 
+                garantindo sigilo, integridade dos dados e rastreabilidade completa do processo avaliativo.
+              </p>
+              <div className="flex items-center justify-center gap-4 pt-4">
+                <Badge variant="outline" className="bg-white/5 border-white/20 text-white/70">
+                  <Shield className="h-3 w-3 mr-1" />
+                  NR-01
+                </Badge>
+                <Badge variant="outline" className="bg-white/5 border-white/20 text-white/70">
+                  <CheckCircle2 className="h-3 w-3 mr-1" />
+                  ISO 45003
+                </Badge>
+                <Badge variant="outline" className="bg-white/5 border-white/20 text-white/70">
+                  <Brain className="h-3 w-3 mr-1" />
+                  IA Ética
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
       </div>
     </div>

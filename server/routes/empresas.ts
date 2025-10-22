@@ -823,6 +823,12 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
     console.log('✅ [PRG] Dados calculados com sucesso');
 
     res.json({
+      empresa: {
+        nome: empresa.nomeEmpresa,
+        cnpj: empresa.cnpj || 'Não informado',
+        endereco: empresa.endereco || 'Não informado',
+        setor: empresa.setor || 'Não informado'
+      },
       prg: {
         indiceGlobal,
         kpis,
@@ -1141,6 +1147,12 @@ router.get('/prg/publico/:token', async (req, res) => {
     console.log('✅ [PRG Público] Dados calculados e enviados com sucesso');
 
     res.json({
+      empresa: {
+        nome: empresa.nomeEmpresa,
+        cnpj: empresa.cnpj || 'Não informado',
+        endereco: empresa.endereco || 'Não informado',
+        setor: empresa.setor || 'Não informado'
+      },
       indiceGlobal,
       kpis,
       totalColaboradores: colaboradoresList.length,
