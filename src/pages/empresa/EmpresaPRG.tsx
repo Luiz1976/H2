@@ -36,6 +36,7 @@ import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRisco
 import GraficoRadarDimensoes from "@/components/prg/GraficoRadarDimensoes";
 import GraficoParliament from "@/components/prg/GraficoParliament";
 import GraficoSankey from "@/components/prg/GraficoSankey";
+import AreasPrioritarias from "@/components/prg/AreasPrioritarias";
 
 interface EmpresaData {
   nome: string;
@@ -1804,6 +1805,13 @@ export default function EmpresaPRG() {
                   <Loader2 className="h-6 w-6 text-blue-300 animate-spin" />
                   <p className="text-white/70 text-sm">Gerando análise inteligente...</p>
                 </div>
+              </div>
+            )}
+
+            {/* Áreas Prioritárias - Visualização Gráfica */}
+            {prgData?.aiAnalysis.sintese && (
+              <div className="mt-6">
+                <AreasPrioritarias texto={prgData.aiAnalysis.sintese} />
               </div>
             )}
 
