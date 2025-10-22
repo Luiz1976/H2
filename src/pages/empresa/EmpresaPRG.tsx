@@ -95,6 +95,8 @@ interface PRGData {
     dimensao: string;
     valor: number;
     meta: number;
+    nivel?: string; // Opcional: Crítico, Atenção, Moderado, Bom
+    cor?: string;   // Opcional: red, orange, yellow, green
   }>;
 }
 

@@ -821,17 +821,17 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
 
     console.log(`📊 [PRG] Distribuição de riscos calculada para ${distribuicaoRiscos.length} categorias`);
 
-    // Dados para Gráfico Radar (Dimensões Psicossociais)
-    const dimensoesPsicossociais = [
-      { dimensao: 'Autonomia', valor: kpis.maturidadePRG, meta: 80 },
-      { dimensao: 'Apoio Social', valor: kpis.climaPositivo, meta: 85 },
-      { dimensao: 'Demandas', valor: 100 - kpis.indiceEstresse, meta: 75 },
-      { dimensao: 'Reconhecimento', valor: kpis.satisfacaoChefia, meta: 80 },
-      { dimensao: 'Equilíbrio', valor: 100 - kpis.riscoBurnout, meta: 85 },
-      { dimensao: 'Segurança', valor: kpis.segurancaPsicologica, meta: 90 }
-    ];
+    // 🎯 USAR DIMENSÕES REAIS DOS TESTES (todasDimensoes já processadas acima)
+    // Converter para formato que o frontend espera
+    const dimensoesPsicossociais = todasDimensoes.map(d => ({
+      dimensao: d.nome, // Nome formatado da dimensão
+      valor: d.percentual, // Valor percentual calculado
+      meta: 80, // Meta padrão de 80%
+      nivel: d.nivel, // Nível (Crítico, Atenção, Moderado, Bom)
+      cor: d.cor // Cor para visualização
+    }));
 
-    console.log('✅ [PRG] Dados calculados com sucesso');
+    console.log(`✅ [PRG] Dados calculados com sucesso - ${dimensoesPsicossociais.length} dimensões reais`);
 
     const responseData = {
       empresa: {
@@ -1151,16 +1151,16 @@ router.get('/prg/publico/:token', async (req, res) => {
       ...dados
     }));
 
-    const dimensoesPsicossociais = [
-      { dimensao: 'Autonomia', valor: kpis.maturidadePRG, meta: 80 },
-      { dimensao: 'Apoio Social', valor: kpis.climaPositivo, meta: 85 },
-      { dimensao: 'Demandas', valor: 100 - kpis.indiceEstresse, meta: 75 },
-      { dimensao: 'Reconhecimento', valor: kpis.satisfacaoChefia, meta: 80 },
-      { dimensao: 'Equilíbrio', valor: 100 - kpis.riscoBurnout, meta: 85 },
-      { dimensao: 'Segurança', valor: kpis.segurancaPsicologica, meta: 90 }
-    ];
+    // 🎯 USAR DIMENSÕES REAIS DOS TESTES (todasDimensoes já processadas acima)
+    const dimensoesPsicossociais = todasDimensoes.map(d => ({
+      dimensao: d.nome,
+      valor: d.percentual,
+      meta: 80,
+      nivel: d.nivel,
+      cor: d.cor
+    }));
 
-    console.log('✅ [PRG Público] Dados calculados e enviados com sucesso');
+    console.log(`✅ [PRG Público] Dados calculados com ${dimensoesPsicossociais.length} dimensões reais`);
 
     res.json({
       empresa: {
