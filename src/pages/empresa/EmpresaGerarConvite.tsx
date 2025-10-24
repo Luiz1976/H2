@@ -234,16 +234,24 @@ const EmpresaGerarConvite: React.FC = () => {
 
   const processarPlanilha = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      console.log('❌ [EXCEL] Nenhum arquivo selecionado');
+      return;
+    }
+
+    console.log('📄 [EXCEL] Arquivo selecionado:', file.name, file.size, 'bytes');
 
     try {
       setProcessandoPlanilha(true);
 
       // Ler arquivo
+      console.log('📖 [EXCEL] Lendo arquivo...');
       const data = await file.arrayBuffer();
       const workbook = XLSX.read(data);
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet) as any[];
+
+      console.log(`✅ [EXCEL] Planilha lida: ${jsonData.length} linhas encontradas`);
 
       if (jsonData.length === 0) {
         toast.error('Planilha vazia', {
@@ -257,7 +265,11 @@ const EmpresaGerarConvite: React.FC = () => {
       const colunasEsperadas = ['Nome', 'Cargo', 'Setor', 'Idade', 'Sexo'];
       const colunasFaltando = colunasEsperadas.filter(col => !primeiraLinha.hasOwnProperty(col));
 
+      console.log('📋 [EXCEL] Colunas encontradas:', Object.keys(primeiraLinha));
+      console.log('📋 [EXCEL] Colunas esperadas:', colunasEsperadas);
+
       if (colunasFaltando.length > 0) {
+        console.error('❌ [EXCEL] Colunas faltando:', colunasFaltando);
         toast.error('Planilha inválida', {
           description: `Colunas faltando: ${colunasFaltando.join(', ')}`,
         });
@@ -266,9 +278,12 @@ const EmpresaGerarConvite: React.FC = () => {
 
       // Processar dados e gerar convites
       if (!user?.empresaId) {
+        console.error('❌ [EXCEL] ID da empresa não encontrado');
         toast.error('ID da empresa não encontrado');
         return;
       }
+
+      console.log('🏢 [EXCEL] ID da empresa:', user.empresaId);
 
       const convitesParaGerar = jsonData.map((linha: any) => ({
         nome: String(linha.Nome || '').trim(),
@@ -281,6 +296,8 @@ const EmpresaGerarConvite: React.FC = () => {
       // Filtrar linhas vazias
       const colaboradoresValidos = convitesParaGerar.filter(c => c.nome && c.cargo && c.setor);
 
+      console.log(`✅ [EXCEL] Colaboradores válidos: ${colaboradoresValidos.length} de ${convitesParaGerar.length}`);
+
       if (colaboradoresValidos.length === 0) {
         toast.error('Nenhum colaborador válido encontrado', {
           description: 'Verifique os dados da planilha',
@@ -290,9 +307,12 @@ const EmpresaGerarConvite: React.FC = () => {
 
       // Gerar convites
       const convitesComLinks: ConviteGerado[] = [];
+      const erros: string[] = [];
 
       for (const colaborador of colaboradoresValidos) {
         try {
+          console.log(`📤 [EXCEL] Gerando convite para: ${colaborador.nome}`);
+          
           const response = await fetch('/api/convites/colaborador', {
             method: 'POST',
             headers: { 
@@ -301,7 +321,7 @@ const EmpresaGerarConvite: React.FC = () => {
             },
             body: JSON.stringify({
               nome: colaborador.nome,
-              email: `${colaborador.nome.toLowerCase().replace(/\s+/g, '.')}@temp.com`, // Email temporário
+              email: `${colaborador.nome.toLowerCase().replace(/\s+/g, '.')}@temp.com`,
               cargo: colaborador.cargo,
               departamento: colaborador.setor,
               diasValidade: 30,
@@ -309,37 +329,58 @@ const EmpresaGerarConvite: React.FC = () => {
           });
 
           const data = await response.json();
+          console.log(`📥 [EXCEL] Resposta para ${colaborador.nome}:`, data);
 
           if (data.success && data.data?.token) {
-            const linkConvite = `${window.location.origin}/convite/${data.data.token}`;
+            const linkConvite = `${window.location.origin}/convite/colaborador/${data.data.token}`;
             convitesComLinks.push({
               nome: colaborador.nome,
               cargo: colaborador.cargo,
               setor: colaborador.setor,
               link: linkConvite,
             });
+            console.log(`✅ [EXCEL] Convite criado para: ${colaborador.nome}`);
+          } else {
+            const erro = data.error || data.message || 'Erro desconhecido';
+            console.error(`❌ [EXCEL] Falha para ${colaborador.nome}:`, erro);
+            erros.push(`${colaborador.nome}: ${erro}`);
           }
         } catch (error) {
-          console.error(`Erro ao gerar convite para ${colaborador.nome}:`, error);
+          console.error(`❌ [EXCEL] Exceção ao gerar convite para ${colaborador.nome}:`, error);
+          erros.push(`${colaborador.nome}: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
         }
+      }
+
+      console.log(`📊 [EXCEL] Resultado final: ${convitesComLinks.length} convites criados, ${erros.length} erros`);
+
+      if (erros.length > 0) {
+        console.error('❌ [EXCEL] Erros encontrados:', erros);
       }
 
       setConvitesGerados(convitesComLinks);
       setShowConvitesGerados(true);
 
-      toast.success('Convites gerados com sucesso!', {
-        description: `${convitesComLinks.length} de ${colaboradoresValidos.length} convites criados`,
-      });
+      if (convitesComLinks.length > 0) {
+        toast.success('Convites gerados!', {
+          description: `${convitesComLinks.length} de ${colaboradoresValidos.length} convites criados${erros.length > 0 ? ` (${erros.length} falhas)` : ''}`,
+        });
+      } else {
+        toast.error('Nenhum convite foi criado', {
+          description: erros.length > 0 ? erros[0] : 'Erro desconhecido',
+        });
+      }
 
       // Limpar input
       event.target.value = '';
       
       // Recarregar lista de convites
-      carregarConvites();
+      if (convitesComLinks.length > 0) {
+        carregarConvites();
+      }
     } catch (error) {
-      console.error('Erro ao processar planilha:', error);
+      console.error('❌ [EXCEL] Erro fatal ao processar planilha:', error);
       toast.error('Erro ao processar planilha', {
-        description: 'Verifique se o arquivo está no formato correto',
+        description: error instanceof Error ? error.message : 'Verifique se o arquivo está no formato correto',
       });
     } finally {
       setProcessandoPlanilha(false);
