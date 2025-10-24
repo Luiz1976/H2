@@ -37,6 +37,7 @@ interface Colaborador {
   email: string;
   cargo?: string;
   departamento?: string;
+  avatar?: string;
   ativo: boolean;
   created_at: string;
   updated_at: string;
@@ -255,9 +256,17 @@ export default function EmpresaColaboradores() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-10 w-10">
-                        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                          <Users className="w-5 h-5 text-blue-600" />
-                        </div>
+                        {colaborador.avatar ? (
+                          <img 
+                            src={colaborador.avatar} 
+                            alt={colaborador.nome}
+                            className="h-10 w-10 rounded-full object-cover border-2 border-blue-200"
+                          />
+                        ) : (
+                          <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                            <Users className="w-5 h-5 text-blue-600" />
+                          </div>
+                        )}
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
