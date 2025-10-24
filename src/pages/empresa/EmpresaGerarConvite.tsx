@@ -295,14 +295,16 @@ const EmpresaGerarConvite: React.FC = () => {
         try {
           const response = await fetch('/api/convites/colaborador', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify({
               nome: colaborador.nome,
               email: `${colaborador.nome.toLowerCase().replace(/\s+/g, '.')}@temp.com`, // Email temporário
               cargo: colaborador.cargo,
               departamento: colaborador.setor,
-              empresa_id: user.empresaId,
-              dias_expiracao: 30,
+              diasValidade: 30,
             }),
           });
 

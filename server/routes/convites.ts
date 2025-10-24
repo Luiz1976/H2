@@ -89,12 +89,20 @@ router.post('/colaborador', authenticateToken, requireEmpresa, async (req: AuthR
       .returning();
 
     res.status(201).json({
-      convite,
-      linkConvite: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/convite/colaborador/${token}`,
+      success: true,
+      message: 'Convite criado com sucesso',
+      data: {
+        ...convite,
+        linkConvite: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/convite/colaborador/${token}`,
+      }
     });
   } catch (error) {
     console.error('Erro ao criar convite colaborador:', error);
-    res.status(500).json({ error: 'Erro interno do servidor' });
+    res.status(500).json({ 
+      success: false, 
+      error: 'Erro interno do servidor',
+      message: 'Não foi possível criar o convite'
+    });
   }
 });
 
