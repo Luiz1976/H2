@@ -77,6 +77,9 @@ router.post('/login', async (req, res) => {
         nome: user.nome || (user as any).nomeEmpresa,
         role,
         empresaId,
+        avatar: (user as any).avatar,
+        cargo: (user as any).cargo,
+        departamento: (user as any).departamento,
       },
     });
   } catch (error) {

@@ -10,6 +10,9 @@ export interface User {
   redirectUrl: string;
   empresaId?: string;
   permissoes?: any;
+  avatar?: string;
+  cargo?: string;
+  departamento?: string;
 }
 
 export interface AuthResponse {
@@ -118,6 +121,9 @@ class AuthServiceNew {
         role: response.user.role,
         redirectUrl: roleMap[response.user.role] || '/',
         empresaId: response.user.empresaId,
+        avatar: response.user.avatar,
+        cargo: response.user.cargo,
+        departamento: response.user.departamento,
       };
 
       this.currentUser = user;
