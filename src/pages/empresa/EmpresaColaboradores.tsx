@@ -69,6 +69,11 @@ export default function EmpresaColaboradores() {
       const response = await authService.getColaboradores();
       
       if (response.success && response.data) {
+        console.log('🔍 [FRONT] Colaboradores recebidos:', response.data.map(c => ({ 
+          nome: c.nome, 
+          cargo: c.cargo, 
+          departamento: c.departamento 
+        })));
         setColaboradores(response.data);
       } else {
         toast.error(response.message || 'Erro ao carregar colaboradores');

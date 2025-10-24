@@ -208,13 +208,18 @@ router.get('/colaboradores', authenticateToken, requireEmpresa, async (req: Auth
 
         console.log(`🎯 [PSICO] Situação final para ${colaborador.nome}:`, JSON.stringify(situacaoPsicossocial));
 
-        return {
+        const colaboradorCompleto = {
           ...colaborador,
           situacaoPsicossocial,
         };
+        
+        console.log(`📦 [DADOS] Colaborador ${colaborador.nome} - Cargo: ${colaboradorCompleto.cargo}, Departamento: ${colaboradorCompleto.departamento}`);
+        
+        return colaboradorCompleto;
       })
     );
 
+    console.log('📤 [API] Enviando colaboradores:', colaboradoresEnriquecidos.map(c => ({ nome: c.nome, cargo: c.cargo, departamento: c.departamento })));
     res.json({ colaboradores: colaboradoresEnriquecidos, total: colaboradoresEnriquecidos.length });
   } catch (error) {
     console.error('Erro ao listar colaboradores:', error);
