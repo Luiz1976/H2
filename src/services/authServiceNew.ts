@@ -196,6 +196,7 @@ class AuthServiceNew {
         email: col.email,
         cargo: col.cargo,
         departamento: col.departamento,
+        avatar: col.avatar,
         ativo: col.ativo,
         created_at: col.createdAt,
         updated_at: col.createdAt,
