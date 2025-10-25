@@ -1414,10 +1414,13 @@ router.get('/prg/publico/:token', async (req, res) => {
       'alto': 0,
       'moderado': 0,
       'baixo': 0,
-      'saudavel': 0
+      'saudavel': 0,
+      'nao_avaliado': 0
     };
 
     const colaboradoresComTestes = new Set(resultadosList.map(r => r.colaboradorId));
+    const todosColaboradoresIds = new Set(colaboradoresList.map(c => c.id));
+    
     colaboradoresComTestes.forEach(colabId => {
       const testesDoColab = resultadosList.filter(r => r.colaboradorId === colabId);
       const mediaPontuacao = testesDoColab.reduce((acc, t) => acc + (t.pontuacaoTotal || 50), 0) / testesDoColab.length;
@@ -1427,6 +1430,13 @@ router.get('/prg/publico/:token', async (req, res) => {
       else if (mediaPontuacao < 70) colaboradoresPorRisco.moderado++;
       else if (mediaPontuacao < 85) colaboradoresPorRisco.baixo++;
       else colaboradoresPorRisco.saudavel++;
+    });
+    
+    // Adicionar colaboradores sem testes como "não avaliado"
+    todosColaboradoresIds.forEach(colabId => {
+      if (!colaboradoresComTestes.has(colabId)) {
+        colaboradoresPorRisco.nao_avaliado++;
+      }
     });
 
     const dadosParliament = [
