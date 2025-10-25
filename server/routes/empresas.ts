@@ -359,7 +359,26 @@ router.get('/todas', authenticateToken, requireAdmin, async (req: AuthRequest, r
       })
       .from(empresas);
 
-    res.json({ empresas: todasEmpresas, total: todasEmpresas.length });
+    // Enriquecer com a contagem de colaboradores
+    const empresasEnriquecidas = await Promise.all(
+      todasEmpresas.map(async (empresa) => {
+        const colaboradoresList = await db
+          .select()
+          .from(colaboradores)
+          .where(eq(colaboradores.empresaId, empresa.id));
+
+        return {
+          id: empresa.id,
+          nome_empresa: empresa.nomeEmpresa,
+          email_contato: empresa.emailContato,
+          ativo: empresa.ativa,
+          created_at: empresa.createdAt,
+          total_colaboradores: colaboradoresList.length,
+        };
+      })
+    );
+
+    res.json({ empresas: empresasEnriquecidas, total: empresasEnriquecidas.length });
   } catch (error) {
     console.error('Erro ao listar empresas:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
