@@ -127,16 +127,16 @@ export default function AdminEmpresaDetalhes() {
 
   if (!indicadores) return null;
 
-  const categoriaData = Object.entries(indicadores.testes.porCategoria).map(([nome, valor]) => ({
+  const categoriaData = Object.entries(indicadores.testes.porCategoria || {}).map(([nome, valor]) => ({
     nome,
     valor,
   }));
 
   const distribuicaoData = [
-    { periodo: 'Manhã\n(6h-12h)', quantidade: indicadores.analise.distribuicaoTemporal.manha, icon: 'sunrise' },
-    { periodo: 'Tarde\n(12h-18h)', quantidade: indicadores.analise.distribuicaoTemporal.tarde, icon: 'sun' },
-    { periodo: 'Noite\n(18h-00h)', quantidade: indicadores.analise.distribuicaoTemporal.noite, icon: 'sunset' },
-    { periodo: 'Madrugada\n(0h-6h)', quantidade: indicadores.analise.distribuicaoTemporal.madrugada, icon: 'moon' },
+    { periodo: 'Manhã\n(6h-12h)', quantidade: indicadores.analise?.distribuicaoTemporal?.manha || 0, icon: 'sunrise' },
+    { periodo: 'Tarde\n(12h-18h)', quantidade: indicadores.analise?.distribuicaoTemporal?.tarde || 0, icon: 'sun' },
+    { periodo: 'Noite\n(18h-00h)', quantidade: indicadores.analise?.distribuicaoTemporal?.noite || 0, icon: 'sunset' },
+    { periodo: 'Madrugada\n(0h-6h)', quantidade: indicadores.analise?.distribuicaoTemporal?.madrugada || 0, icon: 'moon' },
   ];
 
   return (
@@ -201,7 +201,7 @@ export default function AdminEmpresaDetalhes() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Alertas Críticos */}
-        {indicadores.analise.alertas.length > 0 && (
+        {indicadores.analise?.alertas && indicadores.analise.alertas.length > 0 && (
           <div className="mb-8 space-y-3">
             <h2 className="text-lg font-bold text-gray-900 flex items-center">
               <AlertTriangle className="w-5 h-5 mr-2 text-orange-500" />
@@ -422,7 +422,7 @@ export default function AdminEmpresaDetalhes() {
               Tendência de Testes (6 meses)
             </h3>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={indicadores.analise.tendencia}>
+              <LineChart data={indicadores.analise?.tendencia || []}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis dataKey="mes" stroke="#94a3b8" style={{ fontSize: '12px' }} />
                 <YAxis stroke="#94a3b8" style={{ fontSize: '12px' }} />
@@ -514,7 +514,7 @@ export default function AdminEmpresaDetalhes() {
               <AlertTriangle className="w-5 h-5 mr-2 text-red-600" />
               Categorias de Risco Identificadas
             </h3>
-            {indicadores.saude.categoriasRisco.length > 0 ? (
+            {indicadores.saude?.categoriasRisco && indicadores.saude.categoriasRisco.length > 0 ? (
               <div className="space-y-3">
                 {indicadores.saude.categoriasRisco.map((cat, index) => (
                   <div key={index} className="p-4 bg-red-50 border border-red-200 rounded-lg">
