@@ -239,6 +239,7 @@ router.get('/colaboradores/:id', authenticateToken, requireEmpresa, async (req: 
         email: colaboradores.email,
         cargo: colaboradores.cargo,
         departamento: colaboradores.departamento,
+        avatar: colaboradores.avatar,
         ativo: colaboradores.ativo,
         createdAt: colaboradores.createdAt,
       })
