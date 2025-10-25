@@ -45,6 +45,7 @@ interface ResultadoTeste {
   tempoDuracao?: number;
   observacoes?: string;
   tipoTabela?: string;
+  nivel?: string;
 }
 
 export default function EmpresaColaboradorResultados() {
@@ -127,7 +128,7 @@ export default function EmpresaColaboradorResultados() {
     try {
       console.log('🔍 [EmpresaColaboradorResultados] Iniciando carregamento dos resultados para:', colaboradorId);
       console.log('👤 [EmpresaColaboradorResultados] Usuário atual:', authService.getCurrentUser());
-      console.log('🏢 [EmpresaColaboradorResultados] Empresa atual:', authService.getCurrentUser()?.empresa_id);
+      console.log('🏢 [EmpresaColaboradorResultados] Empresa atual:', authService.getCurrentUser()?.empresaId);
       setLoading(true);
       
       const response = await authService.getResultadosColaborador(colaboradorId!);
