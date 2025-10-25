@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Clock, FileText, Brain, Heart, Users, Shield, AlertTriangle, Star } from "lucide-react";
+import { Building2, Clock, FileText, Brain, Heart, Users, Shield, AlertTriangle, Star, Lock, CheckCircle2, Loader2, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { infoTesteClimaOrganizacional } from "@/lib/testes/clima-organizacional";
 import { infoTesteKarasekSiegrist } from "@/lib/testes/karasek-siegrist";
@@ -11,10 +11,106 @@ import { infoTesteMaturidadeRiscosPsicossociais } from "@/lib/testes/maturidade-
 import { configPercepacaoAssedio } from "@/lib/testes/percepcao-assedio";
 import { configQualidadeVidaTrabalho } from "@/lib/testes/qualidade-vida-trabalho";
 import { obterInfoTesteRPO } from "@/lib/testes/riscos-psicossociais-ocupacionais";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+
+interface TesteDisponibilidade {
+  id: string;
+  nome: string;
+  descricao: string;
+  categoria: string;
+  tempoEstimado: number;
+  instrucoes: string;
+  ativo: boolean;
+  disponivel: boolean;
+  motivo: string | null;
+  proximaDisponibilidade: string | null;
+  dataConclusao: string | null;
+  pontuacao: number | null;
+  periodicidadeDias: number | null;
+}
 
 export default function Testes() {
   const navigate = useNavigate();
   const infoRPO = obterInfoTesteRPO();
+  
+  const [testes, setTestes] = useState<TesteDisponibilidade[]>([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
+
+  useEffect(() => {
+    carregarTestesDisponiveis();
+  }, []);
+
+  const carregarTestesDisponiveis = async () => {
+    try {
+      setCarregando(true);
+      setErro(null);
+
+      const token = localStorage.getItem('authToken');
+      const user = localStorage.getItem('currentUser');
+      
+      if (!token || !user) {
+        // Se não está logado como colaborador, mostrar testes estáticos
+        setCarregando(false);
+        return;
+      }
+
+      const userData = JSON.parse(user);
+      if (userData.role !== 'colaborador') {
+        // Se não é colaborador, mostrar testes estáticos
+        setCarregando(false);
+        return;
+      }
+
+      const response = await fetch('/api/teste-disponibilidade/colaborador/testes', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao carregar testes');
+      }
+
+      const data = await response.json();
+      setTestes(data.testes || []);
+    } catch (error) {
+      console.error('Erro ao carregar testes:', error);
+      setErro('Erro ao carregar testes disponíveis');
+      toast.error('Erro ao carregar testes disponíveis');
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  const getTesteInfo = (nome: string) => {
+    const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('clima organizacional')) return infoTesteClimaOrganizacional;
+    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return infoTesteKarasekSiegrist;
+    if (nomeNorm.includes('estresse ocupacional')) return infoTesteEstresseOcupacional;
+    if (nomeNorm.includes('clima e bem-estar')) return infoTesteClimaBemEstar;
+    if (nomeNorm.includes('maturidade')) return infoTesteMaturidadeRiscosPsicossociais;
+    if (nomeNorm.includes('assédio')) return configPercepacaoAssedio;
+    if (nomeNorm.includes('qualidade de vida')) return configQualidadeVidaTrabalho;
+    if (nomeNorm.includes('rpo') || nomeNorm.includes('riscos psicossociais')) return infoRPO;
+    return null;
+  };
+
+  const getMotivoTexto = (motivo: string | null, proximaDisponibilidade: string | null) => {
+    if (motivo === 'teste_concluido') {
+      return 'Teste já concluído';
+    } else if (motivo === 'bloqueado_empresa') {
+      return 'Bloqueado pela empresa';
+    } else if (motivo === 'aguardando_periodicidade' && proximaDisponibilidade) {
+      const data = new Date(proximaDisponibilidade);
+      return `Disponível em ${format(data, "dd 'de' MMMM", { locale: ptBR })}`;
+    }
+    return 'Indisponível';
+  };
 
   return (
     <div className="space-y-8">
