@@ -73,6 +73,26 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
   - **Security**: Credentials not persisted, 30s timeout for data fetch, Basic Auth by ERP type, health checks with 5s timeout
   - **Performance**: Average response time 569ms, 0 timeouts, endpoint-specific health checks
   - **Test Results**: Comprehensive connectivity testing with detailed status reports (see `relatorio_teste_erp_ajustado.md`)
+- **Test Availability Control System**: Complete system for managing test availability and recurrence for employees (October 25, 2025):
+  - **Database**: New `teste_disponibilidade` table with fields for availability status, recurrence period (days), release history, and next availability date
+  - **Automatic Blocking**: Tests are automatically marked as unavailable after completion by the employee
+  - **Company Controls**: 
+    - "Release Again" button to manually unlock completed tests for employees
+    - Recurrence configuration (in days) to automatically release tests after a defined period
+    - Complete test management per employee via `GerenciamentoTestesColaborador` component
+  - **Employee View**: 
+    - Tests displayed with availability status (Available/Unavailable)
+    - Visual indicators: gray cards with lock icon for unavailable tests
+    - Informative messages explaining why tests are unavailable (completed, blocked by company, awaiting recurrence period)
+    - Next availability date display when recurrence is configured
+  - **Backend Endpoints**:
+    - `GET /api/teste-disponibilidade/colaborador/testes` - Returns available tests for authenticated employee
+    - `GET /api/teste-disponibilidade/empresa/colaborador/:id/testes` - Returns test information for a specific employee (company access)
+    - `POST /api/teste-disponibilidade/empresa/colaborador/:id/teste/:testeId/liberar` - Manually releases a test
+    - `PATCH /api/teste-disponibilidade/empresa/colaborador/:id/teste/:testeId/periodicidade` - Configures test recurrence
+    - `POST /api/teste-disponibilidade/marcar-concluido` - Internal hook to mark test as unavailable after completion
+  - **Features**: Professional audit history, unique constraint per employee/test, automatic release based on recurrence, complete data isolation by company
+  - **Components**: `ColaboradorTestes` (employee view), `GerenciamentoTestesColaborador` (company management), updated `Testes` page with dynamic availability checking
 
 ### System Design Choices
 Migration from Supabase to a local API backend for enhanced control. Manual Zod schemas are used due to `drizzle-zod` incompatibilities. API returns camelCase, with frontend handling necessary conversions.
