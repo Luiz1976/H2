@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { 
   Users, UserPlus, TrendingUp, Award, Calendar, Clock, 
   Activity, Target, BarChart3, Sparkles, Brain, 
-  TrendingDown, Zap, Shield, ArrowUp, ArrowDown, X
+  TrendingDown, Zap, Shield, ArrowUp, ArrowDown, X, FileCheck
 } from 'lucide-react';
 import { empresaStatisticsService, EstatisticasEmpresa } from '../../services/empresaStatisticsService';
 import { apiService } from '../../services/apiService';
@@ -90,9 +90,9 @@ export default function EmpresaOverview() {
     }
   };
 
-  const calcularTaxaParticipacao = (): string => {
-    if (estatisticas.total_colaboradores === 0) return '0';
-    return ((estatisticas.total_testes_realizados / estatisticas.total_colaboradores) * 100).toFixed(1);
+  const calcularMediaTestesPorColaborador = (): string => {
+    if (estatisticas.total_colaboradores === 0) return '0.0';
+    return (estatisticas.total_testes_realizados / estatisticas.total_colaboradores).toFixed(1);
   };
 
   const calcularTaxaAtivos = (): number => {
@@ -164,10 +164,10 @@ export default function EmpresaOverview() {
       bgGradient: 'from-amber-500/10 to-orange-500/10'
     },
     {
-      title: 'Taxa de Participação',
-      value: `${calcularTaxaParticipacao()}%`,
-      subtitle: 'Colaboradores que fizeram testes',
-      icon: Target,
+      title: 'Média de Testes',
+      value: calcularMediaTestesPorColaborador(),
+      subtitle: 'Por colaborador',
+      icon: FileCheck,
       color: 'indigo',
       gradient: 'from-indigo-500 to-blue-500',
       bgGradient: 'from-indigo-500/10 to-blue-500/10'
@@ -345,28 +345,28 @@ export default function EmpresaOverview() {
             </div>
             
             <div className="space-y-6">
-              {/* Taxa de Participação */}
+              {/* Média de Testes */}
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <div className="flex items-center gap-2">
-                    <Target className="w-4 h-4 text-blue-600" />
-                    <span className="text-sm font-medium text-gray-700">Taxa de Participação</span>
+                    <FileCheck className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium text-gray-700">Média de Testes por Colaborador</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-gray-900" data-testid="text-taxa-participacao">
-                      {calcularTaxaParticipacao()}%
+                    <span className="text-lg font-bold text-gray-900" data-testid="text-media-testes">
+                      {calcularMediaTestesPorColaborador()}
                     </span>
-                    {parseFloat(calcularTaxaParticipacao()) > 50 ? (
+                    {parseFloat(calcularMediaTestesPorColaborador()) > 2 ? (
                       <ArrowUp className="w-4 h-4 text-green-600" />
                     ) : (
-                      <ArrowDown className="w-4 h-4 text-red-600" />
+                      <ArrowDown className="w-4 h-4 text-amber-600" />
                     )}
                   </div>
                 </div>
                 <div className="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
                   <div 
                     className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full shadow-lg transition-all duration-1000 ease-out"
-                    style={{ width: `${Math.min(parseFloat(calcularTaxaParticipacao()), 100)}%` }}
+                    style={{ width: `${Math.min(parseFloat(calcularMediaTestesPorColaborador()) * 20, 100)}%` }}
                   >
                     <div className="absolute inset-0 bg-white/30 animate-pulse" />
                   </div>
