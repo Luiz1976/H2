@@ -1009,11 +1009,17 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       'alto': 0,
       'moderado': 0,
       'baixo': 0,
-      'saudavel': 0
+      'saudavel': 0,
+      'nao_avaliado': 0
     };
 
     // Classificar cada colaborador baseado nas médias de suas dimensões
     const colaboradoresComTestes = new Set(resultadosList.map(r => r.colaboradorId));
+    const todosColaboradoresIds = new Set(colaboradoresList.map(c => c.id));
+    
+    console.log(`📊 [Parliament] Total colaboradores com testes: ${colaboradoresComTestes.size} de ${colaboradoresList.length} cadastrados`);
+    
+    // Classificar colaboradores que fizeram testes
     colaboradoresComTestes.forEach(colabId => {
       const testesDoColab = resultadosList.filter(r => r.colaboradorId === colabId);
       const mediaPontuacao = testesDoColab.reduce((acc, t) => acc + (t.pontuacaoTotal || 50), 0) / testesDoColab.length;
@@ -1024,16 +1030,25 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       else if (mediaPontuacao < 85) colaboradoresPorRisco.baixo++;
       else colaboradoresPorRisco.saudavel++;
     });
+    
+    // Adicionar colaboradores sem testes como "não avaliado"
+    todosColaboradoresIds.forEach(colabId => {
+      if (!colaboradoresComTestes.has(colabId)) {
+        colaboradoresPorRisco.nao_avaliado++;
+      }
+    });
 
     const dadosParliament = [
       { categoria: 'Crítico', quantidade: colaboradoresPorRisco.critico, cor: '#dc2626', label: 'Risco Crítico' },
       { categoria: 'Alto', quantidade: colaboradoresPorRisco.alto, cor: '#f97316', label: 'Risco Alto' },
       { categoria: 'Moderado', quantidade: colaboradoresPorRisco.moderado, cor: '#eab308', label: 'Risco Moderado' },
       { categoria: 'Baixo', quantidade: colaboradoresPorRisco.baixo, cor: '#22c55e', label: 'Risco Baixo' },
-      { categoria: 'Saudável', quantidade: colaboradoresPorRisco.saudavel, cor: '#10b981', label: 'Saudável' }
+      { categoria: 'Saudável', quantidade: colaboradoresPorRisco.saudavel, cor: '#10b981', label: 'Saudável' },
+      { categoria: 'Não Avaliado', quantidade: colaboradoresPorRisco.nao_avaliado, cor: '#6b7280', label: 'Não Avaliado' }
     ];
 
     console.log(`📊 [Parliament] Distribuição: ${JSON.stringify(colaboradoresPorRisco)}`);
+    console.log(`📊 [Parliament] Total colaboradores com testes: ${colaboradoresComTestes.size} de ${colaboradoresList.length} cadastrados`);
 
     // 📊 GRÁFICO SANKEY - Fluxo entre Estados de Bem-Estar
     // Simular transições baseado nos dados disponíveis
@@ -1092,6 +1107,9 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
 
     console.log('📤 [PRG] Enviando resposta com empresa:', responseData.empresa.nome);
     console.log('📤 [PRG] Chaves da resposta:', Object.keys(responseData));
+    console.log('📤 [PRG] totalColaboradores:', responseData.prg.totalColaboradores);
+    console.log('📤 [PRG] totalTestes:', responseData.prg.totalTestes);
+    console.log('📤 [PRG] cobertura:', responseData.prg.cobertura);
     
     res.json(responseData);
 
@@ -1413,7 +1431,8 @@ router.get('/prg/publico/:token', async (req, res) => {
       { categoria: 'Alto', quantidade: colaboradoresPorRisco.alto, cor: '#f97316', label: 'Risco Alto' },
       { categoria: 'Moderado', quantidade: colaboradoresPorRisco.moderado, cor: '#eab308', label: 'Risco Moderado' },
       { categoria: 'Baixo', quantidade: colaboradoresPorRisco.baixo, cor: '#22c55e', label: 'Risco Baixo' },
-      { categoria: 'Saudável', quantidade: colaboradoresPorRisco.saudavel, cor: '#10b981', label: 'Saudável' }
+      { categoria: 'Saudável', quantidade: colaboradoresPorRisco.saudavel, cor: '#10b981', label: 'Saudável' },
+      { categoria: 'Não Avaliado', quantidade: colaboradoresPorRisco.nao_avaliado, cor: '#6b7280', label: 'Não Avaliado' }
     ];
 
     // 📊 GRÁFICO SANKEY - Fluxo entre Estados (rota pública)
