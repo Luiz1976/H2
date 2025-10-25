@@ -10,7 +10,7 @@ interface ResultadoTeste {
   nomeTest: string;
   categoria: string;
   pontuacao: number;
-  nivel: string;
+  nivel?: string;
   dataRealizacao: string;
   tipoTabela?: string;
 }

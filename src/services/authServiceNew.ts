@@ -227,6 +227,7 @@ class AuthServiceNew {
         email: response.colaborador.email,
         cargo: response.colaborador.cargo,
         departamento: response.colaborador.departamento,
+        avatar: response.colaborador.avatar,
         ativo: response.colaborador.ativo,
         created_at: response.colaborador.createdAt,
       };
