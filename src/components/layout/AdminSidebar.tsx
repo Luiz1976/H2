@@ -1,4 +1,4 @@
-import { Building2, Mail, BarChart3, LogOut, Menu } from "lucide-react";
+import { Building2, Mail, LogOut } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
 import {
@@ -23,11 +23,6 @@ const adminMenuItems = [
     title: "Convites", 
     url: "/admin/convites", 
     icon: Mail 
-  },
-  { 
-    title: "Estatísticas", 
-    url: "/admin/estatisticas", 
-    icon: BarChart3 
   }
 ];
 
