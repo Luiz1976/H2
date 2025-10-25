@@ -349,6 +349,7 @@ router.get('/colaboradores/:id/resultados', authenticateToken, requireEmpresa, a
 // Admin: listar todas as empresas
 router.get('/todas', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
+    console.log('🏢 [ADMIN] Buscando todas as empresas...');
     const todasEmpresas = await db
       .select({
         id: empresas.id,
@@ -359,6 +360,11 @@ router.get('/todas', authenticateToken, requireAdmin, async (req: AuthRequest, r
       })
       .from(empresas);
 
+    console.log('🏢 [ADMIN] Empresas encontradas no banco:', todasEmpresas.length);
+    if (todasEmpresas.length > 0) {
+      console.log('🏢 [ADMIN] Primeira empresa:', todasEmpresas[0]);
+    }
+
     // Enriquecer com a contagem de colaboradores
     const empresasEnriquecidas = await Promise.all(
       todasEmpresas.map(async (empresa) => {
@@ -367,7 +373,7 @@ router.get('/todas', authenticateToken, requireAdmin, async (req: AuthRequest, r
           .from(colaboradores)
           .where(eq(colaboradores.empresaId, empresa.id));
 
-        return {
+        const empresaFormatada = {
           id: empresa.id,
           nome_empresa: empresa.nomeEmpresa,
           email_contato: empresa.emailContato,
@@ -375,9 +381,13 @@ router.get('/todas', authenticateToken, requireAdmin, async (req: AuthRequest, r
           created_at: empresa.createdAt,
           total_colaboradores: colaboradoresList.length,
         };
+        
+        console.log('🏢 [ADMIN] Empresa formatada:', empresaFormatada);
+        return empresaFormatada;
       })
     );
 
+    console.log('🏢 [ADMIN] Enviando resposta com', empresasEnriquecidas.length, 'empresas');
     res.json({ empresas: empresasEnriquecidas, total: empresasEnriquecidas.length });
   } catch (error) {
     console.error('Erro ao listar empresas:', error);

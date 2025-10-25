@@ -47,11 +47,17 @@ export default function AdminEmpresas() {
 
   const carregarEmpresas = async () => {
     try {
+      console.log('🔍 [ADMIN] Carregando empresas...');
       const response = await authService.getEmpresas();
       
+      console.log('🔍 [ADMIN] Resposta recebida:', response);
+      
       if (response.success && response.data) {
+        console.log('🔍 [ADMIN] Empresas recebidas:', response.data);
+        console.log('🔍 [ADMIN] Primeira empresa:', response.data[0]);
         setEmpresas(response.data);
       } else {
+        console.error('🔍 [ADMIN] Erro na resposta:', response.message);
         toast.error(response.message || 'Erro ao carregar empresas');
       }
     } catch (error) {
