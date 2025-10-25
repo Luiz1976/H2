@@ -277,17 +277,17 @@ router.post('/colaborador/aceitar/:token', async (req, res) => {
   }
 });
 
-// Listar convites (admin vê todos de empresa, empresa vê seus de colaborador)
+// Listar convites (admin vê TODOS de empresa, empresa vê seus de colaborador)
 router.get('/listar', authenticateToken, async (req: AuthRequest, res) => {
   try {
     if (req.user!.role === 'admin') {
+      // Admin vê TODOS os convites de empresa, não apenas os que ele criou
       const convitesEmpresas = await db
         .select()
         .from(convitesEmpresa)
-        .where(eq(convitesEmpresa.adminId, req.user!.userId))
         .orderBy(convitesEmpresa.createdAt);
 
-      return res.json({ convites: convitesEmpresas, tipo: 'empresa' });
+      return res.json({ success: true, convites: convitesEmpresas, tipo: 'empresa' });
     } else if (req.user!.role === 'empresa') {
       const convitesColaboradores = await db
         .select()
@@ -295,7 +295,7 @@ router.get('/listar', authenticateToken, async (req: AuthRequest, res) => {
         .where(eq(convitesColaborador.empresaId, req.user!.empresaId!))
         .orderBy(convitesColaborador.createdAt);
 
-      return res.json({ convites: convitesColaboradores, tipo: 'colaborador' });
+      return res.json({ success: true, convites: convitesColaboradores, tipo: 'colaborador' });
     }
 
     res.status(403).json({ error: 'Sem permissão' });
