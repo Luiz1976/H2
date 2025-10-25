@@ -653,6 +653,9 @@ router.get('/estado-psicossocial', authenticateToken, async (req: AuthRequest, r
     const recomendacoes = aiAnalysis.recomendacoes;
     
     console.log('✅ [API] Análise IA gerada com sucesso:', recomendacoes.length, 'recomendações');
+    console.log('📤 [Estado Psicossocial] totalColaboradores:', colaboradoresList.length);
+    console.log('📤 [Estado Psicossocial] totalTestesRealizados:', resultadosList.length);
+    console.log('📤 [Estado Psicossocial] cobertura:', nr1Compliance.cobertura);
 
     res.json({
       analise: {
