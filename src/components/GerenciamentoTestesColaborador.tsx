@@ -265,19 +265,17 @@ export function GerenciamentoTestesColaborador({
 
               {/* Ações */}
               <div className="flex flex-col gap-2">
-                {teste.foiConcluido && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => liberarTeste(teste.id)}
-                    disabled={processando || teste.disponibilidade?.disponivel}
-                    className="w-full"
-                    data-testid={`button-liberar-${teste.id}`}
-                  >
-                    <Unlock className="h-4 w-4 mr-2" />
-                    Liberar Novamente
-                  </Button>
-                )}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => liberarTeste(teste.id)}
+                  disabled={processando || teste.disponibilidade?.disponivel}
+                  className="w-full"
+                  data-testid={`button-liberar-${teste.id}`}
+                >
+                  <Unlock className="h-4 w-4 mr-2" />
+                  Liberar Novamente
+                </Button>
 
                 <Button
                   size="sm"
