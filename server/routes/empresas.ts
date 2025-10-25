@@ -493,6 +493,151 @@ router.get('/:id/indicadores', authenticateToken, requireAdmin, async (req: Auth
       ? mesesTendencia[mesesTendencia.length - 1].testes - mesesTendencia[mesesTendencia.length - 2].testes
       : 0;
 
+    // Calcular dias desde o cadastro
+    const diasDesdeRegistro = Math.floor((agora.getTime() - new Date(empresa.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+    const mesesAtivos = Math.max(Math.floor(diasDesdeRegistro / 30), 1);
+
+    // Taxa de crescimento de colaboradores (estimativa baseada em convites)
+    const taxaCrescimentoColaboradores = convitesGerados > 0 
+      ? Number(((convitesUtilizados / mesesAtivos) * 100).toFixed(1))
+      : 0;
+
+    // Custo médio por colaborador (baseado em testes realizados)
+    const custoPorColaborador = totalColaboradores > 0 
+      ? Number((totalTestes / totalColaboradores).toFixed(1))
+      : 0;
+
+    // Índice de saúde organizacional (baseado em pontuação e engajamento)
+    const indiceSaudeOrganizacional = pontuacaoMedia > 0 
+      ? Number((((pontuacaoMedia + taxaConclusao) / 2) * 0.01 * 100).toFixed(1))
+      : 0;
+
+    // Identificar categorias de alto risco (pontuação baixa)
+    const categoriasRisco: Array<{ categoria: string; nivel: string; testes: number }> = [];
+    Object.entries(testesPorCategoria).forEach(([categoria, quantidade]) => {
+      const testesCategoria = resultadosConcluidos.filter(r => r.testeCategoria === categoria);
+      const mediaCategoria = testesCategoria.length > 0
+        ? testesCategoria.reduce((acc, r) => acc + (r.pontuacaoTotal || 0), 0) / testesCategoria.length
+        : 0;
+      
+      if (mediaCategoria < 40 && quantidade >= 3) {
+        categoriasRisco.push({
+          categoria,
+          nivel: 'Crítico',
+          testes: quantidade,
+        });
+      } else if (mediaCategoria < 60 && quantidade >= 3) {
+        categoriasRisco.push({
+          categoria,
+          nivel: 'Atenção',
+          testes: quantidade,
+        });
+      }
+    });
+
+    // Análise de produtividade (testes por mês)
+    const produtividadeMensal = mesesAtivos > 0 
+      ? Number((totalTestes / mesesAtivos).toFixed(1))
+      : 0;
+
+    // Previsão para o próximo mês (baseado em tendência)
+    let previsaoProximoMes = 0;
+    if (mesesTendencia.length >= 3) {
+      const ultimos3Meses = mesesTendencia.slice(-3).map(m => m.testes);
+      const media = ultimos3Meses.reduce((a, b) => a + b, 0) / 3;
+      const tendencia = ultimos3Meses[2] - ultimos3Meses[0];
+      previsaoProximoMes = Math.max(0, Math.round(media + tendencia));
+    }
+
+    // Cobertura de avaliação (% colaboradores avaliados)
+    const coberturaAvaliacao = totalColaboradores > 0
+      ? Number(((colaboradoresComTestes / totalColaboradores) * 100).toFixed(1))
+      : 0;
+
+    // Frequência média de avaliação (dias entre testes)
+    let frequenciaMedia = 0;
+    if (totalTestes > 1) {
+      const datasOrdenadas = resultadosConcluidos
+        .map(r => new Date(r.dataRealizacao!).getTime())
+        .sort((a, b) => a - b);
+      
+      if (datasOrdenadas.length > 1) {
+        const diferencas: number[] = [];
+        for (let i = 1; i < datasOrdenadas.length; i++) {
+          diferencas.push(datasOrdenadas[i] - datasOrdenadas[i - 1]);
+        }
+        const mediaDif = diferencas.reduce((a, b) => a + b, 0) / diferencas.length;
+        frequenciaMedia = Math.round(mediaDif / (1000 * 60 * 60 * 24));
+      }
+    }
+
+    // Identificar colaboradores não avaliados (apenas contagem - LGPD)
+    const colaboradoresNaoAvaliados = totalColaboradores - colaboradoresComTestes;
+
+    // Índice de retenção (baseado em colaboradores ativos)
+    const indiceRetencao = totalColaboradores > 0
+      ? Number(((colaboradoresAtivos / totalColaboradores) * 100).toFixed(1))
+      : 0;
+
+    // Análise de distribuição temporal (manhã, tarde, noite)
+    const distribuicaoTemporal = {
+      manha: 0,  // 06:00 - 12:00
+      tarde: 0,  // 12:00 - 18:00
+      noite: 0,  // 18:00 - 00:00
+      madrugada: 0 // 00:00 - 06:00
+    };
+
+    resultadosConcluidos.forEach(r => {
+      const hora = new Date(r.dataRealizacao!).getHours();
+      if (hora >= 6 && hora < 12) distribuicaoTemporal.manha++;
+      else if (hora >= 12 && hora < 18) distribuicaoTemporal.tarde++;
+      else if (hora >= 18 || hora < 0) distribuicaoTemporal.noite++;
+      else distribuicaoTemporal.madrugada++;
+    });
+
+    // Alertas e insights para o CEO
+    const alertas: Array<{ tipo: string; mensagem: string; prioridade: string }> = [];
+    
+    if (coberturaAvaliacao < 50) {
+      alertas.push({
+        tipo: 'Cobertura Baixa',
+        mensagem: `Apenas ${coberturaAvaliacao}% dos colaboradores foram avaliados`,
+        prioridade: 'alta',
+      });
+    }
+
+    if (categoriasRisco.length > 0) {
+      alertas.push({
+        tipo: 'Áreas de Risco',
+        mensagem: `${categoriasRisco.length} categorias identificadas como risco`,
+        prioridade: 'crítica',
+      });
+    }
+
+    if (crescimentoMensal < 0) {
+      alertas.push({
+        tipo: 'Queda de Atividade',
+        mensagem: `Redução de ${Math.abs(crescimentoMensal)} testes em relação ao mês anterior`,
+        prioridade: 'média',
+      });
+    }
+
+    if (convitesPendentes > 10) {
+      alertas.push({
+        tipo: 'Convites Pendentes',
+        mensagem: `${convitesPendentes} convites aguardando aceitação`,
+        prioridade: 'baixa',
+      });
+    }
+
+    if (indiceRetencao < 80) {
+      alertas.push({
+        tipo: 'Retenção Baixa',
+        mensagem: `Taxa de retenção em ${indiceRetencao}% - investigar causas`,
+        prioridade: 'alta',
+      });
+    }
+
     const indicadores = {
       empresa: {
         id: empresa.id,
@@ -502,13 +647,18 @@ router.get('/:id/indicadores', authenticateToken, requireAdmin, async (req: Auth
         setor: empresa.setor,
         ativa: empresa.ativa,
         dataCadastro: empresa.createdAt,
+        diasAtivos: diasDesdeRegistro,
+        mesesAtivos,
       },
       colaboradores: {
         total: totalColaboradores,
         ativos: colaboradoresAtivos,
         inativos: colaboradoresInativos,
         comTestes: colaboradoresComTestes,
+        semTestes: colaboradoresNaoAvaliados,
         taxaConclusao,
+        indiceRetencao,
+        taxaCrescimento: taxaCrescimentoColaboradores,
       },
       convites: {
         gerados: convitesGerados,
@@ -525,8 +675,21 @@ router.get('/:id/indicadores', authenticateToken, requireAdmin, async (req: Auth
         pontuacaoMedia,
         porCategoria: testesPorCategoria,
         crescimentoMensal,
+        produtividadeMensal,
+        previsaoProximoMes,
+        frequenciaMedia,
       },
-      tendencia: mesesTendencia,
+      saude: {
+        indiceGeral: indiceSaudeOrganizacional,
+        coberturaAvaliacao,
+        categoriasRisco,
+        custoPorColaborador,
+      },
+      analise: {
+        distribuicaoTemporal,
+        tendencia: mesesTendencia,
+        alertas,
+      },
     };
 
     console.log('✅ [ADMIN] Indicadores calculados com sucesso');
