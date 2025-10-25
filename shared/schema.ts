@@ -300,3 +300,49 @@ export const insertErpConfigurationSchema = z.object({
 })
 
 export type InsertErpConfiguration = z.infer<typeof insertErpConfigurationSchema>;
+
+export const testeDisponibilidade = pgTable('teste_disponibilidade', {
+  id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+  colaboradorId: uuid('colaborador_id').references(() => colaboradores.id, { onDelete: 'cascade' }).notNull(),
+  testeId: uuid('teste_id').references(() => testes.id, { onDelete: 'cascade' }).notNull(),
+  empresaId: uuid('empresa_id').references(() => empresas.id, { onDelete: 'cascade' }).notNull(),
+  disponivel: boolean('disponivel').default(true).notNull(),
+  periodicidadeDias: integer('periodicidade_dias'),
+  ultimaLiberacao: timestamp('ultima_liberacao', { withTimezone: true }),
+  proximaDisponibilidade: timestamp('proxima_disponibilidade', { withTimezone: true }),
+  historicoLiberacoes: jsonb('historico_liberacoes').default([]),
+  metadados: jsonb('metadados').default({}),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  colaboradorIdx: index('idx_teste_disp_colaborador_id').on(table.colaboradorId),
+  testeIdx: index('idx_teste_disp_teste_id').on(table.testeId),
+  empresaIdx: index('idx_teste_disp_empresa_id').on(table.empresaId),
+  disponibilidadeIdx: index('idx_teste_disp_disponivel').on(table.disponivel),
+  uniqueColabTeste: uniqueIndex('idx_teste_disp_colab_teste_unique').on(table.colaboradorId, table.testeId),
+}));
+
+export type TesteDisponibilidade = typeof testeDisponibilidade.$inferSelect;
+
+export const insertTesteDisponibilidadeSchema = z.object({
+  colaboradorId: z.string().uuid(),
+  testeId: z.string().uuid(),
+  empresaId: z.string().uuid(),
+  disponivel: z.boolean().optional(),
+  periodicidadeDias: z.number().optional().nullable(),
+  ultimaLiberacao: z.date().optional().nullable(),
+  proximaDisponibilidade: z.date().optional().nullable(),
+  historicoLiberacoes: z.any().optional(),
+  metadados: z.any().optional(),
+});
+
+export type InsertTesteDisponibilidade = z.infer<typeof insertTesteDisponibilidadeSchema>;
+
+export const updateTesteDisponibilidadeSchema = z.object({
+  disponivel: z.boolean().optional(),
+  periodicidadeDias: z.number().optional().nullable(),
+  ultimaLiberacao: z.date().optional().nullable(),
+  proximaDisponibilidade: z.date().optional().nullable(),
+  historicoLiberacoes: z.any().optional(),
+  metadados: z.any().optional(),
+});

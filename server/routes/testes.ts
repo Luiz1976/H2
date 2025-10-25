@@ -1,6 +1,6 @@
 import express from 'express';
 import { db } from '../../db';
-import { testes, perguntas, resultados, respostas, colaboradores, insertResultadoSchema, insertRespostaSchema } from '../../shared/schema';
+import { testes, perguntas, resultados, respostas, colaboradores, testeDisponibilidade, insertResultadoSchema, insertRespostaSchema } from '../../shared/schema';
 import { authenticateToken, AuthRequest } from '../middleware/auth';
 import { eq, and, desc, or } from 'drizzle-orm';
 import { z } from 'zod';
@@ -116,6 +116,68 @@ router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
         // A análise será recalculada na próxima vez que a página for acessada
         // Isso é intencional para otimizar performance e custos de API
         console.log('✅ [AUTO-UPDATE] Análise será recalculada na próxima visualização');
+      });
+    }
+
+    // 🔒 Marcar teste como indisponível após conclusão
+    if (testeId && req.user!.role === 'colaborador' && req.user!.empresaId) {
+      setImmediate(async () => {
+        try {
+          const colaboradorId = req.user!.userId;
+          const empresaId = req.user!.empresaId!;
+          const agora = new Date();
+
+          // Buscar registro existente
+          const [disponibilidadeExistente] = await db
+            .select()
+            .from(testeDisponibilidade)
+            .where(
+              and(
+                eq(testeDisponibilidade.colaboradorId, colaboradorId),
+                eq(testeDisponibilidade.testeId, testeId)
+              )
+            )
+            .limit(1);
+
+          if (disponibilidadeExistente) {
+            // Calcular próxima disponibilidade se tiver periodicidade
+            let proximaDisponibilidade: Date | null = null;
+            if (disponibilidadeExistente.periodicidadeDias) {
+              proximaDisponibilidade = new Date(
+                agora.getTime() + disponibilidadeExistente.periodicidadeDias * 24 * 60 * 60 * 1000
+              );
+            }
+
+            // Atualizar para indisponível
+            await db
+              .update(testeDisponibilidade)
+              .set({
+                disponivel: false,
+                proximaDisponibilidade,
+                updatedAt: agora,
+              })
+              .where(eq(testeDisponibilidade.id, disponibilidadeExistente.id));
+
+            console.log(`🔒 [DISPONIBILIDADE] Teste ${testeId} marcado como indisponível para colaborador ${colaboradorId}`);
+          } else {
+            // Criar novo registro como indisponível
+            await db
+              .insert(testeDisponibilidade)
+              .values({
+                colaboradorId,
+                testeId,
+                empresaId,
+                disponivel: false,
+                ultimaLiberacao: null,
+                proximaDisponibilidade: null,
+              })
+              .onConflictDoNothing();
+
+            console.log(`🔒 [DISPONIBILIDADE] Registro de disponibilidade criado para teste ${testeId} e colaborador ${colaboradorId}`);
+          }
+        } catch (error) {
+          console.error('❌ [DISPONIBILIDADE] Erro ao marcar teste como indisponível:', error);
+        }
       });
     }
 
