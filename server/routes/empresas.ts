@@ -346,6 +346,197 @@ router.get('/colaboradores/:id/resultados', authenticateToken, requireEmpresa, a
   }
 });
 
+// Admin: buscar indicadores detalhados de uma empresa específica (respeitando LGPD)
+router.get('/:id/indicadores', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
+  try {
+    const { id: empresaId } = req.params;
+    console.log('📊 [ADMIN] Buscando indicadores para empresa:', empresaId);
+
+    // Buscar informações básicas da empresa
+    const [empresa] = await db
+      .select({
+        id: empresas.id,
+        nomeEmpresa: empresas.nomeEmpresa,
+        emailContato: empresas.emailContato,
+        cnpj: empresas.cnpj,
+        setor: empresas.setor,
+        ativa: empresas.ativa,
+        createdAt: empresas.createdAt,
+      })
+      .from(empresas)
+      .where(eq(empresas.id, empresaId))
+      .limit(1);
+
+    if (!empresa) {
+      return res.status(404).json({ error: 'Empresa não encontrada' });
+    }
+
+    // Buscar colaboradores
+    const colaboradoresList = await db
+      .select()
+      .from(colaboradores)
+      .where(eq(colaboradores.empresaId, empresaId));
+
+    const totalColaboradores = colaboradoresList.length;
+    const colaboradoresAtivos = colaboradoresList.filter(c => c.ativo).length;
+    const colaboradoresInativos = totalColaboradores - colaboradoresAtivos;
+
+    // Buscar todos os convites (pendentes, aceitos, expirados)
+    const agora = new Date();
+    const todosConvites = await db
+      .select()
+      .from(convitesColaborador)
+      .where(eq(convitesColaborador.empresaId, empresaId));
+
+    const convitesGerados = todosConvites.length;
+    const convitesUtilizados = todosConvites.filter(c => c.status === 'aceito').length;
+    const convitesPendentes = todosConvites.filter(c => 
+      c.status === 'pendente' && new Date(c.validade) > agora
+    ).length;
+    const convitesExpirados = todosConvites.filter(c => 
+      c.status === 'pendente' && new Date(c.validade) <= agora
+    ).length;
+
+    // Buscar resultados de testes (dados agregados - LGPD)
+    const resultadosList = await db
+      .select({
+        id: resultados.id,
+        testeId: resultados.testeId,
+        pontuacaoTotal: resultados.pontuacaoTotal,
+        dataRealizacao: resultados.dataRealizacao,
+        status: resultados.status,
+        metadados: resultados.metadados,
+        testeNome: testes.nome,
+        testeCategoria: testes.categoria,
+      })
+      .from(resultados)
+      .leftJoin(testes, eq(resultados.testeId, testes.id))
+      .where(eq(resultados.empresaId, empresaId));
+
+    const resultadosConcluidos = resultadosList.filter(r => r.status === 'concluido');
+    const totalTestes = resultadosConcluidos.length;
+
+    // Média de testes por colaborador (somente números - LGPD)
+    const mediaTestes = totalColaboradores > 0 
+      ? Number((totalTestes / totalColaboradores).toFixed(2))
+      : 0;
+
+    // Testes por período
+    const inicioMes = new Date();
+    inicioMes.setDate(1);
+    inicioMes.setHours(0, 0, 0, 0);
+
+    const inicio7Dias = new Date();
+    inicio7Dias.setDate(inicio7Dias.getDate() - 7);
+
+    const testesEsteMes = resultadosConcluidos.filter(r => 
+      r.dataRealizacao && new Date(r.dataRealizacao) >= inicioMes
+    ).length;
+
+    const testesUltimos7Dias = resultadosConcluidos.filter(r => 
+      r.dataRealizacao && new Date(r.dataRealizacao) >= inicio7Dias
+    ).length;
+
+    // Testes por categoria (agregado)
+    const testesPorCategoria: Record<string, number> = {};
+    resultadosConcluidos.forEach(r => {
+      const categoria = r.testeCategoria || 'Outros';
+      testesPorCategoria[categoria] = (testesPorCategoria[categoria] || 0) + 1;
+    });
+
+    // Taxa de conclusão (colaboradores com pelo menos 1 teste)
+    const colaboradoresComTestes = new Set(
+      resultadosConcluidos.map(r => r.metadados && (r.metadados as any).colaboradorId).filter(Boolean)
+    ).size;
+
+    const taxaConclusao = totalColaboradores > 0
+      ? Number(((colaboradoresComTestes / totalColaboradores) * 100).toFixed(1))
+      : 0;
+
+    // Tendência temporal (últimos 6 meses agregado)
+    const mesesTendencia: Array<{ mes: string; testes: number }> = [];
+    for (let i = 5; i >= 0; i--) {
+      const mesInicio = new Date();
+      mesInicio.setMonth(mesInicio.getMonth() - i);
+      mesInicio.setDate(1);
+      mesInicio.setHours(0, 0, 0, 0);
+      
+      const mesFim = new Date(mesInicio);
+      mesFim.setMonth(mesFim.getMonth() + 1);
+      
+      const testesMes = resultadosConcluidos.filter(r => {
+        const data = new Date(r.dataRealizacao!);
+        return data >= mesInicio && data < mesFim;
+      }).length;
+
+      mesesTendencia.push({
+        mes: mesInicio.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }),
+        testes: testesMes,
+      });
+    }
+
+    // Pontuação média geral (agregado)
+    const pontuacoes = resultadosConcluidos
+      .map(r => r.pontuacaoTotal)
+      .filter(p => p !== null && p !== undefined) as number[];
+
+    const pontuacaoMedia = pontuacoes.length > 0
+      ? Number((pontuacoes.reduce((acc, p) => acc + p, 0) / pontuacoes.length).toFixed(1))
+      : 0;
+
+    // Indicadores adicionais
+    const taxaUtilizacaoConvites = convitesGerados > 0
+      ? Number(((convitesUtilizados / convitesGerados) * 100).toFixed(1))
+      : 0;
+
+    const crescimentoMensal = mesesTendencia.length >= 2
+      ? mesesTendencia[mesesTendencia.length - 1].testes - mesesTendencia[mesesTendencia.length - 2].testes
+      : 0;
+
+    const indicadores = {
+      empresa: {
+        id: empresa.id,
+        nome: empresa.nomeEmpresa,
+        email: empresa.emailContato,
+        cnpj: empresa.cnpj,
+        setor: empresa.setor,
+        ativa: empresa.ativa,
+        dataCadastro: empresa.createdAt,
+      },
+      colaboradores: {
+        total: totalColaboradores,
+        ativos: colaboradoresAtivos,
+        inativos: colaboradoresInativos,
+        comTestes: colaboradoresComTestes,
+        taxaConclusao,
+      },
+      convites: {
+        gerados: convitesGerados,
+        utilizados: convitesUtilizados,
+        pendentes: convitesPendentes,
+        expirados: convitesExpirados,
+        taxaUtilizacao: taxaUtilizacaoConvites,
+      },
+      testes: {
+        total: totalTestes,
+        esteMes: testesEsteMes,
+        ultimos7Dias: testesUltimos7Dias,
+        mediaPorColaborador: mediaTestes,
+        pontuacaoMedia,
+        porCategoria: testesPorCategoria,
+        crescimentoMensal,
+      },
+      tendencia: mesesTendencia,
+    };
+
+    console.log('✅ [ADMIN] Indicadores calculados com sucesso');
+    res.json(indicadores);
+  } catch (error) {
+    console.error('Erro ao buscar indicadores da empresa:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 // Admin: listar todas as empresas
 router.get('/todas', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {

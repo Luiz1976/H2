@@ -235,9 +235,10 @@ export default function AdminEmpresas() {
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
                       <button
-                        onClick={() => navigate(`/empresa/${empresa.id}`)}
+                        onClick={() => navigate(`/admin/empresas/${empresa.id}`)}
                         className="text-blue-600 hover:text-blue-900"
-                        title="Visualizar"
+                        title="Visualizar indicadores"
+                        data-testid={`button-visualizar-${empresa.id}`}
                       >
                         <Eye className="w-4 h-4" />
                       </button>
