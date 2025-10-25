@@ -69,14 +69,50 @@ export default function AdminConvites() {
   const carregarConvites = async () => {
     try {
       setLoading(true);
-      const response = await apiService.listarConvites();
       
-      if (response.convites) {
-        setConvites(response.convites);
+      // Buscar token de autenticação
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        console.error('Token de autenticação não encontrado');
+        setConvites([]);
+        setLoading(false);
+        return;
+      }
+      
+      // Buscar dados reais do banco de dados via API
+      const response = await fetch('/api/convites/listar?tipo=empresa', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+      console.log('📥 Resposta da API de convites:', data);
+
+      if (data.success && data.convites) {
+        // Mapear os dados do banco para o formato esperado pelo componente
+        const convitesFormatados = data.convites.map((convite: any) => ({
+          id: convite.id,
+          token: convite.token,
+          nomeEmpresa: convite.nome_empresa || convite.nomeEmpresa,
+          emailContato: convite.email_contato || convite.emailContato,
+          validade: convite.validade,
+          status: convite.status,
+          dataCriacao: convite.created_at || convite.dataCriacao
+        }));
+        
+        console.log('✅ Convites formatados:', convitesFormatados);
+        setConvites(convitesFormatados);
+      } else {
+        console.log('⚠️ Nenhum convite encontrado ou erro na resposta');
+        setConvites([]);
       }
     } catch (error) {
-      console.error('Erro ao carregar convites:', error);
-      toast.error('Erro ao carregar convites');
+      console.error('❌ Erro ao carregar convites:', error);
+      toast.error('Erro ao carregar convites do banco de dados');
+      setConvites([]);
     } finally {
       setLoading(false);
     }
@@ -184,7 +220,8 @@ export default function AdminConvites() {
   };
 
   const getStatusConvite = (convite: ConviteEmpresa) => {
-    if (convite.status === 'usado') return 'usado';
+    // 'aceito' é o status do banco de dados, mapeamos para 'usado'
+    if (convite.status === 'usado' || convite.status === 'aceito') return 'usado';
     if (isConviteExpirado(convite.validade)) return 'expirado';
     return 'pendente';
   };
