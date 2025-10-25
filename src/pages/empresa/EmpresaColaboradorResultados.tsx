@@ -15,9 +15,11 @@ import {
   Eye
 } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { authService } from '@/services/authService';
 import { ResultadoPopup } from '@/components/ResultadoPopup';
+import { GerenciamentoTestesColaborador } from '@/components/GerenciamentoTestesColaborador';
 
 interface Colaborador {
   id: string;
@@ -373,131 +375,154 @@ export default function EmpresaColaboradorResultados() {
         </div>
       </div>
 
-      {/* Filtros */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Buscar testes..."
-              value={filtroTeste}
-              onChange={(e) => setFiltroTeste(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <select
-              value={filtroStatus}
-              onChange={(e) => setFiltroStatus(e.target.value as any)}
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="todos">Todos os status</option>
-              <option value="concluido">Concluídos</option>
-              <option value="em_andamento">Em Andamento</option>
-              <option value="nao_iniciado">Não Iniciados</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      {/* Abas para Resultados e Gerenciamento de Testes */}
+      <Tabs defaultValue="resultados" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsTrigger value="resultados" data-testid="tab-resultados">
+            Resultados dos Testes
+          </TabsTrigger>
+          <TabsTrigger value="gerenciar" data-testid="tab-gerenciar-testes">
+            Gerenciar Testes
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Lista de Resultados */}
-      <div className="space-y-4">
-        {resultadosFiltrados.map((resultado) => (
-          <div key={resultado.id} className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between">
+        <TabsContent value="resultados">
+          {/* Filtros */}
+          <div className="bg-white p-4 rounded-lg shadow-sm border mb-6">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
-                <div className="flex items-center space-x-3 mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900">{resultado.nomeTest}</h3>
-                  <span className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(resultado.status)}`}>
-                    {getStatusIcon(resultado.status)}
-                    <span className="ml-1">
-                      {resultado.status === 'concluido' ? 'Concluído' : 
-                       resultado.status === 'em_andamento' ? 'Em Andamento' : 'Não Iniciado'}
-                    </span>
-                  </span>
-                  {resultado.tipoTabela && (
-                    <span className="inline-flex px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">
-                      {resultado.tipoTabela === 'resultados_qvt' ? 'QVT' : 
-                       resultado.tipoTabela === 'resultados_rpo' ? 'RPO' : 
-                       resultado.tipoTabela === 'resultados' ? 'Padrão' : resultado.tipoTabela}
-                    </span>
-                  )}
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Pontuação</p>
-                    <p className="text-lg font-semibold text-gray-900">
-                      {resultado.pontuacao}/{resultado.pontuacaoMaxima}
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-gray-500">Percentual</p>
-                    <p className={`text-lg font-semibold ${getNivelColor(resultado.percentual)}`}>
-                      {resultado.percentual}%
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-gray-500">Data de Realização</p>
-                    <p className="text-sm text-gray-900">{formatarData(resultado.dataRealizacao)}</p>
-                  </div>
-                  
-                  {resultado.tempoDuracao && (
-                    <div>
-                      <p className="text-sm text-gray-500">Tempo Gasto</p>
-                      <p className="text-sm text-gray-900">{formatarTempo(resultado.tempoDuracao)}</p>
-                    </div>
-                  )}
-                </div>
-
-                {resultado.categoria && (
-                  <div className="mb-3">
-                    <span className="inline-flex px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">
-                      {resultado.categoria}
-                    </span>
-                  </div>
-                )}
-
-                {resultado.observacoes && (
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-sm text-gray-600">{resultado.observacoes}</p>
-                  </div>
-                )}
+                <input
+                  type="text"
+                  placeholder="Buscar testes..."
+                  value={filtroTeste}
+                  onChange={(e) => setFiltroTeste(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
               </div>
-              
-              <div className="flex items-center space-x-2 ml-4">
-                <button
-                  onClick={() => handleViewResult(resultado)}
-                  className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50"
-                  title="Visualizar detalhes"
+              <div>
+                <select
+                  value={filtroStatus}
+                  onChange={(e) => setFiltroStatus(e.target.value as any)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <Eye className="w-4 h-4" />
-                </button>
-                <button
-                  className="text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-50"
-                  title="Baixar relatório"
-                >
-                  <Download className="w-4 h-4" />
-                </button>
+                  <option value="todos">Todos os status</option>
+                  <option value="concluido">Concluídos</option>
+                  <option value="em_andamento">Em Andamento</option>
+                  <option value="nao_iniciado">Não Iniciados</option>
+                </select>
               </div>
             </div>
           </div>
-        ))}
-      </div>
 
-      {resultadosFiltrados.length === 0 && (
-        <div className="text-center py-12 bg-white rounded-lg shadow-sm border">
-          <FileText className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">Nenhum resultado encontrado</h3>
-          <p className="mt-1 text-sm text-gray-500">
-            {filtroTeste || filtroStatus !== 'todos' 
-              ? 'Tente ajustar os filtros de busca.' 
-              : 'Este colaborador ainda não realizou nenhum teste.'}
-          </p>
-        </div>
-      )}
+          {/* Lista de Resultados */}
+          <div className="space-y-4">
+            {resultadosFiltrados.map((resultado) => (
+              <div key={resultado.id} className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">{resultado.nomeTest}</h3>
+                      <span className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(resultado.status)}`}>
+                        {getStatusIcon(resultado.status)}
+                        <span className="ml-1">
+                          {resultado.status === 'concluido' ? 'Concluído' : 
+                           resultado.status === 'em_andamento' ? 'Em Andamento' : 'Não Iniciado'}
+                        </span>
+                      </span>
+                      {resultado.tipoTabela && (
+                        <span className="inline-flex px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">
+                          {resultado.tipoTabela === 'resultados_qvt' ? 'QVT' : 
+                           resultado.tipoTabela === 'resultados_rpo' ? 'RPO' : 
+                           resultado.tipoTabela === 'resultados' ? 'Padrão' : resultado.tipoTabela}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-gray-500">Pontuação</p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {resultado.pontuacao}/{resultado.pontuacaoMaxima}
+                        </p>
+                      </div>
+                      
+                      <div>
+                        <p className="text-sm text-gray-500">Percentual</p>
+                        <p className={`text-lg font-semibold ${getNivelColor(resultado.percentual)}`}>
+                          {resultado.percentual}%
+                        </p>
+                      </div>
+                      
+                      <div>
+                        <p className="text-sm text-gray-500">Data de Realização</p>
+                        <p className="text-sm text-gray-900">{formatarData(resultado.dataRealizacao)}</p>
+                      </div>
+                      
+                      {resultado.tempoDuracao && (
+                        <div>
+                          <p className="text-sm text-gray-500">Tempo Gasto</p>
+                          <p className="text-sm text-gray-900">{formatarTempo(resultado.tempoDuracao)}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {resultado.categoria && (
+                      <div className="mb-3">
+                        <span className="inline-flex px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">
+                          {resultado.categoria}
+                        </span>
+                      </div>
+                    )}
+
+                    {resultado.observacoes && (
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <p className="text-sm text-gray-600">{resultado.observacoes}</p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex items-center space-x-2 ml-4">
+                    <button
+                      onClick={() => handleViewResult(resultado)}
+                      className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50"
+                      title="Visualizar detalhes"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      className="text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-50"
+                      title="Baixar relatório"
+                    >
+                      <Download className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {resultadosFiltrados.length === 0 && (
+              <div className="text-center py-12 bg-white rounded-lg shadow-sm border">
+                <FileText className="mx-auto h-12 w-12 text-gray-400" />
+                <h3 className="mt-2 text-sm font-medium text-gray-900">Nenhum resultado encontrado</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  {filtroTeste || filtroStatus !== 'todos' 
+                    ? 'Tente ajustar os filtros de busca.' 
+                    : 'Este colaborador ainda não realizou nenhum teste.'}
+                </p>
+              </div>
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="gerenciar">
+          {colaborador && (
+            <GerenciamentoTestesColaborador
+              colaboradorId={colaborador.id}
+              colaboradorNome={colaborador.nome}
+            />
+          )}
+        </TabsContent>
+      </Tabs>
 
       {/* Popup para exibir resultado */}
       <ResultadoPopup
