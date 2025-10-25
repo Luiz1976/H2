@@ -185,14 +185,14 @@ export default function AdminEmpresaDetalhes() {
             <div className="flex items-center space-x-3">
               <div className="text-right mr-3">
                 <p className="text-xs text-gray-500">Índice de Saúde</p>
-                <p className="text-2xl font-bold text-green-600">{indicadores.saude.indiceGeral}%</p>
+                <p className="text-2xl font-bold text-green-600">{indicadores.saude?.indiceGeral || 0}%</p>
               </div>
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                indicadores.empresa.ativa 
+                indicadores.empresa?.ativa 
                   ? 'bg-green-100 text-green-800' 
                   : 'bg-red-100 text-red-800'
               }`}>
-                {indicadores.empresa.ativa ? 'Ativa' : 'Inativa'}
+                {indicadores.empresa?.ativa ? 'Ativa' : 'Inativa'}
               </span>
             </div>
           </div>
@@ -236,7 +236,7 @@ export default function AdminEmpresaDetalhes() {
               <Shield className="w-8 h-8 opacity-80" />
               <div className="text-right">
                 <p className="text-xs opacity-90">Índice de Saúde</p>
-                <p className="text-3xl font-bold">{indicadores.saude.indiceGeral}%</p>
+                <p className="text-3xl font-bold">{indicadores.saude?.indiceGeral || 0}%</p>
               </div>
             </div>
             <p className="text-xs opacity-75">Organizacional</p>
@@ -248,10 +248,10 @@ export default function AdminEmpresaDetalhes() {
               <UserCheck className="w-8 h-8 opacity-80" />
               <div className="text-right">
                 <p className="text-xs opacity-90">Retenção</p>
-                <p className="text-3xl font-bold">{indicadores.colaboradores.indiceRetencao}%</p>
+                <p className="text-3xl font-bold">{indicadores.colaboradores?.indiceRetencao || 0}%</p>
               </div>
             </div>
-            <p className="text-xs opacity-75">{indicadores.colaboradores.ativos} ativos de {indicadores.colaboradores.total}</p>
+            <p className="text-xs opacity-75">{indicadores.colaboradores?.ativos || 0} ativos de {indicadores.colaboradores?.total || 0}</p>
           </div>
 
           {/* Cobertura */}
@@ -260,10 +260,10 @@ export default function AdminEmpresaDetalhes() {
               <Target className="w-8 h-8 opacity-80" />
               <div className="text-right">
                 <p className="text-xs opacity-90">Cobertura</p>
-                <p className="text-3xl font-bold">{indicadores.saude.coberturaAvaliacao}%</p>
+                <p className="text-3xl font-bold">{indicadores.saude?.coberturaAvaliacao || 0}%</p>
               </div>
             </div>
-            <p className="text-xs opacity-75">{indicadores.colaboradores.comTestes}/{indicadores.colaboradores.total} avaliados</p>
+            <p className="text-xs opacity-75">{indicadores.colaboradores?.comTestes || 0}/{indicadores.colaboradores?.total || 0} avaliados</p>
           </div>
 
           {/* Produtividade */}
@@ -272,7 +272,7 @@ export default function AdminEmpresaDetalhes() {
               <Zap className="w-8 h-8 opacity-80" />
               <div className="text-right">
                 <p className="text-xs opacity-90">Produtividade</p>
-                <p className="text-3xl font-bold">{indicadores.testes.produtividadeMensal}</p>
+                <p className="text-3xl font-bold">{indicadores.testes?.produtividadeMensal || 0}</p>
               </div>
             </div>
             <p className="text-xs opacity-75">testes/mês</p>
@@ -284,7 +284,7 @@ export default function AdminEmpresaDetalhes() {
               <TrendingUp className="w-8 h-8 opacity-80" />
               <div className="text-right">
                 <p className="text-xs opacity-90">Previsão</p>
-                <p className="text-3xl font-bold">{indicadores.testes.previsaoProximoMes}</p>
+                <p className="text-3xl font-bold">{indicadores.testes?.previsaoProximoMes || 0}</p>
               </div>
             </div>
             <p className="text-xs opacity-75">próximo mês</p>
@@ -301,23 +301,23 @@ export default function AdminEmpresaDetalhes() {
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-500 font-medium">Crescimento</p>
-                <p className="text-lg font-bold text-blue-600">+{indicadores.colaboradores.taxaCrescimento}%</p>
+                <p className="text-lg font-bold text-blue-600">+{indicadores.colaboradores?.taxaCrescimento || 0}%</p>
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-1">{indicadores.colaboradores.total}</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">{indicadores.colaboradores?.total || 0}</h3>
             <p className="text-sm text-gray-500 mb-3">Colaboradores</p>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
                 <span className="text-green-600 flex items-center"><CheckCircle className="w-3 h-3 mr-1" /> Ativos</span>
-                <span className="font-semibold">{indicadores.colaboradores.ativos}</span>
+                <span className="font-semibold">{indicadores.colaboradores?.ativos || 0}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400 flex items-center"><XCircle className="w-3 h-3 mr-1" /> Inativos</span>
-                <span className="font-semibold">{indicadores.colaboradores.inativos}</span>
+                <span className="font-semibold">{indicadores.colaboradores?.inativos || 0}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-orange-600 flex items-center"><UserX className="w-3 h-3 mr-1" /> Sem avaliação</span>
-                <span className="font-semibold">{indicadores.colaboradores.semTestes}</span>
+                <span className="font-semibold">{indicadores.colaboradores?.semTestes || 0}</span>
               </div>
             </div>
           </div>
@@ -330,23 +330,23 @@ export default function AdminEmpresaDetalhes() {
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-500 font-medium">Taxa de Uso</p>
-                <p className="text-lg font-bold text-green-600">{indicadores.convites.taxaUtilizacao}%</p>
+                <p className="text-lg font-bold text-green-600">{indicadores.convites?.taxaUtilizacao || 0}%</p>
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-1">{indicadores.convites.gerados}</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">{indicadores.convites?.gerados || 0}</h3>
             <p className="text-sm text-gray-500 mb-3">Convites Gerados</p>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
                 <span className="text-green-600 flex items-center"><CheckCircle className="w-3 h-3 mr-1" /> Utilizados</span>
-                <span className="font-semibold">{indicadores.convites.utilizados}</span>
+                <span className="font-semibold">{indicadores.convites?.utilizados || 0}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-yellow-600 flex items-center"><Clock className="w-3 h-3 mr-1" /> Pendentes</span>
-                <span className="font-semibold">{indicadores.convites.pendentes}</span>
+                <span className="font-semibold">{indicadores.convites?.pendentes || 0}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-red-600 flex items-center"><XCircle className="w-3 h-3 mr-1" /> Expirados</span>
-                <span className="font-semibold">{indicadores.convites.expirados}</span>
+                <span className="font-semibold">{indicadores.convites?.expirados || 0}</span>
               </div>
             </div>
           </div>
@@ -359,19 +359,19 @@ export default function AdminEmpresaDetalhes() {
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-500 font-medium">Este Mês</p>
-                <p className="text-lg font-bold text-purple-600">{indicadores.testes.esteMes}</p>
+                <p className="text-lg font-bold text-purple-600">{indicadores.testes?.esteMes || 0}</p>
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-1">{indicadores.testes.total}</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">{indicadores.testes?.total || 0}</h3>
             <p className="text-sm text-gray-500 mb-3">Testes Realizados</p>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
                 <span className="text-purple-600 flex items-center"><Calendar className="w-3 h-3 mr-1" /> Últimos 7 dias</span>
-                <span className="font-semibold">{indicadores.testes.ultimos7Dias}</span>
+                <span className="font-semibold">{indicadores.testes?.ultimos7Dias || 0}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-blue-600 flex items-center"><Timer className="w-3 h-3 mr-1" /> Frequência</span>
-                <span className="font-semibold">{indicadores.testes.frequenciaMedia || 0} dias</span>
+                <span className="font-semibold">{indicadores.testes?.frequenciaMedia || 0} dias</span>
               </div>
             </div>
           </div>
@@ -383,31 +383,31 @@ export default function AdminEmpresaDetalhes() {
                 <Award className="w-6 h-6 text-white" />
               </div>
               <div className="flex items-center">
-                {indicadores.testes.crescimentoMensal > 0 ? (
+                {(indicadores.testes?.crescimentoMensal || 0) > 0 ? (
                   <div className="flex items-center text-green-600">
                     <TrendingUp className="w-4 h-4 mr-1" />
-                    <span className="text-xs font-medium">+{indicadores.testes.crescimentoMensal}</span>
+                    <span className="text-xs font-medium">+{indicadores.testes?.crescimentoMensal || 0}</span>
                   </div>
-                ) : indicadores.testes.crescimentoMensal < 0 ? (
+                ) : (indicadores.testes?.crescimentoMensal || 0) < 0 ? (
                   <div className="flex items-center text-red-600">
                     <TrendingDown className="w-4 h-4 mr-1" />
-                    <span className="text-xs font-medium">{indicadores.testes.crescimentoMensal}</span>
+                    <span className="text-xs font-medium">{indicadores.testes?.crescimentoMensal || 0}</span>
                   </div>
                 ) : (
                   <div className="text-gray-400 text-xs">Estável</div>
                 )}
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-1">{indicadores.testes.mediaPorColaborador}</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">{indicadores.testes?.mediaPorColaborador || 0}</h3>
             <p className="text-sm text-gray-500 mb-3">Média por Colaborador</p>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
                 <span className="text-orange-600 flex items-center"><Award className="w-3 h-3 mr-1" /> Pontuação</span>
-                <span className="font-semibold">{indicadores.testes.pontuacaoMedia}</span>
+                <span className="font-semibold">{indicadores.testes?.pontuacaoMedia || 0}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-blue-600 flex items-center"><DollarSign className="w-3 h-3 mr-1" /> Custo/Colab</span>
-                <span className="font-semibold">{indicadores.saude.custoPorColaborador} testes</span>
+                <span className="font-semibold">{indicadores.saude?.custoPorColaborador || 0} testes</span>
               </div>
             </div>
           </div>
