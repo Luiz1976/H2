@@ -1,32 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Users, UserPlus, TrendingUp, Award, Mail, Calendar, Clock, CheckCircle, Activity, Target, BarChart3 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { 
+  Users, UserPlus, TrendingUp, Award, Calendar, Clock, 
+  Activity, Target, BarChart3, Sparkles, Brain, 
+  TrendingDown, Zap, Shield, ArrowUp, ArrowDown, X
+} from 'lucide-react';
 import { empresaStatisticsService, EstatisticasEmpresa } from '../../services/empresaStatisticsService';
 import { apiService } from '../../services/apiService';
 import { useAuth } from '../../hooks/AuthContext';
 import { toast } from 'sonner';
-
-interface Colaborador {
-  id: string;
-  nome: string;
-  email: string;
-  cargo?: string;
-  departamento?: string;
-  ativo: boolean;
-  created_at: string;
-  updated_at: string;
-  total_testes?: number;
-  ultimo_teste?: string;
-}
-
-interface ConviteColaborador {
-  id: string;
-  token: string;
-  email: string;
-  nome: string;
-  status: 'pendente' | 'usado' | 'expirado';
-  validade: string;
-  created_at: string;
-}
 
 export default function EmpresaOverview() {
   const { user } = useAuth();
@@ -74,8 +55,6 @@ export default function EmpresaOverview() {
     carregarEstatisticas();
   }, [user?.empresaId]);
 
-
-
   const criarConviteColaborador = async () => {
     try {
       if (!novoConvite.email || !novoConvite.nome) {
@@ -98,10 +77,7 @@ export default function EmpresaOverview() {
 
       toast.success('Convite criado com sucesso!');
       
-      // Gerar URL do convite
       const urlConvite = `${window.location.origin}/aceitar-convite/${response.token}`;
-      
-      // Copiar para clipboard
       navigator.clipboard.writeText(urlConvite);
       toast.info('URL do convite copiada para a área de transferência');
       
@@ -119,199 +95,338 @@ export default function EmpresaOverview() {
     return ((estatisticas.total_testes_realizados / estatisticas.total_colaboradores) * 100).toFixed(1);
   };
 
+  const calcularTaxaAtivos = (): number => {
+    if (estatisticas.total_colaboradores === 0) return 0;
+    return (estatisticas.colaboradores_ativos / estatisticas.total_colaboradores) * 100;
+  };
+
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white p-6 rounded-lg shadow-sm border">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-              </div>
-            ))}
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse space-y-6">
+            {/* Header Skeleton */}
+            <div className="h-24 bg-white/60 backdrop-blur-sm rounded-2xl"></div>
+            
+            {/* Stats Grid Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-36 bg-white/60 backdrop-blur-sm rounded-2xl"></div>
+              ))}
+            </div>
+            
+            {/* Charts Skeleton */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="h-64 bg-white/60 backdrop-blur-sm rounded-2xl"></div>
+              <div className="h-64 bg-white/60 backdrop-blur-sm rounded-2xl"></div>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
+  const statCards = [
+    {
+      title: 'Total de Colaboradores',
+      value: estatisticas.total_colaboradores,
+      subtitle: `${estatisticas.colaboradores_ativos} ativos`,
+      icon: Users,
+      color: 'blue',
+      gradient: 'from-blue-500 to-cyan-500',
+      bgGradient: 'from-blue-500/10 to-cyan-500/10'
+    },
+    {
+      title: 'Testes Realizados',
+      value: estatisticas.total_testes_realizados,
+      subtitle: `${estatisticas.testes_este_mes} este mês`,
+      icon: Activity,
+      color: 'green',
+      gradient: 'from-green-500 to-emerald-500',
+      bgGradient: 'from-green-500/10 to-emerald-500/10'
+    },
+    {
+      title: 'Média de Pontuação',
+      value: estatisticas.media_pontuacao,
+      subtitle: 'Últimos 30 dias',
+      icon: TrendingUp,
+      color: 'purple',
+      gradient: 'from-purple-500 to-pink-500',
+      bgGradient: 'from-purple-500/10 to-pink-500/10'
+    },
+    {
+      title: 'Convites Pendentes',
+      value: estatisticas.convites_pendentes,
+      subtitle: 'Aguardando resposta',
+      icon: Clock,
+      color: 'amber',
+      gradient: 'from-amber-500 to-orange-500',
+      bgGradient: 'from-amber-500/10 to-orange-500/10'
+    },
+    {
+      title: 'Taxa de Participação',
+      value: `${calcularTaxaParticipacao()}%`,
+      subtitle: 'Colaboradores que fizeram testes',
+      icon: Target,
+      color: 'indigo',
+      gradient: 'from-indigo-500 to-blue-500',
+      bgGradient: 'from-indigo-500/10 to-blue-500/10'
+    },
+    {
+      title: 'Nível de Engajamento',
+      value: estatisticas.media_pontuacao >= 80 ? 'Alto' : estatisticas.media_pontuacao >= 60 ? 'Médio' : 'Baixo',
+      subtitle: 'Baseado na pontuação média',
+      icon: Award,
+      color: 'rose',
+      gradient: 'from-rose-500 to-red-500',
+      bgGradient: 'from-rose-500/10 to-red-500/10'
+    }
+  ];
+
   return (
-    <div className="p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            {user?.name ? `${user.name} - Visão Geral` : 'Visão Geral'}
-          </h1>
-          <p className="text-gray-600">Acompanhe o desempenho e estatísticas da sua empresa</p>
-        </div>
-        <button
-          onClick={() => setShowConviteModal(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+      {/* Background Decorative Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl animate-blob" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-400/20 rounded-full blur-3xl animate-blob animation-delay-2000" />
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl animate-blob animation-delay-4000" />
+      </div>
+
+      <div className="relative z-10 p-6 max-w-7xl mx-auto">
+        {/* Header */}
+        <div 
+          className="mb-8 backdrop-blur-xl bg-white/70 rounded-3xl shadow-xl border border-white/20 p-8 overflow-hidden relative"
+          style={{ animation: 'slideUp 0.6s ease-out' }}
         >
-          <UserPlus className="w-4 h-4" />
-          <span>Convidar Colaborador</span>
-        </button>
-      </div>
-
-      {/* Cards de Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Users className="h-8 w-8 text-blue-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Total de Colaboradores</p>
-              <p className="text-2xl font-semibold text-gray-900">{estatisticas.total_colaboradores}</p>
-              <p className="text-xs text-gray-500">{estatisticas.colaboradores_ativos} ativos</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Activity className="h-8 w-8 text-green-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Testes Realizados</p>
-              <p className="text-2xl font-semibold text-gray-900">{estatisticas.total_testes_realizados}</p>
-              <p className="text-xs text-gray-500">{estatisticas.testes_este_mes} este mês</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <TrendingUp className="h-8 w-8 text-purple-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Média de Pontuação</p>
-              <p className="text-2xl font-semibold text-gray-900">{estatisticas.media_pontuacao}</p>
-              <p className="text-xs text-gray-500">Últimos 30 dias</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Clock className="h-8 w-8 text-yellow-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Convites Pendentes</p>
-              <p className="text-2xl font-semibold text-gray-900">{estatisticas.convites_pendentes}</p>
-              <p className="text-xs text-gray-500">Aguardando resposta</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Target className="h-8 w-8 text-indigo-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Taxa de Participação</p>
-              <p className="text-2xl font-semibold text-gray-900">{calcularTaxaParticipacao()}%</p>
-              <p className="text-xs text-gray-500">Colaboradores que fizeram testes</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Award className="h-8 w-8 text-orange-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">Nível de Engajamento</p>
-              <p className="text-2xl font-semibold text-gray-900">
-                {estatisticas.media_pontuacao >= 80 ? 'Alto' : 
-                 estatisticas.media_pontuacao >= 60 ? 'Médio' : 'Baixo'}
-              </p>
-              <p className="text-xs text-gray-500">Baseado na pontuação média</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Gráficos e Resumos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-gray-900">Resumo Mensal</h3>
-            <Calendar className="h-5 w-5 text-gray-400" />
-          </div>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Testes realizados este mês</span>
-              <span className="text-lg font-semibold text-gray-900">{estatisticas.testes_este_mes}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Colaboradores ativos</span>
-              <span className="text-lg font-semibold text-gray-900">{estatisticas.colaboradores_ativos}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Convites pendentes</span>
-              <span className="text-lg font-semibold text-gray-900">{estatisticas.convites_pendentes}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-gray-900">Indicadores de Performance</h3>
-            <BarChart3 className="h-5 w-5 text-gray-400" />
-          </div>
-          <div className="space-y-4">
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-cyan-500/5 pointer-events-none" />
+          
+          <div className="relative flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-sm text-gray-600">Taxa de Participação</span>
-                <span className="text-sm font-medium text-gray-900">{calcularTaxaParticipacao()}%</span>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
+                  <Brain className="w-6 h-6 text-white" />
+                </div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                  {user?.name ? `${user.name}` : 'Dashboard'}
+                </h1>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-blue-600 h-2 rounded-full" 
-                  style={{ width: `${Math.min(parseFloat(calcularTaxaParticipacao()), 100)}%` }}
-                ></div>
+              <p className="text-gray-600 ml-14">Visão geral do desempenho e estatísticas da sua empresa</p>
+            </div>
+            
+            <button
+              data-testid="button-convidar-colaborador"
+              onClick={() => setShowConviteModal(true)}
+              className="group relative px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative flex items-center gap-2">
+                <UserPlus className="w-5 h-5" />
+                <span>Convidar Colaborador</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {statCards.map((stat, index) => (
+            <div
+              key={index}
+              data-testid={`card-stat-${index}`}
+              className="group relative backdrop-blur-xl bg-white/70 rounded-2xl shadow-lg border border-white/20 p-6 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 cursor-pointer"
+              style={{
+                animation: `slideUp ${0.6 + index * 0.1}s ease-out`,
+              }}
+            >
+              {/* Gradient Background */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+              
+              {/* Gradient Border Glow */}
+              <div className={`absolute inset-0 bg-gradient-to-r ${stat.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300`} />
+              
+              <div className="relative flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-600 mb-2">{stat.title}</p>
+                  <p className="text-3xl font-bold text-gray-900 mb-1" data-testid={`text-stat-value-${index}`}>
+                    {stat.value}
+                  </p>
+                  <p className="text-xs text-gray-500">{stat.subtitle}</p>
+                </div>
+                
+                <div className={`p-3 rounded-2xl bg-gradient-to-br ${stat.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <stat.icon className="w-6 h-6 text-white" />
+                </div>
+              </div>
+
+              {/* Decorative Corner Element */}
+              <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-white/10 to-transparent rounded-tl-full transform translate-x-12 translate-y-12 group-hover:translate-x-8 group-hover:translate-y-8 transition-transform duration-500" />
+            </div>
+          ))}
+        </div>
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Resumo Mensal */}
+          <div 
+            className="backdrop-blur-xl bg-white/70 rounded-2xl shadow-lg border border-white/20 p-6 overflow-hidden"
+            style={{ animation: 'slideUp 1.2s ease-out' }}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-md">
+                  <Calendar className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">Resumo Mensal</h3>
+              </div>
+              <div className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium">
+                Atual
               </div>
             </div>
-            <div>
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-sm text-gray-600">Pontuação Média</span>
-                <span className="text-sm font-medium text-gray-900">{estatisticas.media_pontuacao}/100</span>
+            
+            <div className="space-y-5">
+              <div className="group p-4 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100/50 hover:from-blue-50 hover:to-cyan-50 transition-all duration-300">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-white shadow-sm">
+                      <Activity className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">Testes realizados este mês</span>
+                  </div>
+                  <span className="text-xl font-bold text-gray-900" data-testid="text-testes-mes">
+                    {estatisticas.testes_este_mes}
+                  </span>
+                </div>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-green-600 h-2 rounded-full" 
-                  style={{ width: `${estatisticas.media_pontuacao}%` }}
-                ></div>
+              
+              <div className="group p-4 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100/50 hover:from-green-50 hover:to-emerald-50 transition-all duration-300">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-white shadow-sm">
+                      <Users className="w-4 h-4 text-green-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">Colaboradores ativos</span>
+                  </div>
+                  <span className="text-xl font-bold text-gray-900" data-testid="text-colaboradores-ativos">
+                    {estatisticas.colaboradores_ativos}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="group p-4 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100/50 hover:from-amber-50 hover:to-orange-50 transition-all duration-300">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-white shadow-sm">
+                      <Clock className="w-4 h-4 text-amber-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">Convites pendentes</span>
+                  </div>
+                  <span className="text-xl font-bold text-gray-900" data-testid="text-convites-pendentes">
+                    {estatisticas.convites_pendentes}
+                  </span>
+                </div>
               </div>
             </div>
-            <div>
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-sm text-gray-600">Colaboradores Ativos</span>
-                <span className="text-sm font-medium text-gray-900">
-                  {estatisticas.total_colaboradores > 0 
-                    ? ((estatisticas.colaboradores_ativos / estatisticas.total_colaboradores) * 100).toFixed(1)
-                    : 0}%
-                </span>
+          </div>
+
+          {/* Indicadores de Performance */}
+          <div 
+            className="backdrop-blur-xl bg-white/70 rounded-2xl shadow-lg border border-white/20 p-6 overflow-hidden"
+            style={{ animation: 'slideUp 1.3s ease-out' }}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-md">
+                  <BarChart3 className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">Indicadores de Performance</h3>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-purple-600 h-2 rounded-full" 
-                  style={{ 
-                    width: `${estatisticas.total_colaboradores > 0 
-                      ? (estatisticas.colaboradores_ativos / estatisticas.total_colaboradores) * 100
-                      : 0}%` 
-                  }}
-                ></div>
+              <Sparkles className="w-5 h-5 text-purple-500" />
+            </div>
+            
+            <div className="space-y-6">
+              {/* Taxa de Participação */}
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <div className="flex items-center gap-2">
+                    <Target className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium text-gray-700">Taxa de Participação</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-gray-900" data-testid="text-taxa-participacao">
+                      {calcularTaxaParticipacao()}%
+                    </span>
+                    {parseFloat(calcularTaxaParticipacao()) > 50 ? (
+                      <ArrowUp className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <ArrowDown className="w-4 h-4 text-red-600" />
+                    )}
+                  </div>
+                </div>
+                <div className="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                  <div 
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full shadow-lg transition-all duration-1000 ease-out"
+                    style={{ width: `${Math.min(parseFloat(calcularTaxaParticipacao()), 100)}%` }}
+                  >
+                    <div className="absolute inset-0 bg-white/30 animate-pulse" />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Pontuação Média */}
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-green-600" />
+                    <span className="text-sm font-medium text-gray-700">Pontuação Média</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-gray-900" data-testid="text-media-pontuacao">
+                      {estatisticas.media_pontuacao}/100
+                    </span>
+                    {estatisticas.media_pontuacao > 70 ? (
+                      <ArrowUp className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <ArrowDown className="w-4 h-4 text-red-600" />
+                    )}
+                  </div>
+                </div>
+                <div className="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                  <div 
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full shadow-lg transition-all duration-1000 ease-out"
+                    style={{ width: `${estatisticas.media_pontuacao}%` }}
+                  >
+                    <div className="absolute inset-0 bg-white/30 animate-pulse" />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Colaboradores Ativos */}
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-purple-600" />
+                    <span className="text-sm font-medium text-gray-700">Colaboradores Ativos</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-gray-900" data-testid="text-taxa-ativos">
+                      {calcularTaxaAtivos().toFixed(1)}%
+                    </span>
+                    {calcularTaxaAtivos() > 80 ? (
+                      <ArrowUp className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <ArrowDown className="w-4 h-4 text-red-600" />
+                    )}
+                  </div>
+                </div>
+                <div className="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                  <div 
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-lg transition-all duration-1000 ease-out"
+                    style={{ width: `${calcularTaxaAtivos()}%` }}
+                  >
+                    <div className="absolute inset-0 bg-white/30 animate-pulse" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -320,93 +435,124 @@ export default function EmpresaOverview() {
 
       {/* Modal de Convite */}
       {showConviteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Convidar Novo Colaborador</h3>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div 
+            className="relative backdrop-blur-2xl bg-white/90 rounded-3xl shadow-2xl border border-white/20 w-full max-w-md overflow-hidden"
+            style={{ animation: 'slideUp 0.4s ease-out' }}
+          >
+            {/* Decorative Header Gradient */}
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500" />
             
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nome do Colaborador
-                </label>
-                <input
-                  type="text"
-                  value={novoConvite.nome}
-                  onChange={(e) => setNovoConvite({...novoConvite, nome: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Digite o nome do colaborador"
-                />
+            {/* Close Button */}
+            <button
+              data-testid="button-fechar-modal"
+              onClick={() => setShowConviteModal(false)}
+              className="absolute top-4 right-4 p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+            
+            <div className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
+                  <UserPlus className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900">Convidar Colaborador</h3>
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={novoConvite.email}
-                  onChange={(e) => setNovoConvite({...novoConvite, email: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="email@colaborador.com"
-                />
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Nome do Colaborador
+                  </label>
+                  <input
+                    data-testid="input-nome"
+                    type="text"
+                    value={novoConvite.nome}
+                    onChange={(e) => setNovoConvite({...novoConvite, nome: e.target.value})}
+                    className="w-full px-4 py-3 bg-white/80 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-gray-400"
+                    placeholder="Digite o nome do colaborador"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Email
+                  </label>
+                  <input
+                    data-testid="input-email-modal"
+                    type="email"
+                    value={novoConvite.email}
+                    onChange={(e) => setNovoConvite({...novoConvite, email: e.target.value})}
+                    className="w-full px-4 py-3 bg-white/80 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-gray-400"
+                    placeholder="email@colaborador.com"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Cargo (Opcional)
+                    </label>
+                    <input
+                      data-testid="input-cargo"
+                      type="text"
+                      value={novoConvite.cargo}
+                      onChange={(e) => setNovoConvite({...novoConvite, cargo: e.target.value})}
+                      className="w-full px-4 py-3 bg-white/80 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-gray-400"
+                      placeholder="Analista"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Departamento
+                    </label>
+                    <input
+                      data-testid="input-departamento"
+                      type="text"
+                      value={novoConvite.departamento}
+                      onChange={(e) => setNovoConvite({...novoConvite, departamento: e.target.value})}
+                      className="w-full px-4 py-3 bg-white/80 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-gray-400"
+                      placeholder="RH"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Dias para Expiração
+                  </label>
+                  <select
+                    data-testid="select-dias-expiracao"
+                    value={novoConvite.dias_expiracao}
+                    onChange={(e) => setNovoConvite({...novoConvite, dias_expiracao: parseInt(e.target.value)})}
+                    className="w-full px-4 py-3 bg-white/80 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                    <option value={3}>3 dias</option>
+                    <option value={7}>7 dias</option>
+                    <option value={15}>15 dias</option>
+                    <option value={30}>30 dias</option>
+                  </select>
+                </div>
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Cargo (Opcional)
-                </label>
-                <input
-                  type="text"
-                  value={novoConvite.cargo}
-                  onChange={(e) => setNovoConvite({...novoConvite, cargo: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ex: Analista, Gerente, etc."
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Departamento (Opcional)
-                </label>
-                <input
-                  type="text"
-                  value={novoConvite.departamento}
-                  onChange={(e) => setNovoConvite({...novoConvite, departamento: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ex: RH, TI, Vendas, etc."
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Dias para Expiração
-                </label>
-                <select
-                  value={novoConvite.dias_expiracao}
-                  onChange={(e) => setNovoConvite({...novoConvite, dias_expiracao: parseInt(e.target.value)})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              <div className="flex gap-3 mt-8">
+                <button
+                  data-testid="button-cancelar"
+                  onClick={() => setShowConviteModal(false)}
+                  className="flex-1 px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-all hover:scale-105 active:scale-95"
                 >
-                  <option value={3}>3 dias</option>
-                  <option value={7}>7 dias</option>
-                  <option value={15}>15 dias</option>
-                  <option value={30}>30 dias</option>
-                </select>
+                  Cancelar
+                </button>
+                <button
+                  data-testid="button-criar-convite"
+                  onClick={criarConviteColaborador}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
+                >
+                  Criar Convite
+                </button>
               </div>
-            </div>
-            
-            <div className="flex justify-end space-x-3 mt-6">
-              <button
-                onClick={() => setShowConviteModal(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={criarConviteColaborador}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                Criar Convite
-              </button>
             </div>
           </div>
         </div>
