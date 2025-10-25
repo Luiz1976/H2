@@ -82,3 +82,25 @@ Migration from Supabase to a local API backend for enhanced control. Manual Zod 
 - **Frontend Libraries**: React, Vite, Shadcn/UI, Tailwind CSS, TanStack Query, Wouter, Recharts
 - **Backend Libraries**: Express.js, TypeScript, Drizzle, bcrypt, jsonwebtoken
 - **AI Integration**: Google Gemini API
+
+## Recent Changes
+- **Admin Convites Page Redesign** (October 25, 2025): Complete UI/UX overhaul for /admin/convites
+  - Modern card-based layout replacing traditional table view
+  - Gradient backgrounds and glassmorphism effects for visual appeal
+  - Enhanced statistics dashboard with 5 KPI cards (Total, Aguardando, Aceitos, Expirados, Taxa de Conversão)
+  - Smart status badges with color coding (blue for pending, orange for expiring soon, green for accepted, red for expired)
+  - Days remaining countdown for active invites
+  - Modal-based invite creation with elegant form design
+  - Quick action buttons (Copy Link, Cancel) directly on cards
+  - Advanced filtering with search and status dropdown
+  - Refresh button with loading animation
+  - Empty state with call-to-action
+  - Fully responsive design optimized for desktop, tablet, and mobile
+  - Professional color scheme with purple-blue gradients
+- **CEO Dashboard Enhancement**: 30+ strategic indicators with intelligent insights
+  - Organizational Health Index, Retention Rate, Coverage metrics
+  - 5-level alert system (critical, high, medium, low) for coverage issues, risk areas, activity drops
+  - Temporal analysis (morning, afternoon, evening, night test distribution)
+  - Risk analysis panel for critical categories
+  - Predictive metrics with next month forecasting
+  - LGPD-compliant aggregated data only

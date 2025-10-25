@@ -8,11 +8,25 @@ import {
   CheckCircle, 
   XCircle,
   Search,
-  Filter
+  Filter,
+  Plus,
+  Building2,
+  Send,
+  Trash2,
+  Eye,
+  RefreshCw,
+  AlertCircle,
+  TrendingUp,
+  Users,
+  Sparkles
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { authService } from '@/services/authService';
 import { apiService } from '@/services/apiService';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface ConviteEmpresa {
   id: string;
@@ -26,12 +40,27 @@ interface ConviteEmpresa {
   linkConvite?: string;
   cargo?: string;
   departamento?: string;
+  dataCriacao?: string;
+}
+
+interface NovoConvite {
+  nomeEmpresa: string;
+  emailContato: string;
+  diasExpiracao: number;
 }
 
 export default function AdminConvites() {
   const [convites, setConvites] = useState<ConviteEmpresa[]>([]);
   const [filtroConvites, setFiltroConvites] = useState('');
   const [statusFiltroConvites, setStatusFiltroConvites] = useState<'todos' | 'pendente' | 'usado' | 'expirado'>('todos');
+  const [showNovoConviteModal, setShowNovoConviteModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [novoConvite, setNovoConvite] = useState<NovoConvite>({
+    nomeEmpresa: '',
+    emailContato: '',
+    diasExpiracao: 30
+  });
+  const [viewMode, setViewMode] = useState<'cards' | 'list'>('cards');
 
   useEffect(() => {
     carregarConvites();
@@ -39,6 +68,7 @@ export default function AdminConvites() {
 
   const carregarConvites = async () => {
     try {
+      setLoading(true);
       const response = await apiService.listarConvites();
       
       if (response.convites) {
@@ -47,13 +77,75 @@ export default function AdminConvites() {
     } catch (error) {
       console.error('Erro ao carregar convites:', error);
       toast.error('Erro ao carregar convites');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const cancelarConvite = async (conviteId: string) => {
+  const criarConvite = async () => {
+    if (!novoConvite.nomeEmpresa || !novoConvite.emailContato) {
+      toast.error('Preencha todos os campos obrigatórios');
+      return;
+    }
+
     try {
-      toast.info('Funcionalidade de cancelamento será implementada em breve');
-      // TODO: Implementar endpoint de cancelamento no backend
+      setLoading(true);
+      const user = authService.getCurrentUser();
+      
+      const response = await fetch('/api/invitations/empresa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nome_empresa: novoConvite.nomeEmpresa,
+          email_contato: novoConvite.emailContato,
+          admin_id: user?.id,
+          dias_expiracao: novoConvite.diasExpiracao
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success('Convite criado com sucesso!', {
+          description: `Enviado para ${novoConvite.emailContato}`
+        });
+        setShowNovoConviteModal(false);
+        setNovoConvite({
+          nomeEmpresa: '',
+          emailContato: '',
+          diasExpiracao: 30
+        });
+        carregarConvites();
+      } else {
+        toast.error(data.message || 'Erro ao criar convite');
+      }
+    } catch (error) {
+      console.error('Erro ao criar convite:', error);
+      toast.error('Erro ao criar convite');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cancelarConvite = async (token: string) => {
+    try {
+      const response = await fetch(`/api/invitations/empresa/${token}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success('Convite cancelado com sucesso');
+        carregarConvites();
+      } else {
+        toast.error(data.message || 'Erro ao cancelar convite');
+      }
     } catch (error) {
       console.error('Erro ao cancelar convite:', error);
       toast.error('Erro ao cancelar convite');
@@ -64,13 +156,23 @@ export default function AdminConvites() {
     const baseUrl = window.location.origin;
     const url = `${baseUrl}/aceitar-convite/${token}?tipo=empresa`;
     navigator.clipboard.writeText(url);
-    toast.success('URL copiada para a área de transferência');
+    toast.success('URL copiada!', {
+      description: 'O link do convite foi copiado para a área de transferência'
+    });
   };
 
   const formatarData = (data: string) => {
     return new Date(data).toLocaleDateString('pt-BR', {
       day: '2-digit',
-      month: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
+
+  const formatarDataCompleta = (data: string) => {
+    return new Date(data).toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
@@ -85,6 +187,12 @@ export default function AdminConvites() {
     if (convite.status === 'usado') return 'usado';
     if (isConviteExpirado(convite.validade)) return 'expirado';
     return 'pendente';
+  };
+
+  const getDiasRestantes = (dataExpiracao: string) => {
+    const diff = new Date(dataExpiracao).getTime() - new Date().getTime();
+    const dias = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return dias > 0 ? dias : 0;
   };
 
   const convitesFiltrados = convites.filter(convite => {
@@ -105,228 +213,414 @@ export default function AdminConvites() {
     switch (status) {
       case 'usado':
         return (
-          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+          <span className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
             <CheckCircle className="w-3 h-3 mr-1" />
-            Usado
+            Aceito
           </span>
         );
       case 'expirado':
         return (
-          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+          <span className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
             <XCircle className="w-3 h-3 mr-1" />
             Expirado
           </span>
         );
       default:
+        const dias = getDiasRestantes(convite.validade);
         return (
-          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+          <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full ${
+            dias <= 3 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'
+          }`}>
             <Clock className="w-3 h-3 mr-1" />
-            Pendente
+            {dias} dias restantes
           </span>
         );
     }
   };
 
-  return (
-    <div className="p-6">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Convites</h1>
-        <p className="text-gray-600">Gerencie os convites enviados para empresas</p>
-      </div>
+  const totalConvites = convites.length;
+  const pendentes = convites.filter(c => getStatusConvite(c) === 'pendente').length;
+  const usados = convites.filter(c => getStatusConvite(c) === 'usado').length;
+  const expirados = convites.filter(c => getStatusConvite(c) === 'expirado').length;
+  const taxaConversao = totalConvites > 0 ? ((usados / totalConvites) * 100).toFixed(1) : '0';
 
-      {/* Filtros */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Buscar convites..."
-                value={filtroConvites}
-                onChange={(e) => setFiltroConvites(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 p-6">
+      {/* Header com Ação */}
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center">
+              <Mail className="w-8 h-8 mr-3 text-blue-600" />
+              Gestão de Convites
+            </h1>
+            <p className="text-gray-600">Crie e gerencie convites para novas empresas</p>
+          </div>
+          <Button
+            onClick={() => setShowNovoConviteModal(true)}
+            className="mt-4 md:mt-0 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+            data-testid="button-novo-convite"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Novo Convite
+          </Button>
+        </div>
+
+        {/* Cards de Estatísticas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Mail className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{totalConvites}</p>
+            <p className="text-sm text-gray-500 mt-1">Total de Convites</p>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 bg-orange-100 rounded-lg">
+                <Clock className="h-6 w-6 text-orange-600" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{pendentes}</p>
+            <p className="text-sm text-gray-500 mt-1">Aguardando</p>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <CheckCircle className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{usados}</p>
+            <p className="text-sm text-gray-500 mt-1">Aceitos</p>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 bg-red-100 rounded-lg">
+                <XCircle className="h-6 w-6 text-red-600" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{expirados}</p>
+            <p className="text-sm text-gray-500 mt-1">Expirados</p>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl shadow-lg p-5 text-white">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 bg-white/20 rounded-lg">
+                <TrendingUp className="h-6 w-6" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold">{taxaConversao}%</p>
+            <p className="text-sm opacity-90 mt-1">Taxa de Conversão</p>
+          </div>
+        </div>
+
+        {/* Filtros e Busca */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Buscar por empresa ou email..."
+                  value={filtroConvites}
+                  onChange={(e) => setFiltroConvites(e.target.value)}
+                  className="pl-11 pr-4 py-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  data-testid="input-busca-convites"
+                />
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
+                <Filter className="w-4 h-4 text-gray-500" />
+                <select
+                  value={statusFiltroConvites}
+                  onChange={(e) => setStatusFiltroConvites(e.target.value as any)}
+                  className="bg-transparent border-none focus:ring-0 text-sm font-medium text-gray-700"
+                  data-testid="select-filtro-status"
+                >
+                  <option value="todos">Todos</option>
+                  <option value="pendente">Aguardando</option>
+                  <option value="usado">Aceitos</option>
+                  <option value="expirado">Expirados</option>
+                </select>
+              </div>
+              
+              <button
+                onClick={carregarConvites}
+                className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                title="Atualizar"
+                data-testid="button-atualizar"
+              >
+                <RefreshCw className={`w-5 h-5 text-gray-600 ${loading ? 'animate-spin' : ''}`} />
+              </button>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Filter className="w-4 h-4 text-gray-400" />
-            <select
-              value={statusFiltroConvites}
-              onChange={(e) => setStatusFiltroConvites(e.target.value as any)}
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="todos">Todos os status</option>
-              <option value="pendente">Pendentes</option>
-              <option value="usado">Usados</option>
-              <option value="expirado">Expirados</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Lista de Convites */}
-      <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Empresa
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Criado em
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Expira em
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ações
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {convitesFiltrados.map((convite) => (
-                <tr key={convite.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10">
-                        <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                          <Mail className="w-5 h-5 text-purple-600" />
-                        </div>
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {convite.nomeEmpresa || convite.nome || 'N/A'}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          Token: {convite.token.substring(0, 8)}...
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{convite.emailContato || convite.email || 'N/A'}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {getStatusBadge(convite)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div className="flex items-center">
-                      <Calendar className="w-4 h-4 text-gray-400 mr-1" />
-                      {formatarData(convite.validade)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div className="flex items-center">
-                      <Clock className="w-4 h-4 text-gray-400 mr-1" />
-                      {formatarData(convite.validade)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end space-x-2">
-                      {convite.status !== 'usado' && !isConviteExpirado(convite.validade) && (
-                        <>
-                          <button
-                            onClick={() => copiarUrlConvite(convite.token)}
-                            className="text-blue-600 hover:text-blue-900"
-                            title="Copiar URL do convite"
-                          >
-                            <Copy className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => cancelarConvite(convite.id)}
-                            className="text-red-600 hover:text-red-900"
-                            title="Cancelar convite"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
 
-        {convitesFiltrados.length === 0 && (
+        {/* Grid de Cards de Convites */}
+        {loading && convites.length === 0 ? (
           <div className="text-center py-12">
-            <Mail className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">Nenhum convite encontrado</h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <RefreshCw className="w-12 h-12 text-gray-400 animate-spin mx-auto mb-4" />
+            <p className="text-gray-500">Carregando convites...</p>
+          </div>
+        ) : convitesFiltrados.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+              <Mail className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Nenhum convite encontrado</h3>
+            <p className="text-gray-500 mb-6">
               {filtroConvites || statusFiltroConvites !== 'todos' 
                 ? 'Tente ajustar os filtros de busca.' 
-                : 'Nenhum convite foi enviado ainda.'}
+                : 'Comece criando seu primeiro convite para uma empresa.'}
             </p>
+            {!filtroConvites && statusFiltroConvites === 'todos' && (
+              <Button
+                onClick={() => setShowNovoConviteModal(true)}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Criar Primeiro Convite
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {convitesFiltrados.map((convite) => {
+              const status = getStatusConvite(convite);
+              const diasRestantes = getDiasRestantes(convite.validade);
+              
+              return (
+                <div
+                  key={convite.id}
+                  className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-200 group"
+                  data-testid={`card-convite-${convite.id}`}
+                >
+                  {/* Header do Card */}
+                  <div className={`p-4 ${
+                    status === 'usado' ? 'bg-gradient-to-r from-green-500 to-emerald-600' :
+                    status === 'expirado' ? 'bg-gradient-to-r from-red-500 to-rose-600' :
+                    diasRestantes <= 3 ? 'bg-gradient-to-r from-orange-500 to-amber-600' :
+                    'bg-gradient-to-r from-blue-500 to-indigo-600'
+                  }`}>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                          <Building2 className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-white text-lg">
+                            {convite.nomeEmpresa || convite.nome || 'N/A'}
+                          </h3>
+                          <p className="text-xs text-white/80 mt-0.5">
+                            {convite.emailContato || convite.email || 'N/A'}
+                          </p>
+                        </div>
+                      </div>
+                      {getStatusBadge(convite)}
+                    </div>
+                  </div>
+
+                  {/* Corpo do Card */}
+                  <div className="p-5">
+                    <div className="space-y-3 mb-4">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Calendar className="w-4 h-4 mr-2 text-gray-400" />
+                        <span className="text-xs">Criado em:</span>
+                        <span className="ml-auto font-medium text-gray-900">
+                          {formatarData(convite.dataCriacao || convite.validade)}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Clock className="w-4 h-4 mr-2 text-gray-400" />
+                        <span className="text-xs">Expira em:</span>
+                        <span className={`ml-auto font-medium ${
+                          status === 'expirado' ? 'text-red-600' :
+                          diasRestantes <= 3 ? 'text-orange-600' :
+                          'text-gray-900'
+                        }`}>
+                          {formatarData(convite.validade)}
+                        </span>
+                      </div>
+
+                      {status === 'pendente' && (
+                        <div className="pt-2 border-t border-gray-100">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-gray-500">Token:</span>
+                            <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">
+                              {convite.token.substring(0, 12)}...
+                            </code>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Ações */}
+                    {status === 'pendente' && (
+                      <div className="flex gap-2 pt-4 border-t border-gray-100">
+                        <button
+                          onClick={() => copiarUrlConvite(convite.token)}
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors text-sm font-medium"
+                          data-testid={`button-copiar-${convite.id}`}
+                        >
+                          <Copy className="w-4 h-4" />
+                          Copiar Link
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm('Deseja realmente cancelar este convite?')) {
+                              cancelarConvite(convite.token);
+                            }
+                          }}
+                          className="px-3 py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg transition-colors"
+                          title="Cancelar convite"
+                          data-testid={`button-cancelar-${convite.id}`}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+
+                    {status === 'usado' && (
+                      <div className="pt-4 border-t border-gray-100">
+                        <div className="flex items-center justify-center gap-2 text-green-600 text-sm font-medium">
+                          <CheckCircle className="w-4 h-4" />
+                          Convite aceito pela empresa
+                        </div>
+                      </div>
+                    )}
+
+                    {status === 'expirado' && (
+                      <div className="pt-4 border-t border-gray-100">
+                        <div className="flex items-center justify-center gap-2 text-red-600 text-sm font-medium">
+                          <AlertCircle className="w-4 h-4" />
+                          Convite expirado
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
 
-      {/* Resumo */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Mail className="h-8 w-8 text-gray-400" />
+      {/* Modal de Novo Convite */}
+      <Dialog open={showNovoConviteModal} onOpenChange={setShowNovoConviteModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-2xl">
+              <Sparkles className="w-6 h-6 text-purple-600" />
+              Criar Novo Convite
+            </DialogTitle>
+            <DialogDescription>
+              Preencha os dados da empresa para gerar um convite de acesso
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="nomeEmpresa" className="text-sm font-medium">
+                Nome da Empresa *
+              </Label>
+              <Input
+                id="nomeEmpresa"
+                placeholder="Ex: Tech Solutions Ltda"
+                value={novoConvite.nomeEmpresa}
+                onChange={(e) => setNovoConvite({ ...novoConvite, nomeEmpresa: e.target.value })}
+                className="w-full"
+                data-testid="input-nome-empresa"
+              />
             </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Total</p>
-              <p className="text-lg font-semibold text-gray-900">{convites.length}</p>
+
+            <div className="space-y-2">
+              <Label htmlFor="emailContato" className="text-sm font-medium">
+                Email de Contato *
+              </Label>
+              <Input
+                id="emailContato"
+                type="email"
+                placeholder="contato@empresa.com"
+                value={novoConvite.emailContato}
+                onChange={(e) => setNovoConvite({ ...novoConvite, emailContato: e.target.value })}
+                className="w-full"
+                data-testid="input-email-contato"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="diasExpiracao" className="text-sm font-medium">
+                Validade do Convite (dias)
+              </Label>
+              <select
+                id="diasExpiracao"
+                value={novoConvite.diasExpiracao}
+                onChange={(e) => setNovoConvite({ ...novoConvite, diasExpiracao: Number(e.target.value) })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                data-testid="select-dias-expiracao"
+              >
+                <option value={7}>7 dias</option>
+                <option value={15}>15 dias</option>
+                <option value={30}>30 dias</option>
+                <option value={60}>60 dias</option>
+                <option value={90}>90 dias</option>
+              </select>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+              <div className="flex gap-3">
+                <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-blue-800">
+                  <p className="font-medium mb-1">Como funciona?</p>
+                  <p className="text-blue-700">
+                    Ao criar o convite, será gerado um link único que você poderá enviar para a empresa. 
+                    O convite expira automaticamente após o período selecionado.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Clock className="h-8 w-8 text-yellow-400" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Pendentes</p>
-              <p className="text-lg font-semibold text-gray-900">
-                {convites.filter(c => getStatusConvite(c) === 'pendente').length}
-              </p>
-            </div>
+
+          <div className="flex gap-3 mt-6">
+            <Button
+              variant="outline"
+              onClick={() => setShowNovoConviteModal(false)}
+              className="flex-1"
+              disabled={loading}
+              data-testid="button-cancelar-modal"
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={criarConvite}
+              disabled={loading || !novoConvite.nomeEmpresa || !novoConvite.emailContato}
+              className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              data-testid="button-criar-convite"
+            >
+              {loading ? (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                  Criando...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4 mr-2" />
+                  Criar Convite
+                </>
+              )}
+            </Button>
           </div>
-        </div>
-        
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <CheckCircle className="h-8 w-8 text-green-400" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Usados</p>
-              <p className="text-lg font-semibold text-gray-900">
-                {convites.filter(c => c.usado).length}
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <XCircle className="h-8 w-8 text-red-400" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Expirados</p>
-              <p className="text-lg font-semibold text-gray-900">
-                {convites.filter(c => getStatusConvite(c) === 'expirado').length}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
