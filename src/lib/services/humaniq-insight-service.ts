@@ -29,11 +29,12 @@ class HumaniQInsightService {
     usuarioNome?: string,
     usuarioEmail?: string,
     tempoGasto: number = 0,
-    empresa_id?: string
+    testeId?: string // Adicionar o parâmetro testeId
   ): Promise<{ resultado: Resultado; analise: ResultadoHumaniQInsight }> {
     
     try {
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Iniciando processamento do resultado');
+      console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Teste ID recebido:', testeId);
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Respostas recebidas:', respostas);
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Número de respostas:', Object.keys(respostas).length);
       
@@ -66,7 +67,7 @@ class HumaniQInsightService {
       
       // Preparar dados para salvar no banco
       const dadosResultado = {
-        teste_id: null,
+        teste_id: testeId || null, // Usar o testeId passado ou null
         usuario_id: usuarioEmail ? crypto.randomUUID() : null,
         session_id: sessionId,
         pontuacao_total: analiseHumaniQInsight.pontuacaoGeral,

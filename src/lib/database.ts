@@ -743,6 +743,16 @@ export const analiseService = {
 
 // ==================== PROCESSAMENTO UNIFICADO ====================
 
+// Mapeamento de slugs para UUIDs dos testes no banco de dados
+const TESTE_SLUG_TO_UUID: Record<string, string> = {
+  'humaniq-insight': '55fc21f9-cc10-4b4a-8765-3f5087eaf1f5',
+  'clima-organizacional': '55fc21f9-cc10-4b4a-8765-3f5087eaf1f5', // Mesmo teste
+  'karasek-siegrist': '9b7d4c8e-1a2b-4f3e-9d7a-5e6f7a8b9c0d',
+  'estresse-ocupacional': '2c8e3f9a-4b5d-6e7a-8c9d-0e1f2a3b4c5d',
+  'pas': '4e0a5b1c-6d7f-8e9a-0f1a-2b3c4d5e6f7a',
+  'mgrp': '5f1a6c2d-7e8f-9a0b-1c2d-3e4f5a6b7c8d'
+};
+
 export const processamentoService = {
   /**
    * Processa respostas de qualquer teste usando o service apropriado
@@ -760,9 +770,16 @@ export const processamentoService = {
       throw new Error('Dados inválidos para processamento');
     }
 
+    // Converter slug para UUID se necessário
+    const testeSlug = testeId; // Guardar o slug original para o switch
+    const testeUUID = TESTE_SLUG_TO_UUID[testeId] || testeId; // Converter para UUID se existir no mapa
+    
+    console.log('🔍 [PROCESSAMENTO] Slug recebido:', testeSlug);
+    console.log('🔍 [PROCESSAMENTO] UUID do teste:', testeUUID);
+
     try {
-      // Determinar qual service usar baseado no teste
-      switch (testeId) {
+      // Determinar qual service usar baseado no teste (usar slug original)
+      switch (testeSlug) {
         case 'clima-organizacional':
           const resultadoClima = await climaOrganizacionalService.processarResultado(
             respostas, usuarioNome, usuarioEmail, tempoGasto
@@ -779,17 +796,19 @@ export const processamentoService = {
 
         case 'humaniq-insight':
           console.log('🔍 [DATABASE] Processando teste HumaniQ Insight');
+          console.log('🔍 [DATABASE] UUID do teste:', testeUUID);
           const resultadoHumaniQ = await humaniQInsightService.processarResultado(
             respostas,
             usuarioNome,
             usuarioEmail,
-            tempoGasto
+            tempoGasto,
+            testeUUID // Passar o UUID em vez do slug
           );
           return resultadoHumaniQ;
 
         default:
           // Para testes que ainda não têm service específico, usar processamento genérico
-          return await this.processarTesteGenerico(testeId, respostas, usuarioNome, usuarioEmail, tempoGasto);
+          return await this.processarTesteGenerico(testeUUID, respostas, usuarioNome, usuarioEmail, tempoGasto);
       }
     } catch (error) {
       console.error('❌ [DATABASE] Erro ao processar teste:', error);
