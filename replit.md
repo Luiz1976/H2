@@ -27,7 +27,7 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
 ### Feature Specifications
 - **User Roles**: Admin, Company, Employee with distinct permissions.
 - **Invitation System**: Hierarchical invitations (Admin invites Company, Company invites Employee).
-- **Psychological Tests**: Supports multiple types including QVT, RPO, Clima e Bem-Estar, Estresse Ocupacional, Karasek-Siegrist, PAS, and MGRP.
+- **Psychological Tests**: Supports multiple types including QVT, RPO, Clima e Bem-Estar, Estresse Ocupacional, Karasek-Siegrist, PAS, MGRP, and **HumaniQ Insight** (comprehensive organizational climate assessment with 48 questions across 4 dimensions: Psychological Safety, Internal Communication, Belonging, and Organizational Justice).
 - **Result Visualization**: Unified component for consistent display.
 - **Data Isolation**: Companies view only their employees' results; employees view only their own.
 - **Psychosocial State Monitoring**: Aggregated, anonymized insights with AI-powered analysis (Google Gemini API), risk classification, automated recommendations, and a glassmorphism UI. Compliant with NR1 and ISO 45003.

@@ -72,6 +72,7 @@ export default function ColaboradorTestes() {
 
   const getTesteUrl = (nome: string) => {
     const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('humaniq insight') || nomeNorm.includes('humaniq-insight')) return '/teste/humaniq-insight';
     if (nomeNorm.includes('clima organizacional')) return '/teste/clima-organizacional';
     if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return '/teste/karasek-siegrist';
     if (nomeNorm.includes('estresse ocupacional')) return '/teste/estresse-ocupacional';
