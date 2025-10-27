@@ -25,12 +25,18 @@ export const empresas = pgTable('empresas', {
   adminId: uuid('admin_id').references(() => admins.id),
   configuracoes: jsonb('configuracoes').default({}),
   ativa: boolean('ativa').default(true),
+  stripeCustomerId: varchar('stripe_customer_id', { length: 255 }),
+  stripeSubscriptionId: varchar('stripe_subscription_id', { length: 255 }),
+  stripePriceId: varchar('stripe_price_id', { length: 255 }),
+  plano: varchar('plano', { length: 50 }),
+  statusAssinatura: varchar('status_assinatura', { length: 50 }).default('inativo'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   adminIdx: index('idx_empresas_admin_id').on(table.adminId),
   emailIdx: index('idx_empresas_email').on(table.emailContato),
   ativaIdx: index('idx_empresas_ativa').on(table.ativa),
+  stripeCustomerIdx: index('idx_empresas_stripe_customer').on(table.stripeCustomerId),
 }));
 
 export const colaboradores = pgTable('colaboradores', {
