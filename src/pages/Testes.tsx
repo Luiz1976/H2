@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useAuth } from "@/hooks/AuthContext";
 
 interface TesteDisponibilidade {
   id: string;
@@ -35,16 +36,18 @@ interface TesteDisponibilidade {
 export default function Testes() {
   const navigate = useNavigate();
   const infoRPO = obterInfoTesteRPO();
+  const { user, isAuthenticated } = useAuth();
   
   const [testes, setTestes] = useState<TesteDisponibilidade[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
-  const [isColaborador, setIsColaborador] = useState(false);
 
-  // Carregar testes na inicialização
+  const isColaborador = isAuthenticated && user?.role === 'colaborador';
+
+  // Carregar testes na inicialização e quando o usuário mudar
   useEffect(() => {
     carregarTestesDisponiveis();
-  }, []);
+  }, [user, isAuthenticated]);
 
   // Adicionar listeners para recarregar quando a página ganhar foco
   useEffect(() => {
@@ -76,23 +79,21 @@ export default function Testes() {
       setCarregando(true);
       setErro(null);
 
+      // Se não for colaborador autenticado, não carregar
+      if (!isAuthenticated || user?.role !== 'colaborador') {
+        console.log('🔍 [TESTES] Não é colaborador ou não está autenticado, mostrando testes estáticos');
+        setCarregando(false);
+        return;
+      }
+
       const token = localStorage.getItem('authToken');
-      const user = localStorage.getItem('currentUser');
-      
-      if (!token || !user) {
+      if (!token) {
+        console.error('❌ [TESTES] Token não encontrado no localStorage');
         setCarregando(false);
-        setIsColaborador(false);
         return;
       }
 
-      const userData = JSON.parse(user);
-      if (userData.role !== 'colaborador') {
-        setCarregando(false);
-        setIsColaborador(false);
-        return;
-      }
-
-      setIsColaborador(true);
+      console.log('🔍 [TESTES] Carregando testes para colaborador:', user.email);
 
       const response = await fetch('/api/teste-disponibilidade/colaborador/testes', {
         headers: {
