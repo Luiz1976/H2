@@ -80,6 +80,14 @@ export default function Testes() {
       }
 
       const data = await response.json();
+      console.log('🔍 [TESTES-FRONTEND] Dados recebidos da API:', data);
+      console.log('📊 [TESTES-FRONTEND] Total de testes:', data.testes?.length || 0);
+      console.log('📋 [TESTES-FRONTEND] Resumo dos testes:', data.testes?.map((t: any) => ({
+        nome: t.nome,
+        disponivel: t.disponivel,
+        motivo: t.motivo,
+        dataConclusao: t.dataConclusao
+      })));
       setTestes(data.testes || []);
     } catch (error) {
       console.error('Erro ao carregar testes:', error);

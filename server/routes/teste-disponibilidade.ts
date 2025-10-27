@@ -16,11 +16,15 @@ router.get('/colaborador/testes', authenticateToken, requireColaborador, async (
     const colaboradorId = req.user!.userId;
     const empresaId = req.user!.empresaId!;
 
+    console.log('🔍 [DISPONIBILIDADE] Buscando testes para colaborador:', colaboradorId, 'da empresa:', empresaId);
+
     // Buscar todos os testes ativos
     const todosTestes = await db
       .select()
       .from(testes)
       .where(eq(testes.ativo, true));
+    
+    console.log('📊 [DISPONIBILIDADE] Total de testes ativos encontrados:', todosTestes.length);
 
     // Buscar disponibilidade para cada teste
     const testesComDisponibilidade = await Promise.all(
@@ -104,7 +108,7 @@ router.get('/colaborador/testes', authenticateToken, requireColaborador, async (
             .onConflictDoNothing();
         }
 
-        return {
+        const testeInfo = {
           ...teste,
           disponivel,
           motivo,
@@ -113,8 +117,28 @@ router.get('/colaborador/testes', authenticateToken, requireColaborador, async (
           pontuacao: resultado?.pontuacaoTotal || null,
           periodicidadeDias: disponibilidade?.periodicidadeDias || null,
         };
+
+        console.log(`📋 [DISPONIBILIDADE] Teste "${teste.nome}":`, {
+          disponivel,
+          motivo,
+          temDisponibilidade: !!disponibilidade,
+          temResultado: !!resultado,
+          disponibilidadeData: disponibilidade ? {
+            disponivel: disponibilidade.disponivel,
+            periodicidade: disponibilidade.periodicidadeDias,
+            proxima: disponibilidade.proximaDisponibilidade
+          } : null
+        });
+
+        return testeInfo;
       })
     );
+
+    console.log('✅ [DISPONIBILIDADE] Retornando', testesComDisponibilidade.length, 'testes');
+    console.log('📊 [DISPONIBILIDADE] Resumo:', {
+      disponiveis: testesComDisponibilidade.filter(t => t.disponivel).length,
+      bloqueados: testesComDisponibilidade.filter(t => !t.disponivel).length
+    });
 
     res.json({ 
       testes: testesComDisponibilidade,
