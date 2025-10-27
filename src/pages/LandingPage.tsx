@@ -1017,7 +1017,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+          <div className="flex justify-center mb-6">
             <Button 
               size="lg" 
               onClick={() => navigate('/quick-check')}
@@ -1026,15 +1026,6 @@ export default function LandingPage() {
             >
               <Sparkles className="mr-2 h-6 w-6" />
               Iniciar Diagnóstico Gratuito Agora
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="bg-transparent border-2 border-white text-white hover:bg-white/10 text-xl px-12 py-8"
-              data-testid="button-demo-final"
-            >
-              <Play className="mr-2 h-6 w-6" />
-              Agendar Demonstração Personalizada
             </Button>
           </div>
 
