@@ -129,13 +129,27 @@ Migration from Supabase to a local API backend for enhanced control. Manual Zod 
       - Botão "Finalizar Teste" verde após última pergunta
     - **3. Animação de processamento (ProcessingAnimation)**: 3 etapas com ícones animados e progress bars
     - **4. Tela de resultado**: Gráficos visuais, classificação de risco, pontuação, badges de valor, CTAs otimizados
-  - **Estratégias de conversão otimizadas**:
-    - Resultado parcial/preview que gera curiosidade ("Esta é apenas uma prévia!")
-    - Comparação explícita: Quick Check (7 perguntas) vs Plataforma Completa (38 dimensões psicossociais)
-    - Badges de valor: Conformidade NR-01, Gestão de Equipes, Planos de Ação
-    - CTA primário destacado: "Acessar Avaliação Completa Agora" com gradiente indigo-purple
-    - CTA secundário: "Voltar à Página Inicial"
-    - Disclaimers éticos: Teste demonstrativo, não substitui avaliação profissional
+  - **Estratégias de conversão otimizadas** (múltiplas técnicas de persuasão):
+    1. **Card de Preview**: "Esta é apenas uma prévia!" com badges de valor (Conformidade NR-01, Gestão de Equipes, Planos de Ação)
+    2. **Alerta Personalizado por Risco** (>3.5): Card vermelho urgente para riscos altos/críticos recomendando ação imediata ("Não deixe para depois")
+    3. **Prova Social**: Card roxo com métricas "500+ Profissionais avaliados" e "50+ Empresas atendidas" - confiabilidade
+    4. **Benefícios Específicos**: Card verde listando tudo que receberá:
+       - 📄 Relatório Profissional em PDF (38 dimensões com gráficos)
+       - 🎯 Plano de Ação Personalizado NR-01
+       - 📊 Dashboard Interativo de evolução
+       - ⚡ Resultados em Minutos (IA instantânea)
+    5. **Tabela Comparativa**: Card amarelo mostrando "Preview Grátis vs. Completa"
+       - 7 perguntas → 80 perguntas
+       - 3 dimensões → 38 dimensões
+       - Sem relatório PDF → Com PDF profissional
+       - Sem plano NR-01 → Com plano completo
+       - Sem gestão equipes → Com gestão completa
+    6. **CTAs Estratégicos**:
+       - Primário (gradiente indigo-purple): "✨ Acessar Avaliação Completa Agora"
+       - Secundário (outline): "Voltar à Página Inicial"
+    7. **Disclaimer Ético**: "⚠️ Este é um teste demonstrativo gratuito. Os resultados não substituem avaliação profissional."
+    
+    **Técnicas de persuasão aplicadas**: Reciprocidade (valor gratuito), Contraste (7 vs 80 perguntas), Prova Social (500+ usuários), Escassez implícita (riscos críticos = urgência), Autoridade (NR-01, métricas), Especificidade (lista exata de benefícios)
   - **Perguntas do Quick Check** (selecionadas do teste completo de Estresse Ocupacional):
     1. Pressão constante e difícil de manejar
     2. Dificuldade para desligar mentalmente do trabalho

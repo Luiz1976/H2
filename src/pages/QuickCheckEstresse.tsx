@@ -7,7 +7,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
   CheckCircle, Loader2, ArrowLeft, AlertCircle, Clock, 
-  Sparkles, Shield, Users, Target, AlertTriangle
+  Sparkles, Shield, Users, Target, AlertTriangle, TrendingUp,
+  FileText, Award, Clock3, Zap, BarChart3
 } from 'lucide-react';
 import { numeroParaLetra } from '@/lib/utils';
 import LoadingAnimation from '@/components/LoadingAnimation';
@@ -275,6 +276,141 @@ export default function QuickCheckEstresse() {
                       <Target className="h-8 w-8 text-pink-600 mx-auto mb-2" />
                       <p className="text-xs font-medium">Planos de Ação</p>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Mensagem personalizada baseada no risco */}
+              {pontuacaoTotal > 3.5 && (
+                <Card className="border-2 border-red-200 bg-gradient-to-br from-red-50 to-orange-50">
+                  <CardContent className="p-6 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="h-5 w-5 text-red-600" />
+                      <h3 className="font-semibold text-red-800">Atenção: Ação Recomendada</h3>
+                    </div>
+                    <p className="text-sm text-red-700">
+                      Seu resultado indica um nível de estresse que merece atenção imediata. 
+                      A avaliação completa pode identificar exatamente quais dimensões necessitam intervenção 
+                      e fornecer um plano de ação estruturado para sua recuperação.
+                    </p>
+                    <div className="bg-white p-3 rounded-lg">
+                      <p className="text-xs text-gray-600">
+                        <strong className="text-red-600">Não deixe para depois:</strong> Quanto mais cedo você 
+                        agir, mais rápido poderá retomar seu equilíbrio e bem-estar.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Card de prova social e urgência */}
+              <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-purple-600" />
+                    <h3 className="font-semibold text-gray-800">Junte-se a Centenas de Profissionais</h3>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="bg-white p-4 rounded-lg text-center">
+                      <p className="text-3xl font-bold text-purple-600">500+</p>
+                      <p className="text-xs text-gray-600 mt-1">Profissionais avaliados</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg text-center">
+                      <p className="text-3xl font-bold text-indigo-600">50+</p>
+                      <p className="text-xs text-gray-600 mt-1">Empresas atendidas</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 text-center">
+                    Empresas líderes já confiam na HumaniQ AI para gerenciar riscos psicossociais 
+                    e manter conformidade com a NR-01.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Card de benefícios específicos */}
+              <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Award className="h-5 w-5 text-green-600" />
+                    <h3 className="font-semibold text-gray-800">O que você receberá na avaliação completa</h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <FileText className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">Relatório Profissional em PDF</p>
+                        <p className="text-xs text-gray-600">Análise detalhada de 38 dimensões psicossociais com gráficos e insights</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Target className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">Plano de Ação Personalizado</p>
+                        <p className="text-xs text-gray-600">Recomendações específicas conforme NR-01 para sua situação</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <BarChart3 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">Dashboard Interativo</p>
+                        <p className="text-xs text-gray-600">Acompanhe sua evolução ao longo do tempo com métricas visuais</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Clock3 className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">Resultados em Minutos</p>
+                        <p className="text-xs text-gray-600">Análise completa processada instantaneamente por IA</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Card de comparação - O que você está perdendo */}
+              <Card className="border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Zap className="h-5 w-5 text-amber-600" />
+                    <h3 className="font-semibold text-gray-800">Comparação: Preview vs. Avaliação Completa</h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b-2 border-amber-200">
+                          <th className="text-left py-2 px-2">Recursos</th>
+                          <th className="text-center py-2 px-2 text-gray-500">Preview Grátis</th>
+                          <th className="text-center py-2 px-2 text-indigo-600">Completa</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-xs">
+                        <tr className="border-b border-amber-100">
+                          <td className="py-2 px-2">Perguntas analisadas</td>
+                          <td className="text-center py-2 px-2">7</td>
+                          <td className="text-center py-2 px-2 font-bold text-indigo-600">80</td>
+                        </tr>
+                        <tr className="border-b border-amber-100">
+                          <td className="py-2 px-2">Dimensões avaliadas</td>
+                          <td className="text-center py-2 px-2">3</td>
+                          <td className="text-center py-2 px-2 font-bold text-indigo-600">38</td>
+                        </tr>
+                        <tr className="border-b border-amber-100">
+                          <td className="py-2 px-2">Relatório PDF profissional</td>
+                          <td className="text-center py-2 px-2">✗</td>
+                          <td className="text-center py-2 px-2 font-bold text-indigo-600">✓</td>
+                        </tr>
+                        <tr className="border-b border-amber-100">
+                          <td className="py-2 px-2">Plano de ação NR-01</td>
+                          <td className="text-center py-2 px-2">✗</td>
+                          <td className="text-center py-2 px-2 font-bold text-indigo-600">✓</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2 px-2">Gestão de equipes</td>
+                          <td className="text-center py-2 px-2">✗</td>
+                          <td className="text-center py-2 px-2 font-bold text-indigo-600">✓</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </CardContent>
               </Card>
