@@ -92,10 +92,31 @@ router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
 
     const { testeId, pontuacaoTotal, tempoGasto, sessionId, metadados, status } = validationResult.data;
 
+    // 🔍 BUSCAR AUTOMATICAMENTE O teste_id SE NÃO FOI FORNECIDO
+    let testeIdFinal = testeId;
+    if (!testeIdFinal && metadados && metadados.teste_nome) {
+      try {
+        const [testeEncontrado] = await db
+          .select({ id: testes.id })
+          .from(testes)
+          .where(eq(testes.nome, metadados.teste_nome))
+          .limit(1);
+        
+        if (testeEncontrado) {
+          testeIdFinal = testeEncontrado.id;
+          console.log(`🔍 [RESULTADO] Teste "${metadados.teste_nome}" encontrado automaticamente. ID: ${testeIdFinal}`);
+        } else {
+          console.warn(`⚠️ [RESULTADO] Teste "${metadados.teste_nome}" não encontrado na tabela testes`);
+        }
+      } catch (error) {
+        console.error('❌ [RESULTADO] Erro ao buscar ID do teste:', error);
+      }
+    }
+
     const [resultado] = await db
       .insert(resultados)
       .values({
-        testeId: testeId || null,
+        testeId: testeIdFinal || null,
         usuarioId: req.user!.userId,
         pontuacaoTotal,
         tempoGasto,
@@ -120,7 +141,7 @@ router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
     }
 
     // 🔒 Marcar teste como indisponível após conclusão
-    if (testeId && req.user!.role === 'colaborador' && req.user!.empresaId) {
+    if (testeIdFinal && req.user!.role === 'colaborador' && req.user!.empresaId) {
       setImmediate(async () => {
         try {
           const colaboradorId = req.user!.userId;
@@ -134,7 +155,7 @@ router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
             .where(
               and(
                 eq(testeDisponibilidade.colaboradorId, colaboradorId),
-                eq(testeDisponibilidade.testeId, testeId)
+                eq(testeDisponibilidade.testeId, testeIdFinal)
               )
             )
             .limit(1);
@@ -158,14 +179,14 @@ router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
               })
               .where(eq(testeDisponibilidade.id, disponibilidadeExistente.id));
 
-            console.log(`🔒 [DISPONIBILIDADE] Teste ${testeId} marcado como indisponível para colaborador ${colaboradorId}`);
+            console.log(`🔒 [DISPONIBILIDADE] Teste ${testeIdFinal} marcado como indisponível para colaborador ${colaboradorId}`);
           } else {
             // Criar novo registro como indisponível
             await db
               .insert(testeDisponibilidade)
               .values({
                 colaboradorId,
-                testeId,
+                testeId: testeIdFinal,
                 empresaId,
                 disponivel: false,
                 ultimaLiberacao: null,
@@ -173,7 +194,7 @@ router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
               })
               .onConflictDoNothing();
 
-            console.log(`🔒 [DISPONIBILIDADE] Registro de disponibilidade criado para teste ${testeId} e colaborador ${colaboradorId}`);
+            console.log(`🔒 [DISPONIBILIDADE] Registro de disponibilidade criado para teste ${testeIdFinal} e colaborador ${colaboradorId}`);
           }
         } catch (error) {
           console.error('❌ [DISPONIBILIDADE] Erro ao marcar teste como indisponível:', error);

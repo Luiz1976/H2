@@ -55,32 +55,10 @@ export class ClimaOrganizacionalService {
       const sessionId = sessionService.getSessionId();
       console.log('🔍 [CLIMA-SERVICE] Session ID obtido:', sessionId);
       
-      // Buscar o ID do teste "Pesquisa de Clima Organizacional" no banco de dados
-      let testeId: string | null = null;
-      try {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-          const response = await fetch('/api/testes');
-          if (response.ok) {
-            const testes = await response.json();
-            const testeClima = testes.find((t: any) => 
-              t.nome === 'Pesquisa de Clima Organizacional'
-            );
-            if (testeClima) {
-              testeId = testeClima.id;
-              console.log('🔍 [CLIMA-SERVICE] ID do teste encontrado:', testeId);
-            } else {
-              console.warn('⚠️ [CLIMA-SERVICE] Teste "Pesquisa de Clima Organizacional" não encontrado na tabela testes');
-            }
-          }
-        }
-      } catch (error) {
-        console.error('❌ [CLIMA-SERVICE] Erro ao buscar ID do teste:', error);
-      }
-      
       // Preparar dados para salvar no banco (compatível com schema)
+      // O backend buscará automaticamente o teste_id baseado no teste_nome
       const dadosResultado = {
-        teste_id: testeId, // Usar o ID correto do teste para permitir bloqueio automático
+        teste_id: null, // O backend buscará automaticamente o ID correto usando metadados.teste_nome
         usuario_id: usuarioEmail ? crypto.randomUUID() : null, // NULL para anônimos conforme schema
         session_id: sessionId, // Incluir session_id para persistência
         pontuacao_total: analiseClima.pontuacaoGeral, // Usar pontuação total calculada (soma das respostas)
