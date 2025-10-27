@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useLocation, useRoute } from 'wouter';
-import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -45,12 +44,12 @@ const PLANOS = {
 };
 
 export default function CheckoutPage() {
-  const [, params] = useRoute('/checkout/:planType');
-  const [, navigate] = useLocation();
+  const { planType } = useParams<{ planType: string }>();
+  const navigate = useNavigate();
   const { toast } = useToast();
 
-  const planType = params?.planType as keyof typeof PLANOS || 'profissional';
-  const plano = PLANOS[planType];
+  const planKey = (planType as keyof typeof PLANOS) || 'profissional';
+  const plano = PLANOS[planKey];
 
   const [nomeEmpresa, setNomeEmpresa] = useState('');
   const [email, setEmail] = useState('');
@@ -87,7 +86,7 @@ export default function CheckoutPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          planType,
+          planType: planKey,
           employeeCount: quantidadeColaboradores,
           email,
           nomeEmpresa,

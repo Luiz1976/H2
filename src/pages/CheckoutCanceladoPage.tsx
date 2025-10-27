@@ -1,10 +1,10 @@
-import { useLocation } from 'wouter';
+import { useNavigate } from 'react-router-dom';
 import { XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function CheckoutCanceladoPage() {
-  const [, navigate] = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center px-4">
