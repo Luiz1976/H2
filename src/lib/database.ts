@@ -2,6 +2,7 @@ import { supabase, retryWithBackoff } from './supabase';
 import type { Teste, Pergunta, Resultado, Resposta, AnaliseResultado } from './types';
 import { climaOrganizacionalService } from './services/clima-organizacional-service';
 import { karasekSiegristService } from './services/karasek-siegrist-service';
+import { humaniQInsightService } from './services/humaniq-insight-service';
 import { sessionService } from './services/session-service';
 import { apiService } from '@/services/apiService';
 
@@ -775,6 +776,16 @@ export const processamentoService = {
           const usuarioId = usuarioEmail || crypto.randomUUID();
           const resultadoKS = await karasekSiegristService.processarRespostas(usuarioId, respostas);
           return resultadoKS;
+
+        case 'humaniq-insight':
+          console.log('🔍 [DATABASE] Processando teste HumaniQ Insight');
+          const resultadoHumaniQ = await humaniQInsightService.processarResultado(
+            respostas,
+            usuarioNome,
+            usuarioEmail,
+            tempoGasto
+          );
+          return resultadoHumaniQ;
 
         default:
           // Para testes que ainda não têm service específico, usar processamento genérico

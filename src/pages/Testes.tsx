@@ -11,6 +11,7 @@ import { infoTesteMaturidadeRiscosPsicossociais } from "@/lib/testes/maturidade-
 import { configPercepacaoAssedio } from "@/lib/testes/percepcao-assedio";
 import { configQualidadeVidaTrabalho } from "@/lib/testes/qualidade-vida-trabalho";
 import { obterInfoTesteRPO } from "@/lib/testes/riscos-psicossociais-ocupacionais";
+import { infoTesteHumaniQInsight } from "@/lib/testes/humaniq-insight";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -95,6 +96,7 @@ export default function Testes() {
 
   const getTesteInfo = (nome: string) => {
     const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('humaniq insight') || nomeNorm.includes('humaniq-insight')) return infoTesteHumaniQInsight;
     if (nomeNorm.includes('clima organizacional') || nomeNorm.includes('clima-organizacional')) return infoTesteClimaOrganizacional;
     if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return infoTesteKarasekSiegrist;
     if (nomeNorm.includes('estresse ocupacional') || nomeNorm.includes('estresse-ocupacional')) return infoTesteEstresseOcupacional;
@@ -108,6 +110,7 @@ export default function Testes() {
 
   const getTesteRoute = (nome: string) => {
     const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('humaniq insight') || nomeNorm.includes('humaniq-insight')) return '/teste/humaniq-insight';
     if (nomeNorm.includes('clima organizacional') || nomeNorm.includes('clima-organizacional')) return '/teste/clima-organizacional';
     if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return '/teste/karasek-siegrist';
     if (nomeNorm.includes('estresse ocupacional') || nomeNorm.includes('estresse-ocupacional')) return '/teste/estresse-ocupacional';
@@ -121,6 +124,7 @@ export default function Testes() {
 
   const getTesteIcon = (nome: string) => {
     const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('humaniq insight')) return <Brain className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('clima organizacional')) return <Building2 className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return <Brain className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('estresse')) return <Heart className="h-8 w-8 text-white" />;

@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, CheckCircle, Loader2, AlertCircle, Clock } from 
 import { useToast } from "@/hooks/use-toast";
 import { obterTodasPerguntas } from "@/lib/testes/clima-organizacional";
 import { obterTodasPerguntasKS } from "@/lib/testes/karasek-siegrist";
+import { obterTodasPerguntasHumaniQInsight } from "@/lib/testes/humaniq-insight";
 import { processamentoService, respostasService } from "@/lib/database";
 import { numeroParaLetra } from "@/lib/utils";
 import ProcessingAnimation from "@/components/ProcessingAnimation";
@@ -76,6 +77,12 @@ const perguntasMock = {
     texto: pergunta.texto,
     categoria: pergunta.dimensao,
     escala: pergunta.escala
+  })),
+  "humaniq-insight": obterTodasPerguntasHumaniQInsight().map(pergunta => ({
+    id: pergunta.id,
+    texto: pergunta.texto,
+    categoria: pergunta.dimensao,
+    escala: ["Discordo totalmente", "Discordo", "Neutro", "Concordo", "Concordo totalmente"]
   }))
 };
 
