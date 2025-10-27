@@ -315,11 +315,9 @@ function App() {
               <Route 
                 path="/teste/humaniq-insight/perguntas" 
                 element={
-                  <ProtectedRoute>
-                    <MainLayout>
-                      <TestePerguntas />
-                    </MainLayout>
-                  </ProtectedRoute>
+                  <MainLayout>
+                    <TestePerguntas />
+                  </MainLayout>
                 } 
               />
               <Route 

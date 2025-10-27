@@ -87,10 +87,18 @@ const perguntasMock = {
 };
 
 export default function TestePerguntas() {
-  const { testeId } = useParams();
+  const { testeId: testeIdParam } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   
+  // Extrair testeId dos parâmetros ou do pathname
+  const pathname = window.location.pathname;
+  const testeIdFromPath = pathname.includes('/humaniq-insight/') ? 'humaniq-insight' 
+    : pathname.includes('/clima-organizacional/') ? 'clima-organizacional'
+    : pathname.includes('/karasek-siegrist/') ? 'karasek-siegrist'
+    : testeIdParam;
+  
+  const testeId = testeIdFromPath || testeIdParam;
   const perguntas = perguntasMock[testeId as keyof typeof perguntasMock] || [];
   const [perguntaAtual, setPerguntaAtual] = useState(0);
   const [respostas, setRespostas] = useState<Record<number, number>>({});
