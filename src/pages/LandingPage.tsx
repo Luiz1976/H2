@@ -7,11 +7,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState('rh');
+  const [showComparison, setShowComparison] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -945,7 +953,8 @@ export default function LandingPage() {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-2 border-indigo-600 text-indigo-600"
+                onClick={() => setShowComparison(true)}
+                className="border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50"
                 data-testid="button-comparar-planos"
               >
                 Comparar Planos em Detalhes
@@ -1034,6 +1043,130 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
+
+      {/* Modal de Comparação Detalhada */}
+      <Dialog open={showComparison} onOpenChange={setShowComparison}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Comparação Detalhada dos Planos
+            </DialogTitle>
+            <DialogDescription className="text-lg">
+              Compare todos os recursos e escolha o plano perfeito para sua empresa
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="text-left p-4 font-bold text-gray-900">Recursos</th>
+                  <th className="text-center p-4">
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-gray-900">Essencial</p>
+                      <p className="text-2xl font-bold text-gray-900 mt-1">R$ 15</p>
+                      <p className="text-sm text-gray-600">/colab/mês</p>
+                    </div>
+                  </th>
+                  <th className="text-center p-4 bg-gradient-to-br from-indigo-50 to-purple-50">
+                    <div className="text-center">
+                      <Badge className="mb-2 bg-gradient-to-r from-indigo-600 to-purple-600">⭐ POPULAR</Badge>
+                      <p className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Profissional</p>
+                      <p className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mt-1">R$ 25</p>
+                      <p className="text-sm text-gray-600">/colab/mês</p>
+                    </div>
+                  </th>
+                  <th className="text-center p-4">
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-gray-900">Enterprise</p>
+                      <p className="text-2xl font-bold text-gray-900 mt-1">R$ 35</p>
+                      <p className="text-sm text-gray-600">/colab/mês</p>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: 'Mínimo de colaboradores', essencial: '10', profissional: '20', enterprise: '100' },
+                  { feature: 'Máximo de colaboradores', essencial: '50', profissional: '200', enterprise: 'Ilimitado' },
+                  { feature: 'Ticket mínimo mensal', essencial: 'R$ 150', profissional: 'R$ 500', enterprise: 'R$ 3.500' },
+                  { feature: 'Testes psicológicos', essencial: '3 básicos', profissional: '7 completos', enterprise: '7 completos' },
+                  { feature: 'Análise com IA (Google Gemini)', essencial: false, profissional: true, enterprise: true },
+                  { feature: 'Dashboard de resultados', essencial: 'Básico', profissional: 'Avançado', enterprise: 'Avançado' },
+                  { feature: 'Relatórios de compliance (NR-1, ISO 45003)', essencial: false, profissional: true, enterprise: true },
+                  { feature: 'Módulo PRG completo', essencial: false, profissional: true, enterprise: true },
+                  { feature: 'Exportação PDF e Excel', essencial: false, profissional: true, enterprise: true },
+                  { feature: 'API para integração', essencial: false, profissional: false, enterprise: true },
+                  { feature: 'Múltiplas empresas/unidades', essencial: false, profissional: false, enterprise: true },
+                  { feature: 'White-label personalizado', essencial: false, profissional: false, enterprise: true },
+                  { feature: 'Consultoria especializada', essencial: false, profissional: false, enterprise: '1h/mês' },
+                  { feature: 'Relatórios customizados', essencial: false, profissional: false, enterprise: true },
+                  { feature: 'Gestor de contas dedicado', essencial: false, profissional: false, enterprise: true },
+                  { feature: 'Suporte', essencial: 'Email', profissional: 'Email + Chat', enterprise: 'SLA 4h úteis' },
+                  { feature: 'Setup e Onboarding', essencial: 'Gratuito', profissional: 'Gratuito + Treinamento 1h', enterprise: 'Premium + Treinamento equipe' },
+                  { feature: 'Atualizações', essencial: 'Incluídas', profissional: 'Incluídas', enterprise: 'Incluídas + Preview' },
+                  { feature: 'Desconto anual', essencial: '10% OFF', profissional: '10% OFF', enterprise: '10% OFF' },
+                ].map((row, index) => (
+                  <tr key={index} className={`border-b border-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
+                    <td className="p-4 font-medium text-gray-900">{row.feature}</td>
+                    <td className="p-4 text-center">
+                      {typeof row.essencial === 'boolean' ? (
+                        row.essencial ? (
+                          <Check className="h-6 w-6 text-green-500 mx-auto" />
+                        ) : (
+                          <X className="h-6 w-6 text-gray-300 mx-auto" />
+                        )
+                      ) : (
+                        <span className="text-gray-700">{row.essencial}</span>
+                      )}
+                    </td>
+                    <td className="p-4 text-center bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
+                      {typeof row.profissional === 'boolean' ? (
+                        row.profissional ? (
+                          <Check className="h-6 w-6 text-indigo-600 mx-auto" />
+                        ) : (
+                          <X className="h-6 w-6 text-gray-300 mx-auto" />
+                        )
+                      ) : (
+                        <span className="text-gray-700 font-semibold">{row.profissional}</span>
+                      )}
+                    </td>
+                    <td className="p-4 text-center">
+                      {typeof row.enterprise === 'boolean' ? (
+                        row.enterprise ? (
+                          <Check className="h-6 w-6 text-purple-600 mx-auto" />
+                        ) : (
+                          <X className="h-6 w-6 text-gray-300 mx-auto" />
+                        )
+                      ) : (
+                        <span className="text-gray-700">{row.enterprise}</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={() => {
+                setShowComparison(false);
+                scrollToSection('diagnostico');
+              }}
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+            >
+              Começar Teste Gratuito
+            </Button>
+            <Button 
+              variant="outline"
+              onClick={() => setShowComparison(false)}
+            >
+              Fechar Comparação
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 py-12">
