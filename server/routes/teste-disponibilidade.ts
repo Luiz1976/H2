@@ -118,15 +118,22 @@ router.get('/colaborador/testes', authenticateToken, requireColaborador, async (
           periodicidadeDias: disponibilidade?.periodicidadeDias || null,
         };
 
-        console.log(`📋 [DISPONIBILIDADE] Teste "${teste.nome}":`, {
+        console.log(`📋 [DISPONIBILIDADE] Teste "${teste.nome}" - Colaborador: ${colaboradorId}:`, {
           disponivel,
           motivo,
           temDisponibilidade: !!disponibilidade,
           temResultado: !!resultado,
           disponibilidadeData: disponibilidade ? {
+            id: disponibilidade.id,
             disponivel: disponibilidade.disponivel,
             periodicidade: disponibilidade.periodicidadeDias,
-            proxima: disponibilidade.proximaDisponibilidade
+            proxima: disponibilidade.proximaDisponibilidade,
+            ultimaLiberacao: disponibilidade.ultimaLiberacao
+          } : null,
+          resultadoData: resultado ? {
+            id: resultado.id,
+            dataRealizacao: resultado.dataRealizacao,
+            pontuacao: resultado.pontuacaoTotal
           } : null
         });
 

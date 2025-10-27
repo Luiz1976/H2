@@ -140,66 +140,71 @@ router.post('/resultado', authenticateToken, async (req: AuthRequest, res) => {
       });
     }
 
-    // 🔒 Marcar teste como indisponível após conclusão
+    // 🔒 CRÍTICO: Marcar teste como indisponível após conclusão (SÍNCRONO)
+    // Esta operação DEVE ser executada de forma síncrona para garantir integridade
     if (testeIdFinal && req.user!.role === 'colaborador' && req.user!.empresaId) {
-      setImmediate(async () => {
-        try {
-          const colaboradorId = req.user!.userId;
-          const empresaId = req.user!.empresaId!;
-          const agora = new Date();
+      try {
+        const colaboradorId = req.user!.userId;
+        const empresaId = req.user!.empresaId;
+        const agora = new Date();
 
-          // Buscar registro existente
-          const [disponibilidadeExistente] = await db
-            .select()
-            .from(testeDisponibilidade)
-            .where(
-              and(
-                eq(testeDisponibilidade.colaboradorId, colaboradorId),
-                eq(testeDisponibilidade.testeId, testeIdFinal)
-              )
+        console.log(`🔒 [DISPONIBILIDADE-CRÍTICO] Iniciando bloqueio do teste ${testeIdFinal} para colaborador ${colaboradorId}`);
+
+        // Buscar registro existente
+        const [disponibilidadeExistente] = await db
+          .select()
+          .from(testeDisponibilidade)
+          .where(
+            and(
+              eq(testeDisponibilidade.colaboradorId, colaboradorId),
+              eq(testeDisponibilidade.testeId, testeIdFinal)
             )
-            .limit(1);
+          )
+          .limit(1);
 
-          if (disponibilidadeExistente) {
-            // Calcular próxima disponibilidade se tiver periodicidade
-            let proximaDisponibilidade: Date | null = null;
-            if (disponibilidadeExistente.periodicidadeDias) {
-              proximaDisponibilidade = new Date(
-                agora.getTime() + disponibilidadeExistente.periodicidadeDias * 24 * 60 * 60 * 1000
-              );
-            }
-
-            // Atualizar para indisponível
-            await db
-              .update(testeDisponibilidade)
-              .set({
-                disponivel: false,
-                proximaDisponibilidade,
-                updatedAt: agora,
-              })
-              .where(eq(testeDisponibilidade.id, disponibilidadeExistente.id));
-
-            console.log(`🔒 [DISPONIBILIDADE] Teste ${testeIdFinal} marcado como indisponível para colaborador ${colaboradorId}`);
-          } else {
-            // Criar novo registro como indisponível
-            await db
-              .insert(testeDisponibilidade)
-              .values({
-                colaboradorId,
-                testeId: testeIdFinal,
-                empresaId,
-                disponivel: false,
-                ultimaLiberacao: null,
-                proximaDisponibilidade: null,
-              })
-              .onConflictDoNothing();
-
-            console.log(`🔒 [DISPONIBILIDADE] Registro de disponibilidade criado para teste ${testeIdFinal} e colaborador ${colaboradorId}`);
+        if (disponibilidadeExistente) {
+          // Calcular próxima disponibilidade se tiver periodicidade
+          let proximaDisponibilidade: Date | null = null;
+          if (disponibilidadeExistente.periodicidadeDias) {
+            proximaDisponibilidade = new Date(
+              agora.getTime() + disponibilidadeExistente.periodicidadeDias * 24 * 60 * 60 * 1000
+            );
+            console.log(`📅 [DISPONIBILIDADE] Próxima liberação calculada: ${proximaDisponibilidade.toISOString()} (${disponibilidadeExistente.periodicidadeDias} dias)`);
           }
-        } catch (error) {
-          console.error('❌ [DISPONIBILIDADE] Erro ao marcar teste como indisponível:', error);
+
+          // Atualizar para indisponível
+          await db
+            .update(testeDisponibilidade)
+            .set({
+              disponivel: false,
+              proximaDisponibilidade,
+              updatedAt: agora,
+            })
+            .where(eq(testeDisponibilidade.id, disponibilidadeExistente.id));
+
+          console.log(`✅ [DISPONIBILIDADE] Teste ${testeIdFinal} bloqueado com sucesso (atualização) - Disponível=${false}, ProximaLiberacao=${proximaDisponibilidade?.toISOString() || 'Manual'}`);
+        } else {
+          // Criar novo registro como indisponível
+          const [novoRegistro] = await db
+            .insert(testeDisponibilidade)
+            .values({
+              colaboradorId,
+              testeId: testeIdFinal,
+              empresaId,
+              disponivel: false,
+              ultimaLiberacao: null,
+              proximaDisponibilidade: null,
+            })
+            .returning();
+
+          console.log(`✅ [DISPONIBILIDADE] Registro criado e teste ${testeIdFinal} bloqueado com sucesso (criação) - ID: ${novoRegistro.id}`);
         }
-      });
+      } catch (error) {
+        console.error('❌❌❌ [DISPONIBILIDADE-ERRO-CRÍTICO] FALHA ao bloquear teste:', error);
+        console.error('❌ Stack:', error instanceof Error ? error.stack : 'Sem stack trace');
+        // NÃO continuar se não conseguir bloquear o teste
+        throw new Error('Falha crítica ao bloquear teste após conclusão');
+      }
     }
 
     res.status(201).json({
