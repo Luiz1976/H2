@@ -39,6 +39,7 @@ export default function Testes() {
   const [testes, setTestes] = useState<TesteDisponibilidade[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
+  const [isColaborador, setIsColaborador] = useState(false);
 
   useEffect(() => {
     carregarTestesDisponiveis();
@@ -53,17 +54,19 @@ export default function Testes() {
       const user = localStorage.getItem('currentUser');
       
       if (!token || !user) {
-        // Se não está logado como colaborador, mostrar testes estáticos
         setCarregando(false);
+        setIsColaborador(false);
         return;
       }
 
       const userData = JSON.parse(user);
       if (userData.role !== 'colaborador') {
-        // Se não é colaborador, mostrar testes estáticos
         setCarregando(false);
+        setIsColaborador(false);
         return;
       }
+
+      setIsColaborador(true);
 
       const response = await fetch('/api/teste-disponibilidade/colaborador/testes', {
         headers: {
@@ -89,15 +92,80 @@ export default function Testes() {
 
   const getTesteInfo = (nome: string) => {
     const nomeNorm = nome.toLowerCase();
-    if (nomeNorm.includes('clima organizacional')) return infoTesteClimaOrganizacional;
+    if (nomeNorm.includes('clima organizacional') || nomeNorm.includes('clima-organizacional')) return infoTesteClimaOrganizacional;
     if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return infoTesteKarasekSiegrist;
-    if (nomeNorm.includes('estresse ocupacional')) return infoTesteEstresseOcupacional;
-    if (nomeNorm.includes('clima e bem-estar')) return infoTesteClimaBemEstar;
-    if (nomeNorm.includes('maturidade')) return infoTesteMaturidadeRiscosPsicossociais;
-    if (nomeNorm.includes('assédio')) return configPercepacaoAssedio;
-    if (nomeNorm.includes('qualidade de vida')) return configQualidadeVidaTrabalho;
+    if (nomeNorm.includes('estresse ocupacional') || nomeNorm.includes('estresse-ocupacional')) return infoTesteEstresseOcupacional;
+    if (nomeNorm.includes('clima e bem-estar') || nomeNorm.includes('clima-bem-estar')) return infoTesteClimaBemEstar;
+    if (nomeNorm.includes('maturidade') || nomeNorm.includes('mgrp')) return infoTesteMaturidadeRiscosPsicossociais;
+    if (nomeNorm.includes('assédio') || nomeNorm.includes('assedio') || nomeNorm.includes('pas')) return configPercepacaoAssedio;
+    if (nomeNorm.includes('qualidade de vida') || nomeNorm.includes('qvt')) return configQualidadeVidaTrabalho;
     if (nomeNorm.includes('rpo') || nomeNorm.includes('riscos psicossociais')) return infoRPO;
     return null;
+  };
+
+  const getTesteRoute = (nome: string) => {
+    const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('clima organizacional') || nomeNorm.includes('clima-organizacional')) return '/teste/clima-organizacional';
+    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return '/teste/karasek-siegrist';
+    if (nomeNorm.includes('estresse ocupacional') || nomeNorm.includes('estresse-ocupacional')) return '/teste/estresse-ocupacional';
+    if (nomeNorm.includes('clima e bem-estar') || nomeNorm.includes('clima-bem-estar')) return '/teste/clima-bem-estar';
+    if (nomeNorm.includes('maturidade') || nomeNorm.includes('mgrp')) return '/teste/maturidade-riscos-psicossociais';
+    if (nomeNorm.includes('assédio') || nomeNorm.includes('assedio') || nomeNorm.includes('pas')) return '/teste/percepcao-assedio';
+    if (nomeNorm.includes('qualidade de vida') || nomeNorm.includes('qvt')) return '/teste/qualidade-vida-trabalho';
+    if (nomeNorm.includes('rpo') || nomeNorm.includes('riscos psicossociais')) return '/teste/rpo';
+    return null;
+  };
+
+  const getTesteIcon = (nome: string) => {
+    const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('clima organizacional')) return <Building2 className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return <Brain className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('estresse')) return <Heart className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('clima e bem-estar')) return <Users className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('maturidade') || nomeNorm.includes('mgrp')) return <Shield className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('assédio') || nomeNorm.includes('assedio')) return <AlertTriangle className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('qualidade de vida') || nomeNorm.includes('qvt')) return <Star className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('rpo') || nomeNorm.includes('riscos psicossociais')) return <Shield className="h-8 w-8 text-white" />;
+    return <FileText className="h-8 w-8 text-white" />;
+  };
+
+  const getTesteColor = (nome: string) => {
+    const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('clima organizacional')) return 'bg-blue-500';
+    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return 'bg-purple-500';
+    if (nomeNorm.includes('estresse')) return 'bg-blue-500';
+    if (nomeNorm.includes('clima e bem-estar')) return 'bg-green-500';
+    if (nomeNorm.includes('maturidade') || nomeNorm.includes('mgrp')) return 'bg-orange-500';
+    if (nomeNorm.includes('assédio') || nomeNorm.includes('assedio')) return 'bg-red-500';
+    if (nomeNorm.includes('qualidade de vida') || nomeNorm.includes('qvt')) return 'bg-yellow-500';
+    if (nomeNorm.includes('rpo') || nomeNorm.includes('riscos psicossociais')) return 'bg-indigo-500';
+    return 'bg-gray-500';
+  };
+
+  const getTesteBadgeColor = (nome: string) => {
+    const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('clima organizacional')) return 'text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800';
+    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return 'text-purple-600 border-purple-200 bg-purple-50 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800';
+    if (nomeNorm.includes('estresse')) return 'text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800';
+    if (nomeNorm.includes('clima e bem-estar')) return 'text-green-600 border-green-200 bg-green-50 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800';
+    if (nomeNorm.includes('maturidade') || nomeNorm.includes('mgrp')) return 'text-orange-600 border-orange-200 bg-orange-50 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800';
+    if (nomeNorm.includes('assédio') || nomeNorm.includes('assedio')) return 'text-red-600 border-red-200 bg-red-50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800';
+    if (nomeNorm.includes('qualidade de vida') || nomeNorm.includes('qvt')) return 'text-yellow-600 border-yellow-200 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800';
+    if (nomeNorm.includes('rpo') || nomeNorm.includes('riscos psicossociais')) return 'text-indigo-600 border-indigo-200 bg-indigo-50 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-800';
+    return 'text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600';
+  };
+
+  const getTesteButtonColor = (nome: string) => {
+    const nomeNorm = nome.toLowerCase();
+    if (nomeNorm.includes('clima organizacional')) return 'bg-blue-600 hover:bg-blue-700';
+    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return 'bg-purple-600 hover:bg-purple-700';
+    if (nomeNorm.includes('estresse')) return 'bg-blue-600 hover:bg-blue-700';
+    if (nomeNorm.includes('clima e bem-estar')) return 'bg-green-600 hover:bg-green-700';
+    if (nomeNorm.includes('maturidade') || nomeNorm.includes('mgrp')) return 'bg-orange-600 hover:bg-orange-700';
+    if (nomeNorm.includes('assédio') || nomeNorm.includes('assedio')) return 'bg-red-600 hover:bg-red-700';
+    if (nomeNorm.includes('qualidade de vida') || nomeNorm.includes('qvt')) return 'bg-yellow-600 hover:bg-yellow-700';
+    if (nomeNorm.includes('rpo') || nomeNorm.includes('riscos psicossociais')) return 'bg-indigo-600 hover:bg-indigo-700';
+    return 'bg-gray-600 hover:bg-gray-700';
   };
 
   const getMotivoTexto = (motivo: string | null, proximaDisponibilidade: string | null) => {
@@ -111,6 +179,147 @@ export default function Testes() {
     }
     return 'Indisponível';
   };
+
+  const renderTesteCard = (teste: TesteDisponibilidade) => {
+    const info = getTesteInfo(teste.nome);
+    const route = getTesteRoute(teste.nome);
+    const disponivel = teste.disponivel;
+    
+    const displayNome = info?.nome || teste.nome;
+    const displayDescricao = info?.descricao || teste.descricao;
+    const displayCategoria = info?.categoria || teste.categoria;
+    const displayTempo = info?.duracao || (teste.tempoEstimado ? `${teste.tempoEstimado} min` : '30 min');
+    const displayQuestoes = info?.questoes || 40;
+
+    return (
+      <Card 
+        key={teste.id}
+        className={`rounded-2xl shadow-sm transition-all duration-300 group flex flex-col p-6 ${
+          disponivel 
+            ? 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md' 
+            : 'bg-gray-100 dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-700 opacity-75'
+        }`}
+        data-testid={`card-teste-${teste.id}`}
+      >
+        <CardHeader className="space-y-6 p-0">
+          <div className="flex justify-center">
+            <div className={`w-16 h-16 rounded-full ${disponivel ? getTesteColor(teste.nome) : 'bg-gray-400'} flex items-center justify-center shadow-sm ${!disponivel && 'opacity-50'}`}>
+              {disponivel ? getTesteIcon(teste.nome) : <Lock className="h-8 w-8 text-white" />}
+            </div>
+          </div>
+          <div className="text-center space-y-3">
+            <div className="flex justify-center gap-2 flex-wrap">
+              <Badge 
+                variant="outline" 
+                className={`text-xs ${disponivel ? getTesteBadgeColor(teste.nome) : 'text-gray-500 border-gray-300 bg-gray-100'}`}
+              >
+                {displayCategoria}
+              </Badge>
+              {!disponivel && (
+                <Badge 
+                  variant="outline" 
+                  className="text-xs text-red-600 border-red-200 bg-red-50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800"
+                  data-testid={`badge-indisponivel-${teste.id}`}
+                >
+                  <Lock className="h-3 w-3 mr-1" />
+                  Indisponível
+                </Badge>
+              )}
+              {teste.dataConclusao && (
+                <Badge 
+                  variant="outline" 
+                  className="text-xs text-green-600 border-green-200 bg-green-50 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
+                  data-testid={`badge-concluido-${teste.id}`}
+                >
+                  <CheckCircle2 className="h-3 w-3 mr-1" />
+                  Concluído
+                </Badge>
+              )}
+            </div>
+            <CardTitle className={`text-xl font-bold leading-tight ${disponivel ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'}`}>
+              {displayNome}
+            </CardTitle>
+            <CardDescription className={`text-sm leading-relaxed px-2 ${disponivel ? 'text-gray-600 dark:text-gray-300' : 'text-gray-500 dark:text-gray-500'}`}>
+              {displayDescricao}
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
+          <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              <span>{displayTempo}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              <span>{displayQuestoes} questões</span>
+            </div>
+          </div>
+
+          {!disponivel && teste.dataConclusao && (
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 space-y-2" data-testid={`info-indisponivel-${teste.id}`}>
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <Calendar className="h-4 w-4" />
+                <span>Concluído em: {format(new Date(teste.dataConclusao), "dd/MM/yyyy", { locale: ptBR })}</span>
+              </div>
+              {teste.pontuacao !== null && (
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Pontuação: {teste.pontuacao.toFixed(1)}%
+                </div>
+              )}
+              <div className="text-xs text-gray-500 dark:text-gray-500 italic">
+                {getMotivoTexto(teste.motivo, teste.proximaDisponibilidade)}
+              </div>
+              <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                Aguardando nova liberação pela empresa
+              </div>
+            </div>
+          )}
+
+          {disponivel ? (
+            <Button 
+              className={`w-full ${getTesteButtonColor(teste.nome)} text-white rounded-xl py-3 font-medium transition-colors duration-200`}
+              onClick={() => route && navigate(route)}
+              data-testid={`button-iniciar-${teste.id}`}
+            >
+              Iniciar Teste
+            </Button>
+          ) : (
+            <Button 
+              className="w-full bg-gray-400 text-gray-700 rounded-xl py-3 font-medium cursor-not-allowed"
+              disabled
+              data-testid={`button-bloqueado-${teste.id}`}
+            >
+              <Lock className="h-4 w-4 mr-2" />
+              Teste Bloqueado
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+    );
+  };
+
+  const testesEstaticos = [
+    { info: infoTesteClimaOrganizacional, route: '/teste/clima-organizacional', icon: <Building2 className="h-8 w-8 text-white" />, color: 'bg-blue-500', badgeColor: 'text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800', buttonColor: 'bg-blue-600 hover:bg-blue-700' },
+    { info: infoTesteKarasekSiegrist, route: '/teste/karasek-siegrist', icon: <Brain className="h-8 w-8 text-white" />, color: 'bg-purple-500', badgeColor: 'text-purple-600 border-purple-200 bg-purple-50 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800', buttonColor: 'bg-purple-600 hover:bg-purple-700', badges: ['OMS', 'OIT'] },
+    { info: infoTesteEstresseOcupacional, route: '/teste/estresse-ocupacional', icon: <Heart className="h-8 w-8 text-white" />, color: 'bg-blue-500', badgeColor: 'text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800', buttonColor: 'bg-blue-600 hover:bg-blue-700' },
+    { info: infoTesteClimaBemEstar, route: '/teste/clima-bem-estar', icon: <Users className="h-8 w-8 text-white" />, color: 'bg-green-500', badgeColor: 'text-green-600 border-green-200 bg-green-50 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800', buttonColor: 'bg-green-600 hover:bg-green-700' },
+    { info: infoTesteMaturidadeRiscosPsicossociais, route: '/teste/maturidade-riscos-psicossociais', icon: <Shield className="h-8 w-8 text-white" />, color: 'bg-orange-500', badgeColor: 'text-orange-600 border-orange-200 bg-orange-50 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800', buttonColor: 'bg-orange-600 hover:bg-orange-700', badges: ['Organizacional', 'Gestão'] },
+    { info: configPercepacaoAssedio, route: '/teste/percepcao-assedio', icon: <AlertTriangle className="h-8 w-8 text-white" />, color: 'bg-red-500', badgeColor: 'text-red-600 border-red-200 bg-red-50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800', buttonColor: 'bg-red-600 hover:bg-red-700', questoes: 48, badges: ['Proteção', 'Assédio'], buttonText: 'Iniciar Avaliação' },
+    { info: configQualidadeVidaTrabalho, route: '/teste/qualidade-vida-trabalho', icon: <Star className="h-8 w-8 text-white" />, color: 'bg-yellow-500', badgeColor: 'text-yellow-600 border-yellow-200 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800', buttonColor: 'bg-yellow-600 hover:bg-yellow-700', questoes: configQualidadeVidaTrabalho.numeroPerguntas, badges: ['Qualidade', 'Bem-estar'] },
+    { info: infoRPO, route: '/teste/rpo', icon: <Shield className="h-8 w-8 text-white" />, color: 'bg-indigo-500', badgeColor: 'text-indigo-600 border-indigo-200 bg-indigo-50 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-800', buttonColor: 'bg-indigo-600 hover:bg-indigo-700', badges: ['Diagnóstico', 'Psicossocial'] }
+  ];
+
+  if (carregando) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto" />
+          <p className="text-gray-600 dark:text-gray-300">Carregando testes...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -126,404 +335,66 @@ export default function Testes() {
 
       {/* Grid de Testes */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {/* Teste de Clima Organizacional */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6">
-          <CardHeader className="space-y-6 p-0">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center shadow-sm">
-                <Building2 className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-xs text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800">
-                  {infoTesteClimaOrganizacional.categoria}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                {infoTesteClimaOrganizacional.nome}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
-                {infoTesteClimaOrganizacional.descricao}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
-            <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{infoTesteClimaOrganizacional.duracao}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>{infoTesteClimaOrganizacional.questoes} questões</span>
-              </div>
-            </div>
-            <Button 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-medium transition-colors duration-200"
-              onClick={() => navigate('/teste/clima-organizacional')}
+        {isColaborador && testes.length > 0 ? (
+          testes.map(teste => renderTesteCard(teste))
+        ) : (
+          testesEstaticos.map((testeConfig, index) => (
+            <Card 
+              key={index}
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6"
+              data-testid={`card-teste-estatico-${index}`}
             >
-              Iniciar Teste
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Teste Karasek-Siegrist */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6">
-          <CardHeader className="space-y-6 p-0">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-purple-500 flex items-center justify-center shadow-sm">
-                <Brain className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-xs text-purple-600 border-purple-200 bg-purple-50 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800">
-                  {infoTesteKarasekSiegrist.categoria}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                {infoTesteKarasekSiegrist.nome}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
-                {infoTesteKarasekSiegrist.descricao}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
-            <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{infoTesteKarasekSiegrist.duracao}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>{infoTesteKarasekSiegrist.questoes} questões</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2 justify-center">
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                OMS
-              </Badge>
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                OIT
-              </Badge>
-            </div>
-            <Button 
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3 font-medium transition-colors duration-200"
-              onClick={() => navigate('/teste/karasek-siegrist')}
-            >
-              Iniciar Teste
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Teste de Estresse Ocupacional */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6">
-          <CardHeader className="space-y-6 p-0">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center shadow-sm">
-                <Heart className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-xs text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800">
-                  {infoTesteEstresseOcupacional.categoria}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                {infoTesteEstresseOcupacional.nome}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
-                {infoTesteEstresseOcupacional.descricao}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
-            <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{infoTesteEstresseOcupacional.duracao}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>{infoTesteEstresseOcupacional.questoes} questões</span>
-              </div>
-            </div>
-            <Button 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-medium transition-colors duration-200"
-              onClick={() => navigate('/teste/estresse-ocupacional')}
-            >
-              Iniciar Teste
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Teste HumaniQ Insight - Clima Organizacional e Bem-Estar Psicológico */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6">
-          <CardHeader className="space-y-6 p-0">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center shadow-sm">
-                <Users className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-xs text-green-600 border-green-200 bg-green-50 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">
-                  {infoTesteClimaBemEstar.categoria}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                {infoTesteClimaBemEstar.nome}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
-                {infoTesteClimaBemEstar.descricao}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
-            <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{infoTesteClimaBemEstar.duracao}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>{infoTesteClimaBemEstar.questoes} questões</span>
-              </div>
-            </div>
-            <Button 
-              className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-medium transition-colors duration-200"
-              onClick={() => navigate('/teste/clima-bem-estar')}
-            >
-              Iniciar Teste
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Teste HumaniQ MGRP - Maturidade em Gestão de Riscos Psicossociais */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6">
-          <CardHeader className="space-y-6 p-0">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center shadow-sm">
-                <Shield className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-xs text-orange-600 border-orange-200 bg-orange-50 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800">
-                  {infoTesteMaturidadeRiscosPsicossociais.categoria}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                {infoTesteMaturidadeRiscosPsicossociais.nome}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
-                {infoTesteMaturidadeRiscosPsicossociais.descricao}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
-            <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{infoTesteMaturidadeRiscosPsicossociais.duracao}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>{infoTesteMaturidadeRiscosPsicossociais.questoes} questões</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2 justify-center">
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                Organizacional
-              </Badge>
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                Gestão
-              </Badge>
-            </div>
-            <Button 
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl py-3 font-medium transition-colors duration-200"
-              onClick={() => navigate('/teste/maturidade-riscos-psicossociais')}
-            >
-              Iniciar Teste
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Teste HumaniQ PAS - Percepção de Assédio Moral e Sexual */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6">
-          <CardHeader className="space-y-6 p-0">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center shadow-sm">
-                <AlertTriangle className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-xs text-red-600 border-red-200 bg-red-50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800">
-                  {configPercepacaoAssedio.categoria}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                {configPercepacaoAssedio.nome}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
-                {configPercepacaoAssedio.descricao}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
-            <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{configPercepacaoAssedio.tempoEstimado}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>48 questões</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2 justify-center">
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                Proteção
-              </Badge>
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                Assédio
-              </Badge>
-            </div>
-            <Button 
-              className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl py-3 font-medium transition-colors duration-200"
-              onClick={() => navigate('/teste/percepcao-assedio')}
-            >
-              Iniciar Avaliação
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Teste HumaniQ QVT - Qualidade de Vida no Trabalho */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6">
-          <CardHeader className="space-y-6 p-0">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center shadow-sm">
-                <Star className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-xs text-yellow-600 border-yellow-200 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800">
-                  {configQualidadeVidaTrabalho.categoria}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                {configQualidadeVidaTrabalho.nome}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
-                {configQualidadeVidaTrabalho.descricao}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
-            <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{configQualidadeVidaTrabalho.tempoEstimado}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>{configQualidadeVidaTrabalho.numeroPerguntas} questões</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2 justify-center">
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                Qualidade
-              </Badge>
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                Bem-estar
-              </Badge>
-            </div>
-            <Button 
-              className="w-full bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl py-3 font-medium transition-colors duration-200"
-              onClick={() => navigate('/teste/qualidade-vida-trabalho')}
-            >
-              Iniciar Teste
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Teste HumaniQ RPO - Riscos Psicossociais Ocupacionais */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col p-6">
-          <CardHeader className="space-y-6 p-0">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center shadow-sm">
-                <Shield className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-xs text-indigo-600 border-indigo-200 bg-indigo-50 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-800">
-                  {infoRPO.categoria}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                {infoRPO.nome}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
-                {infoRPO.descricao}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
-            <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{infoRPO.tempoEstimado}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>{infoRPO.numeroPerguntas} questões</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2 justify-center">
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                Riscos
-              </Badge>
-              <Badge variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-                Psicossociais
-              </Badge>
-            </div>
-            <Button 
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-3 font-medium transition-colors duration-200"
-              onClick={() => navigate('/teste/riscos-psicossociais-ocupacionais')}
-            >
-              Iniciar Teste
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Informações Adicionais */}
-      <div className="text-center space-y-4">
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm">
-          <CardContent className="p-8">
-            <h3 className="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-100">Sobre Nossos Testes</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600 dark:text-gray-300">
-              <div className="space-y-3 p-4 rounded-lg bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
-                <div className="font-semibold text-gray-800 dark:text-gray-100 text-base">Cientificamente Validados</div>
-                <p className="leading-relaxed">Baseados em pesquisas e modelos científicos reconhecidos</p>
-              </div>
-              <div className="space-y-3 p-4 rounded-lg bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
-                <div className="font-semibold text-gray-800 dark:text-gray-100 text-base">Resultados Detalhados</div>
-                <p className="leading-relaxed">Análises completas com interpretações e recomendações</p>
-              </div>
-              <div className="space-y-3 p-4 rounded-lg bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
-                <div className="font-semibold text-gray-800 dark:text-gray-100 text-base">Confidencialidade</div>
-                <p className="leading-relaxed">Seus dados são protegidos e mantidos em sigilo</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              <CardHeader className="space-y-6 p-0">
+                <div className="flex justify-center">
+                  <div className={`w-16 h-16 rounded-full ${testeConfig.color} flex items-center justify-center shadow-sm`}>
+                    {testeConfig.icon}
+                  </div>
+                </div>
+                <div className="text-center space-y-3">
+                  <div className="flex justify-center">
+                    <Badge variant="outline" className={`text-xs ${testeConfig.badgeColor}`}>
+                      {testeConfig.info.categoria}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
+                    {testeConfig.info.nome}
+                  </CardTitle>
+                  <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed px-2">
+                    {testeConfig.info.descricao}
+                  </CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6 flex-1 flex flex-col justify-end p-0 mt-6">
+                <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    <span>{testeConfig.info.duracao || testeConfig.info.tempoEstimado}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    <span>{testeConfig.questoes || testeConfig.info.questoes} questões</span>
+                  </div>
+                </div>
+                {testeConfig.badges && (
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {testeConfig.badges.map((badge, i) => (
+                      <Badge key={i} variant="outline" className="text-xs text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
+                        {badge}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                <Button 
+                  className={`w-full ${testeConfig.buttonColor} text-white rounded-xl py-3 font-medium transition-colors duration-200`}
+                  onClick={() => navigate(testeConfig.route)}
+                  data-testid={`button-iniciar-estatico-${index}`}
+                >
+                  {testeConfig.buttonText || 'Iniciar Teste'}
+                </Button>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
     </div>
   );
