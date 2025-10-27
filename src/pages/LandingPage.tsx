@@ -50,11 +50,11 @@ export default function LandingPage() {
               <button onClick={() => scrollToSection('modulos')} className="text-gray-700 hover:text-indigo-600 transition-colors">
                 Módulos
               </button>
+              <button onClick={() => scrollToSection('planos')} className="text-gray-700 hover:text-indigo-600 transition-colors">
+                Planos
+              </button>
               <button onClick={() => scrollToSection('depoimentos')} className="text-gray-700 hover:text-indigo-600 transition-colors">
                 Casos de Sucesso
-              </button>
-              <button onClick={() => scrollToSection('preco')} className="text-gray-700 hover:text-indigo-600 transition-colors">
-                ROI
               </button>
             </nav>
             <div className="flex space-x-4">
@@ -682,6 +682,279 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* SEÇÃO 12: PLANOS E PREÇOS */}
+      <section id="planos" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-indigo-100 text-indigo-800 border-indigo-200 px-4 py-2">
+              Investimento Transparente
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Escolha o Plano Ideal para Sua Empresa
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Preços claros, sem surpresas. Pague apenas pelo que usar, com todos os recursos para manter sua empresa em compliance.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 mb-12">
+            {/* PLANO ESSENCIAL */}
+            <Card className="border-2 border-gray-200 hover:border-gray-300 transition-all hover:shadow-xl" data-testid="card-plano-essencial">
+              <CardContent className="pt-8 pb-8">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Essencial</h3>
+                  <p className="text-gray-600 mb-4">Para pequenas empresas começando</p>
+                  <div className="mb-6">
+                    <span className="text-5xl font-bold text-gray-900">R$ 15</span>
+                    <span className="text-gray-600">/colaborador/mês</span>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <p className="text-sm text-gray-700">
+                      <strong>Mínimo:</strong> 10 colaboradores<br/>
+                      <strong>Ticket:</strong> R$ 150/mês
+                    </p>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">3 testes psicológicos básicos (QVT, Estresse, Clima)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Dashboard básico de resultados</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Relatórios individuais e agregados</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Até 50 colaboradores</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Suporte por email</span>
+                  </li>
+                  <li className="flex items-start">
+                    <X className="h-5 w-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-500">Análise com IA</span>
+                  </li>
+                  <li className="flex items-start">
+                    <X className="h-5 w-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-500">Módulo PRG</span>
+                  </li>
+                </ul>
+
+                <Button className="w-full bg-gray-600 hover:bg-gray-700" data-testid="button-plano-essencial">
+                  Começar com Essencial
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* PLANO PROFISSIONAL - DESTAQUE */}
+            <Card className="border-4 border-indigo-500 relative hover:border-indigo-600 transition-all hover:shadow-2xl transform lg:-translate-y-4" data-testid="card-plano-profissional">
+              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2">
+                <Badge className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 text-sm font-bold shadow-lg">
+                  ⭐ MAIS POPULAR
+                </Badge>
+              </div>
+              
+              <CardContent className="pt-12 pb-8">
+                <div className="text-center mb-6">
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                    Profissional
+                  </h3>
+                  <p className="text-gray-600 mb-4">Para empresas com foco em compliance</p>
+                  <div className="mb-6">
+                    <span className="text-6xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      R$ 25
+                    </span>
+                    <span className="text-gray-600">/colaborador/mês</span>
+                  </div>
+                  <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-3 rounded-lg border-2 border-indigo-200">
+                    <p className="text-sm text-indigo-900 font-semibold">
+                      <strong>Mínimo:</strong> 20 colaboradores<br/>
+                      <strong>Ticket:</strong> R$ 500/mês
+                    </p>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Todos os 7 testes psicológicos</strong> (QVT, RPO, Clima, Estresse, Karasek-Siegrist, PAS, MGRP)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Análise com IA</strong> (Google Gemini)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Dashboard avançado com gráficos interativos</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Relatórios de compliance</strong> (NR-1, ISO 45003)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Módulo PRG completo</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Até 200 colaboradores</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Exportação PDF e Excel</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Suporte prioritário (email + chat)</span>
+                  </li>
+                </ul>
+
+                <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-lg py-6" data-testid="button-plano-profissional">
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Escolher Profissional
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* PLANO ENTERPRISE */}
+            <Card className="border-2 border-gray-200 hover:border-gray-300 transition-all hover:shadow-xl" data-testid="card-plano-enterprise">
+              <CardContent className="pt-8 pb-8">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
+                  <p className="text-gray-600 mb-4">Para grandes empresas</p>
+                  <div className="mb-6">
+                    <span className="text-5xl font-bold text-gray-900">R$ 35</span>
+                    <span className="text-gray-600">/colaborador/mês</span>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <p className="text-sm text-gray-700">
+                      <strong>Mínimo:</strong> 100 colaboradores<br/>
+                      <strong>Ticket:</strong> R$ 3.500/mês
+                    </p>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Tudo do Profissional +</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Colaboradores ilimitados</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">API para integração (SAP, TOTVS)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Múltiplas empresas/unidades</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">White-label personalizado</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Consultoria especializada (1h/mês)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Relatórios customizados</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">SLA de suporte (4h úteis)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">Gestor de contas dedicado</span>
+                  </li>
+                </ul>
+
+                <Button className="w-full bg-purple-600 hover:bg-purple-700" data-testid="button-plano-enterprise">
+                  Falar com Especialista
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Benefícios Inclusos em Todos os Planos */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border-2 border-indigo-100">
+            <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
+              Incluído em Todos os Planos
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="flex items-start">
+                <div className="bg-indigo-100 p-2 rounded-lg mr-3">
+                  <Shield className="h-6 w-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">Setup Gratuito</h4>
+                  <p className="text-sm text-gray-600">Onboarding completo sem custo adicional</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="bg-indigo-100 p-2 rounded-lg mr-3">
+                  <TrendingUp className="h-6 w-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">Atualizações Incluídas</h4>
+                  <p className="text-sm text-gray-600">Novos recursos sem custo extra</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="bg-indigo-100 p-2 rounded-lg mr-3">
+                  <Award className="h-6 w-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">Desconto Anual</h4>
+                  <p className="text-sm text-gray-600">10% OFF no pagamento anual</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Proposta de Valor */}
+          <div className="text-center mt-12">
+            <p className="text-2xl font-bold text-gray-900 mb-2">
+              Gestão de Riscos Psicossociais com IA por menos de R$ 1 por dia
+            </p>
+            <p className="text-lg text-gray-600 mb-6">
+              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent font-bold">
+                R$ 25/mês = R$ 0,83/dia por colaborador
+              </span> — investimento que se paga
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                onClick={() => scrollToSection('diagnostico')}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                data-testid="button-testar-planos"
+              >
+                Testar Gratuitamente
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-2 border-indigo-600 text-indigo-600"
+                data-testid="button-comparar-planos"
+              >
+                Comparar Planos em Detalhes
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* SEÇÃO 14: CTA FINAL */}
       <section id="diagnostico" className="py-20 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -779,7 +1052,7 @@ export default function LandingPage() {
               <h4 className="font-bold text-white mb-4">Produto</h4>
               <ul className="space-y-2 text-sm">
                 <li><button onClick={() => scrollToSection('modulos')} className="hover:text-white">Módulos</button></li>
-                <li><button onClick={() => scrollToSection('preco')} className="hover:text-white">Preços</button></li>
+                <li><button onClick={() => scrollToSection('planos')} className="hover:text-white">Planos e Preços</button></li>
                 <li><button onClick={() => scrollToSection('depoimentos')} className="hover:text-white">Casos de Sucesso</button></li>
               </ul>
             </div>
