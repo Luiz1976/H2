@@ -66,7 +66,7 @@ export default function LandingPage() {
                 Entrar
               </Button>
               <Button 
-                onClick={() => scrollToSection('cta')} 
+                onClick={() => navigate('/quick-check')} 
                 className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
                 data-testid="button-diagnostico-header"
               >
@@ -738,7 +738,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
             <Button 
               size="lg" 
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/quick-check')}
               className="bg-white text-indigo-600 hover:bg-gray-100 text-xl px-12 py-8 shadow-2xl hover:shadow-3xl transition-all"
               data-testid="button-diagnostico-final"
             >

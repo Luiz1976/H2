@@ -68,6 +68,7 @@ import { DebugResultado } from "@/components/DebugResultado";
 import CadastroEmpresa from "./pages/CadastroEmpresa";
 import CadastroColaborador from "./pages/CadastroColaborador";
 import LandingPage from "./pages/LandingPage";
+import QuickCheckEstresse from "./pages/QuickCheckEstresse";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,7 @@ function App() {
           <AuthProvider>
             <Routes>
               <Route path="/landing" element={<LandingPage />} />
+              <Route path="/quick-check" element={<QuickCheckEstresse />} />
               <Route path="/login" element={<Login />} />
               <Route path="/aceitar-convite/:token" element={<AcessoConvite />} />
               <Route path="/prg/compartilhado/:token" element={<PRGPublico />} />

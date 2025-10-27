@@ -104,6 +104,38 @@ Migration from Supabase to a local API backend for enhanced control. Manual Zod 
 - **AI Integration**: Google Gemini API
 
 ## Recent Changes
+- **Quick Check de Estresse Ocupacional** (October 27, 2025): Teste interativo demonstrativo em `/quick-check` para conversão de visitantes
+  - **Acesso**: Botões "Diagnóstico Gratuito" e "Iniciar Diagnóstico Gratuito Agora" na landing page redirecionam para o Quick Check
+  - **Experiência completa do teste**:
+    - Animação de carregamento inicial (2.5s): Ícone de cérebro rotativo com mensagem "Preparando sua avaliação..."
+    - 7 perguntas de estresse ocupacional com escala Likert (1-5 pontos)
+    - Interface idêntica aos testes da plataforma: botões coloridos clicáveis por intensidade (verde a vermelho)
+    - Salvamento automático com feedback visual ("Salvando resposta...")
+    - Avanço automático após cada resposta
+    - Botão "Finalizar Teste" aparece após última pergunta
+    - Animação de processamento em 3 etapas: Analisando Respostas → Calculando Métricas → Criando Relatório
+    - Tela de resultado com gráfico visual, classificação de risco (Baixo/Moderado/Alto/Crítico) e pontuação
+  - **Estratégias de conversão otimizadas**:
+    - Resultado parcial/preview que gera curiosidade ("Esta é apenas uma prévia!")
+    - Comparação explícita: Quick Check (7 perguntas) vs Plataforma Completa (38 dimensões psicossociais)
+    - Badges de valor: Conformidade NR-01, Gestão de Equipes, Planos de Ação
+    - CTA primário destacado: "Acessar Avaliação Completa Agora" com gradiente indigo-purple
+    - CTA secundário: "Voltar à Página Inicial"
+    - Disclaimers éticos: Teste demonstrativo, não substitui avaliação profissional
+  - **Perguntas do Quick Check** (selecionadas do teste completo de Estresse Ocupacional):
+    1. Pressão constante e difícil de manejar
+    2. Dificuldade para desligar mentalmente do trabalho
+    3. Sentimento de sobrecarga com responsabilidades
+    4. Trabalho interfere no descanso e sono
+    5. Exaustão emocional devido às demandas
+    6. Exaustão frequente ao final do dia
+    7. Desequilíbrio trabalho-vida pessoal
+  - **Algoritmo de classificação**:
+    - Média 1.0-2.0: Baixo Risco (verde)
+    - Média 2.1-3.5: Risco Moderado (amarelo)
+    - Média 3.6-4.5: Alto Risco (laranja)
+    - Média 4.6-5.0: Risco Crítico (vermelho)
+  - Componente: `QuickCheckEstresse.tsx`, Rota: `/quick-check` (pública, sem autenticação)
 - **Landing Page Profissional** (October 27, 2025): Nova landing page de marketing em `/landing` criada para conversão de visitantes em clientes
   - **Design moderno e tecnológico**: Gradientes indigo/purple, glassmorphism, animações sutis, layout responsivo
   - **Técnicas de PNL e gatilhos mentais aplicadas**:
