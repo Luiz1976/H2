@@ -1,34 +1,65 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Brain, BarChart3, CheckCircle, AlertTriangle, TrendingUp, 
-  Award, Loader2, ArrowRight, Sparkles, Shield, Users, Target
+  CheckCircle, Loader2, ArrowLeft, AlertCircle, Clock, 
+  Sparkles, Shield, Users, Target, AlertTriangle
 } from 'lucide-react';
+import { numeroParaLetra } from '@/lib/utils';
+import LoadingAnimation from '@/components/LoadingAnimation';
+import ProcessingAnimation from '@/components/ProcessingAnimation';
 
 const perguntasQuickCheck = [
-  { id: 1, texto: "Sinto que a pressão no meu trabalho é constante e difícil de manejar." },
-  { id: 2, texto: "Tenho dificuldades para desligar mentalmente das tarefas ao final do expediente." },
-  { id: 3, texto: "Frequentemente me sinto sobrecarregado(a) com as responsabilidades profissionais." },
-  { id: 4, texto: "Sinto que o meu trabalho interfere negativamente no meu descanso e sono." },
-  { id: 5, texto: "Me sinto emocionalmente exaurido(a) devido às demandas profissionais." },
-  { id: 6, texto: "Sinto-me frequentemente exausto(a) ao final do dia de trabalho." },
-  { id: 7, texto: "Sinto que não consigo manter um equilíbrio saudável entre trabalho e vida pessoal." }
+  { 
+    id: 1, 
+    texto: "Sinto que a pressão no meu trabalho é constante e difícil de manejar.",
+    dimensao: "estresse"
+  },
+  { 
+    id: 2, 
+    texto: "Tenho dificuldades para desligar mentalmente das tarefas ao final do expediente.",
+    dimensao: "estresse"
+  },
+  { 
+    id: 3, 
+    texto: "Frequentemente me sinto sobrecarregado(a) com as responsabilidades profissionais.",
+    dimensao: "estresse"
+  },
+  { 
+    id: 4, 
+    texto: "Sinto que o meu trabalho interfere negativamente no meu descanso e sono.",
+    dimensao: "estresse"
+  },
+  { 
+    id: 5, 
+    texto: "Me sinto emocionalmente exaurido(a) devido às demandas profissionais.",
+    dimensao: "burnout"
+  },
+  { 
+    id: 6, 
+    texto: "Sinto-me frequentemente exausto(a) ao final do dia de trabalho.",
+    dimensao: "burnout"
+  },
+  { 
+    id: 7, 
+    texto: "Sinto que não consigo manter um equilíbrio saudável entre trabalho e vida pessoal.",
+    dimensao: "resiliencia"
+  }
 ];
 
 const opcoesResposta = [
-  { valor: 1, texto: "Discordo totalmente", cor: "bg-green-500" },
-  { valor: 2, texto: "Discordo", cor: "bg-lime-500" },
-  { valor: 3, texto: "Neutro", cor: "bg-yellow-500" },
-  { valor: 4, texto: "Concordo", cor: "bg-orange-500" },
-  { valor: 5, texto: "Concordo totalmente", cor: "bg-red-500" }
+  "Discordo totalmente",
+  "Discordo",
+  "Neutro",
+  "Concordo",
+  "Concordo totalmente"
 ];
 
-type EstagioTeste = 'loading' | 'perguntas' | 'processando' | 'resultado' | 'conversao';
+type EstagioTeste = 'loading' | 'perguntas' | 'processando' | 'resultado';
 
 export default function QuickCheckEstresse() {
   const navigate = useNavigate();
@@ -36,103 +67,78 @@ export default function QuickCheckEstresse() {
   const [perguntaAtual, setPerguntaAtual] = useState(0);
   const [respostas, setRespostas] = useState<Record<number, number>>({});
   const [salvandoResposta, setSalvandoResposta] = useState(false);
+  const [respostaSalva, setRespostaSalva] = useState(false);
+  const [avancandoAutomaticamente, setAvancandoAutomaticamente] = useState(false);
+  const [processandoResposta, setProcessandoResposta] = useState(false);
   const [mostrarBotaoFinalizar, setMostrarBotaoFinalizar] = useState(false);
-  const [estagioProcessamento, setEstagioProcessamento] = useState(0);
-  const [progressoProcessamento, setProgressoProcessamento] = useState(0);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [classificacao, setClassificacao] = useState('');
   const [cor, setCor] = useState('');
 
-  const estagiosProcessamento = [
-    {
-      icon: Brain,
-      title: "Analisando Respostas",
-      description: "Processando suas respostas com inteligência artificial",
-      color: "hsl(217 91% 60%)",
-      duration: 1800
-    },
-    {
-      icon: BarChart3,
-      title: "Calculando Métricas",
-      description: "Gerando insights personalizados para seu perfil",
-      color: "hsl(142 71% 45%)",
-      duration: 2000
-    },
-    {
-      icon: Award,
-      title: "Criando Relatório",
-      description: "Compilando análises detalhadas e recomendações",
-      color: "hsl(262 83% 58%)",
-      duration: 1500
-    }
-  ];
+  const pergunta = perguntasQuickCheck[perguntaAtual];
+  const progresso = ((perguntaAtual + 1) / perguntasQuickCheck.length) * 100;
+  const jaRespondeu = respostas[pergunta.id] !== undefined;
+  const isUltimaPergunta = perguntaAtual === perguntasQuickCheck.length - 1;
+  const operacaoEmAndamento = salvandoResposta || avancandoAutomaticamente || processandoResposta;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setEstagio('perguntas');
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
+    setRespostaSalva(false);
+    setProcessandoResposta(false);
+  }, [perguntaAtual]);
 
-  useEffect(() => {
-    if (estagio === 'processando') {
-      const timer = setTimeout(() => {
-        if (estagioProcessamento < estagiosProcessamento.length - 1) {
-          setEstagioProcessamento(prev => prev + 1);
-          setProgressoProcessamento(0);
-        } else {
-          setTimeout(() => {
-            calcularResultado();
-            setEstagio('resultado');
-          }, 1000);
-        }
-      }, estagiosProcessamento[estagioProcessamento].duration);
-
-      return () => clearTimeout(timer);
-    }
-  }, [estagio, estagioProcessamento]);
-
-  useEffect(() => {
-    if (estagio === 'processando') {
-      const progressTimer = setInterval(() => {
-        setProgressoProcessamento(prev => {
-          const increment = 100 / (estagiosProcessamento[estagioProcessamento].duration / 50);
-          return Math.min(prev + increment, 100);
-        });
-      }, 50);
-
-      return () => clearInterval(progressTimer);
-    }
-  }, [estagio, estagioProcessamento]);
+  const handleLoadingComplete = () => {
+    setEstagio('perguntas');
+  };
 
   const handleResposta = async (valor: number) => {
-    if (salvandoResposta) return;
+    if (operacaoEmAndamento) {
+      console.log('Operação já em andamento, ignorando clique');
+      return;
+    }
 
-    setSalvandoResposta(true);
-    
-    setRespostas(prev => ({
-      ...prev,
-      [perguntasQuickCheck[perguntaAtual].id]: valor
-    }));
+    setProcessandoResposta(true);
 
-    await new Promise(resolve => setTimeout(resolve, 800));
+    try {
+      setRespostas(prev => ({
+        ...prev,
+        [pergunta.id]: valor
+      }));
 
-    const isUltimaPergunta = perguntaAtual === perguntasQuickCheck.length - 1;
-
-    if (!isUltimaPergunta) {
-      await new Promise(resolve => setTimeout(resolve, 400));
-      setPerguntaAtual(prev => prev + 1);
+      setSalvandoResposta(true);
+      await new Promise(resolve => setTimeout(resolve, 800));
       setSalvandoResposta(false);
-    } else {
-      setSalvandoResposta(false);
-      setMostrarBotaoFinalizar(true);
+      setRespostaSalva(true);
+
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      if (!isUltimaPergunta) {
+        setAvancandoAutomaticamente(true);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        setPerguntaAtual(prev => prev + 1);
+        setAvancandoAutomaticamente(false);
+        setRespostaSalva(false);
+      } else {
+        setMostrarBotaoFinalizar(true);
+      }
+    } finally {
+      setProcessandoResposta(false);
+    }
+  };
+
+  const handleAnterior = () => {
+    if (perguntaAtual > 0 && !operacaoEmAndamento) {
+      setPerguntaAtual(prev => prev - 1);
+      setMostrarBotaoFinalizar(false);
     }
   };
 
   const finalizarTeste = () => {
     setEstagio('processando');
-    setEstagioProcessamento(0);
-    setProgressoProcessamento(0);
+  };
+
+  const handleProcessamentoCompleto = () => {
+    calcularResultado();
+    setEstagio('resultado');
   };
 
   const calcularResultado = () => {
@@ -156,112 +162,31 @@ export default function QuickCheckEstresse() {
     }
   };
 
-  const progresso = ((perguntaAtual + 1) / perguntasQuickCheck.length) * 100;
+  const getButtonColor = (valor: number) => {
+    const isSelected = respostas[pergunta.id] === valor;
+    
+    if (operacaoEmAndamento) {
+      return isSelected 
+        ? 'bg-slate-300 text-slate-500 border-slate-300' 
+        : 'bg-slate-100 text-slate-400 border-slate-200';
+    }
+    
+    switch (valor) {
+      case 1: return isSelected ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-200' : 'bg-white text-blue-600 border-blue-300 hover:bg-blue-50';
+      case 2: return isSelected ? 'bg-blue-500 text-white border-blue-500 shadow-lg shadow-blue-200' : 'bg-white text-blue-500 border-blue-300 hover:bg-blue-50';
+      case 3: return isSelected ? 'bg-slate-600 text-white border-slate-600 shadow-lg shadow-slate-200' : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50';
+      case 4: return isSelected ? 'bg-green-500 text-white border-green-500 shadow-lg shadow-green-200' : 'bg-white text-green-500 border-green-300 hover:bg-green-50';
+      case 5: return isSelected ? 'bg-green-600 text-white border-green-600 shadow-lg shadow-green-200' : 'bg-white text-green-600 border-green-300 hover:bg-green-50';
+      default: return 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50';
+    }
+  };
 
   if (estagio === 'loading') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center space-y-6"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          >
-            <Brain className="h-20 w-20 text-indigo-600 mx-auto" />
-          </motion.div>
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold text-gray-800">Preparando sua avaliação...</h2>
-            <p className="text-gray-600">Carregando tecnologia de análise psicossocial</p>
-          </div>
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-2 h-2 bg-indigo-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-            <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-            <div className="w-2 h-2 bg-pink-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-          </div>
-        </motion.div>
-      </div>
-    );
+    return <LoadingAnimation onComplete={handleLoadingComplete} testName="Quick Check - Estresse Ocupacional" duration={6000} />;
   }
 
   if (estagio === 'processando') {
-    const estagioAtual = estagiosProcessamento[estagioProcessamento];
-    const IconComponent = estagioAtual.icon;
-
-    return (
-      <div 
-        className="fixed inset-0 z-50 flex items-center justify-center"
-        style={{
-          background: 'linear-gradient(135deg, hsl(217 91% 60% / 0.95) 0%, hsl(234 89% 74% / 0.95) 50%, hsl(262 83% 58% / 0.95) 100%)'
-        }}
-      >
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-white rounded-full opacity-20"
-              initial={{
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-              }}
-              animate={{
-                y: [null, Math.random() * window.innerHeight],
-                x: [null, Math.random() * window.innerWidth],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-          ))}
-        </div>
-
-        <motion.div
-          key={estagioProcessamento}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          className="relative z-10 text-center space-y-8 px-4"
-        >
-          <motion.div
-            animate={{ 
-              scale: [1, 1.1, 1],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <IconComponent className="h-24 w-24 text-white mx-auto drop-shadow-2xl" />
-          </motion.div>
-
-          <div className="space-y-4">
-            <h2 className="text-4xl font-bold text-white drop-shadow-lg">
-              {estagioAtual.title}
-            </h2>
-            <p className="text-xl text-white/90 drop-shadow">
-              {estagioAtual.description}
-            </p>
-          </div>
-
-          <div className="w-80 mx-auto space-y-3">
-            <Progress 
-              value={progressoProcessamento} 
-              className="h-3 bg-white/20"
-            />
-            <div className="flex justify-between text-sm text-white/80">
-              <span>Etapa {estagioProcessamento + 1} de {estagiosProcessamento.length}</span>
-              <span>{Math.round(progressoProcessamento)}%</span>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    );
+    return <ProcessingAnimation onComplete={handleProcessamentoCompleto} />;
   }
 
   if (estagio === 'resultado') {
@@ -387,99 +312,200 @@ export default function QuickCheckEstresse() {
     );
   }
 
-  const pergunta = perguntasQuickCheck[perguntaAtual];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
-      <div className="max-w-4xl mx-auto space-y-6 pt-8">
-        <Card className="shadow-sm border border-slate-200/60">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold text-slate-800">
-                Quick Check - Estresse Ocupacional
-              </h1>
-              <Badge variant="secondary" className="text-sm">
-                {perguntaAtual + 1} de {perguntasQuickCheck.length}
-              </Badge>
-            </div>
-            <Progress value={progresso} className="h-3 bg-slate-200" />
-            
-            {salvandoResposta && (
-              <div className="mt-4 flex items-center justify-center">
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Barra de progresso superior */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200/60">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold text-slate-800">
+              Quick Check - Estresse Ocupacional
+            </h1>
+            <span className="text-sm text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+              {perguntaAtual + 1} de {perguntasQuickCheck.length}
+            </span>
+          </div>
+          <Progress value={progresso} className="h-3 bg-slate-200" />
+          
+          {/* Indicador de status do salvamento */}
+          {(operacaoEmAndamento || respostaSalva) && (
+            <div className="mt-4 flex items-center justify-center">
+              {salvandoResposta && (
                 <div className="flex items-center gap-2 text-blue-600 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   <span className="text-sm font-medium">Salvando resposta...</span>
                 </div>
+              )}
+              {respostaSalva && !avancandoAutomaticamente && (
+                <div className="flex items-center gap-2 text-green-600 bg-green-50 px-4 py-2 rounded-lg border border-green-200">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="text-sm font-medium">Resposta salva com sucesso!</span>
+                </div>
+              )}
+              {avancandoAutomaticamente && (
+                <div className="flex items-center gap-2 text-blue-600 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
+                  <Clock className="h-4 w-4" />
+                  <span className="text-sm font-medium">Avançando para próxima pergunta...</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Card da pergunta */}
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
+          {/* Header da pergunta */}
+          <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-6 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold mb-2">Pergunta {perguntaAtual + 1}</h2>
+                <span className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  {pergunta.dimensao}
+                </span>
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </div>
+          </div>
 
-        <motion.div
-          key={perguntaAtual}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-        >
-          <Card className="shadow-lg border-2 border-blue-100">
-            <CardContent className="p-8">
-              <div className="space-y-8">
-                <div className="text-center">
-                  <p className="text-xl font-medium text-slate-700 leading-relaxed">
-                    {pergunta.texto}
-                  </p>
+          {/* Conteúdo da pergunta */}
+          <div className="p-8">
+            <p className="text-lg text-slate-700 mb-8 leading-relaxed">
+              {pergunta.texto}
+            </p>
+
+            {/* Área de resposta */}
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold text-slate-800 text-center">
+                Selecione sua resposta
+              </h3>
+
+              {/* Escala visual horizontal */}
+              <div className="space-y-4">
+                {/* Barra de progresso da escala */}
+                <div className="w-full h-2 bg-gradient-to-r from-blue-500 via-gray-400 to-green-500 rounded-full"></div>
+                
+                {/* Indicadores da escala */}
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-blue-500">Discordo</span>
+                  <span className="text-sm font-medium text-gray-500">Neutro</span>
+                  <span className="text-sm font-medium text-green-500">Concordo</span>
                 </div>
+              </div>
 
-                <div className="space-y-3">
-                  {opcoesResposta.map((opcao) => (
-                    <Button
-                      key={opcao.valor}
-                      onClick={() => handleResposta(opcao.valor)}
-                      disabled={salvandoResposta}
-                      variant="outline"
-                      className={`w-full h-auto py-4 px-6 text-left justify-start hover:scale-102 transition-all ${
-                        respostas[pergunta.id] === opcao.valor
-                          ? 'border-blue-500 bg-blue-50 border-2'
-                          : 'border-slate-200 hover:border-blue-300'
-                      }`}
-                      data-testid={`button-resposta-${opcao.valor}`}
-                    >
-                      <div className="flex items-center gap-4 w-full">
-                        <div className={`w-10 h-10 rounded-full ${opcao.cor} flex items-center justify-center text-white font-bold flex-shrink-0`}>
-                          {opcao.valor}
-                        </div>
-                        <span className="text-base font-medium text-slate-700 flex-1">
-                          {opcao.texto}
-                        </span>
-                        {respostas[pergunta.id] === opcao.valor && (
-                          <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                        )}
-                      </div>
-                    </Button>
-                  ))}
+              {/* Botões de resposta */}
+              <div className="flex justify-center gap-4 mt-8">
+                {opcoesResposta.map((opcao, index) => {
+                  const valor = index + 1;
+                  const isSelected = respostas[pergunta.id] === valor;
+
+                  return (
+                    <div key={index} className="flex flex-col items-center gap-3">
+                      <button
+                        className={`
+                          w-16 h-16 rounded-lg border-2 font-bold text-lg
+                          transition-all duration-300 ease-in-out
+                          ${operacaoEmAndamento ? 'cursor-not-allowed' : 'transform hover:scale-110 active:scale-95'}
+                          focus:outline-none focus:ring-4 focus:ring-blue-200
+                          ${getButtonColor(valor)}
+                          ${operacaoEmAndamento ? 'opacity-60' : ''}
+                        `}
+                        onClick={() => !operacaoEmAndamento && handleResposta(valor)}
+                        disabled={operacaoEmAndamento}
+                        style={{
+                          pointerEvents: operacaoEmAndamento ? 'none' : 'auto'
+                        }}
+                        data-testid={`button-resposta-${valor}`}
+                      >
+                        {numeroParaLetra(valor)}
+                      </button>
+                      <span className={`text-xs font-medium text-center leading-tight max-w-20 ${
+                        operacaoEmAndamento ? 'text-slate-400' : 'text-slate-600'
+                      }`}>
+                        {opcao}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Feedback da seleção */}
+              {jaRespondeu && !operacaoEmAndamento && (
+                <div className="mt-8 p-4 bg-blue-600 text-white rounded-xl">
+                  <div className="flex items-center justify-center gap-3">
+                    <CheckCircle className="h-5 w-5" />
+                    <span className="font-medium">
+                      Selecionado: {opcoesResposta[respostas[pergunta.id] - 1]}
+                    </span>
+                  </div>
                 </div>
+              )}
 
-                {mostrarBotaoFinalizar && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="pt-4"
-                  >
+              {/* Botão de finalizar teste */}
+              {mostrarBotaoFinalizar && isUltimaPergunta && jaRespondeu && (
+                <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-green-800 mb-2">
+                      🎉 Parabéns! Você respondeu todas as perguntas
+                    </h3>
+                    <p className="text-green-700 mb-4">
+                      Clique no botão abaixo para finalizar o teste e ver seus resultados
+                    </p>
                     <Button
                       onClick={finalizarTeste}
-                      size="lg"
-                      className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-lg py-6"
+                      disabled={operacaoEmAndamento}
+                      className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                       data-testid="button-finalizar-teste"
                     >
-                      <ArrowRight className="mr-2 h-5 w-5" />
-                      Finalizar e Ver Resultado
+                      <CheckCircle className="h-5 w-5 mr-2" />
+                      Finalizar Teste
                     </Button>
-                  </motion.div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+                  </div>
+                </div>
+              )}
+
+              {/* Aviso sobre bloqueio durante processamento */}
+              {operacaoEmAndamento && (
+                <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                  <div className="flex items-center justify-center gap-3 text-amber-700">
+                    <AlertCircle className="h-5 w-5" />
+                    <span className="font-medium text-sm">
+                      Aguarde o processamento da resposta anterior antes de selecionar uma nova opção
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Navegação inferior */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200/60">
+          <div className="flex items-center justify-between">
+            <Button
+              variant="outline"
+              onClick={handleAnterior}
+              disabled={perguntaAtual === 0 || operacaoEmAndamento}
+              className="px-6 py-2 border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-testid="button-anterior"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Anterior
+            </Button>
+
+            <div className="flex items-center gap-2 text-sm text-slate-600 bg-slate-50 px-4 py-2 rounded-lg">
+              <span className="font-medium">{Object.keys(respostas).length}</span>
+              <span>de</span>
+              <span className="font-medium">{perguntasQuickCheck.length}</span>
+              <span>respondidas</span>
+            </div>
+
+            <div className="text-sm text-slate-500 text-center max-w-48">
+              <p className="font-medium">Avanço Automático</p>
+              <p className="text-xs">
+                {operacaoEmAndamento ? 'Processando...' : 'Responda para avançar automaticamente'}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

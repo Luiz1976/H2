@@ -104,17 +104,31 @@ Migration from Supabase to a local API backend for enhanced control. Manual Zod 
 - **AI Integration**: Google Gemini API
 
 ## Recent Changes
-- **Quick Check de Estresse Ocupacional** (October 27, 2025): Teste interativo demonstrativo em `/quick-check` para conversão de visitantes
+- **Quick Check de Estresse Ocupacional - Interface 100% Idêntica aos Testes** (October 27, 2025): Teste interativo demonstrativo em `/quick-check` para conversão de visitantes
   - **Acesso**: Botões "Diagnóstico Gratuito" e "Iniciar Diagnóstico Gratuito Agora" na landing page redirecionam para o Quick Check
+  - **Interface agora idêntica aos testes da plataforma**:
+    - **Animação pré-teste** (LoadingAnimation.tsx): Fundo gradiente azul/roxo, ícone de cérebro, mensagens motivacionais rotativas, progress bar, 4 dots de progresso, frase "Você está prestes a descobrir insights valiosos sobre si mesmo"
+    - **Layout de perguntas replicado exatamente do TestePerguntas.tsx**
   - **Experiência completa do teste**:
-    - Animação de carregamento inicial (2.5s): Ícone de cérebro rotativo com mensagem "Preparando sua avaliação..."
-    - 7 perguntas de estresse ocupacional com escala Likert (1-5 pontos)
-    - Interface idêntica aos testes da plataforma: botões coloridos clicáveis por intensidade (verde a vermelho)
-    - Salvamento automático com feedback visual ("Salvando resposta...")
-    - Avanço automático após cada resposta
-    - Botão "Finalizar Teste" aparece após última pergunta
-    - Animação de processamento em 3 etapas: Analisando Respostas → Calculando Métricas → Criando Relatório
-    - Tela de resultado com gráfico visual, classificação de risco (Baixo/Moderado/Alto/Crítico) e pontuação
+    - **1. Animação pré-teste (LoadingAnimation)**: 6 segundos, gradiente azul→roxo, ícone cérebro, mensagens motivacionais, progress bar, 4 dots
+    - **2. Interface de perguntas (100% idêntica TestePerguntas.tsx)**:
+      - Header escuro: "Pergunta X" + badge azul da dimensão (estresse/burnout/resiliencia)
+      - Barra de progresso superior com contador "X de 7"
+      - Texto da pergunta em destaque
+      - "Selecione sua resposta"
+      - Barra gradiente de cores: azul (Discordo) → cinza (Neutro) → verde (Concordo)
+      - **5 botões quadrados A, B, C, D, E** (64x64px) com cores graduais:
+        - A: Discordo totalmente (azul escuro)
+        - B: Discordo (azul claro)
+        - C: Neutro (cinza)
+        - D: Concordo (verde claro)
+        - E: Concordo totalmente (verde escuro)
+      - Feedback "Salvando resposta..." → "Resposta salva com sucesso!" → "Avançando para próxima pergunta..."
+      - Avanço automático após registro da resposta
+      - Footer: "← Anterior" | "X de 7 respondidas" | "Avanço Automático: Responda para avançar automaticamente"
+      - Botão "Finalizar Teste" verde após última pergunta
+    - **3. Animação de processamento (ProcessingAnimation)**: 3 etapas com ícones animados e progress bars
+    - **4. Tela de resultado**: Gráficos visuais, classificação de risco, pontuação, badges de valor, CTAs otimizados
   - **Estratégias de conversão otimizadas**:
     - Resultado parcial/preview que gera curiosidade ("Esta é apenas uma prévia!")
     - Comparação explícita: Quick Check (7 perguntas) vs Plataforma Completa (38 dimensões psicossociais)
