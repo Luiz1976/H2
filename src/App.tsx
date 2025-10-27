@@ -67,6 +67,7 @@ import TestSupabaseConnection from "./components/TestSupabaseConnection";
 import { DebugResultado } from "@/components/DebugResultado";
 import CadastroEmpresa from "./pages/CadastroEmpresa";
 import CadastroColaborador from "./pages/CadastroColaborador";
+import LandingPage from "./pages/LandingPage";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +84,7 @@ function App() {
         <BrowserRouter>
           <AuthProvider>
             <Routes>
+              <Route path="/landing" element={<LandingPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/aceitar-convite/:token" element={<AcessoConvite />} />
               <Route path="/prg/compartilhado/:token" element={<PRGPublico />} />

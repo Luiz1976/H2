@@ -104,6 +104,38 @@ Migration from Supabase to a local API backend for enhanced control. Manual Zod 
 - **AI Integration**: Google Gemini API
 
 ## Recent Changes
+- **Landing Page Profissional** (October 27, 2025): Nova landing page de marketing em `/landing` criada para conversão de visitantes em clientes
+  - **Design moderno e tecnológico**: Gradientes indigo/purple, glassmorphism, animações sutis, layout responsivo
+  - **Técnicas de PNL e gatilhos mentais aplicadas**:
+    - Autoridade: ISO 45003, NR-01, dados oficiais do MTE
+    - Escassez: Prazo NR-01 (25/05/2026), fase educativa limitada
+    - Urgência: Multas, passivos trabalhistas, dados alarmantes (472 mil afastamentos)
+    - Prova social: 3 depoimentos reais com resultados mensuráveis
+    - Reciprocidade: Diagnóstico gratuito completo, demo sem custo
+    - Contraste: Comparativo ROI (R$ 400k custos vs R$ 29.9k investimento = 1.238% ROI)
+  - **Estrutura de conteúdo otimizada**:
+    - Hero section com headline impactante e estatística chocante
+    - Seção de problema (dor): Custos invisíveis e impactos financeiros
+    - Mudança regulatória (urgência): Linha do tempo NR-01, consequências
+    - Solução completa: 9 módulos integrados detalhados
+    - Benefícios por stakeholder: RH, Jurídico, Diretoria, Compliance (tabs interativas)
+    - Prova social: Depoimentos com 5 estrelas
+    - ROI e economia: Calculadora visual de economia potencial
+    - CTA estratégicos: Diagnóstico gratuito posicionado em múltiplos pontos
+  - **Componentes e funcionalidades**:
+    - Header fixo com scroll effect
+    - Navegação suave entre seções (smooth scroll)
+    - Tabs interativas para benefícios por área
+    - 9 cards de módulos com hover effects
+    - Badges de urgência e destaque
+    - Botões de CTA com gradientes e ícones
+    - Footer completo com navegação
+  - **Gatilhos específicos sem ameaças**:
+    - Foco em proteção e oportunidade (não em medo)
+    - Dados factuais e oficiais (não apelações emocionais)
+    - Benefícios concretos e mensuráveis
+    - Facilidade e rapidez (5 minutos, sem cartão, sem custo)
+  - Rota configurada: `/landing` (página pública, sem autenticação)
 - **Admin Convites Page Redesign** (October 25, 2025): Complete UI/UX overhaul for /admin/convites
   - Modern card-based layout replacing traditional table view
   - Gradient backgrounds and glassmorphism effects for visual appeal
