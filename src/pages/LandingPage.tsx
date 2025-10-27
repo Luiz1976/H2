@@ -755,7 +755,11 @@ export default function LandingPage() {
                   </li>
                 </ul>
 
-                <Button className="w-full bg-gray-600 hover:bg-gray-700" data-testid="button-plano-essencial">
+                <Button 
+                  className="w-full bg-gray-600 hover:bg-gray-700" 
+                  data-testid="button-plano-essencial"
+                  onClick={() => window.location.href = '/checkout/essencial'}
+                >
                   Começar com Essencial
                 </Button>
               </CardContent>
@@ -824,7 +828,11 @@ export default function LandingPage() {
                   </li>
                 </ul>
 
-                <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-lg py-6" data-testid="button-plano-profissional">
+                <Button 
+                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-lg py-6" 
+                  data-testid="button-plano-profissional"
+                  onClick={() => window.location.href = '/checkout/profissional'}
+                >
                   <Sparkles className="mr-2 h-5 w-5" />
                   Escolher Profissional
                 </Button>
@@ -888,7 +896,11 @@ export default function LandingPage() {
                   </li>
                 </ul>
 
-                <Button className="w-full bg-purple-600 hover:bg-purple-700" data-testid="button-plano-enterprise">
+                <Button 
+                  className="w-full bg-purple-600 hover:bg-purple-700" 
+                  data-testid="button-plano-enterprise"
+                  onClick={() => window.location.href = '/checkout/enterprise'}
+                >
                   Falar com Especialista
                 </Button>
               </CardContent>
