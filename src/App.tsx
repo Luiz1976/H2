@@ -69,6 +69,9 @@ import CadastroEmpresa from "./pages/CadastroEmpresa";
 import CadastroColaborador from "./pages/CadastroColaborador";
 import LandingPage from "./pages/LandingPage";
 import QuickCheckEstresse from "./pages/QuickCheckEstresse";
+import CheckoutPage from "./pages/CheckoutPage";
+import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
+import CheckoutCanceladoPage from "./pages/CheckoutCanceladoPage";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +90,9 @@ function App() {
             <Routes>
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/quick-check" element={<QuickCheckEstresse />} />
+              <Route path="/checkout/:planType" element={<CheckoutPage />} />
+              <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+              <Route path="/checkout/cancelado" element={<CheckoutCanceladoPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/aceitar-convite/:token" element={<AcessoConvite />} />
               <Route path="/prg/compartilhado/:token" element={<PRGPublico />} />
