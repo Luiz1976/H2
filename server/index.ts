@@ -8,6 +8,7 @@ import testesRouter from './routes/testes';
 import colaboradoresRouter from './routes/colaboradores';
 import erpRouter from './routes/erp';
 import testeDisponibilidadeRouter from './routes/teste-disponibilidade';
+import stripeRouter from './routes/stripe';
 
 dotenv.config();
 
@@ -25,11 +26,13 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(null, true); // Permite todas as origens no desenvolvimento
+      callback(null, true);
     }
   },
   credentials: true,
 }));
+
+app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -50,6 +53,7 @@ app.use('/api/testes', testesRouter);
 app.use('/api/colaboradores', colaboradoresRouter);
 app.use('/api/erp', erpRouter);
 app.use('/api/teste-disponibilidade', testeDisponibilidadeRouter);
+app.use('/api/stripe', stripeRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado' });
