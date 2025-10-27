@@ -41,9 +41,35 @@ export default function Testes() {
   const [erro, setErro] = useState<string | null>(null);
   const [isColaborador, setIsColaborador] = useState(false);
 
+  // Carregar testes na inicialização
   useEffect(() => {
     carregarTestesDisponiveis();
   }, []);
+
+  // Adicionar listeners para recarregar quando a página ganhar foco
+  useEffect(() => {
+    if (!isColaborador) return;
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('🔄 [TESTES] Página ganhou foco, recarregando testes...');
+        carregarTestesDisponiveis();
+      }
+    };
+
+    const handleFocus = () => {
+      console.log('🔄 [TESTES] Janela ganhou foco, recarregando testes...');
+      carregarTestesDisponiveis();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [isColaborador]);
 
   const carregarTestesDisponiveis = async () => {
     try {
