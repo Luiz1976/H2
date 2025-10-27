@@ -11,11 +11,13 @@ import { infoTesteMaturidadeRiscosPsicossociais } from "@/lib/testes/maturidade-
 import { configPercepacaoAssedio } from "@/lib/testes/percepcao-assedio";
 import { configQualidadeVidaTrabalho } from "@/lib/testes/qualidade-vida-trabalho";
 import { obterInfoTesteRPO } from "@/lib/testes/riscos-psicossociais-ocupacionais";
-import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useAuth } from "@/hooks/AuthContext";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useEffect } from "react";
 
 interface TesteDisponibilidade {
   id: string;
@@ -37,93 +39,59 @@ export default function Testes() {
   const navigate = useNavigate();
   const infoRPO = obterInfoTesteRPO();
   const { user, isAuthenticated } = useAuth();
-  
-  const [testes, setTestes] = useState<TesteDisponibilidade[]>([]);
-  const [carregando, setCarregando] = useState(true);
-  const [erro, setErro] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const isColaborador = isAuthenticated && user?.role === 'colaborador';
 
-  // Carregar testes na inicialização e quando o usuário mudar
+  // 🚀 React Query: Carrega testes automaticamente com cache inteligente
+  const { data, isLoading: carregando, error } = useQuery<{ testes: TesteDisponibilidade[] }>({
+    queryKey: ['/api/teste-disponibilidade/colaborador/testes'],
+    queryFn: () => apiRequest<{ testes: TesteDisponibilidade[] }>('/api/teste-disponibilidade/colaborador/testes'),
+    enabled: isColaborador, // Só carregar se for colaborador autenticado
+    staleTime: 0, // Sempre revalidar
+    refetchOnWindowFocus: true, // ✅ Recarregar automaticamente ao focar na janela
+    refetchOnMount: true, // ✅ Recarregar ao montar
+  });
+
+  // ✅ Listener para invalidar cache quando um teste for concluído
   useEffect(() => {
-    carregarTestesDisponiveis();
-  }, [user, isAuthenticated]);
-
-  // Adicionar listeners para recarregar quando a página ganhar foco
-  useEffect(() => {
-    if (!isColaborador) return;
-
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        console.log('🔄 [TESTES] Página ganhou foco, recarregando testes...');
-        carregarTestesDisponiveis();
-      }
-    };
-
-    const handleFocus = () => {
-      console.log('🔄 [TESTES] Janela ganhou foco, recarregando testes...');
-      carregarTestesDisponiveis();
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('focus', handleFocus);
-
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, [isColaborador]);
-
-  const carregarTestesDisponiveis = async () => {
-    try {
-      setCarregando(true);
-      setErro(null);
-
-      // Se não for colaborador autenticado, não carregar
-      if (!isAuthenticated || user?.role !== 'colaborador') {
-        console.log('🔍 [TESTES] Não é colaborador ou não está autenticado, mostrando testes estáticos');
-        setCarregando(false);
-        return;
-      }
-
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        console.error('❌ [TESTES] Token não encontrado no localStorage');
-        setCarregando(false);
-        return;
-      }
-
-      console.log('🔍 [TESTES] Carregando testes para colaborador:', user.email);
-
-      const response = await fetch('/api/teste-disponibilidade/colaborador/testes', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+    const handleTesteConcluido = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      console.log('🔄 [TESTES] Teste concluído detectado:', customEvent.detail);
+      
+      // Invalidar cache para forçar recarregamento
+      queryClient.invalidateQueries({ 
+        queryKey: ['/api/teste-disponibilidade/colaborador/testes'] 
       });
+      console.log('✅ [TESTES] Cache invalidado - dados serão recarregados automaticamente');
+    };
 
-      if (!response.ok) {
-        throw new Error('Erro ao carregar testes');
-      }
+    window.addEventListener('teste-concluido', handleTesteConcluido);
+    
+    return () => {
+      window.removeEventListener('teste-concluido', handleTesteConcluido);
+    };
+  }, [queryClient]);
 
-      const data = await response.json();
-      console.log('🔍 [TESTES-FRONTEND] Dados recebidos da API:', data);
-      console.log('📊 [TESTES-FRONTEND] Total de testes:', data.testes?.length || 0);
-      console.log('📋 [TESTES-FRONTEND] Resumo dos testes:', data.testes?.map((t: any) => ({
-        nome: t.nome,
-        disponivel: t.disponivel,
-        motivo: t.motivo,
-        dataConclusao: t.dataConclusao
-      })));
-      setTestes(data.testes || []);
-    } catch (error) {
-      console.error('Erro ao carregar testes:', error);
-      setErro('Erro ao carregar testes disponíveis');
-      toast.error('Erro ao carregar testes disponíveis');
-    } finally {
-      setCarregando(false);
-    }
-  };
+  const testes = data?.testes || [];
+
+  // Logging quando os dados mudam
+  if (data) {
+    console.log('🔍 [TESTES-FRONTEND] Dados recebidos da API:', data);
+    console.log('📊 [TESTES-FRONTEND] Total de testes:', data.testes?.length || 0);
+    console.log('📋 [TESTES-FRONTEND] Resumo dos testes:', data.testes?.map((t: any) => ({
+      nome: t.nome,
+      disponivel: t.disponivel,
+      motivo: t.motivo,
+      dataConclusao: t.dataConclusao
+    })));
+  }
+
+  // Mostrar erro se houver
+  if (error) {
+    console.error('❌ [TESTES] Erro ao carregar testes:', error);
+    toast.error('Erro ao carregar testes disponíveis');
+  }
 
   const getTesteInfo = (nome: string) => {
     const nomeNorm = nome.toLowerCase();

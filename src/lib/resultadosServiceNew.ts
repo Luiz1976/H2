@@ -55,6 +55,12 @@ export const resultadosService = {
 
             if (response.ok) {
               console.log('✅ [RESULTADOS-SERVICE] Teste marcado como indisponível com sucesso');
+              
+              // ✅ Disparar evento customizado para invalidar cache no frontend
+              window.dispatchEvent(new CustomEvent('teste-concluido', { 
+                detail: { testeId: resultado.teste_id } 
+              }));
+              console.log('🔄 [RESULTADOS-SERVICE] Evento teste-concluido disparado');
             } else {
               const error = await response.json();
               console.error('⚠️ [RESULTADOS-SERVICE] Erro ao marcar teste como indisponível:', error);
