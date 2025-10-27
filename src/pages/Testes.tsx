@@ -188,8 +188,17 @@ export default function Testes() {
     const displayNome = info?.nome || teste.nome;
     const displayDescricao = info?.descricao || teste.descricao;
     const displayCategoria = info?.categoria || teste.categoria;
-    const displayTempo = info?.duracao || (teste.tempoEstimado ? `${teste.tempoEstimado} min` : '30 min');
-    const displayQuestoes = info?.questoes || 40;
+    
+    // Obter tempo estimado de forma robusta
+    const displayTempo = (info as any)?.duracao || 
+                         (info as any)?.tempoEstimado || 
+                         (teste.tempoEstimado ? `${teste.tempoEstimado} min` : '30 min');
+    
+    // Obter número de questões de forma robusta
+    const displayQuestoes = (info as any)?.questoes || 
+                            (info as any)?.numeroPerguntas || 
+                            (info as any)?.totalPerguntas || 
+                            40;
 
     return (
       <Card 
@@ -368,11 +377,11 @@ export default function Testes() {
                 <div className="flex justify-center gap-6 text-sm text-gray-700 dark:text-gray-300">
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
-                    <span>{testeConfig.info.duracao || testeConfig.info.tempoEstimado}</span>
+                    <span>{(testeConfig.info as any).duracao || (testeConfig.info as any).tempoEstimado || '30 min'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <FileText className="h-4 w-4" />
-                    <span>{testeConfig.questoes || testeConfig.info.questoes} questões</span>
+                    <span>{testeConfig.questoes || (testeConfig.info as any).questoes || (testeConfig.info as any).numeroPerguntas || 40} questões</span>
                   </div>
                 </div>
                 {testeConfig.badges && (

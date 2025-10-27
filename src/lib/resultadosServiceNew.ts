@@ -29,6 +29,43 @@ export const resultadosService = {
       
       console.log('✅ [RESULTADOS-SERVICE] Resultado salvo com sucesso via API:', resultadoSalvo);
       
+      // Se é um colaborador logado e o teste foi concluído, marcar como indisponível
+      const token = localStorage.getItem('authToken');
+      const user = localStorage.getItem('currentUser');
+      
+      if (token && user && resultado.teste_id) {
+        try {
+          const userData = JSON.parse(user);
+          
+          // Apenas marcar como concluído se for um colaborador
+          if (userData.role === 'colaborador') {
+            console.log('🔒 [RESULTADOS-SERVICE] Marcando teste como concluído para colaborador...');
+            
+            const response = await fetch('/api/teste-disponibilidade/marcar-concluido', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                testeId: resultado.teste_id,
+                colaboradorId: userData.userId
+              })
+            });
+
+            if (response.ok) {
+              console.log('✅ [RESULTADOS-SERVICE] Teste marcado como indisponível com sucesso');
+            } else {
+              const error = await response.json();
+              console.error('⚠️ [RESULTADOS-SERVICE] Erro ao marcar teste como indisponível:', error);
+            }
+          }
+        } catch (error) {
+          // Não bloquear o fluxo se falhar ao marcar como indisponível
+          console.error('⚠️ [RESULTADOS-SERVICE] Erro ao processar marcação de disponibilidade:', error);
+        }
+      }
+      
       return resultadoSalvo;
       
     } catch (error) {
