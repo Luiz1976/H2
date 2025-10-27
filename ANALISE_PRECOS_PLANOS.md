@@ -189,22 +189,13 @@ Considerando:
 - **10% OFF** para pagamento anual antecipado
 - **Exemplo:** Plano Profissional R$ 25 → R$ 22,50/mês (12 meses)
 
-### **2. Período de Trial**
-- **30 dias grátis** para testar qualquer plano
-- Limite de 20 colaboradores no trial
-- Sem cartão de crédito necessário
-
-### **3. Onboarding Incluído**
+### **2. Onboarding Incluído**
 - Setup inicial gratuito para todos os planos
 - Treinamento de 1h para Profissional e Enterprise
 
-### **4. Desconto por Volume**
+### **3. Desconto por Volume**
 - Empresas com **>200 colaboradores**: -5%
 - Empresas com **>500 colaboradores**: -10%
-
-### **5. Programa de Indicação**
-- **R$ 500** em crédito para cada empresa indicada que assinar
-- Válido para planos Profissional e Enterprise
 
 ---
 
@@ -264,10 +255,10 @@ Considerando:
 ### **Próximos Passos:**
 
 1. ✅ Validar preços com 5-10 empresas piloto
-2. ✅ Criar página de preços no site com calculadora
-3. ✅ Oferecer trial de 30 dias
-4. ✅ Preparar material de vendas com ROI calculado
-5. ✅ Implementar sistema de billing/cobrança recorrente
+2. ✅ Criar landing page de preços com calculadora interativa
+3. ✅ Preparar material de vendas com ROI calculado
+4. ✅ Implementar sistema de billing/cobrança recorrente
+5. ✅ Desenvolver estratégias de aquisição de clientes B2B
 
 ---
 
