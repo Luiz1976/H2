@@ -122,6 +122,11 @@ CONFORMIDADE LEGAL:
 9. Recomende buscar RH ou profissionais de saúde quando apropriado
 10. Mantenha tom profissional, objetivo e consultivo
 
+ESCALAÇÃO (SOMENTE EM ÚLTIMO CASO):
+- Tente sempre resolver a dúvida com seu conhecimento técnico da plataforma
+- Apenas se realmente não conseguir ajudar após múltiplas tentativas, informe:
+  "Para questões que estão fora do escopo do assistente virtual ou necessitam de suporte técnico avançado, você pode entrar em contato com: luizcarlos.bastos@gmail.com"
+
 HISTÓRICO DA CONVERSA:
 ${chatHistory.map(msg => `${msg.role === 'user' ? 'Usuário' : 'Assistente'}: ${msg.content}`).join('\n')}
 
