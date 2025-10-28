@@ -9,6 +9,7 @@ import colaboradoresRouter from './routes/colaboradores';
 import erpRouter from './routes/erp';
 import testeDisponibilidadeRouter from './routes/teste-disponibilidade';
 import stripeRouter from './routes/stripe';
+import adminRouter from './routes/admin';
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use('/api/colaboradores', colaboradoresRouter);
 app.use('/api/erp', erpRouter);
 app.use('/api/teste-disponibilidade', testeDisponibilidadeRouter);
 app.use('/api/stripe', stripeRouter);
+app.use('/api/admin', adminRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado' });

@@ -43,7 +43,16 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
 - **Quick Check de Estresse Ocupacional**: Interactive demonstrative test at `/quick-check` for visitor conversion. Features an identical interface to platform tests, including pre-test animation, question layout, processing animation, and a result screen with graphs, risk classification, and optimized CTAs. Incorporates conversion strategies like preview cards, personalized risk alerts, social proof, benefit listings, and comparative tables.
 - **Landing Page Profissional**: Marketing landing page at `/landing` designed for client conversion. Features modern design with gradients and glassmorphism, applying NLP and mental triggers (authority, scarcity, urgency, social proof, reciprocity, contrast) through content structure, interactive sections, and strategic CTAs.
 - **Admin Convites Page Redesign**: UI/UX overhaul of the `/admin/convites` page with a modern card-based layout, gradient backgrounds, glassmorphism effects, enhanced statistics dashboard (5 KPI cards), smart status badges, modal-based invite creation, quick action buttons, and advanced filtering.
-- **CEO Dashboard Enhancement**: 30+ strategic indicators with intelligent insights, including Organizational Health Index, Retention Rate, coverage metrics, 5-level alert system, temporal analysis, risk analysis panel, and predictive metrics.
+- **CEO Dashboard Enhancement (Company Details)**: 30+ strategic indicators with intelligent insights for individual companies, including Organizational Health Index, Retention Rate, coverage metrics, 5-level alert system, temporal analysis, risk analysis panel, and predictive metrics. Located at `/admin/empresas/:id`.
+- **Admin Executive Dashboard**: Comprehensive business intelligence dashboard at `/admin` for CEO-level decision making. Features aggregated metrics from all companies including:
+  - **Financial Metrics**: MRR (Monthly Recurring Revenue), ARR (Annual Recurring Revenue), revenue growth, ticket medio, revenue projections
+  - **Conversion Funnel**: Complete tracking from landing page visits → demo tests → checkout → purchases with conversion rates at each stage
+  - **Strategic KPIs**: LTV (Lifetime Value), CAC (Customer Acquisition Cost), LTV/CAC Ratio, Payback Period
+  - **Business Growth**: Active companies, new companies this month, churn rate, growth percentage
+  - **Collaborator Metrics**: Total collaborators, active count, average per company, monthly growth
+  - **Plan Distribution**: Breakdown by Essencial, Profissional, and Enterprise plans with revenue attribution
+  - **Interactive Charts**: 6-month revenue trends, plan distribution pie chart, conversion funnel visualization
+  - **Future Projections**: Next month revenue forecast, quarterly projection based on growth trends
 - **Stripe Payment Integration**: Complete subscription payment system with Stripe Checkout Sessions. Features include:
   - Three pricing tiers: Essencial (R$15/employee), Profissional (R$25/employee), Enterprise (R$35/employee)
   - Checkout pages at `/checkout/:planType` with Stripe Checkout integration

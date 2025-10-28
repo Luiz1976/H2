@@ -16,6 +16,7 @@ import Colaborador from "./pages/Colaborador";
 import Empresa from "./pages/Empresa";
 import EmpresaDashboard from "./pages/EmpresaDashboard";
 import Admin from "./pages/Admin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminEmpresas from "./pages/admin/AdminEmpresas";
 import AdminEmpresaDetalhes from "./pages/admin/AdminEmpresaDetalhes";
 import AdminConvites from "./pages/admin/AdminConvites";
@@ -151,7 +152,7 @@ function App() {
                   </ProtectedRoute>
                 } 
               >
-                <Route index element={<AdminEmpresas />} />
+                <Route index element={<AdminDashboard />} />
                 <Route path="empresas" element={<AdminEmpresas />} />
                 <Route path="empresas/:id" element={<AdminEmpresaDetalhes />} />
                 <Route path="convites" element={<AdminConvites />} />

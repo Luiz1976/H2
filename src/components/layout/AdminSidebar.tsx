@@ -1,4 +1,4 @@
-import { Building2, Mail, LogOut } from "lucide-react";
+import { Building2, Mail, LogOut, BarChart3 } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
 import {
@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/sidebar";
 
 const adminMenuItems = [
+  { 
+    title: "Dashboard", 
+    url: "/admin", 
+    icon: BarChart3 
+  },
   { 
     title: "Empresas", 
     url: "/admin/empresas", 
