@@ -578,11 +578,9 @@ function App() {
               <Route 
                 path="/resultado/:resultadoId" 
                 element={
-                  <ProtectedRoute>
-                    <MainLayout>
-                      <Resultado />
-                    </MainLayout>
-                  </ProtectedRoute>
+                  <MainLayout>
+                    <Resultado />
+                  </MainLayout>
                 } 
               />
               <Route 

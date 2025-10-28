@@ -1,7 +1,9 @@
-import React from 'react';
-import { Loader2, AlertTriangle, Eye, Download, Share2, Brain } from 'lucide-react';
+import React, { useState } from 'react';
+import { Loader2, AlertTriangle, Eye, Download, Share2, Brain, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { calcularResultadoKarasekSiegrist, type ResultadoKarasekSiegrist } from '@/lib/testes/karasek-siegrist';
 import { KarasekRadarChart } from '@/components/charts/KarasekRadarChart';
 import { KarasekGaugeChart } from '@/components/charts/KarasekGaugeChart';
@@ -27,6 +29,21 @@ interface ResultadoVisualizacaoProps {
 }
 
 export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = false, erro = null }: ResultadoVisualizacaoProps) {
+  
+  const [showHumaniQInsightModal, setShowHumaniQInsightModal] = useState(false);
+  
+  // Função para identificar se é um teste HumaniQ Insight
+  const isHumaniQInsight = (resultado: ResultadoTeste | null): boolean => {
+    if (!resultado) return false;
+    
+    const nomeTest = resultado.nomeTest?.toLowerCase() || '';
+    const tipoTeste = dadosResultado?.metadados?.tipo_teste?.toLowerCase() || '';
+    const testeNome = dadosResultado?.metadados?.teste_nome?.toLowerCase() || '';
+    
+    return nomeTest.includes('humaniq insight') || 
+           tipoTeste === 'humaniq-insight' ||
+           testeNome.includes('humaniq insight');
+  };
   
   // Função para identificar se é um teste Karasek-Siegrist
   const isKarasekSiegrist = (resultado: ResultadoTeste | null): boolean => {
@@ -1037,7 +1054,60 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
 
   return (
     <>
-      {isKarasekSiegrist(resultado!) ? 
+      {isHumaniQInsight(resultado!) ? (
+        <div className="space-y-6">
+          {/* Card com botão para abrir resultado completo */}
+          <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 p-8 rounded-2xl border-2 border-purple-200/60 shadow-lg">
+            <div className="text-center space-y-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full mb-2">
+                <Brain className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                HumaniQ Insight
+              </h3>
+              <p className="text-slate-600">
+                Análise Completa do Clima Organizacional e Bem-Estar Psicológico
+              </p>
+              <Button
+                onClick={() => setShowHumaniQInsightModal(true)}
+                size="lg"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold px-8 py-6 text-lg shadow-lg"
+                data-testid="button-ver-resultado-completo"
+              >
+                <Eye className="h-5 w-5 mr-2" />
+                Ver Resultado Completo
+              </Button>
+            </div>
+          </div>
+          
+          {/* Preview dos dados */}
+          <div className="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+            <h4 className="font-semibold text-slate-800 mb-4">Informações Básicas</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
+                <div className="text-2xl font-bold text-blue-600">
+                  {dadosResultado.pontuacao_total || 'N/A'}
+                </div>
+                <div className="text-sm text-slate-600 mt-1">Pontuação</div>
+              </div>
+              <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
+                <div className="text-2xl font-bold text-purple-600">
+                  {Math.round((dadosResultado.tempo_gasto || 0) / 60)}
+                </div>
+                <div className="text-sm text-slate-600 mt-1">Minutos</div>
+              </div>
+              <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
+                <div className="text-2xl font-bold text-green-600">48</div>
+                <div className="text-sm text-slate-600 mt-1">Questões</div>
+              </div>
+              <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
+                <div className="text-2xl font-bold text-orange-600">4</div>
+                <div className="text-sm text-slate-600 mt-1">Dimensões</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : isKarasekSiegrist(resultado!) ? 
         renderKarasekSiegristContent(dadosResultado) : 
         isClimaOrganizacional(resultado!) ?
         renderClimaOrganizacionalContent(dadosResultado) :
@@ -1047,6 +1117,40 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
         renderQVTContent(dadosResultado) :
         renderGenericContent(dadosResultado)
       }
+      
+      {/* Modal HumaniQ Insight */}
+      <Dialog open={showHumaniQInsightModal} onOpenChange={setShowHumaniQInsightModal}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-y-auto p-0 gap-0">
+          <DialogHeader className="sticky top-0 z-10 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 rounded-t-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full">
+                  <Brain className="h-6 w-6" />
+                </div>
+                <DialogTitle className="text-2xl font-bold text-white">
+                  HumaniQ Insight - Resultado Completo
+                </DialogTitle>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowHumaniQInsightModal(false)}
+                className="text-white hover:bg-white/20"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+          </DialogHeader>
+          
+          <div className="p-6 bg-gradient-to-br from-purple-50/30 via-blue-50/30 to-pink-50/30">
+            <iframe
+              src={`/resultado/humaniq-insight/${resultado?.id}`}
+              className="w-full h-[80vh] border-0 rounded-lg bg-white shadow-lg"
+              title="Resultado HumaniQ Insight"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
