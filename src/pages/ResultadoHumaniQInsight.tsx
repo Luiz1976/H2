@@ -60,36 +60,48 @@ export default function ResultadoHumaniQInsight() {
         'pertencimento': 4.67,
         'justica-organizacional': 2.75
       },
-      interpretacao: `## Análise HumaniQ Insight
+      interpretacao: `Analise Detalhada
 
-**Pontuação Geral:** 3.06/5.00
-**Classificação:** Clima Moderado/Neutro
+Interpretacao profissional dos seus resultados
 
-### Visão Geral
+Diagnostico Organizacional HumaniQ Insight
 
-Sua organização apresenta um clima organizacional **moderado**. Existem aspectos positivos, mas também oportunidades significativas de melhoria em áreas como segurança psicológica, comunicação interna, pertencimento e justiça organizacional.
+Indice de Clima Organizacional: 3.06/5.00
+Classificacao do Ambiente: Equilibrio Moderado com Pontos de Atencao
 
-### Análise por Dimensão
+Sintese Executiva do Diagnostico
 
-**Segurança Psicológica:** 1.83/5.00 - Clima Problemático
-*Liberdade para se expressar sem medo de julgamento ou retaliação*
+Os dados coletados revelam um ecossistema organizacional em estado de equilibrio intermediario. A analise multidimensional indica a coexistencia de elementos positivos consolidados e areas criticas que demandam intervencao estrategica imediata. O padrao observado sugere uma organizacao em transicao, com potencial de evolucao significativo mediante implementacao de acoes direcionadas.
 
-**Comunicação Interna:** 3.00/5.00 - Clima Moderado/Neutro
-*Clareza, abertura e fluxo de informação entre times e lideranças*
+Mapeamento Dimensional do Clima Organizacional
 
-**Pertencimento e Inclusão:** 4.67/5.00 - Clima Positivo e Saudável
-*Sentimento de ser aceito, valorizado e integrado à equipe*
+Dimensao 1 - Seguranca Psicologica: 1.83/5.00
+Status: Zona Critica de Risco Psicossocial
 
-**Justiça Organizacional:** 2.75/5.00 - Clima Moderado/Neutro
-*Percepção de equidade, ética, transparência e reconhecimento*
+Indicador de liberdade expressiva e autonomia comunicacional. Mensura o grau em que colaboradores sentem-se seguros para manifestar opinioes divergentes, assumir riscos calculados e relatar erros sem temer consequencias negativas. A pontuacao critica nesta dimensao indica ambiente com potencial elevado de autocensura e inibicao da inovacao.
+
+Dimensao 2 - Comunicacao Interna: 3.00/5.00
+Status: Patamar Intermediario Funcional
+
+Avalia a eficiencia dos canais de informacao, transparencia nos fluxos comunicacionais e alinhamento entre diferentes niveis hierarquicos. A pontuacao mediana sugere estruturas comunicacionais estabelecidas, porem com gaps de efetividade que podem impactar a sincronia organizacional e a execucao estrategica.
+
+Dimensao 3 - Pertencimento e Integracao: 4.67/5.00
+Status: Excelencia em Engagement Coletivo
+
+Dimensao que reflete o vinculo emocional e senso de identificacao dos colaboradores com a organizacao. A alta pontuacao evidencia cultura de inclusao consolidada, forte coesao grupal e alinhamento de valores individuais com os propositos corporativos. Este e o principal ativo estrategico identificado no diagnostico.
+
+Dimensao 4 - Justica Organizacional: 2.75/5.00
+Status: Percepcao Ambivalente de Equidade
+
+Mensura a percepção de fairness nos processos decisorios, distribuicao de recompensas, aplicacao de politicas e consistencia nos criterios avaliativos. O score moderado indica inconsistencias percebidas nos sistemas de reconhecimento e possivel falta de clareza nos criterios meritocraticos.
 `,
       recomendacoes: [
-        "Promover treinamentos sobre segurança psicológica para líderes e equipes",
-        "Criar canais seguros e anônimos para compartilhamento de ideias e preocupações",
-        "Estabelecer cultura de aprendizado com erros, sem punições",
-        "Focar nas dimensões com menor pontuação para melhorias direcionadas",
-        "Manter ações preventivas nas áreas já positivas",
-        "Estabelecer indicadores de acompanhamento contínuo"
+        "Implementar programa estruturado de desenvolvimento de lideranca com foco em seguranca psicologica e gestao humanizada utilizando metodologias baseadas em neurociencia organizacional",
+        "Estabelecer infraestrutura digital de feedback continuo com canais anonimos de comunicacao ascendente garantindo confidencialidade atraves de plataformas criptografadas",
+        "Desenvolver framework cultural de aprendizagem organizacional transformando falhas em oportunidades de evolucao sistematica sem aplicacao de medidas punitivas",
+        "Priorizar investimentos estrategicos nas dimensoes com deficit critico aplicando analise de impacto ROI para maximizar resultados organizacionais mensuraveis",
+        "Consolidar praticas de manutencao preventiva nas areas de excelencia estabelecendo protocolos de monitoramento continuo para sustentacao do desempenho superior",
+        "Criar dashboard de metricas de clima organizacional com indicadores-chave de performance em tempo real permitindo tomada de decisao baseada em dados e gestao preditiva de riscos psicossociais"
       ]
     }
   };
