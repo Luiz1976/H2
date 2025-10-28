@@ -22,6 +22,9 @@ export const empresas = pgTable('empresas', {
   cnpj: varchar('cnpj', { length: 18 }),
   endereco: text('endereco'),
   setor: varchar('setor', { length: 255 }),
+  numeroColaboradores: integer('numero_colaboradores'),
+  diasAcesso: integer('dias_acesso'),
+  dataExpiracao: timestamp('data_expiracao', { withTimezone: true }),
   adminId: uuid('admin_id').references(() => admins.id),
   configuracoes: jsonb('configuracoes').default({}),
   ativa: boolean('ativa').default(true),
@@ -37,6 +40,7 @@ export const empresas = pgTable('empresas', {
   emailIdx: index('idx_empresas_email').on(table.emailContato),
   ativaIdx: index('idx_empresas_ativa').on(table.ativa),
   stripeCustomerIdx: index('idx_empresas_stripe_customer').on(table.stripeCustomerId),
+  dataExpiracaoIdx: index('idx_empresas_data_expiracao').on(table.dataExpiracao),
 }));
 
 export const colaboradores = pgTable('colaboradores', {
@@ -166,6 +170,9 @@ export const convitesEmpresa = pgTable('convites_empresa', {
   token: varchar('token', { length: 255 }).notNull().unique(),
   nomeEmpresa: varchar('nome_empresa', { length: 255 }).notNull(),
   emailContato: varchar('email_contato', { length: 255 }).notNull(),
+  cnpj: varchar('cnpj', { length: 18 }),
+  numeroColaboradores: integer('numero_colaboradores'),
+  diasAcesso: integer('dias_acesso'),
   adminId: uuid('admin_id').references(() => admins.id),
   validade: timestamp('validade', { withTimezone: true }).notNull(),
   status: varchar('status', { length: 50 }).default('pendente').notNull(),
@@ -231,6 +238,9 @@ export const insertConviteEmpresaSchema = z.object({
   token: z.string(),
   nomeEmpresa: z.string().min(1),
   emailContato: z.string().email(),
+  cnpj: z.string().optional().nullable(),
+  numeroColaboradores: z.number().optional().nullable(),
+  diasAcesso: z.number().optional().nullable(),
   adminId: z.string().uuid().optional().nullable(),
   validade: z.date(),
   status: z.string().optional(),
