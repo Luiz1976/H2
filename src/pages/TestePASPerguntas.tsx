@@ -87,24 +87,9 @@ export default function TestePASPerguntas() {
   }, [navigate]);
 
   // Função para vincular resultados anônimos ao usuário autenticado
+  // Nota: Esta função não é mais necessária pois o sistema agora salva resultados diretamente com autenticação
   const vincularResultadosAoUsuario = async (sessionId: string, usuarioId: string) => {
-    try {
-      console.log('🔗 [PAS] Vinculando resultados anônimos ao usuário:', { sessionId, usuarioId });
-      
-      const { data, error } = await supabase.rpc('vincular_resultados_usuario_seguro', {
-        p_session_id: sessionId,
-        p_usuario_id: usuarioId
-      });
-
-      if (error) {
-        console.error('❌ [PAS] Erro ao vincular resultados:', error);
-        return;
-      }
-
-      console.log('✅ [PAS] Resultados vinculados com sucesso:', data);
-    } catch (error) {
-      console.error('❌ [PAS] Erro na vinculação de resultados:', error);
-    }
+    console.log('🔗 [PAS] Vinculação automática (sistema já autentica diretamente):', { sessionId, usuarioId });
   };
 
   const handleResposta = async (valor: number) => {
@@ -129,10 +114,10 @@ export default function TestePASPerguntas() {
     
     try {
       console.log('🔍 [PAS-PERGUNTAS] Chamando salvarRespostaPercepacaoAssedio...');
-      console.log('🔍 [PAS-PERGUNTAS] Parâmetros:', { sessaoId, perguntaId: perguntaAtual + 1, valor });
+      console.log('🔍 [PAS-PERGUNTAS] Parâmetros:', { perguntaId: perguntaAtual + 1, resposta: valor, sessaoId });
       
       // Salvar resposta individual
-      await salvarRespostaPercepacaoAssedio(sessaoId, perguntaAtual + 1, valor);
+      await salvarRespostaPercepacaoAssedio(perguntaAtual + 1, valor, sessaoId);
       
       console.log('✅ [PAS-PERGUNTAS] Resposta salva com sucesso!');
       
