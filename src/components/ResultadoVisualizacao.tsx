@@ -10,6 +10,21 @@ import { KarasekGaugeChart } from '@/components/charts/KarasekGaugeChart';
 import { KarasekBarChart } from '@/components/charts/KarasekBarChart';
 import { KarasekProfessionalAnalysis } from '@/components/analysis/KarasekProfessionalAnalysis';
 import { KarasekActionPlan } from '@/components/analysis/KarasekActionPlan';
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
 
 interface ResultadoTeste {
   id: string;
@@ -988,23 +1003,35 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
     const dimensoesData = [
       {
         nome: 'Segurança Psicológica',
+        dimensao: 'Segurança',
         pontuacao: (pontuacoesDimensoes['seguranca-psicologica'] || 0) * 20,
         valor: pontuacoesDimensoes['seguranca-psicologica'] || 0,
+        cor: '#8B5CF6',
+        fullMark: 100
       },
       {
         nome: 'Comunicação Interna',
+        dimensao: 'Comunicação',
         pontuacao: (pontuacoesDimensoes['comunicacao-interna'] || 0) * 20,
         valor: pontuacoesDimensoes['comunicacao-interna'] || 0,
+        cor: '#3B82F6',
+        fullMark: 100
       },
       {
         nome: 'Pertencimento',
+        dimensao: 'Pertencimento',
         pontuacao: (pontuacoesDimensoes['pertencimento'] || 0) * 20,
         valor: pontuacoesDimensoes['pertencimento'] || 0,
+        cor: '#EC4899',
+        fullMark: 100
       },
       {
         nome: 'Justiça Organizacional',
+        dimensao: 'Justiça',
         pontuacao: (pontuacoesDimensoes['justica-organizacional'] || 0) * 20,
         valor: pontuacoesDimensoes['justica-organizacional'] || 0,
+        cor: '#10B981',
+        fullMark: 100
       },
     ];
     
@@ -1068,11 +1095,33 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
               <CardDescription>Análise multidimensional do clima organizacional</CardDescription>
             </CardHeader>
             <CardContent>
-              <div style={{ width: '100%', height: 300 }}>
-                <div className="text-center text-sm text-slate-500 py-20">
-                  Gráfico Radar - Visão 360° das dimensões do clima organizacional
-                </div>
-              </div>
+              <ResponsiveContainer width="100%" height={300}>
+                <RadarChart data={dimensoesData}>
+                  <PolarGrid stroke="#e5e7eb" />
+                  <PolarAngleAxis 
+                    dataKey="dimensao" 
+                    tick={{ fill: '#6b7280', fontSize: 12, fontWeight: 600 }}
+                  />
+                  <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#9ca3af' }} />
+                  <Radar
+                    name="Pontuação"
+                    dataKey="pontuacao"
+                    stroke="#8B5CF6"
+                    fill="#8B5CF6"
+                    fillOpacity={0.6}
+                    strokeWidth={2}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                    }}
+                    formatter={(value: number) => [`${value.toFixed(1)}%`, 'Pontuação']}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
 
@@ -1086,11 +1135,32 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
               <CardDescription>Desempenho detalhado em cada área avaliada</CardDescription>
             </CardHeader>
             <CardContent>
-              <div style={{ width: '100%', height: 300 }}>
-                <div className="text-center text-sm text-slate-500 py-20">
-                  Gráfico de Barras - Pontuação detalhada por dimensão
-                </div>
-              </div>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={dimensoesData} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis type="number" domain={[0, 100]} tick={{ fill: '#6b7280' }} />
+                  <YAxis 
+                    dataKey="dimensao" 
+                    type="category" 
+                    width={100}
+                    tick={{ fill: '#6b7280', fontSize: 11 }}
+                  />
+                  <Tooltip
+                    contentStyle={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                    }}
+                    formatter={(value: number) => [`${value.toFixed(1)}%`, 'Pontuação']}
+                  />
+                  <Bar dataKey="pontuacao" radius={[0, 8, 8, 0]}>
+                    {dimensoesData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.cor} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
         </div>
