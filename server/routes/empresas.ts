@@ -1142,10 +1142,14 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
 
     // Mapeamento correto de IDs para nomes com acentuação
     const nomesDimensoes: Record<string, string> = {
-      // Clima e Bem-Estar
+      // HumaniQ Insight (formato com hífen)
+      'seguranca-psicologica': 'Segurança Psicológica',
+      'comunicacao-interna': 'Comunicação Interna',
+      'pertencimento': 'Pertencimento e Inclusão',
+      'justica-organizacional': 'Justiça Organizacional',
+      // Clima e Bem-Estar (formato camelCase)
       'segurancaPsicologica': 'Segurança Psicológica',
       'comunicacaoInterna': 'Comunicação Interna',
-      'pertencimento': 'Pertencimento e Inclusão',
       'justicaOrganizacional': 'Justiça Organizacional',
       // RPO
       'demandas_trabalho': 'Demandas do Trabalho',

@@ -43,13 +43,23 @@ class HumaniQInsightService {
       const analiseHumaniQInsight = calcularResultadoHumaniQInsight(respostas);
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Análise calculada:', analiseHumaniQInsight);
       
-      // Converter para o formato do banco de dados
+      // Converter para o formato do banco de dados (compatível com agregação do backend)
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Convertendo pontuações das dimensões...');
       const pontuacoesDimensoes: Record<string, number> = {};
+      const dimensoesParaBackend: Record<string, { percentual: number; media: number; pontuacao: number }> = {};
+      
       Object.entries(analiseHumaniQInsight.dimensoes).forEach(([dimensaoId, dados]) => {
         pontuacoesDimensoes[dimensaoId] = dados.media;
+        
+        // Formato para agregação do backend (percentual de 0-100)
+        dimensoesParaBackend[dimensaoId] = {
+          percentual: (dados.media / 5) * 100, // Converter escala 1-5 para 0-100
+          media: dados.media,
+          pontuacao: dados.pontuacaoTotal
+        };
       });
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Pontuações das dimensões:', pontuacoesDimensoes);
+      console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Dimensões formatadas para backend:', dimensoesParaBackend);
       
       // Gerar interpretação textual
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Gerando interpretação...');
@@ -60,6 +70,18 @@ class HumaniQInsightService {
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Gerando recomendações...');
       const recomendacoes = this.gerarRecomendacoes(analiseHumaniQInsight);
       console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Recomendações geradas:', recomendacoes.length, 'itens');
+      
+      // Gerar alertas críticos baseados nas dimensões problemáticas
+      const alertasCriticos: string[] = [];
+      Object.entries(analiseHumaniQInsight.dimensoes).forEach(([dimensaoId, dados]) => {
+        if (dados.nivel === 'problematico') {
+          const dimensaoInfo = dimensoesHumaniQInsight.find(d => d.id === dimensaoId);
+          if (dimensaoInfo) {
+            alertasCriticos.push(`${dimensaoInfo.nome}: Nível crítico (${dados.media.toFixed(2)}/5.00)`);
+          }
+        }
+      });
+      console.log('🔍 [HUMANIQ-INSIGHT-SERVICE] Alertas críticos gerados:', alertasCriticos.length, 'itens');
       
       // Obter session_id para persistência
       const sessionId = sessionService.getSessionId();
@@ -81,9 +103,14 @@ class HumaniQInsightService {
           usuario_nome: usuarioNome,
           usuario_email: usuarioEmail,
           pontuacoes_dimensoes: pontuacoesDimensoes,
-          analise_completa: analiseHumaniQInsight,
+          // Formato compatível com agregação do backend (estado-psicossocial e PRG)
+          analise_completa: {
+            ...analiseHumaniQInsight,
+            dimensoes: dimensoesParaBackend // Dimensões no formato esperado pelo backend
+          },
           interpretacao: interpretacao,
           recomendacoes: recomendacoes,
+          alertas_criticos: alertasCriticos, // Alertas para serem agregados
           versao_teste: '1.0',
           data_calculo: new Date().toISOString()
         }
