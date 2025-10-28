@@ -9,14 +9,14 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
   const [stage, setStage] = useState<'initial' | 'humaniq' | 'smile-draw' | 'ai-appear' | 'glow' | 'complete'>('initial');
 
   useEffect(() => {
-    console.log('🎬 [HumaniQ] Nova animação iniciada - 7 segundos');
+    console.log('🎬 [HumaniQ] Nova animação iniciada - 10 segundos');
     
     const timeline = [
-      { stage: 'humaniq', delay: 500 },      // 0.5s - HumaniQ aparece
+      { stage: 'humaniq', delay: 800 },      // 0.8s - HumaniQ aparece
       { stage: 'smile-draw', delay: 1500 },  // 1.5s - Faixa sorriso desenha
       { stage: 'ai-appear', delay: 2000 },   // 2.0s - AI aparece
-      { stage: 'glow', delay: 2500 },        // 2.5s - Brilho intensifica
-      { stage: 'complete', delay: 500 }      // 0.5s - Finalização
+      { stage: 'glow', delay: 2500 },        // 2.5s - Brilho intensifica + Subtítulo
+      { stage: 'complete', delay: 3200 }     // 3.2s - Permanece até o final (10s total)
     ];
     
     let currentIndex = 0;
