@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import Stripe from 'stripe';
 import { db } from '../db';
-import { empresas } from '../../shared/schema';
+import { empresas, convitesEmpresa } from '../../shared/schema';
 import { eq } from 'drizzle-orm';
+import { randomBytes } from 'crypto';
 
 const router = Router();
 
@@ -150,18 +151,45 @@ router.post('/webhook', async (req, res) => {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
-        const { empresaId, planType } = session.metadata || {};
+        const { empresaId, planType, employeeCount } = session.metadata || {};
 
-        if (empresaId && session.subscription) {
-          await db
-            .update(empresas)
-            .set({
-              stripeSubscriptionId: session.subscription as string,
-              plano: planType,
-              statusAssinatura: 'ativa',
-              updatedAt: new Date(),
+        if (session.subscription) {
+          const token = randomBytes(16).toString('hex');
+          const nomeEmpresa = session.customer_details?.name || 'Nova Empresa';
+          const emailContato = session.customer_details?.email || '';
+          const dataExpiracao = new Date();
+          dataExpiracao.setDate(dataExpiracao.getDate() + 90);
+
+          const [convite] = await db
+            .insert(convitesEmpresa)
+            .values({
+              token,
+              nomeEmpresa,
+              emailContato,
+              numeroColaboradores: parseInt(employeeCount || '0'),
+              diasAcesso: 90,
+              validade: dataExpiracao,
+              status: 'pendente',
+              metadados: {
+                stripeSessionId: session.id,
+                stripeCustomerId: session.customer,
+                planType,
+              },
             })
-            .where(eq(empresas.id, empresaId));
+            .returning();
+
+          if (empresaId) {
+            await db
+              .update(empresas)
+              .set({
+                stripeSubscriptionId: session.subscription as string,
+                plano: planType,
+                statusAssinatura: 'ativa',
+                tokenConvite: token,
+                updatedAt: new Date(),
+              })
+              .where(eq(empresas.id, empresaId));
+          }
         }
         break;
       }
@@ -320,6 +348,63 @@ router.post('/cancel-subscription/:empresaId', async (req, res) => {
     console.error('Erro ao cancelar assinatura:', error);
     res.status(500).json({
       error: 'Erro ao cancelar assinatura',
+      details: error.message,
+    });
+  }
+});
+
+router.get('/convite-session/:sessionId', async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+
+    const [convite] = await db
+      .select()
+      .from(convitesEmpresa)
+      .where(eq(convitesEmpresa.metadados, { stripeSessionId: sessionId }))
+      .limit(1);
+
+    if (!convite) {
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      
+      const metadados = session.metadata as any;
+      const token = randomBytes(16).toString('hex');
+      const dataExpiracao = new Date();
+      dataExpiracao.setDate(dataExpiracao.getDate() + 90);
+
+      const [novoConvite] = await db
+        .insert(convitesEmpresa)
+        .values({
+          token,
+          nomeEmpresa: session.customer_details?.name || 'Nova Empresa',
+          emailContato: session.customer_details?.email || '',
+          numeroColaboradores: parseInt(metadados.employeeCount || '0'),
+          diasAcesso: 90,
+          validade: dataExpiracao,
+          status: 'pendente',
+          metadados: {
+            stripeSessionId: sessionId,
+            stripeCustomerId: session.customer,
+            planType: metadados.planType,
+          },
+        })
+        .returning();
+
+      return res.json({
+        success: true,
+        convite: novoConvite,
+        url: `${process.env.FRONTEND_URL || req.headers.origin}/convite/${novoConvite.token}`,
+      });
+    }
+
+    res.json({
+      success: true,
+      convite,
+      url: `${process.env.FRONTEND_URL || req.headers.origin}/convite/${convite.token}`,
+    });
+  } catch (error: any) {
+    console.error('Erro ao buscar convite:', error);
+    res.status(500).json({
+      error: 'Erro ao buscar convite',
       details: error.message,
     });
   }

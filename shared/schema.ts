@@ -33,6 +33,7 @@ export const empresas = pgTable('empresas', {
   stripePriceId: varchar('stripe_price_id', { length: 255 }),
   plano: varchar('plano', { length: 50 }),
   statusAssinatura: varchar('status_assinatura', { length: 50 }).default('inativo'),
+  tokenConvite: varchar('token_convite', { length: 255 }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
