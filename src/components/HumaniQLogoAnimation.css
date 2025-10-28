@@ -157,14 +157,14 @@
   transform: scale(1) translateX(0);
 }
 
-/* ===== FAIXA CURVADA (SORRISO) ===== */
+/* ===== FAIXA CURVADA (SORRISO) - Do H ao AI ===== */
 .smile-curve {
   position: absolute;
-  top: 80px;
+  top: 75px;
   left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 120px;
+  transform: translateX(-52%);
+  width: 700px;
+  height: 140px;
   z-index: 5;
   pointer-events: none;
 }
@@ -207,6 +207,40 @@
     filter: drop-shadow(0 0 25px #00d4ff) 
             drop-shadow(0 0 50px #0099ff) 
             drop-shadow(0 0 70px rgba(0, 153, 255, 0.8));
+  }
+}
+
+/* ===== BRILHO INTENSO NA PARTE DO AI ===== */
+.smile-path-ai-glow {
+  animation: ai-smile-glow 1.5s ease-in-out infinite;
+}
+
+.smile-path-ai-thick {
+  animation: ai-smile-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes ai-smile-glow {
+  0%, 100% {
+    opacity: 0.6;
+    stroke-width: 18;
+  }
+  50% {
+    opacity: 0.9;
+    stroke-width: 22;
+  }
+}
+
+@keyframes ai-smile-pulse {
+  0%, 100% {
+    stroke-width: 14;
+    filter: drop-shadow(0 0 20px #66b3ff) 
+            drop-shadow(0 0 40px #0099ff);
+  }
+  50% {
+    stroke-width: 16;
+    filter: drop-shadow(0 0 35px #66b3ff) 
+            drop-shadow(0 0 60px #0099ff) 
+            drop-shadow(0 0 90px rgba(102, 179, 255, 0.9));
   }
 }
 
@@ -276,9 +310,9 @@
   }
   
   .smile-curve {
-    width: 500px;
-    height: 100px;
-    top: 70px;
+    width: 550px;
+    height: 115px;
+    top: 65px;
   }
   
   .subtitle {
@@ -298,9 +332,9 @@
   }
   
   .smile-curve {
-    width: 400px;
-    height: 80px;
-    top: 60px;
+    width: 450px;
+    height: 95px;
+    top: 55px;
   }
   
   .subtitle {
@@ -321,9 +355,9 @@
   }
   
   .smile-curve {
-    width: 320px;
-    height: 65px;
-    top: 50px;
+    width: 350px;
+    height: 75px;
+    top: 45px;
   }
   
   .subtitle {

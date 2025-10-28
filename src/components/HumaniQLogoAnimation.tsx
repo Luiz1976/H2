@@ -74,19 +74,22 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
             )}
           </div>
 
-          {/* Faixa curvada (sorriso) */}
+          {/* Faixa curvada (sorriso) - do H ao AI */}
           {(stage === 'smile-draw' || stage === 'ai-appear' || stage === 'glow' || stage === 'complete') && (
             <svg 
               className="smile-curve" 
-              viewBox="0 0 600 120" 
+              viewBox="0 0 700 140" 
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
+                {/* Gradiente de cor ao longo da curva */}
                 <linearGradient id="smileGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.8" />
-                  <stop offset="50%" stopColor="#0099ff" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#00d4ff" stopOpacity="0.8" />
+                  <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.7" />
+                  <stop offset="60%" stopColor="#0099ff" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#66b3ff" stopOpacity="1" />
                 </linearGradient>
+                
+                {/* Filtro de brilho base */}
                 <filter id="smileGlow">
                   <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
                   <feMerge>
@@ -94,18 +97,54 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
                     <feMergeNode in="SourceGraphic"/>
                   </feMerge>
                 </filter>
+                
+                {/* Filtro de brilho intenso no final (AI) */}
+                <filter id="smileGlowIntense">
+                  <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
               </defs>
               
-              {/* Faixa curvada - sorriso */}
+              {/* Faixa base - linha fina do H até metade */}
               <path
                 className={`smile-path ${stage === 'glow' || stage === 'complete' ? 'glowing' : ''}`}
-                d="M 50 40 Q 300 120, 550 40"
+                d="M 20 50 Q 200 130, 400 50 Q 500 20, 680 45"
                 stroke="url(#smileGradient)"
-                strokeWidth={stage === 'glow' || stage === 'complete' ? '12' : '8'}
+                strokeWidth="6"
                 strokeLinecap="round"
                 fill="none"
                 filter="url(#smileGlow)"
               />
+              
+              {/* Faixa espessa no final (AI) - cria o "grande sorriso" */}
+              {(stage === 'glow' || stage === 'complete') && (
+                <>
+                  {/* Camada de brilho extra */}
+                  <path
+                    className="smile-path-ai-glow"
+                    d="M 400 50 Q 500 20, 680 45"
+                    stroke="#66b3ff"
+                    strokeWidth="18"
+                    strokeLinecap="round"
+                    fill="none"
+                    filter="url(#smileGlowIntense)"
+                    opacity="0.6"
+                  />
+                  {/* Camada principal espessa */}
+                  <path
+                    className="smile-path-ai-thick"
+                    d="M 400 50 Q 500 20, 680 45"
+                    stroke="url(#smileGradient)"
+                    strokeWidth="14"
+                    strokeLinecap="round"
+                    fill="none"
+                    filter="url(#smileGlow)"
+                  />
+                </>
+              )}
             </svg>
           )}
 
