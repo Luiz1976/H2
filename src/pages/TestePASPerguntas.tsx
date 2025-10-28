@@ -29,6 +29,9 @@ interface Pergunta {
   }>;
 }
 
+// Mapeamento de valores para letras
+const letras = ['A', 'B', 'C', 'D', 'E'];
+
 // Escala de cores para as respostas
 const escalaRespostas = [
   { valor: 1, texto: 'Discordo totalmente', cor: 'bg-red-500 hover:bg-red-600 text-white' },
@@ -339,7 +342,7 @@ export default function TestePASPerguntas() {
                           whileHover={!salvando && !finalizando ? { scale: 1.1 } : {}}
                           whileTap={!salvando && !finalizando ? { scale: 0.95 } : {}}
                         >
-                          {opcao.valor}
+                          {letras[opcao.valor - 1]}
                         </motion.button>
                         <p className={`text-xs mt-2 ${
                           respostaAtual === opcao.valor ? 'text-white font-medium' : 'text-gray-600'
