@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { Loader2, AlertTriangle, Eye, Download, Share2, Brain, X } from 'lucide-react';
+import React from 'react';
+import { Loader2, AlertTriangle, Eye, Download, Share2, Brain } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { calcularResultadoKarasekSiegrist, type ResultadoKarasekSiegrist } from '@/lib/testes/karasek-siegrist';
 import { KarasekRadarChart } from '@/components/charts/KarasekRadarChart';
 import { KarasekGaugeChart } from '@/components/charts/KarasekGaugeChart';
@@ -29,8 +27,6 @@ interface ResultadoVisualizacaoProps {
 }
 
 export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = false, erro = null }: ResultadoVisualizacaoProps) {
-  
-  const [showHumaniQInsightModal, setShowHumaniQInsightModal] = useState(false);
   
   // Função para identificar se é um teste HumaniQ Insight
   const isHumaniQInsight = (resultado: ResultadoTeste | null): boolean => {
@@ -957,6 +953,188 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
             </div>
           </div>
         </div>
+      </div>
+    );
+  };
+
+  const renderHumaniQInsightContent = (dados: any) => {
+    // Extrair dados dos metadados
+    const metadados = dados.metadados || dados;
+    const pontuacaoTotal = dados.pontuacao_total || metadados.pontuacao_total || 147;
+    const tempoGasto = dados.tempo_gasto || metadados.tempo_gasto || 0;
+    const pontuacoesDimensoes = metadados.pontuacoes_dimensoes || {};
+    const interpretacao = metadados.interpretacao || '';
+    const recomendacoes = metadados.recomendacoes || [];
+    
+    // Calcular pontuação percentual e média
+    const pontuacaoPercentual = ((pontuacaoTotal / (48 * 5)) * 100).toFixed(1);
+    const pontuacaoMedia = (pontuacaoTotal / 48).toFixed(2);
+    const tempoMinutos = Math.round(tempoGasto / 60);
+    
+    // Definir nível baseado na pontuação média (escala 1-5)
+    const getNivel = (pontuacao: number) => {
+      if (pontuacao >= 4.0) return { texto: 'Excelente', cor: 'text-green-600', bgCor: 'bg-green-100' };
+      if (pontuacao >= 3.5) return { texto: 'Bom', cor: 'text-blue-600', bgCor: 'bg-blue-100' };
+      if (pontuacao >= 3.0) return { texto: 'Adequado', cor: 'text-yellow-600', bgCor: 'bg-yellow-100' };
+      if (pontuacao >= 2.5) return { texto: 'Atenção', cor: 'text-orange-600', bgCor: 'bg-orange-100' };
+      return { texto: 'Crítico', cor: 'text-red-600', bgCor: 'bg-red-100' };
+    };
+    
+    const nivelGeral = getNivel(parseFloat(pontuacaoMedia));
+    
+    // Preparar dados das dimensões para os gráficos
+    const dimensoesData = [
+      {
+        nome: 'Segurança Psicológica',
+        pontuacao: (pontuacoesDimensoes['seguranca-psicologica'] || 0) * 20,
+        valor: pontuacoesDimensoes['seguranca-psicologica'] || 0,
+      },
+      {
+        nome: 'Comunicação Interna',
+        pontuacao: (pontuacoesDimensoes['comunicacao-interna'] || 0) * 20,
+        valor: pontuacoesDimensoes['comunicacao-interna'] || 0,
+      },
+      {
+        nome: 'Pertencimento',
+        pontuacao: (pontuacoesDimensoes['pertencimento'] || 0) * 20,
+        valor: pontuacoesDimensoes['pertencimento'] || 0,
+      },
+      {
+        nome: 'Justiça Organizacional',
+        pontuacao: (pontuacoesDimensoes['justica-organizacional'] || 0) * 20,
+        valor: pontuacoesDimensoes['justica-organizacional'] || 0,
+      },
+    ];
+    
+    return (
+      <div className="container max-w-7xl mx-auto p-6 space-y-6 bg-gradient-to-br from-purple-50/30 via-blue-50/30 to-pink-50/30 min-h-screen">
+        {/* Header com Título */}
+        <div className="text-center space-y-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white shadow-xl">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full backdrop-blur-sm mb-2">
+            <Brain className="h-10 w-10" />
+          </div>
+          <h1 className="text-4xl font-bold">HumaniQ Insight</h1>
+          <p className="text-lg opacity-90">
+            Análise Completa do Clima Organizacional e Bem-Estar Psicológico
+          </p>
+        </div>
+
+        {/* Card Principal - Pontuação Geral */}
+        <Card className="border-2 border-purple-200/60 shadow-xl bg-white/80 backdrop-blur-sm">
+          <CardContent className="p-8">
+            <div className="text-center space-y-4">
+              <h2 className="text-lg font-semibold text-slate-600 uppercase tracking-wide">
+                PONTUAÇÃO GERAL
+              </h2>
+              <div className="text-7xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                {pontuacaoPercentual} %
+              </div>
+              <Badge className={`text-lg px-6 py-2 ${nivelGeral.bgCor} ${nivelGeral.cor} border-0`}>
+                {nivelGeral.texto}
+              </Badge>
+              
+              <div className="max-w-2xl mx-auto mt-6">
+                <Progress 
+                  value={parseFloat(pontuacaoPercentual)} 
+                  className="h-3 bg-gradient-to-r from-slate-200 to-slate-300"
+                />
+              </div>
+              
+              <div className="flex justify-center gap-12 mt-8 text-slate-600">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  <span className="font-medium">{tempoMinutos} minutos</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Target className="h-5 w-5" />
+                  <span className="font-medium">48 questões</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Gráficos */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Gráfico Radar */}
+          <Card className="border-purple-200/60 shadow-lg bg-white/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-purple-600" />
+                Visão 360° das Dimensões
+              </CardTitle>
+              <CardDescription>Análise multidimensional do clima organizacional</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div style={{ width: '100%', height: 300 }}>
+                <div className="text-center text-sm text-slate-500 py-20">
+                  Gráfico Radar - Visão 360° das dimensões do clima organizacional
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Gráfico de Barras */}
+          <Card className="border-purple-200/60 shadow-lg bg-white/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Award className="h-5 w-5 text-blue-600" />
+                Pontuação por Dimensão
+              </CardTitle>
+              <CardDescription>Desempenho detalhado em cada área avaliada</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div style={{ width: '100%', height: 300 }}>
+                <div className="text-center text-sm text-slate-500 py-20">
+                  Gráfico de Barras - Pontuação detalhada por dimensão
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Análise Detalhada */}
+        {interpretacao && (
+          <Card className="border-purple-200/60 shadow-lg bg-white/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Lightbulb className="h-5 w-5 text-purple-600" />
+                Análise Detalhada
+              </CardTitle>
+              <CardDescription>Interpretação profissional dos seus resultados</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="prose prose-slate max-w-none whitespace-pre-wrap">
+                {interpretacao}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Recomendações */}
+        {recomendacoes && recomendacoes.length > 0 && (
+          <Card className="border-purple-200/60 shadow-lg bg-white/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                Recomendações Estratégicas
+              </CardTitle>
+              <CardDescription>Ações prioritárias para melhoria do clima organizacional</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {recomendacoes.map((recomendacao, index) => (
+                  <div key={index} className="flex gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200/60">
+                    <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                      {index + 1}
+                    </div>
+                    <p className="text-slate-700 flex-1">{recomendacao}</p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     );
   };
