@@ -980,7 +980,6 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
     const pontuacaoTotal = dados.pontuacao_total || metadados.pontuacao_total || 147;
     const tempoGasto = dados.tempo_gasto || metadados.tempo_gasto || 0;
     const pontuacoesDimensoes = metadados.pontuacoes_dimensoes || {};
-    const interpretacao = metadados.interpretacao || '';
     const recomendacoes = metadados.recomendacoes || [];
     
     // Calcular pontuação percentual e média
@@ -990,14 +989,69 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
     
     // Definir nível baseado na pontuação média (escala 1-5)
     const getNivel = (pontuacao: number) => {
-      if (pontuacao >= 4.0) return { texto: 'Excelente', cor: 'text-green-600', bgCor: 'bg-green-100' };
-      if (pontuacao >= 3.5) return { texto: 'Bom', cor: 'text-blue-600', bgCor: 'bg-blue-100' };
-      if (pontuacao >= 3.0) return { texto: 'Adequado', cor: 'text-yellow-600', bgCor: 'bg-yellow-100' };
-      if (pontuacao >= 2.5) return { texto: 'Atenção', cor: 'text-orange-600', bgCor: 'bg-orange-100' };
-      return { texto: 'Crítico', cor: 'text-red-600', bgCor: 'bg-red-100' };
+      if (pontuacao >= 4.0) return { texto: 'Excelente', cor: 'text-green-600', bgCor: 'bg-green-100', classificacao: 'Clima Positivo e Saudavel' };
+      if (pontuacao >= 3.5) return { texto: 'Bom', cor: 'text-blue-600', bgCor: 'bg-blue-100', classificacao: 'Clima Positivo' };
+      if (pontuacao >= 3.0) return { texto: 'Adequado', cor: 'text-yellow-600', bgCor: 'bg-yellow-100', classificacao: 'Clima Moderado/Neutro' };
+      if (pontuacao >= 2.5) return { texto: 'Atenção', cor: 'text-orange-600', bgCor: 'bg-orange-100', classificacao: 'Clima de Atencao' };
+      return { texto: 'Crítico', cor: 'text-red-600', bgCor: 'bg-red-100', classificacao: 'Clima Problematico' };
     };
     
     const nivelGeral = getNivel(parseFloat(pontuacaoMedia));
+    
+    // Gerar análise detalhada profissional
+    const gerarAnaliseDetalhada = () => {
+      const dimensoes = [
+        {
+          nome: 'Seguranca Psicologica',
+          valor: pontuacoesDimensoes['seguranca-psicologica'] || 0,
+          descricao: 'Liberdade para se expressar sem medo de julgamento ou retaliacao'
+        },
+        {
+          nome: 'Comunicacao Interna',
+          valor: pontuacoesDimensoes['comunicacao-interna'] || 0,
+          descricao: 'Clareza, abertura e fluxo de informacao entre times e liderancas'
+        },
+        {
+          nome: 'Pertencimento e Inclusao',
+          valor: pontuacoesDimensoes['pertencimento'] || 0,
+          descricao: 'Sentimento de ser aceito, valorizado e integrado a equipe'
+        },
+        {
+          nome: 'Justica Organizacional',
+          valor: pontuacoesDimensoes['justica-organizacional'] || 0,
+          descricao: 'Percepcao de equidade, etica, transparencia e reconhecimento'
+        }
+      ];
+      
+      let analise = `## Analise HumaniQ Insight\n\n`;
+      analise += `**Pontuacao Geral:** ${pontuacaoMedia}/5.00\n`;
+      analise += `**Classificacao:** ${nivelGeral.classificacao}\n\n`;
+      analise += `### Visao Geral\n\n`;
+      
+      if (parseFloat(pontuacaoMedia) >= 4.0) {
+        analise += `Sua organizacao apresenta um clima organizacional **excelente**. Os colaboradores demonstram alto nivel de engajamento, confianca e satisfacao. Continue investindo nas praticas que tem gerado esses resultados positivos.\n\n`;
+      } else if (parseFloat(pontuacaoMedia) >= 3.5) {
+        analise += `Sua organizacao apresenta um clima organizacional **positivo**. Existem fundacoes solidas, mas ainda ha oportunidades de melhoria em areas especificas como seguranca psicologica, comunicacao interna, pertencimento e justica organizacional.\n\n`;
+      } else if (parseFloat(pontuacaoMedia) >= 3.0) {
+        analise += `Sua organizacao apresenta um clima organizacional **moderado**. Existem aspectos positivos, mas tambem oportunidades significativas de melhoria em areas como seguranca psicologica, comunicacao interna, pertencimento e justica organizacional.\n\n`;
+      } else if (parseFloat(pontuacaoMedia) >= 2.5) {
+        analise += `Sua organizacao apresenta um clima organizacional que **requer atencao**. Diversas areas criticas necessitam de intervencao imediata para evitar impactos negativos no engajamento, produtividade e retencao de talentos.\n\n`;
+      } else {
+        analise += `Sua organizacao apresenta um clima organizacional **critico**. E fundamental implementar acoes corretivas urgentes em multiplas dimensoes para reverter a situacao atual e prevenir consequencias graves para o negocio.\n\n`;
+      }
+      
+      analise += `### Analise por Dimensao\n\n`;
+      
+      dimensoes.forEach(dim => {
+        const nivel = getNivel(dim.valor);
+        analise += `**${dim.nome}:** ${dim.valor.toFixed(2)}/5.00 - ${nivel.classificacao}\n`;
+        analise += `*${dim.descricao}*\n\n`;
+      });
+      
+      return analise;
+    };
+    
+    const interpretacao = gerarAnaliseDetalhada();
     
     // Preparar dados das dimensões para os gráficos
     const dimensoesData = [
