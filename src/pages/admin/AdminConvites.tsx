@@ -46,6 +46,8 @@ interface ConviteEmpresa {
 interface NovoConvite {
   nomeEmpresa: string;
   emailContato: string;
+  cnpj: string;
+  numeroColaboradores: number;
   diasExpiracao: number;
 }
 
@@ -58,6 +60,8 @@ export default function AdminConvites() {
   const [novoConvite, setNovoConvite] = useState<NovoConvite>({
     nomeEmpresa: '',
     emailContato: '',
+    cnpj: '',
+    numeroColaboradores: 50,
     diasExpiracao: 30
   });
   const [viewMode, setViewMode] = useState<'cards' | 'list'>('cards');
@@ -119,7 +123,7 @@ export default function AdminConvites() {
   };
 
   const criarConvite = async () => {
-    if (!novoConvite.nomeEmpresa || !novoConvite.emailContato) {
+    if (!novoConvite.nomeEmpresa || !novoConvite.emailContato || !novoConvite.cnpj || !novoConvite.numeroColaboradores) {
       toast.error('Preencha todos os campos obrigatórios');
       return;
     }
@@ -136,8 +140,10 @@ export default function AdminConvites() {
         body: JSON.stringify({
           nome_empresa: novoConvite.nomeEmpresa,
           email_contato: novoConvite.emailContato,
-          admin_id: user?.id,
-          dias_expiracao: novoConvite.diasExpiracao
+          cnpj: novoConvite.cnpj,
+          numero_colaboradores: novoConvite.numeroColaboradores,
+          dias_expiracao: novoConvite.diasExpiracao,
+          admin_id: user?.id
         })
       });
 
@@ -151,6 +157,8 @@ export default function AdminConvites() {
         setNovoConvite({
           nomeEmpresa: '',
           emailContato: '',
+          cnpj: '',
+          numeroColaboradores: 50,
           diasExpiracao: 30
         });
         carregarConvites();
@@ -595,8 +603,48 @@ export default function AdminConvites() {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="cnpj" className="text-sm font-medium">
+                CNPJ *
+              </Label>
+              <Input
+                id="cnpj"
+                placeholder="00.000.000/0000-00"
+                value={novoConvite.cnpj}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '');
+                  const formatted = value
+                    .replace(/^(\d{2})(\d)/, '$1.$2')
+                    .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                    .replace(/\.(\d{3})(\d)/, '.$1/$2')
+                    .replace(/(\d{4})(\d)/, '$1-$2')
+                    .slice(0, 18);
+                  setNovoConvite({ ...novoConvite, cnpj: formatted });
+                }}
+                maxLength={18}
+                className="w-full"
+                data-testid="input-cnpj"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="numeroColaboradores" className="text-sm font-medium">
+                Número de Colaboradores *
+              </Label>
+              <Input
+                id="numeroColaboradores"
+                type="number"
+                min="1"
+                placeholder="50"
+                value={novoConvite.numeroColaboradores}
+                onChange={(e) => setNovoConvite({ ...novoConvite, numeroColaboradores: Number(e.target.value) })}
+                className="w-full"
+                data-testid="input-numero-colaboradores"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="diasExpiracao" className="text-sm font-medium">
-                Validade do Convite (dias)
+                Tempo de Acesso ao Sistema (dias) *
               </Label>
               <select
                 id="diasExpiracao"
@@ -620,7 +668,8 @@ export default function AdminConvites() {
                   <p className="font-medium mb-1">Como funciona?</p>
                   <p className="text-blue-700">
                     Ao criar o convite, será gerado um link único que você poderá enviar para a empresa. 
-                    O convite expira automaticamente após o período selecionado.
+                    Após aceitar o convite, a empresa terá acesso ao sistema pelo período definido.
+                    <strong className="block mt-2">Ao término do período de acesso, a empresa e seus colaboradores serão bloqueados automaticamente.</strong>
                   </p>
                 </div>
               </div>
@@ -639,7 +688,7 @@ export default function AdminConvites() {
             </Button>
             <Button
               onClick={criarConvite}
-              disabled={loading || !novoConvite.nomeEmpresa || !novoConvite.emailContato}
+              disabled={loading || !novoConvite.nomeEmpresa || !novoConvite.emailContato || !novoConvite.cnpj || !novoConvite.numeroColaboradores}
               className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               data-testid="button-criar-convite"
             >
