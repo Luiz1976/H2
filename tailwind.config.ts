@@ -104,12 +104,54 @@ export default {
             height: "0",
           },
         },
+        blob: {
+          "0%, 100%": {
+            transform: "translate(0, 0) scale(1)",
+          },
+          "25%": {
+            transform: "translate(20px, -50px) scale(1.1)",
+          },
+          "50%": {
+            transform: "translate(-20px, 20px) scale(0.9)",
+          },
+          "75%": {
+            transform: "translate(50px, 50px) scale(1.05)",
+          },
+        },
+        slideUp: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(30px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        blob: "blob 7s infinite",
+      },
+      animationDelay: {
+        "2000": "2s",
+        "4000": "4s",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function({ addUtilities }: any) {
+      const newUtilities = {
+        '.animation-delay-2000': {
+          'animation-delay': '2s',
+        },
+        '.animation-delay-4000': {
+          'animation-delay': '4s',
+        },
+      }
+      addUtilities(newUtilities)
+    },
+  ],
 } satisfies Config;
