@@ -15,7 +15,7 @@ export async function generateChatResponse(
     console.log('🤖 [CHATBOT] Processando mensagem do usuário...');
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.9,
         maxOutputTokens: 2048,
