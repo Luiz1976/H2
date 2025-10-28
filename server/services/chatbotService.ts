@@ -150,18 +150,33 @@ Responda de forma técnica, precisa e orientada a ação, como um consultor espe
 }
 
 export async function generateWelcomeMessage(): Promise<string> {
-  return `Bem-vindo ao Assistente Virtual do HumaniQ AI.
+  return `Bem-vindo ao Assistente Virtual Especializado do HumaniQ AI
 
-Sou especialista em avaliação psicossocial e gestão de riscos em saúde mental no trabalho.
+Sou seu consultor em avaliação psicossocial e gestão de riscos em saúde mental no trabalho, preparado para oferecer orientação técnica e suporte especializado.
 
-Posso auxiliar com:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-- Testes psicológicos: QVT, RPO, Clima, Estresse, Karasek-Siegrist, PAS, MGRP
-- Navegação na plataforma: funcionalidades de Admin, Empresa e Colaborador
-- Interpretação de resultados e indicadores
-- Conformidade: NR-01, Lei 14.457/22, ISO 45003
-- Análise do PRG (Programa de Gestão de Riscos Psicossociais)
-- Orientações sobre gestão de riscos organizacionais
+ÁREAS DE ATUAÇÃO:
 
-Como posso ajudar?`;
+▸ Avaliação Psicossocial
+  Orientação sobre os 7 testes validados: QVT, RPO, Clima Organizacional, Estresse Ocupacional, Karasek-Siegrist, PAS e MGRP
+
+▸ Navegação Inteligente
+  Guia completo para funcionalidades de Admin, Empresa e Colaborador
+
+▸ Análise e Interpretação
+  Suporte na compreensão de resultados, indicadores e relatórios técnicos
+
+▸ Conformidade Regulatória
+  Orientações sobre NR-01, Lei 14.457/22 e ISO 45003:2021
+
+▸ Programa de Gestão de Riscos
+  Assistência no uso do PRG com análise de IA integrada
+
+▸ Gestão Estratégica
+  Recomendações para mitigação de riscos psicossociais organizacionais
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Como posso auxiliar você hoje?`;
 }
