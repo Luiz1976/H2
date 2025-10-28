@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyToken, JWTPayload } from '../utils/auth';
+import { db } from '../../db';
+import { empresas, colaboradores } from '../../shared/schema';
+import { eq } from 'drizzle-orm';
 
 export interface AuthRequest extends Request {
   user?: JWTPayload;
@@ -58,4 +61,76 @@ export function requireEmpresa(req: AuthRequest, res: Response, next: NextFuncti
 
 export function requireColaborador(req: AuthRequest, res: Response, next: NextFunction) {
   return requireRole('colaborador', 'empresa', 'admin')(req, res, next);
+}
+
+export async function checkEmpresaExpiration(req: AuthRequest, res: Response, next: NextFunction) {
+  try {
+    if (!req.user) {
+      return next();
+    }
+
+    let empresaId: string | null = null;
+
+    if (req.user.role === 'empresa') {
+      empresaId = req.user.empresaId || null;
+    } else if (req.user.role === 'colaborador') {
+      const [colaborador] = await db
+        .select({ empresaId: colaboradores.empresaId })
+        .from(colaboradores)
+        .where(eq(colaboradores.id, req.user.userId))
+        .limit(1);
+      
+      empresaId = colaborador?.empresaId || null;
+    }
+
+    if (empresaId) {
+      const [empresa] = await db
+        .select({
+          id: empresas.id,
+          ativa: empresas.ativa,
+          dataExpiracao: empresas.dataExpiracao,
+        })
+        .from(empresas)
+        .where(eq(empresas.id, empresaId))
+        .limit(1);
+
+      if (!empresa) {
+        return res.status(404).json({ 
+          error: 'Empresa não encontrada',
+          acessoBloqueado: true 
+        });
+      }
+
+      if (empresa.dataExpiracao && new Date(empresa.dataExpiracao) < new Date()) {
+        if (empresa.ativa) {
+          await db
+            .update(empresas)
+            .set({ ativa: false })
+            .where(eq(empresas.id, empresa.id));
+          
+          console.log(`🔒 Empresa ${empresa.id} bloqueada automaticamente por expiração`);
+        }
+
+        return res.status(403).json({ 
+          error: 'Acesso expirado',
+          message: 'O período de acesso da sua empresa ao sistema expirou. Entre em contato com o administrador.',
+          dataExpiracao: empresa.dataExpiracao,
+          acessoBloqueado: true
+        });
+      }
+
+      if (!empresa.ativa) {
+        return res.status(403).json({ 
+          error: 'Acesso bloqueado',
+          message: 'Sua empresa está com o acesso bloqueado. Entre em contato com o administrador.',
+          acessoBloqueado: true
+        });
+      }
+    }
+
+    next();
+  } catch (error) {
+    console.error('❌ Erro ao verificar expiração da empresa:', error);
+    next();
+  }
 }

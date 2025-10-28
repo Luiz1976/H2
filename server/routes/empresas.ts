@@ -1994,4 +1994,102 @@ router.get('/prg/publico/:token', async (req, res) => {
   }
 });
 
+// Admin: Restaurar acesso de uma empresa (desbloquear manualmente)
+router.post('/:id/restaurar-acesso', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params;
+    const { diasAcesso } = req.body;
+
+    console.log(`🔓 [ADMIN] Restaurando acesso da empresa ${id}...`);
+
+    const [empresa] = await db
+      .select()
+      .from(empresas)
+      .where(eq(empresas.id, id))
+      .limit(1);
+
+    if (!empresa) {
+      return res.status(404).json({ error: 'Empresa não encontrada' });
+    }
+
+    const novaDataExpiracao = diasAcesso 
+      ? (() => {
+          const data = new Date();
+          data.setDate(data.getDate() + Number(diasAcesso));
+          return data;
+        })()
+      : null;
+
+    await db
+      .update(empresas)
+      .set({ 
+        ativa: true,
+        dataExpiracao: novaDataExpiracao,
+        diasAcesso: diasAcesso || empresa.diasAcesso,
+        updatedAt: new Date()
+      })
+      .where(eq(empresas.id, id));
+
+    console.log(`✅ [ADMIN] Acesso restaurado para empresa ${empresa.nomeEmpresa} até ${novaDataExpiracao ? novaDataExpiracao.toLocaleDateString('pt-BR') : 'ilimitado'}`);
+
+    res.json({ 
+      success: true,
+      message: 'Acesso restaurado com sucesso',
+      empresa: {
+        id: empresa.id,
+        nome: empresa.nomeEmpresa,
+        dataExpiracao: novaDataExpiracao,
+        ativa: true
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ [ADMIN] Erro ao restaurar acesso:', error);
+    res.status(500).json({ error: 'Erro ao restaurar acesso da empresa' });
+  }
+});
+
+// Admin: Bloquear manualmente uma empresa
+router.post('/:id/bloquear-acesso', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params;
+
+    console.log(`🔒 [ADMIN] Bloqueando acesso da empresa ${id}...`);
+
+    const [empresa] = await db
+      .select()
+      .from(empresas)
+      .where(eq(empresas.id, id))
+      .limit(1);
+
+    if (!empresa) {
+      return res.status(404).json({ error: 'Empresa não encontrada' });
+    }
+
+    await db
+      .update(empresas)
+      .set({ 
+        ativa: false,
+        updatedAt: new Date()
+      })
+      .where(eq(empresas.id, id));
+
+    console.log(`✅ [ADMIN] Acesso bloqueado para empresa ${empresa.nomeEmpresa}`);
+
+    res.json({ 
+      success: true,
+      message: 'Acesso bloqueado com sucesso',
+      empresa: {
+        id: empresa.id,
+        nome: empresa.nomeEmpresa,
+        ativa: false
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ [ADMIN] Erro ao bloquear acesso:', error);
+    res.status(500).json({ error: 'Erro ao bloquear acesso da empresa' });
+  }
+});
+
 export default router;
