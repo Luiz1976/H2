@@ -1023,29 +1023,29 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
         }
       ];
       
-      let analise = `## Analise HumaniQ Insight\n\n`;
-      analise += `**Pontuacao Geral:** ${pontuacaoMedia}/5.00\n`;
-      analise += `**Classificacao:** ${nivelGeral.classificacao}\n\n`;
-      analise += `### Visao Geral\n\n`;
+      let analise = `ANALISE HUMANIQ INSIGHT\n\n`;
+      analise += `Pontuacao Geral: ${pontuacaoMedia} de 5.00\n`;
+      analise += `Classificacao: ${nivelGeral.classificacao}\n\n`;
+      analise += `VISAO GERAL\n\n`;
       
       if (parseFloat(pontuacaoMedia) >= 4.0) {
-        analise += `Sua organizacao apresenta um clima organizacional **excelente**. Os colaboradores demonstram alto nivel de engajamento, confianca e satisfacao. Continue investindo nas praticas que tem gerado esses resultados positivos.\n\n`;
+        analise += `Sua organizacao apresenta um clima organizacional excelente. Os colaboradores demonstram alto nivel de engajamento, confianca e satisfacao. Continue investindo nas praticas que tem gerado esses resultados positivos.\n\n`;
       } else if (parseFloat(pontuacaoMedia) >= 3.5) {
-        analise += `Sua organizacao apresenta um clima organizacional **positivo**. Existem fundacoes solidas, mas ainda ha oportunidades de melhoria em areas especificas como seguranca psicologica, comunicacao interna, pertencimento e justica organizacional.\n\n`;
+        analise += `Sua organizacao apresenta um clima organizacional positivo. Existem fundacoes solidas, mas ainda ha oportunidades de melhoria em areas especificas como seguranca psicologica, comunicacao interna, pertencimento e justica organizacional.\n\n`;
       } else if (parseFloat(pontuacaoMedia) >= 3.0) {
-        analise += `Sua organizacao apresenta um clima organizacional **moderado**. Existem aspectos positivos, mas tambem oportunidades significativas de melhoria em areas como seguranca psicologica, comunicacao interna, pertencimento e justica organizacional.\n\n`;
+        analise += `Sua organizacao apresenta um clima organizacional moderado. Existem aspectos positivos, mas tambem oportunidades significativas de melhoria em areas como seguranca psicologica, comunicacao interna, pertencimento e justica organizacional.\n\n`;
       } else if (parseFloat(pontuacaoMedia) >= 2.5) {
-        analise += `Sua organizacao apresenta um clima organizacional que **requer atencao**. Diversas areas criticas necessitam de intervencao imediata para evitar impactos negativos no engajamento, produtividade e retencao de talentos.\n\n`;
+        analise += `Sua organizacao apresenta um clima organizacional que requer atencao. Diversas areas criticas necessitam de intervencao imediata para evitar impactos negativos no engajamento, produtividade e retencao de talentos.\n\n`;
       } else {
-        analise += `Sua organizacao apresenta um clima organizacional **critico**. E fundamental implementar acoes corretivas urgentes em multiplas dimensoes para reverter a situacao atual e prevenir consequencias graves para o negocio.\n\n`;
+        analise += `Sua organizacao apresenta um clima organizacional critico. E fundamental implementar acoes corretivas urgentes em multiplas dimensoes para reverter a situacao atual e prevenir consequencias graves para o negocio.\n\n`;
       }
       
-      analise += `### Analise por Dimensao\n\n`;
+      analise += `ANALISE POR DIMENSAO\n\n`;
       
       dimensoes.forEach(dim => {
         const nivel = getNivel(dim.valor);
-        analise += `**${dim.nome}:** ${dim.valor.toFixed(2)}/5.00 - ${nivel.classificacao}\n`;
-        analise += `*${dim.descricao}*\n\n`;
+        analise += `${dim.nome}: ${dim.valor.toFixed(2)} de 5.00 - ${nivel.classificacao}\n`;
+        analise += `${dim.descricao}\n\n`;
       });
       
       return analise;
