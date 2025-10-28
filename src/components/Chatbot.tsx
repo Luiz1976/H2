@@ -3,8 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { MessageCircle, X, Send, Bot, User, Loader2, Minimize2 } from 'lucide-react';
-import chatbotIcon from '@/assets/chatbot-icon.png';
-import chatbotIconDark from '@/assets/chatbot-icon-dark.png';
+import humaniqRobot from '@/assets/humaniq-robot.png';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -112,7 +111,7 @@ export function Chatbot() {
         className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-2xl hover:shadow-blue-500/50 hover:scale-110 transition-all duration-300 animate-bounce"
         aria-label="Abrir chat"
       >
-        <img src={chatbotIcon} alt="Chatbot" className="w-9 h-9" />
+        <img src={humaniqRobot} alt="Chatbot" className="w-9 h-9" />
         <span className="absolute -top-1 -right-1 flex h-5 w-5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-5 w-5 bg-purple-500"></span>
@@ -129,7 +128,7 @@ export function Chatbot() {
           data-testid="button-restore-chat"
           className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-2xl hover:shadow-blue-500/50 transition-all duration-300"
         >
-          <img src={chatbotIcon} alt="Assistente" className="w-5 h-5" />
+          <img src={humaniqRobot} alt="Assistente" className="w-5 h-5" />
           <span className="font-medium">Assistente</span>
           {messages.length > 1 && (
             <span className="bg-white/20 px-2 py-0.5 rounded-full text-xs">
@@ -150,7 +149,7 @@ export function Chatbot() {
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 flex items-center justify-between text-white">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-            <img src={chatbotIcon} alt="Assistente" className="w-6 h-6" />
+            <img src={humaniqRobot} alt="Assistente" className="w-6 h-6" />
           </div>
           <div>
             <h3 className="font-semibold text-lg">Assistente Virtual</h3>
@@ -191,7 +190,7 @@ export function Chatbot() {
                   ? 'bg-blue-500 text-white' 
                   : 'bg-purple-500 text-white'
               }`}>
-                {message.role === 'user' ? <User className="w-4 h-4" /> : <img src={chatbotIcon} alt="AI" className="w-5 h-5" />}
+                {message.role === 'user' ? <User className="w-4 h-4" /> : <img src={humaniqRobot} alt="AI" className="w-5 h-5" />}
               </div>
               <div className={`flex flex-col max-w-[75%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
                 <div className={`px-4 py-3 rounded-2xl ${
@@ -210,7 +209,7 @@ export function Chatbot() {
           {isLoading && (
             <div className="flex gap-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-purple-500 text-white">
-                <img src={chatbotIcon} alt="AI" className="w-5 h-5" />
+                <img src={humaniqRobot} alt="AI" className="w-5 h-5" />
               </div>
               <div className="bg-white dark:bg-slate-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-200 dark:border-slate-700">
                 <div className="flex items-center gap-2">
