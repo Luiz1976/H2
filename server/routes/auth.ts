@@ -137,4 +137,42 @@ router.post('/register/admin', async (req, res) => {
   }
 });
 
+router.post('/recuperar-senha', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email é obrigatório' });
+    }
+
+    let userExists = false;
+
+    const [admin] = await db.select().from(admins).where(eq(admins.email, email)).limit(1);
+    if (admin) {
+      userExists = true;
+    } else {
+      const [empresa] = await db.select().from(empresas).where(eq(empresas.emailContato, email)).limit(1);
+      if (empresa) {
+        userExists = true;
+      } else {
+        const [colaborador] = await db.select().from(colaboradores).where(eq(colaboradores.email, email)).limit(1);
+        if (colaborador) {
+          userExists = true;
+        }
+      }
+    }
+
+    if (userExists) {
+      console.log(`Solicitação de recuperação de senha para: ${email}`);
+    }
+
+    res.json({ 
+      message: 'Se o email existir em nossa base, você receberá instruções para redefinir sua senha.' 
+    });
+  } catch (error) {
+    console.error('Erro ao processar recuperação de senha:', error);
+    res.status(500).json({ error: 'Erro ao processar solicitação' });
+  }
+});
+
 export default router;

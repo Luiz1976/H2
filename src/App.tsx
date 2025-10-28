@@ -76,6 +76,7 @@ import QuickCheckEstresse from "./pages/QuickCheckEstresse";
 import CheckoutPage from "./pages/CheckoutPage";
 import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import CheckoutCanceladoPage from "./pages/CheckoutCanceladoPage";
+import RecuperarSenha from "./pages/RecuperarSenha";
 
 function App() {
   console.log('🔍 [APP] Componente App iniciado');
@@ -96,6 +97,7 @@ function App() {
               <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
               <Route path="/checkout/cancelado" element={<CheckoutCanceladoPage />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/recuperar-senha" element={<RecuperarSenha />} />
               <Route path="/aceitar-convite/:token" element={<AcessoConvite />} />
               <Route path="/prg/compartilhado/:token" element={<PRGPublico />} />
               <Route 

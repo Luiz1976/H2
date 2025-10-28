@@ -217,6 +217,18 @@ const Login = () => {
                 </div>
               )}
 
+              {/* Esqueceu a senha link */}
+              <div className="text-right">
+                <button
+                  type="button"
+                  data-testid="link-forgot-password"
+                  onClick={() => navigate('/recuperar-senha')}
+                  className="text-sm text-blue-300 hover:text-blue-200 transition-colors duration-200 hover:underline"
+                >
+                  Esqueceu sua senha?
+                </button>
+              </div>
+
               {/* Submit Button - PNL: Action-oriented language */}
               <Button
                 type="submit"
