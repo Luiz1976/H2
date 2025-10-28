@@ -12,14 +12,14 @@ const router = express.Router();
 router.post('/empresa', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
     const validationResult = insertConviteEmpresaSchema.omit({ token: true, validade: true }).extend({
-      diasValidade: z.number().min(1).max(30).default(7),
+      diasValidade: z.number().min(1).max(90).default(7),
     }).safeParse(req.body);
 
     if (!validationResult.success) {
       return res.status(400).json({ error: 'Dados inválidos', details: validationResult.error.issues });
     }
 
-    const { nomeEmpresa, emailContato, diasValidade, ...rest } = validationResult.data;
+    const { nomeEmpresa, emailContato, cnpj, numeroColaboradores, diasAcesso, diasValidade, ...rest } = validationResult.data;
 
     const [existingEmpresa] = await db.select().from(empresas).where(eq(empresas.emailContato, emailContato)).limit(1);
     if (existingEmpresa) {
@@ -36,6 +36,9 @@ router.post('/empresa', authenticateToken, requireAdmin, async (req: AuthRequest
         token,
         nomeEmpresa,
         emailContato,
+        cnpj: cnpj || null,
+        numeroColaboradores: numeroColaboradores || null,
+        diasAcesso: diasAcesso || null,
         adminId: req.user!.userId,
         validade,
         status: 'pendente',
@@ -187,13 +190,26 @@ router.post('/empresa/aceitar/:token', async (req, res) => {
 
     const hashedPassword = await hashPassword(validationResult.data.senha);
 
+    const dataExpiracao = convite.diasAcesso 
+      ? (() => {
+          const data = new Date();
+          data.setDate(data.getDate() + convite.diasAcesso);
+          return data;
+        })()
+      : null;
+
     const [novaEmpresa] = await db
       .insert(empresas)
       .values({
         nomeEmpresa: convite.nomeEmpresa,
         emailContato: convite.emailContato,
         senha: hashedPassword,
+        cnpj: convite.cnpj || null,
+        numeroColaboradores: convite.numeroColaboradores || null,
+        diasAcesso: convite.diasAcesso || null,
+        dataExpiracao: dataExpiracao,
         adminId: convite.adminId,
+        ativa: true,
       })
       .returning();
 
@@ -202,12 +218,15 @@ router.post('/empresa/aceitar/:token', async (req, res) => {
       .set({ status: 'aceito' })
       .where(eq(convitesEmpresa.id, convite.id));
 
+    console.log(`✅ Empresa criada com acesso até: ${dataExpiracao ? dataExpiracao.toLocaleDateString('pt-BR') : 'ilimitado'}`);
+
     res.status(201).json({
       message: 'Empresa cadastrada com sucesso',
       empresa: {
         id: novaEmpresa.id,
         nome: novaEmpresa.nomeEmpresa,
         email: novaEmpresa.emailContato,
+        dataExpiracao: novaEmpresa.dataExpiracao,
       },
     });
   } catch (error) {
