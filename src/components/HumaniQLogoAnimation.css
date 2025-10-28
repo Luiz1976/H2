@@ -116,16 +116,14 @@
   gap: 15px;
 }
 
-/* ===== TEXTO HUMANIQ ===== */
+/* ===== TEXTO HUMANIQ (SEM BRILHO) ===== */
 .text-humaniq {
   font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
   font-size: 6rem;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: -2px;
-  text-shadow: 
-    0 0 30px rgba(255, 255, 255, 0.4),
-    0 0 60px rgba(0, 212, 255, 0.2);
+  text-shadow: none;
   opacity: 0;
   transform: scale(0.5) translateY(30px);
   transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -136,17 +134,14 @@
   transform: scale(1) translateY(0);
 }
 
-/* ===== TEXTO AI ===== */
+/* ===== TEXTO AI (SEM BRILHO) ===== */
 .text-ai {
   font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
   font-size: 6rem;
   font-weight: 800;
   color: #66b3ff;
   letter-spacing: -2px;
-  text-shadow: 
-    0 0 40px rgba(102, 179, 255, 0.8),
-    0 0 80px rgba(0, 212, 255, 0.5),
-    0 0 120px rgba(0, 153, 255, 0.3);
+  text-shadow: none;
   opacity: 0;
   transform: scale(0.3) translateX(-50px);
   transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
