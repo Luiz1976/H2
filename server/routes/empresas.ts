@@ -1404,7 +1404,7 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
       'nao_avaliado': 0
     };
 
-    // Classificar cada colaborador baseado nas médias de suas dimensões
+    // Classificar cada colaborador baseado nas médias de suas dimensões (MESMA LÓGICA DA PÁGINA DE GESTÃO)
     const colaboradoresComTestes = new Set(resultadosList.map(r => r.colaboradorId));
     const todosColaboradoresIds = new Set(colaboradoresList.map(c => c.id));
     
@@ -1413,13 +1413,53 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
     // Classificar colaboradores que fizeram testes
     colaboradoresComTestes.forEach(colabId => {
       const testesDoColab = resultadosList.filter(r => r.colaboradorId === colabId);
-      const mediaPontuacao = testesDoColab.reduce((acc, t) => acc + (t.pontuacaoTotal || 50), 0) / testesDoColab.length;
       
-      if (mediaPontuacao < 35) colaboradoresPorRisco.critico++;
-      else if (mediaPontuacao < 55) colaboradoresPorRisco.alto++;
-      else if (mediaPontuacao < 70) colaboradoresPorRisco.moderado++;
-      else if (mediaPontuacao < 85) colaboradoresPorRisco.baixo++;
+      // Calcular média percentual das dimensões (IGUAL à página de gestão)
+      const dimensoesAgregadas: Record<string, { soma: number; total: number }> = {};
+      
+      testesDoColab.forEach(teste => {
+        const metadados = typeof teste.metadados === 'string' ? JSON.parse(teste.metadados) : teste.metadados;
+        
+        if (metadados?.pontuacoes_dimensoes) {
+          Object.entries(metadados.pontuacoes_dimensoes).forEach(([dimensaoId, valor]) => {
+            if (typeof valor === 'number') {
+              if (!dimensoesAgregadas[dimensaoId]) {
+                dimensoesAgregadas[dimensaoId] = { soma: 0, total: 0 };
+              }
+              dimensoesAgregadas[dimensaoId].soma += valor;
+              dimensoesAgregadas[dimensaoId].total++;
+            } else if (typeof valor === 'object' && valor !== null && 'percentual' in valor) {
+              const percentual = (valor as any).percentual;
+              if (!dimensoesAgregadas[dimensaoId]) {
+                dimensoesAgregadas[dimensaoId] = { soma: 0, total: 0 };
+              }
+              dimensoesAgregadas[dimensaoId].soma += percentual;
+              dimensoesAgregadas[dimensaoId].total++;
+            }
+          });
+        }
+      });
+      
+      // Calcular média geral percentual
+      let somaTotal = 0;
+      let contadorDimensoes = 0;
+      
+      Object.entries(dimensoesAgregadas).forEach(([_, dados]) => {
+        const media = dados.total > 0 ? dados.soma / dados.total : 0;
+        somaTotal += media;
+        contadorDimensoes++;
+      });
+      
+      const mediaGeralPercentual = contadorDimensoes > 0 ? somaTotal / contadorDimensoes : 0;
+      
+      // Classificar usando OS MESMOS CRITÉRIOS da página de gestão
+      if (mediaGeralPercentual < 40) colaboradoresPorRisco.critico++;
+      else if (mediaGeralPercentual < 60) colaboradoresPorRisco.alto++;
+      else if (mediaGeralPercentual < 75) colaboradoresPorRisco.moderado++;
+      else if (mediaGeralPercentual < 90) colaboradoresPorRisco.baixo++;
       else colaboradoresPorRisco.saudavel++;
+      
+      console.log(`📊 [Parliament] Colaborador ${colabId}: média ${mediaGeralPercentual.toFixed(1)}% - classificação: ${mediaGeralPercentual < 40 ? 'crítico' : mediaGeralPercentual < 60 ? 'alto' : mediaGeralPercentual < 75 ? 'moderado' : mediaGeralPercentual < 90 ? 'baixo' : 'saudável'}`);
     });
     
     // Adicionar colaboradores sem testes como "não avaliado"
