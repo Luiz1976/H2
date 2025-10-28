@@ -10,6 +10,7 @@ import erpRouter from './routes/erp';
 import testeDisponibilidadeRouter from './routes/teste-disponibilidade';
 import stripeRouter from './routes/stripe';
 import adminRouter from './routes/admin';
+import chatbotRouter from './routes/chatbot';
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ app.use('/api/erp', erpRouter);
 app.use('/api/teste-disponibilidade', testeDisponibilidadeRouter);
 app.use('/api/stripe', stripeRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/chatbot', chatbotRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado' });

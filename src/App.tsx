@@ -77,6 +77,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import CheckoutCanceladoPage from "./pages/CheckoutCanceladoPage";
 import RecuperarSenha from "./pages/RecuperarSenha";
+import { Chatbot } from "./components/Chatbot";
 
 function App() {
   console.log('🔍 [APP] Componente App iniciado');
@@ -90,6 +91,7 @@ function App() {
       <ErrorBoundary>
         <BrowserRouter>
           <AuthProvider>
+            <Chatbot />
             <Routes>
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/quick-check" element={<QuickCheckEstresse />} />
