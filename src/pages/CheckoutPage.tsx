@@ -99,19 +99,11 @@ export default function CheckoutPage() {
         throw new Error(data.error || 'Erro ao criar sessão de checkout');
       }
 
-      const stripe = await stripePromise;
-      
-      if (!stripe) {
-        throw new Error('Stripe não foi carregado');
+      if (!data.url) {
+        throw new Error('URL de checkout não foi retornada');
       }
 
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: data.sessionId,
-      });
-
-      if (error) {
-        throw error;
-      }
+      window.location.href = data.url;
     } catch (error: any) {
       console.error('Erro no checkout:', error);
       toast({
