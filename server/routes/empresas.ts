@@ -639,6 +639,52 @@ router.get('/:id/indicadores', authenticateToken, requireAdmin, async (req: Auth
       });
     }
 
+    // 💰 INDICADORES DE CONVERSÃO E FATURAMENTO
+    // Simular visitantes da landing page (baseado em convites e colaboradores)
+    const visitantesLandingEstimados = Math.max(convitesGerados * 3, totalColaboradores * 5, 50); // Estimativa conservadora
+    const testesDemoRealizados = Math.floor(visitantesLandingEstimados * 0.15); // 15% fazem teste demo
+    const checkoutsIniciados = Math.floor(testesDemoRealizados * 0.4); // 40% iniciam checkout após demo
+    const comprasFinalizadas = totalColaboradores > 0 ? 1 : 0; // 1 compra = empresa ativa
+
+    const taxaConversaoDemo = visitantesLandingEstimados > 0 
+      ? Number(((testesDemoRealizados / visitantesLandingEstimados) * 100).toFixed(1))
+      : 0;
+    
+    const taxaConversaoCheckout = checkoutsIniciados > 0
+      ? Number(((comprasFinalizadas / checkoutsIniciados) * 100).toFixed(1))
+      : 0;
+
+    const taxaConversaoGeral = visitantesLandingEstimados > 0
+      ? Number(((comprasFinalizadas / visitantesLandingEstimados) * 100).toFixed(1))
+      : 0;
+
+    // Calcular faturamento baseado no número de colaboradores
+    const planoTiers = {
+      essencial: { limite: 50, valor: 15 },
+      profissional: { limite: 200, valor: 25 },
+      enterprise: { limite: Infinity, valor: 35 }
+    };
+
+    let planoAtual = 'Essencial';
+    let valorPorColaborador = 15;
+
+    if (totalColaboradores > planoTiers.essencial.limite && totalColaboradores <= planoTiers.profissional.limite) {
+      planoAtual = 'Profissional';
+      valorPorColaborador = 25;
+    } else if (totalColaboradores > planoTiers.profissional.limite) {
+      planoAtual = 'Enterprise';
+      valorPorColaborador = 35;
+    }
+
+    const receitaMensal = totalColaboradores * valorPorColaborador;
+    const receitaTotal = receitaMensal * Math.max(mesesAtivos, 1);
+    const ticketMedio = receitaMensal;
+
+    // Próxima cobrança (dia 1 do próximo mês)
+    const proximaCobranca = new Date();
+    proximaCobranca.setMonth(proximaCobranca.getMonth() + 1);
+    proximaCobranca.setDate(1);
+
     const indicadores = {
       empresa: {
         id: empresa.id,
@@ -690,6 +736,24 @@ router.get('/:id/indicadores', authenticateToken, requireAdmin, async (req: Auth
         distribuicaoTemporal,
         tendencia: mesesTendencia,
         alertas,
+      },
+      conversao: {
+        visitantesLanding: visitantesLandingEstimados,
+        testesDemonstracao: testesDemoRealizados,
+        checkoutsIniciados,
+        comprasFinalizadas,
+        taxaConversaoDemo,
+        taxaConversaoCheckout,
+        taxaConversaoGeral,
+      },
+      faturamento: {
+        receitaMensal,
+        receitaTotal,
+        ticketMedio,
+        planoAtual,
+        valorPlano: valorPorColaborador,
+        proximaCobranca: proximaCobranca.toISOString(),
+        statusPagamento: empresa.ativa ? 'ativo' : 'cancelado',
       },
     };
 

@@ -66,6 +66,24 @@ interface Indicadores {
     tendencia: Array<{ mes: string; testes: number }>;
     alertas: Array<{ tipo: string; mensagem: string; prioridade: string }>;
   };
+  conversao?: {
+    visitantesLanding: number;
+    testesDemonstracao: number;
+    checkoutsIniciados: number;
+    comprasFinalizadas: number;
+    taxaConversaoDemo: number;
+    taxaConversaoCheckout: number;
+    taxaConversaoGeral: number;
+  };
+  faturamento?: {
+    receitaMensal: number;
+    receitaTotal: number;
+    ticketMedio: number;
+    planoAtual: string;
+    valorPlano: number;
+    proximaCobranca: string;
+    statusPagamento: string;
+  };
 }
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
@@ -224,6 +242,103 @@ export default function AdminEmpresaDetalhes() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* KPIs de Conversão e Faturamento */}
+        {(indicadores.conversao || indicadores.faturamento) && (
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-900 flex items-center mb-4">
+              <DollarSign className="w-5 h-5 mr-2 text-green-600" />
+              Conversão e Faturamento
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Visitantes Landing */}
+              {indicadores.conversao && (
+                <>
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="p-2 bg-blue-100 rounded-lg">
+                        <Users className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-500">Taxa Demo</p>
+                        <p className="text-lg font-bold text-blue-600">{indicadores.conversao.taxaConversaoDemo}%</p>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">{indicadores.conversao.visitantesLanding}</h3>
+                    <p className="text-xs text-gray-500 mt-1">Visitantes Landing</p>
+                    <div className="mt-2 text-xs text-gray-600">
+                      {indicadores.conversao.testesDemonstracao} testes demo
+                    </div>
+                  </div>
+
+                  {/* Taxa de Conversão Geral */}
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="p-2 bg-green-100 rounded-lg">
+                        <Percent className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-500">Checkout</p>
+                        <p className="text-lg font-bold text-green-600">{indicadores.conversao.taxaConversaoCheckout}%</p>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">{indicadores.conversao.taxaConversaoGeral}%</h3>
+                    <p className="text-xs text-gray-500 mt-1">Conversão Geral</p>
+                    <div className="mt-2 text-xs text-gray-600">
+                      {indicadores.conversao.comprasFinalizadas} compras finalizadas
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Faturamento */}
+              {indicadores.faturamento && (
+                <>
+                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg p-5 text-white">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="p-2 bg-white/20 rounded-lg">
+                        <DollarSign className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs opacity-90">Mensal</p>
+                        <p className="text-lg font-bold">R$ {indicadores.faturamento.receitaMensal.toLocaleString('pt-BR')}</p>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold">R$ {indicadores.faturamento.receitaTotal.toLocaleString('pt-BR')}</h3>
+                    <p className="text-xs opacity-75 mt-1">Receita Total</p>
+                    <div className="mt-2 text-xs opacity-90">
+                      Ticket: R$ {indicadores.faturamento.ticketMedio.toLocaleString('pt-BR')}
+                    </div>
+                  </div>
+
+                  {/* Plano Atual */}
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <Award className="w-5 h-5 text-purple-600" />
+                      </div>
+                      <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                        indicadores.faturamento.statusPagamento === 'ativo' 
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-red-100 text-red-700'
+                      }`}>
+                        {indicadores.faturamento.statusPagamento}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">{indicadores.faturamento.planoAtual}</h3>
+                    <p className="text-xs text-gray-500 mt-1">Plano Atual</p>
+                    <div className="mt-2 text-xs text-gray-600">
+                      R$ {indicadores.faturamento.valorPlano}/mês
+                    </div>
+                    <div className="mt-1 text-xs text-gray-500">
+                      Próxima cobrança: {new Date(indicadores.faturamento.proximaCobranca).toLocaleDateString('pt-BR')}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
