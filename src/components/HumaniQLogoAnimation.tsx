@@ -78,7 +78,7 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
           {(stage === 'smile-draw' || stage === 'ai-appear' || stage === 'glow' || stage === 'complete') && (
             <svg 
               className="smile-curve" 
-              viewBox="0 0 650 120" 
+              viewBox="0 0 680 100" 
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
@@ -89,9 +89,9 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
                   <stop offset="100%" stopColor="#66b3ff" stopOpacity="1" />
                 </linearGradient>
                 
-                {/* Filtro de brilho que intensifica no final */}
-                <filter id="smileGlow">
-                  <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                {/* Filtro de brilho intenso */}
+                <filter id="smileGlowIntense">
+                  <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
                   <feMerge>
                     <feMergeNode in="coloredBlur"/>
                     <feMergeNode in="SourceGraphic"/>
@@ -99,15 +99,18 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
                 </filter>
               </defs>
               
-              {/* UMA ÚNICA faixa PARABÓLICA do H ao AI */}
+              {/* UMA ÚNICA faixa PARABÓLICA do H (início) ao AI (final) */}
               <path
-                className={`smile-path ${stage === 'glow' || stage === 'complete' ? 'glowing permanent' : ''}`}
-                d="M 20 30 Q 325 110, 630 35"
+                className={`smile-path ${stage === 'glow' || stage === 'complete' ? 'smile-thick-glow' : ''}`}
+                d="M 35 20 Q 340 95, 645 25"
                 stroke="url(#smileGradient)"
-                strokeWidth={(stage === 'glow' || stage === 'complete') ? '12' : '5'}
                 strokeLinecap="round"
                 fill="none"
-                filter="url(#smileGlow)"
+                style={{
+                  strokeWidth: (stage === 'glow' || stage === 'complete') ? '14px' : '5px',
+                  filter: (stage === 'glow' || stage === 'complete') ? 'url(#smileGlowIntense)' : 'none',
+                  transition: 'stroke-width 0.6s ease-out, filter 0.6s ease-out'
+                }}
               />
             </svg>
           )}
