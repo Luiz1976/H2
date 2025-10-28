@@ -107,6 +107,15 @@
   gap: 20px;
 }
 
+/* ===== CONTAINER LOGO (HumaniQ + AI lado a lado) ===== */
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  gap: 15px;
+}
+
 /* ===== TEXTO HUMANIQ ===== */
 .text-humaniq {
   font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
@@ -129,13 +138,11 @@
 
 /* ===== TEXTO AI ===== */
 .text-ai {
-  position: absolute;
   font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
   font-size: 6rem;
   font-weight: 800;
   color: #66b3ff;
   letter-spacing: -2px;
-  margin-left: 420px;
   text-shadow: 
     0 0 40px rgba(102, 179, 255, 0.8),
     0 0 80px rgba(0, 212, 255, 0.5),
@@ -264,8 +271,8 @@
     font-size: 4.5rem;
   }
   
-  .text-ai {
-    margin-left: 320px;
+  .logo-container {
+    gap: 12px;
   }
   
   .smile-curve {
@@ -286,8 +293,8 @@
     font-size: 3.5rem;
   }
   
-  .text-ai {
-    margin-left: 250px;
+  .logo-container {
+    gap: 10px;
   }
   
   .smile-curve {
@@ -309,8 +316,8 @@
     font-size: 2.5rem;
   }
   
-  .text-ai {
-    margin-left: 180px;
+  .logo-container {
+    gap: 8px;
   }
   
   .smile-curve {

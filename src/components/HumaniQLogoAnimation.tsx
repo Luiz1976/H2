@@ -57,19 +57,22 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
 
         {/* Conteúdo principal */}
         <div className="content-wrapper">
-          {/* Palavra HumaniQ */}
-          {stage !== 'initial' && (
-            <div className="text-humaniq visible">
-              HumaniQ
-            </div>
-          )}
+          {/* Container para HumaniQ + AI lado a lado */}
+          <div className="logo-container">
+            {/* Palavra HumaniQ */}
+            {stage !== 'initial' && (
+              <div className="text-humaniq visible">
+                HumaniQ
+              </div>
+            )}
 
-          {/* AI (aparece depois) */}
-          {(stage === 'ai-appear' || stage === 'glow' || stage === 'complete') && (
-            <div className={`text-ai ${stage === 'ai-appear' || stage === 'glow' || stage === 'complete' ? 'visible' : ''}`}>
-              AI
-            </div>
-          )}
+            {/* AI (aparece depois, ao lado) */}
+            {(stage === 'ai-appear' || stage === 'glow' || stage === 'complete') && (
+              <div className={`text-ai ${stage === 'ai-appear' || stage === 'glow' || stage === 'complete' ? 'visible' : ''}`}>
+                AI
+              </div>
+            )}
+          </div>
 
           {/* Faixa curvada (sorriso) */}
           {(stage === 'smile-draw' || stage === 'ai-appear' || stage === 'glow' || stage === 'complete') && (
