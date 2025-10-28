@@ -47,7 +47,7 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
 - **Admin Executive Dashboard**: Comprehensive business intelligence dashboard at `/admin` for CEO-level decision making. Features aggregated metrics from all companies including:
   - **Financial Metrics**: MRR (Monthly Recurring Revenue), ARR (Annual Recurring Revenue), revenue growth, ticket medio, revenue projections
   - **Conversion Funnel**: Complete tracking from landing page visits → demo tests → checkout → purchases with conversion rates at each stage
-  - **Strategic KPIs**: LTV (Lifetime Value), CAC (Customer Acquisition Cost), LTV/CAC Ratio, Payback Period
+  - **Strategic KPIs**: LTV (Valor Vitalício), CAC (Custo de Aquisição de Cliente), LTV/CAC Ratio, Payback Period
   - **Business Growth**: Active companies, new companies this month, churn rate, growth percentage
   - **Collaborator Metrics**: Total collaborators, active count, average per company, monthly growth
   - **Plan Distribution**: Breakdown by Essencial, Profissional, and Enterprise plans with revenue attribution

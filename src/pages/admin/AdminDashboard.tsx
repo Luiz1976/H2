@@ -301,7 +301,7 @@ export default function AdminDashboard() {
             <span className="text-xs text-gray-500">LTV</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">R$ {metrics.kpis.ltv.toLocaleString('pt-BR')}</p>
-          <p className="text-xs text-gray-500 mt-1">Lifetime Value</p>
+          <p className="text-xs text-gray-500 mt-1">Valor Vitalício</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
