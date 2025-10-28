@@ -133,7 +133,7 @@ const Login = () => {
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                     <Mail className={`w-5 h-5 transition-colors duration-300 ${
-                      focusedField === 'email' || email ? 'text-slate-500' : 'text-white/40'
+                      focusedField === 'email' || email ? 'text-slate-500' : 'text-slate-400'
                     }`} />
                   </div>
                   <Input
@@ -149,7 +149,7 @@ const Login = () => {
                     className={`pl-11 h-12 rounded-xl backdrop-blur-sm transition-all duration-300 ${
                       focusedField === 'email' || email
                         ? 'bg-white text-slate-900 placeholder:text-slate-400 border-blue-400/50 shadow-lg shadow-blue-500/20'
-                        : 'bg-white/10 border-white/20 text-white placeholder:text-white/40'
+                        : 'bg-slate-700/40 border-slate-600/30 text-slate-300 placeholder:text-slate-400'
                     }`}
                   />
                   {/* Focus Indicator */}
@@ -167,7 +167,7 @@ const Login = () => {
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                     <Lock className={`w-5 h-5 transition-colors duration-300 ${
-                      focusedField === 'password' || password ? 'text-slate-500' : 'text-white/40'
+                      focusedField === 'password' || password ? 'text-slate-500' : 'text-slate-400'
                     }`} />
                   </div>
                   <Input
@@ -183,7 +183,7 @@ const Login = () => {
                     className={`pl-11 pr-11 h-12 rounded-xl backdrop-blur-sm transition-all duration-300 ${
                       focusedField === 'password' || password
                         ? 'bg-white text-slate-900 placeholder:text-slate-400 border-purple-400/50 shadow-lg shadow-purple-500/20'
-                        : 'bg-white/10 border-white/20 text-white placeholder:text-white/40'
+                        : 'bg-slate-700/40 border-slate-600/30 text-slate-300 placeholder:text-slate-400'
                     }`}
                   />
                   {/* Toggle Password Visibility */}
@@ -192,7 +192,7 @@ const Login = () => {
                     data-testid="button-toggle-password"
                     onClick={() => setShowPassword(!showPassword)}
                     className={`absolute inset-y-0 right-0 pr-3.5 flex items-center transition-colors duration-200 ${
-                      focusedField === 'password' || password ? 'text-slate-500 hover:text-slate-700' : 'text-white/40 hover:text-white/80'
+                      focusedField === 'password' || password ? 'text-slate-500 hover:text-slate-700' : 'text-slate-400 hover:text-slate-300'
                     }`}
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
