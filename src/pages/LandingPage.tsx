@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { 
-  Shield, CheckCircle, TrendingUp, Users, FileCheck, Brain, Zap, 
+  Shield, CheckCircle, TrendingUp, Users, FileCheck, Zap, 
   Award, Clock, AlertTriangle, BarChart3, Sparkles, Target, Star,
   ChevronRight, Download, Play, ArrowRight, Check, X
 } from 'lucide-react';
@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Link, useNavigate } from 'react-router-dom';
+import Logo from '@/components/Logo';
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -45,12 +46,7 @@ export default function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <Brain className="h-8 w-8 text-indigo-600" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                HumaniQ AI
-              </span>
-            </div>
+            <Logo size="md" showText={true} />
             <nav className="hidden md:flex space-x-8">
               <button onClick={() => scrollToSection('solucao')} className="text-gray-700 hover:text-indigo-600 transition-colors">
                 Solução
@@ -404,7 +400,7 @@ export default function LandingPage() {
                 beneficio: 'Seu PGR fica completo e em conformidade'
               },
               {
-                icon: Brain,
+                icon: Sparkles,
                 titulo: 'Propostas de Ação Inteligentes',
                 descricao: 'IA analisa dados e sugere intervenções personalizadas com responsáveis e prazos definidos.',
                 beneficio: 'Do diagnóstico à ação sem consultoria externa'
@@ -1176,10 +1172,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <Brain className="h-8 w-8 text-indigo-400" />
-                <span className="text-xl font-bold text-white">HumaniQ AI</span>
-              </div>
+              <Logo size="md" showText={true} className="mb-4 [&>span]:text-white" />
               <p className="text-sm">
                 Plataforma completa para gestão de riscos psicossociais em conformidade com a NR-01.
               </p>

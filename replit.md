@@ -3,6 +3,15 @@
 ## Overview
 HumaniQ is a hierarchical user management system (Admin → Company → Employee) designed for mass psychological assessments in the workplace. It aims to streamline testing, analyze work-life quality, psychosocial risks, organizational climate, and occupational stress, providing data isolation between companies. The platform offers comprehensive tools for monitoring psychosocial states and managing risks, aligning with regulatory and international standards.
 
+### Brand Identity (28/10/2025)
+- **Logo**: Modern, exclusive, and theological logo created with AI-generated imagery that combines human-centered psychological care with artificial intelligence elements
+  - **Location**: `src/assets/logo.png`
+  - **Component**: Reusable `Logo` component at `src/components/Logo.tsx`
+  - **Design**: Geometric design featuring abstract human silhouette merged with neural network nodes, clean lines, professional gradient from deep indigo blue to vibrant purple, representing trust, innovation, and human dignity
+  - **Sizes**: Supports 4 size variants (sm, md, lg, xl) with optional text display
+  - **Usage**: Integrated throughout the platform including landing page header, footer, and system pages
+  - **Import**: `import Logo from '@/components/Logo'`
+
 ## User Preferences
 I prefer simple language and clear explanations. I want iterative development with frequent updates. Ask before making major architectural changes. Do not make changes to the `shared` folder without explicit instruction. I prefer detailed explanations for complex features or decisions.
 
