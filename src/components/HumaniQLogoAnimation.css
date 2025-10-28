@@ -1,6 +1,7 @@
-/* Animação do Logo HumaniQ AI - Inspirada no Disney+ Original */
+/* 🎬 ANIMAÇÃO HUMANIQ AI - MODERNA E TECNOLÓGICA (7 SEGUNDOS) */
+/* Princípios PNL/Rapport: Conexão, Confiança, Inteligência Humanizada */
 
-.humaniq-logo-animation {
+.humaniq-intro-animation {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +14,7 @@
   justify-content: center;
 }
 
-.animation-container {
+.intro-container {
   position: relative;
   width: 100%;
   height: 100%;
@@ -22,428 +23,326 @@
   justify-content: center;
 }
 
-/* Fundo com cor azul escuro sólido */
-.background-gradient {
+/* ===== FUNDO AZUL ESCURO TECNOLÓGICO ===== */
+.dark-blue-background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #1a1a2e;
+  background: linear-gradient(135deg, #0a1128 0%, #1a1f3a 50%, #0f1b2e 100%);
   z-index: 1;
 }
 
-/* Partículas de fundo */
-.particles {
+/* ===== PARTÍCULAS TECNOLÓGICAS ===== */
+.tech-particles {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 2;
+  pointer-events: none;
 }
 
-.particle {
+.tech-particle {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: rgba(0, 212, 255, 0.6);
+  width: 3px;
+  height: 3px;
+  background: rgba(0, 212, 255, 0.7);
   border-radius: 50%;
-  animation: float 8s infinite ease-in-out;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.8);
+  animation: float-tech 6s infinite ease-in-out;
 }
 
-.particle-0 { top: 10%; left: 15%; animation-delay: 0s; }
-.particle-1 { top: 20%; left: 80%; animation-delay: 1s; }
-.particle-2 { top: 60%; left: 10%; animation-delay: 2s; }
-.particle-3 { top: 80%; left: 70%; animation-delay: 0.5s; }
-.particle-4 { top: 30%; left: 90%; animation-delay: 1.5s; }
-.particle-5 { top: 70%; left: 25%; animation-delay: 2.5s; }
-.particle-6 { top: 15%; left: 60%; animation-delay: 3s; }
-.particle-7 { top: 85%; left: 45%; animation-delay: 0.8s; }
-.particle-8 { top: 40%; left: 5%; animation-delay: 1.8s; }
-.particle-9 { top: 55%; left: 85%; animation-delay: 2.2s; }
-.particle-10 { top: 25%; left: 35%; animation-delay: 0.3s; }
-.particle-11 { top: 75%; left: 65%; animation-delay: 1.3s; }
-.particle-12 { top: 5%; left: 50%; animation-delay: 2.8s; }
-.particle-13 { top: 90%; left: 20%; animation-delay: 0.7s; }
-.particle-14 { top: 35%; left: 75%; animation-delay: 1.7s; }
-.particle-15 { top: 65%; left: 40%; animation-delay: 2.3s; }
-.particle-16 { top: 45%; left: 95%; animation-delay: 0.2s; }
-.particle-17 { top: 95%; left: 55%; animation-delay: 1.2s; }
-.particle-18 { top: 50%; left: 15%; animation-delay: 2.7s; }
-.particle-19 { top: 8%; left: 85%; animation-delay: 0.9s; }
+/* Posicionamento das partículas */
+.tech-particle-0 { top: 8%; left: 12%; animation-delay: 0s; }
+.tech-particle-1 { top: 18%; left: 78%; animation-delay: 0.8s; }
+.tech-particle-2 { top: 65%; left: 8%; animation-delay: 1.6s; }
+.tech-particle-3 { top: 82%; left: 72%; animation-delay: 0.4s; }
+.tech-particle-4 { top: 28%; left: 88%; animation-delay: 1.2s; }
+.tech-particle-5 { top: 72%; left: 22%; animation-delay: 2s; }
+.tech-particle-6 { top: 12%; left: 58%; animation-delay: 2.4s; }
+.tech-particle-7 { top: 88%; left: 42%; animation-delay: 0.6s; }
+.tech-particle-8 { top: 42%; left: 4%; animation-delay: 1.4s; }
+.tech-particle-9 { top: 58%; left: 92%; animation-delay: 1.8s; }
+.tech-particle-10 { top: 22%; left: 32%; animation-delay: 0.2s; }
+.tech-particle-11 { top: 78%; left: 68%; animation-delay: 1s; }
+.tech-particle-12 { top: 4%; left: 48%; animation-delay: 2.2s; }
+.tech-particle-13 { top: 92%; left: 18%; animation-delay: 0.5s; }
+.tech-particle-14 { top: 32%; left: 82%; animation-delay: 1.5s; }
+.tech-particle-15 { top: 68%; left: 38%; animation-delay: 1.9s; }
+.tech-particle-16 { top: 48%; left: 98%; animation-delay: 0.1s; }
+.tech-particle-17 { top: 98%; left: 52%; animation-delay: 1.1s; }
+.tech-particle-18 { top: 52%; left: 14%; animation-delay: 2.1s; }
+.tech-particle-19 { top: 14%; left: 88%; animation-delay: 0.7s; }
+.tech-particle-20 { top: 38%; left: 28%; animation-delay: 1.3s; }
+.tech-particle-21 { top: 62%; left: 62%; animation-delay: 1.7s; }
+.tech-particle-22 { top: 24%; left: 44%; animation-delay: 0.3s; }
+.tech-particle-23 { top: 76%; left: 76%; animation-delay: 1.4s; }
+.tech-particle-24 { top: 44%; left: 24%; animation-delay: 2.3s; }
+.tech-particle-25 { top: 84%; left: 54%; animation-delay: 0.9s; }
+.tech-particle-26 { top: 16%; left: 34%; animation-delay: 1.6s; }
+.tech-particle-27 { top: 54%; left: 84%; animation-delay: 2.5s; }
+.tech-particle-28 { top: 34%; left: 64%; animation-delay: 0.2s; }
+.tech-particle-29 { top: 94%; left: 94%; animation-delay: 1.2s; }
 
-@keyframes float {
+@keyframes float-tech {
   0%, 100% { 
     transform: translateY(0px) scale(0.8);
-    opacity: 0.3;
+    opacity: 0.4;
   }
   50% { 
-    transform: translateY(-20px) scale(1.2);
-    opacity: 0.8;
+    transform: translateY(-25px) scale(1.3);
+    opacity: 1;
   }
 }
 
-/* Estrela inicial */
-.star {
+/* ===== CONTEÚDO PRINCIPAL ===== */
+.content-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* ===== TEXTO HUMANIQ ===== */
+.text-humaniq {
+  font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+  font-size: 6rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -2px;
+  text-shadow: 
+    0 0 30px rgba(255, 255, 255, 0.4),
+    0 0 60px rgba(0, 212, 255, 0.2);
+  opacity: 0;
+  transform: scale(0.5) translateY(30px);
+  transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.text-humaniq.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* ===== TEXTO AI ===== */
+.text-ai {
   position: absolute;
-  top: 30%;
+  font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+  font-size: 6rem;
+  font-weight: 800;
+  color: #66b3ff;
+  letter-spacing: -2px;
+  margin-left: 420px;
+  text-shadow: 
+    0 0 40px rgba(102, 179, 255, 0.8),
+    0 0 80px rgba(0, 212, 255, 0.5),
+    0 0 120px rgba(0, 153, 255, 0.3);
+  opacity: 0;
+  transform: scale(0.3) translateX(-50px);
+  transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.text-ai.visible {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+}
+
+/* ===== FAIXA CURVADA (SORRISO) ===== */
+.smile-curve {
+  position: absolute;
+  top: 80px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+  width: 600px;
+  height: 120px;
   z-index: 5;
-  opacity: 0;
+  pointer-events: none;
 }
 
-.star.animate {
-  animation: starAppear 1s ease-out forwards;
+.smile-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawSmile 1.5s ease-out forwards;
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.star-inner {
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, #ffffff 0%, #00d4ff 70%, transparent 100%);
-  border-radius: 50%;
-  box-shadow: 
-    0 0 10px #00d4ff,
-    0 0 20px #00d4ff,
-    0 0 30px #00d4ff;
-}
-
-@keyframes starAppear {
+@keyframes drawSmile {
   0% {
+    stroke-dashoffset: 1000;
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
   }
-  50% {
+  20% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.5);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-/* Arco de luz */
-.light-arc {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-  opacity: 0;
-}
-
-.light-arc.animate {
-  animation: arcAppear 1.5s ease-out forwards;
-}
-
-.arc-svg {
-  width: 300px;
-  height: 150px;
-  filter: drop-shadow(0 0 10px #00d4ff);
-}
-
-.arc-path {
-  stroke-dasharray: 400;
-  stroke-dashoffset: 400;
-  animation: drawArc 1.5s ease-out forwards;
-}
-
-@keyframes arcAppear {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@keyframes drawArc {
-  0% {
-    stroke-dashoffset: 400;
   }
   100% {
     stroke-dashoffset: 0;
+    opacity: 1;
   }
 }
 
-/* Explosão de luz */
-.explosion {
+/* ===== BRILHO INTENSIFICADO ===== */
+.smile-path.glowing {
+  filter: drop-shadow(0 0 15px #00d4ff) 
+          drop-shadow(0 0 30px #0099ff) 
+          drop-shadow(0 0 45px rgba(0, 153, 255, 0.6));
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px #00d4ff) 
+            drop-shadow(0 0 30px #0099ff);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px #00d4ff) 
+            drop-shadow(0 0 50px #0099ff) 
+            drop-shadow(0 0 70px rgba(0, 153, 255, 0.8));
+  }
+}
+
+/* ===== SUBTÍTULO ===== */
+.subtitle {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 6;
+  bottom: -80px;
+  font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
   opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s ease-out 0.3s;
 }
 
-.explosion.animate {
-  animation: explosionAppear 0.8s ease-out forwards;
+.subtitle.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.explosion-ring {
-  width: 100px;
-  height: 100px;
-  border: 2px solid #00d4ff;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: explosionRing 0.8s ease-out forwards;
-}
-
-.explosion-particles {
+/* ===== BRILHO DE FUNDO ===== */
+.background-glow {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 212, 255, 0.15) 0%,
+    rgba(0, 153, 255, 0.08) 40%,
+    transparent 70%
+  );
+  z-index: 3;
+  opacity: 0;
+  animation: backgroundPulse 3s ease-in-out forwards;
 }
 
-.explosion-particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: #00d4ff;
-  border-radius: 50%;
-  transform: scale(0);
-}
-
-.explosion.animate .explosion-particle {
-  animation: particleExplode 0.8s ease-out forwards;
-}
-
-.explosion-particle-0 { transform: rotate(0deg) translateX(30px); }
-.explosion-particle-1 { transform: rotate(30deg) translateX(30px); }
-.explosion-particle-2 { transform: rotate(60deg) translateX(30px); }
-.explosion-particle-3 { transform: rotate(90deg) translateX(30px); }
-.explosion-particle-4 { transform: rotate(120deg) translateX(30px); }
-.explosion-particle-5 { transform: rotate(150deg) translateX(30px); }
-.explosion-particle-6 { transform: rotate(180deg) translateX(30px); }
-.explosion-particle-7 { transform: rotate(210deg) translateX(30px); }
-.explosion-particle-8 { transform: rotate(240deg) translateX(30px); }
-.explosion-particle-9 { transform: rotate(270deg) translateX(30px); }
-.explosion-particle-10 { transform: rotate(300deg) translateX(30px); }
-.explosion-particle-11 { transform: rotate(330deg) translateX(30px); }
-
-@keyframes explosionAppear {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@keyframes explosionRing {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(3);
-    opacity: 0;
-  }
-}
-
-@keyframes particleExplode {
-  0% {
-    transform: scale(0) rotate(var(--rotation, 0deg)) translateX(0px);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1) rotate(var(--rotation, 0deg)) translateX(50px);
-    opacity: 0;
-  }
-}
-
-/* Logo HumaniQ */
-.humaniq-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 7;
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.humaniq-logo.animate {
-  animation: logoAppear 1s ease-out forwards;
-}
-
-.logo-text {
-  font-family: 'Arial', sans-serif;
-  font-size: 3.5rem;
-  font-weight: bold;
-  display: flex;
-  align-items: baseline;
-  gap: 2px;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.logo-humani {
-  color: #ffffff;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
-
-.logo-space {
-  color: transparent;
-  width: 0.3em;
-}
-
-.logo-ai {
-  color: #66b3ff;
-  font-size: 3.5rem;
-  text-shadow: 0 0 20px rgba(102, 179, 255, 0.8);
-}
-
-/* Remove a animação do plus que não existe mais */
-
-@keyframes logoAppear {
+@keyframes backgroundPulse {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.2);
   }
   100% {
-    opacity: 1;
+    opacity: 0.6;
     transform: translate(-50%, -50%) scale(1);
   }
 }
 
-/* Animação removida pois o símbolo + não existe mais */
-
-/* Texto "INTELIGÊNCIA" */
-.original-text {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 8;
-  display: flex;
-  gap: 2px;
-  font-family: 'Arial', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: 3px;
-  color: #ffffff;
-  opacity: 0;
-}
-
-.original-text.animate {
-  animation: textAppear 1.5s ease-out forwards;
-}
-
-.original-text span {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: letterSlide 0.1s ease-out forwards;
-}
-
-.original-text.animate span:nth-child(1) { animation-delay: 0.05s; }
-.original-text.animate span:nth-child(2) { animation-delay: 0.1s; }
-.original-text.animate span:nth-child(3) { animation-delay: 0.15s; }
-.original-text.animate span:nth-child(4) { animation-delay: 0.2s; }
-.original-text.animate span:nth-child(5) { animation-delay: 0.25s; }
-.original-text.animate span:nth-child(6) { animation-delay: 0.3s; }
-.original-text.animate span:nth-child(7) { animation-delay: 0.35s; }
-.original-text.animate span:nth-child(8) { animation-delay: 0.4s; }
-.original-text.animate span:nth-child(9) { animation-delay: 0.45s; }
-.original-text.animate span:nth-child(10) { animation-delay: 0.5s; }
-.original-text.animate span:nth-child(11) { animation-delay: 0.55s; }
-.original-text.animate span:nth-child(12) { animation-delay: 0.6s; }
-.original-text.animate span:nth-child(13) { animation-delay: 0.65s; }
-.original-text.animate span:nth-child(14) { animation-delay: 0.7s; }
-.original-text.animate span:nth-child(15) { animation-delay: 0.75s; }
-.original-text.animate span:nth-child(16) { animation-delay: 0.8s; }
-.original-text.animate span:nth-child(17) { animation-delay: 0.85s; }
-.original-text.animate span:nth-child(18) { animation-delay: 0.9s; }
-.original-text.animate span:nth-child(19) { animation-delay: 0.95s; }
-.original-text.animate span:nth-child(20) { animation-delay: 1.0s; }
-.original-text.animate span:nth-child(21) { animation-delay: 1.05s; }
-.original-text.animate span:nth-child(22) { animation-delay: 1.1s; }
-
-@keyframes textAppear {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@keyframes letterSlide {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 1024px) {
+  .text-humaniq,
+  .text-ai {
+    font-size: 4.5rem;
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .text-ai {
+    margin-left: 320px;
+  }
+  
+  .smile-curve {
+    width: 500px;
+    height: 100px;
+    top: 70px;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    bottom: -70px;
   }
 }
 
-/* Brilho final */
-.final-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 3;
-  opacity: 0;
-  background: radial-gradient(circle at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-}
-
-.final-glow.animate {
-  animation: finalGlow 2s ease-in-out forwards;
-}
-
-@keyframes finalGlow {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.3;
-  }
-}
-
-/* Responsividade */
 @media (max-width: 768px) {
-  .logo-text {
-    font-size: 2.5rem;
+  .text-humaniq,
+  .text-ai {
+    font-size: 3.5rem;
   }
   
-  .logo-ai {
-    font-size: 2rem;
+  .text-ai {
+    margin-left: 250px;
   }
   
-  .logo-plus {
-    font-size: 2.2rem;
+  .smile-curve {
+    width: 400px;
+    height: 80px;
+    top: 60px;
   }
   
-  .original-text {
+  .subtitle {
     font-size: 1rem;
-    letter-spacing: 2px;
-  }
-  
-  .arc-svg {
-    width: 250px;
-    height: 125px;
+    letter-spacing: 3px;
+    bottom: -60px;
   }
 }
 
 @media (max-width: 480px) {
-  .logo-text {
-    font-size: 2rem;
+  .text-humaniq,
+  .text-ai {
+    font-size: 2.5rem;
   }
   
-  .logo-ai {
-    font-size: 1.6rem;
+  .text-ai {
+    margin-left: 180px;
   }
   
-  .logo-plus {
-    font-size: 1.8rem;
+  .smile-curve {
+    width: 320px;
+    height: 65px;
+    top: 50px;
   }
   
-  .original-text {
-    font-size: 0.9rem;
-    letter-spacing: 1px;
+  .subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    bottom: -50px;
   }
   
-  .arc-svg {
-    width: 200px;
-    height: 100px;
+  .tech-particle {
+    width: 2px;
+    height: 2px;
+  }
+}
+
+/* ===== PERFORMANCE ===== */
+@media (prefers-reduced-motion: reduce) {
+  .text-humaniq,
+  .text-ai,
+  .smile-path,
+  .subtitle,
+  .background-glow {
+    animation: none;
+    transition: none;
+  }
+  
+  .tech-particle {
+    animation: none;
   }
 }

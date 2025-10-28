@@ -6,40 +6,32 @@ interface HumaniQLogoAnimationProps {
 }
 
 const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete }) => {
-  const [stage, setStage] = useState<'start' | 'star' | 'arc' | 'explosion' | 'logo' | 'text' | 'complete'>('start');
-  const [showSubtitle, setShowSubtitle] = useState(false);
+  const [stage, setStage] = useState<'initial' | 'humaniq' | 'smile-draw' | 'ai-appear' | 'glow' | 'complete'>('initial');
 
   useEffect(() => {
-    // Timeline ajustada para que o texto "HumaniQ AI" + "Inteligência Psicossocial" fiquem pelo menos 10 segundos na tela
+    console.log('🎬 [HumaniQ] Nova animação iniciada - 7 segundos');
+    
     const timeline = [
-      { stage: 'star', delay: 500 },       // 0.5s - Aparição da estrela (reduzido)
-      { stage: 'arc', delay: 500 },        // 0.5s - Formação do arco (reduzido)
-      { stage: 'explosion', delay: 500 },  // 0.5s - Explosão de partículas (reduzido)
-      { stage: 'logo', delay: 500 },       // 0.5s - Aparição do logo (reduzido)
-      { stage: 'text', delay: 10000 },     // 10.0s - Texto "HumaniQ AI" + subtítulo ficam 10 segundos na tela
-      { stage: 'complete', delay: 500 }    // 0.5s - Finalização
+      { stage: 'humaniq', delay: 500 },      // 0.5s - HumaniQ aparece
+      { stage: 'smile-draw', delay: 1500 },  // 1.5s - Faixa sorriso desenha
+      { stage: 'ai-appear', delay: 2000 },   // 2.0s - AI aparece
+      { stage: 'glow', delay: 2500 },        // 2.5s - Brilho intensifica
+      { stage: 'complete', delay: 500 }      // 0.5s - Finalização
     ];
-
-    let timeoutId: NodeJS.Timeout;
+    
     let currentIndex = 0;
 
     const nextStage = () => {
       if (currentIndex < timeline.length) {
         const { stage: nextStageName, delay } = timeline[currentIndex];
-        timeoutId = setTimeout(() => {
-          console.log('🎬 Animação - Mudando para stage:', nextStageName);
+        setTimeout(() => {
+          console.log('🎬 [HumaniQ] Stage:', nextStageName);
           setStage(nextStageName as any);
           
-          // Quando o logo aparecer, aguardar 500ms e mostrar o subtítulo
-          if (nextStageName === 'logo') {
-            setTimeout(() => {
-              setShowSubtitle(true);
-            }, 500);
-          }
-          
           currentIndex++;
+          
           if (nextStageName === 'complete' && onComplete) {
-            setTimeout(onComplete, 1500);
+            setTimeout(onComplete, 1000);
           } else {
             nextStage();
           }
@@ -47,89 +39,84 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
       }
     };
 
-    // Iniciar a animação após um pequeno delay
-    console.log('🎬 Animação - Iniciando...');
-    timeoutId = setTimeout(() => {
-      nextStage();
-    }, 300);
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
+    nextStage();
   }, [onComplete]);
 
-  const isStageActive = (targetStage: string) => {
-    const stageOrder = ['start', 'star', 'arc', 'explosion', 'logo', 'text', 'complete'];
-    const currentIndex = stageOrder.indexOf(stage);
-    const targetIndex = stageOrder.indexOf(targetStage);
-    const isActive = currentIndex >= targetIndex;
-    console.log(`🎬 Stage Check - Current: ${stage}, Target: ${targetStage}, Active: ${isActive}`);
-    return isActive;
-  };
-
   return (
-    <div className="humaniq-logo-animation">
-      <div className="animation-container">
-        {/* Fundo com gradiente escuro */}
-        <div className="background-gradient" />
+    <div className="humaniq-intro-animation">
+      <div className="intro-container">
+        {/* Fundo azul escuro tecnológico */}
+        <div className="dark-blue-background" />
         
-        {/* Partículas de fundo */}
-        <div className="particles">
-          {Array.from({ length: 20 }, (_, i) => (
-            <div key={i} className={`particle particle-${i}`} />
+        {/* Partículas sutis de fundo */}
+        <div className="tech-particles">
+          {Array.from({ length: 30 }, (_, i) => (
+            <div key={i} className={`tech-particle tech-particle-${i}`} />
           ))}
         </div>
 
-        {/* Estrela inicial */}
-        {isStageActive('star') && (
-          <div className={`star ${stage !== 'star' ? 'animate' : ''}`}>
-            <div className="star-inner" />
-          </div>
-        )}
-
-        {/* Arco de luz removido conforme solicitado */}
-
-        {/* Explosão de luz */}
-        {isStageActive('explosion') && (
-          <div className={`explosion ${isStageActive('logo') ? 'animate' : ''}`}>
-            <div className="explosion-ring" />
-            <div className="explosion-particles">
-              {Array.from({ length: 12 }, (_, i) => (
-                <div 
-                  key={i} 
-                  className={`explosion-particle explosion-particle-${i}`}
-                  style={{ '--rotation': `${i * 30}deg` } as React.CSSProperties}
-                />
-              ))}
+        {/* Conteúdo principal */}
+        <div className="content-wrapper">
+          {/* Palavra HumaniQ */}
+          {stage !== 'initial' && (
+            <div className="text-humaniq visible">
+              HumaniQ
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Logo HumaniQ AI */}
-        {isStageActive('logo') && (
-          <div className={`humaniq-logo ${isStageActive('text') ? 'animate' : ''}`}>
-            <div className="logo-text">
-              <span className="logo-humani">HumaniQ</span>
-              <span className="logo-space"> </span>
-              <span className="logo-ai">AI</span>
+          {/* AI (aparece depois) */}
+          {(stage === 'ai-appear' || stage === 'glow' || stage === 'complete') && (
+            <div className={`text-ai ${stage === 'ai-appear' || stage === 'glow' || stage === 'complete' ? 'visible' : ''}`}>
+              AI
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Texto "Inteligência Psicossocial" */}
-        {showSubtitle && (
-          <div className={`original-text ${showSubtitle ? 'animate' : ''}`}>
-            {'Inteligência Psicossocial'.split('').map((letter, index) => (
-              <span key={index}>{letter}</span>
-            ))}
-          </div>
-        )}
+          {/* Faixa curvada (sorriso) */}
+          {(stage === 'smile-draw' || stage === 'ai-appear' || stage === 'glow' || stage === 'complete') && (
+            <svg 
+              className="smile-curve" 
+              viewBox="0 0 600 120" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="smileGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.8" />
+                  <stop offset="50%" stopColor="#0099ff" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#00d4ff" stopOpacity="0.8" />
+                </linearGradient>
+                <filter id="smileGlow">
+                  <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              {/* Faixa curvada - sorriso */}
+              <path
+                className={`smile-path ${stage === 'glow' || stage === 'complete' ? 'glowing' : ''}`}
+                d="M 50 40 Q 300 120, 550 40"
+                stroke="url(#smileGradient)"
+                strokeWidth={stage === 'glow' || stage === 'complete' ? '12' : '8'}
+                strokeLinecap="round"
+                fill="none"
+                filter="url(#smileGlow)"
+              />
+            </svg>
+          )}
 
-        {/* Brilho final */}
-        {stage === 'complete' && (
-          <div className="final-glow animate" />
+          {/* Subtítulo */}
+          {(stage === 'glow' || stage === 'complete') && (
+            <div className={`subtitle ${stage === 'glow' || stage === 'complete' ? 'visible' : ''}`}>
+              Inteligência Psicossocial
+            </div>
+          )}
+        </div>
+
+        {/* Brilho final de fundo */}
+        {(stage === 'glow' || stage === 'complete') && (
+          <div className="background-glow" />
         )}
       </div>
     </div>
