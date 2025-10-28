@@ -74,11 +74,11 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
             )}
           </div>
 
-          {/* Faixa única do H ao AI */}
+          {/* Faixa única do H ao AI - PARÁBOLA */}
           {(stage === 'smile-draw' || stage === 'ai-appear' || stage === 'glow' || stage === 'complete') && (
             <svg 
               className="smile-curve" 
-              viewBox="0 0 650 100" 
+              viewBox="0 0 650 120" 
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
@@ -99,12 +99,12 @@ const HumaniQLogoAnimation: React.FC<HumaniQLogoAnimationProps> = ({ onComplete 
                 </filter>
               </defs>
               
-              {/* UMA ÚNICA faixa do H ao AI */}
+              {/* UMA ÚNICA faixa PARABÓLICA do H ao AI */}
               <path
-                className={`smile-path ${stage === 'glow' || stage === 'complete' ? 'glowing' : ''}`}
-                d="M 15 35 Q 180 95, 350 35 Q 460 10, 635 40"
+                className={`smile-path ${stage === 'glow' || stage === 'complete' ? 'glowing permanent' : ''}`}
+                d="M 20 30 Q 325 110, 630 35"
                 stroke="url(#smileGradient)"
-                strokeWidth={(stage === 'glow' || stage === 'complete') ? '10' : '5'}
+                strokeWidth={(stage === 'glow' || stage === 'complete') ? '12' : '5'}
                 strokeLinecap="round"
                 fill="none"
                 filter="url(#smileGlow)"
