@@ -96,7 +96,6 @@ class HumaniQInsightService {
         tempo_gasto: tempoGasto,
         status: 'concluido',
         user_email: usuarioEmail,
-        empresa_id: empresa_id || null,
         metadados: {
           teste_nome: 'HumaniQ Insight',
           tipo_teste: 'humaniq-insight',
