@@ -1,7 +1,9 @@
 import React from 'react';
-import { Loader2, AlertTriangle, Eye, Download, Share2, Brain } from 'lucide-react';
+import { Loader2, AlertTriangle, Eye, Download, Share2, Brain, Clock, Target, TrendingUp, Award, Lightbulb, CheckCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { calcularResultadoKarasekSiegrist, type ResultadoKarasekSiegrist } from '@/lib/testes/karasek-siegrist';
 import { KarasekRadarChart } from '@/components/charts/KarasekRadarChart';
 import { KarasekGaugeChart } from '@/components/charts/KarasekGaugeChart';
