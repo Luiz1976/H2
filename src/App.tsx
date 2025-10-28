@@ -45,6 +45,7 @@ import TesteEstresseOcupacionalIntroducao from "./pages/TesteEstresseOcupacional
 import TesteClimaBemEstarIntroducao from "./pages/TesteClimaBemEstarIntroducao";
 import TesteClimaBemEstarPerguntas from "./pages/TesteClimaBemEstarPerguntas";
 import TesteHumaniQInsightIntroducao from "./pages/TesteHumaniQInsightIntroducao";
+import ResultadoHumaniQInsight from "./pages/ResultadoHumaniQInsight";
 import ResultadoClimaBemEstar from "./pages/ResultadoClimaBemEstar";
 import TesteMGRPIntroducao from "./pages/TesteMGRPIntroducao";
 import TesteMGRPPerguntas from "./pages/TesteMGRPPerguntas";
@@ -554,6 +555,14 @@ function App() {
                       <ResultadoRPO />
                     </MainLayout>
                   </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/resultado/humaniq-insight/:resultadoId" 
+                element={
+                  <MainLayout>
+                    <ResultadoHumaniQInsight />
+                  </MainLayout>
                 } 
               />
               <Route 
