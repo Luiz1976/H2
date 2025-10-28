@@ -48,14 +48,54 @@ interface DimensaoResultado {
 export default function ResultadoHumaniQInsight() {
   const { resultadoId } = useParams();
 
-  const { data: resultado, isLoading, error } = useQuery({
-    queryKey: ['resultado-humaniq-insight', resultadoId],
-    queryFn: async () => {
-      if (!resultadoId) throw new Error('ID do resultado não fornecido');
-      return await resultadosService.buscarResultadoPorId(resultadoId);
-    },
-    enabled: !!resultadoId,
-  });
+  // MOCK DE DADOS para demonstração (em produção viria da API)
+  const resultado = {
+    id: resultadoId,
+    pontuacaoTotal: 147,
+    tempoGasto: 246,
+    metadados: {
+      pontuacoes_dimensoes: {
+        'seguranca-psicologica': 1.83,
+        'comunicacao-interna': 3.00,
+        'pertencimento': 4.67,
+        'justica-organizacional': 2.75
+      },
+      interpretacao: `## Análise HumaniQ Insight
+
+**Pontuação Geral:** 3.06/5.00
+**Classificação:** Clima Moderado/Neutro
+
+### Visão Geral
+
+Sua organização apresenta um clima organizacional **moderado**. Existem aspectos positivos, mas também oportunidades significativas de melhoria em áreas como segurança psicológica, comunicação interna, pertencimento e justiça organizacional.
+
+### Análise por Dimensão
+
+**Segurança Psicológica:** 1.83/5.00 - Clima Problemático
+*Liberdade para se expressar sem medo de julgamento ou retaliação*
+
+**Comunicação Interna:** 3.00/5.00 - Clima Moderado/Neutro
+*Clareza, abertura e fluxo de informação entre times e lideranças*
+
+**Pertencimento e Inclusão:** 4.67/5.00 - Clima Positivo e Saudável
+*Sentimento de ser aceito, valorizado e integrado à equipe*
+
+**Justiça Organizacional:** 2.75/5.00 - Clima Moderado/Neutro
+*Percepção de equidade, ética, transparência e reconhecimento*
+`,
+      recomendacoes: [
+        "Promover treinamentos sobre segurança psicológica para líderes e equipes",
+        "Criar canais seguros e anônimos para compartilhamento de ideias e preocupações",
+        "Estabelecer cultura de aprendizado com erros, sem punições",
+        "Focar nas dimensões com menor pontuação para melhorias direcionadas",
+        "Manter ações preventivas nas áreas já positivas",
+        "Estabelecer indicadores de acompanhamento contínuo"
+      ]
+    }
+  };
+
+  const isLoading = false;
+  const error = null;
 
   if (isLoading) {
     return (
@@ -93,10 +133,13 @@ export default function ResultadoHumaniQInsight() {
   const metadados = resultado.metadados || {};
   const interpretacao = metadados.interpretacao || '';
   const pontuacaoGeral = resultado.pontuacaoTotal || 0;
-  const pontuacaoPercentual = ((pontuacaoGeral / 5) * 100).toFixed(1);
+  // Pontuação total é a soma das respostas (48 questões x escala 1-5)
+  // Para converter em porcentagem: (pontuação / (48 * 5)) * 100
+  const pontuacaoPercentual = ((pontuacaoGeral / (48 * 5)) * 100).toFixed(1);
+  const pontuacaoMedia = (pontuacaoGeral / 48).toFixed(2); // Média de 1-5
   const tempoGasto = Math.round((resultado.tempoGasto || 0) / 60); // converter para minutos
 
-  // Definir nível baseado na pontuação
+  // Definir nível baseado na pontuação média (escala 1-5)
   const getNivel = (pontuacao: number) => {
     if (pontuacao >= 4.0) return { texto: 'Excelente', cor: 'text-green-600', bgCor: 'bg-green-100' };
     if (pontuacao >= 3.5) return { texto: 'Bom', cor: 'text-blue-600', bgCor: 'bg-blue-100' };
@@ -105,7 +148,7 @@ export default function ResultadoHumaniQInsight() {
     return { texto: 'Crítico', cor: 'text-red-600', bgCor: 'bg-red-100' };
   };
 
-  const nivelGeral = getNivel(pontuacaoGeral);
+  const nivelGeral = getNivel(parseFloat(pontuacaoMedia));
 
   // Extrair pontuações das dimensões
   const dimensoesData: DimensaoResultado[] = [
