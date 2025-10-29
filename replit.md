@@ -3,14 +3,29 @@
 ## Overview
 HumaniQ is a hierarchical user management system (Admin → Company → Employee) designed for mass psychological assessments in the workplace. It aims to streamline testing, analyze work-life quality, psychosocial risks, organizational climate, and occupational stress, providing data isolation between companies. The platform offers comprehensive tools for monitoring psychosocial states and managing risks, aligning with regulatory and international standards.
 
-### Brand Identity (28/10/2025)
-- **Logo**: Modern, exclusive, and theological logo created with AI-generated imagery that combines human-centered psychological care with artificial intelligence elements
+### Brand Identity
+- **Logo (28/10/2025)**: Modern, exclusive corporate logo for HumaniQ AI
   - **Location**: `src/assets/logo.png`
   - **Component**: Reusable `Logo` component at `src/components/Logo.tsx`
-  - **Design**: Geometric design featuring abstract human silhouette merged with neural network nodes, clean lines, professional gradient from deep indigo blue to vibrant purple, representing trust, innovation, and human dignity
+  - **Design**: Modern corporate "HQ" lettermark design with blue-to-purple gradient, geometric elements, and tech-forward aesthetic. NO religious or spiritual elements - pure corporate tech design
   - **Sizes**: Supports 4 size variants (sm, md, lg, xl) with optional text display
   - **Usage**: Integrated throughout the platform including landing page header, footer, and system pages
   - **Import**: `import Logo from '@/components/Logo'`
+
+### Mobile Responsiveness (29/10/2025)
+- **Complete Responsive Design**: All layouts and pages are fully responsive across all devices
+- **Mobile Sidebar Navigation**: Implemented mobile-first sidebar with hamburger menu
+  - **Component**: `MobileHeader` at `src/components/layout/MobileHeader.tsx`
+  - **Functionality**: 
+    - Shows hamburger menu button (☰) only on mobile devices (< 768px)
+    - Opens sidebar as a slide-out Sheet/drawer on mobile
+    - Displays HumaniQ logo in center of mobile header
+    - Desktop: Traditional persistent sidebar (hidden on mobile)
+    - Mobile: Sheet-based drawer sidebar triggered by hamburger menu
+  - **Integration**: Added to all main layouts (MainLayout, EmpresaLayout, AdminLayout)
+  - **User Experience**: Seamless navigation on mobile with swipe-to-close drawer functionality
+  - **Test ID**: `button-mobile-menu` for automated testing
+- **Responsive Padding**: Adjusted content padding for better mobile viewing (p-4 on mobile, p-6 on desktop)
 
 ## User Preferences
 I prefer simple language and clear explanations. I want iterative development with frequent updates. Ask before making major architectural changes. Do not make changes to the `shared` folder without explicit instruction. I prefer detailed explanations for complex features or decisions.
