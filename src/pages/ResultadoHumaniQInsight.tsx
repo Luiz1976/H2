@@ -170,7 +170,7 @@ Mensura a percepção de fairness nos processos decisorios, distribuicao de reco
       pontuacao: metadados.pontuacoes_dimensoes?.['seguranca-psicologica'] || 0,
       nivel: getNivel(metadados.pontuacoes_dimensoes?.['seguranca-psicologica'] || 0).texto,
       cor: '#8B5CF6',
-      icon: Brain
+      icon: Target
     },
     {
       nome: 'Comunicação Interna',

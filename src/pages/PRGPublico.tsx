@@ -19,8 +19,7 @@ import {
   Briefcase,
   DollarSign,
   ArrowRight,
-  AlertCircle,
-  Brain
+  AlertCircle
 } from "lucide-react";
 import Logo from '@/components/Logo';
 import MatrizRisco from "@/components/prg/MatrizRisco";

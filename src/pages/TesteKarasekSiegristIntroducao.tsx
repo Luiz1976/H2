@@ -36,7 +36,7 @@ export default function TesteKarasekSiegristIntroducao() {
     {
       titulo: 'Demanda Psicológica',
       descricao: 'Pressão temporal, carga mental e emocional do trabalho',
-      icon: 
+      icon: Target,
       cor: 'bg-gradient-to-br from-blue-600 to-indigo-600',
       textoCor: 'text-white'
     },
