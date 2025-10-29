@@ -9,7 +9,7 @@ export default function ColaboradorCursos() {
   const navigate = useNavigate();
 
   // Buscar cursos com informações de disponibilidade
-  const { data: cursosDisponiveis = [], isLoading } = useQuery<any[]>({
+  const { data: responseCursos, isLoading } = useQuery<{cursos: any[], total: number}>({
     queryKey: ['/api/curso-disponibilidade/colaborador/cursos'],
   });
 
@@ -23,6 +23,7 @@ export default function ColaboradorCursos() {
     queryKey: ['/api/cursos/progresso'],
   });
 
+  const cursosDisponiveis = responseCursos?.cursos || [];
   const cursosLiberados = cursosDisponiveis.filter((c) => c.disponivel);
   const cursosConcluidos = certificados.length;
   
