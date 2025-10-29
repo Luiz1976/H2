@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Building2, ArrowRight, Brain, Bot } from "lucide-react";
+import { User, Building2, ArrowRight, Bot } from "lucide-react";
+import Logo from "@/components/Logo";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
 
@@ -27,7 +28,7 @@ export default function ModuleSelection() {
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg">
-              <Brain className="h-8 w-8" />
+              Ⓛh-8 w-8Ⓛ
             </div>
             <div className="flex flex-col items-start">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">

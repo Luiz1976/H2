@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Brain, Clock, Lock, Calendar, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { Clock, Lock, Calendar, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import Logo from "@/components/Logo";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
@@ -121,7 +122,7 @@ export default function ColaboradorTestes() {
                   } flex items-center justify-center shadow-sm`}
                 >
                   {teste.disponivel ? (
-                    <Brain className="h-8 w-8 text-white" />
+                    Ⓛh-8 w-8 text-whiteⓁ
                   ) : (
                     <Lock className="h-8 w-8 text-white" />
                   )}

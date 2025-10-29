@@ -1,5 +1,6 @@
 import React from 'react';
-import { Loader2, AlertTriangle, Eye, Download, Share2, Brain, Clock, Target, TrendingUp, Award, Lightbulb, CheckCircle } from 'lucide-react';
+import { Loader2, AlertTriangle, Eye, Download, Share2, Clock, Target, TrendingUp, Award, Lightbulb, CheckCircle } from 'lucide-react';
+import Logo from "@/components/Logo";
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -206,7 +207,7 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border-2 border-slate-200 shadow-xl">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg">
-                <Brain className="h-6 w-6 text-white" />
+                Ⓛh-6 w-6 text-whiteⓁ
               </div>
               <h3 className="text-2xl font-bold text-slate-800">Dimensões Avaliadas</h3>
             </div>
@@ -540,7 +541,7 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6 rounded-xl border-2 border-blue-200 shadow-lg">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-blue-100 rounded-lg">
-                <Brain className="h-5 w-5 text-blue-600" />
+                Ⓛh-5 w-5 text-blue-600Ⓛ
               </div>
               <h3 className="text-lg font-bold text-slate-800">Interpretação dos Riscos</h3>
             </div>
@@ -823,7 +824,7 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
         <div className="bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl border border-slate-200/60 shadow-lg">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 bg-indigo-100 rounded-xl">
-              <Brain className="h-6 w-6 text-indigo-600" />
+              Ⓛh-6 w-6 text-indigo-600Ⓛ
             </div>
             <div>
               <h3 className="text-2xl font-bold text-slate-800">Avaliação por Dimensões</h3>
@@ -891,7 +892,7 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           <div className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-6 rounded-2xl border border-purple-200/60 shadow-lg">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 bg-purple-100 rounded-xl">
-                <Brain className="h-6 w-6 text-purple-600" />
+                Ⓛh-6 w-6 text-purple-600Ⓛ
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-purple-900">Insights Profissionais</h3>
@@ -1094,7 +1095,7 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
         {/* Header com Título */}
         <div className="text-center space-y-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white shadow-xl">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full backdrop-blur-sm mb-2">
-            <Brain className="h-10 w-10" />
+            Ⓛh-10 w-10Ⓛ
           </div>
           <h1 className="text-4xl font-bold">HumaniQ Insight</h1>
           <p className="text-lg opacity-90">

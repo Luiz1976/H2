@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Brain, Heart, Shield, Users, TrendingUp, AlertCircle, CheckCircle, Activity, Target, Sparkles, Lock, Info, ChevronRight, ArrowRight, Star, Zap, Eye, Award, Clock } from 'lucide-react';
+import { Heart, Shield, Users, TrendingUp, AlertCircle, CheckCircle, Activity, Target, Sparkles, Lock, Info, ChevronRight, ArrowRight, Star, Zap, Eye, Award, Clock } from 'lucide-react';
+import Logo from "@/components/Logo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -204,7 +205,7 @@ export default function EmpresaEstadoPsicossocial() {
         <div className="relative max-w-7xl mx-auto p-6 space-y-8">
           <div className="text-center space-y-4 py-12">
             <div className="inline-block p-6 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl">
-              <Brain className="h-16 w-16 text-white animate-pulse" />
+              Ⓛh-16 w-16 text-white animate-pulseⓁ
             </div>
             <h2 className="text-3xl font-bold text-white animate-pulse">
               Analisando o Pulso da sua Organização...
@@ -411,7 +412,7 @@ export default function EmpresaEstadoPsicossocial() {
             <CardContent className="p-6 relative">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 bg-purple-500/20 rounded-xl backdrop-blur-xl border border-purple-500/30">
-                  <Brain className="h-6 w-6 text-purple-300" />
+                  Ⓛh-6 w-6 text-purple-300Ⓛ
                 </div>
                 <Sparkles className="h-5 w-5 text-purple-400 animate-pulse" />
               </div>
@@ -592,7 +593,7 @@ export default function EmpresaEstadoPsicossocial() {
                 <CardContent className="p-12 text-center">
                   <div className="max-w-md mx-auto space-y-4">
                     <div className="inline-block p-6 bg-purple-500/20 rounded-3xl backdrop-blur-xl">
-                      <Brain className="h-16 w-16 text-purple-300" />
+                      Ⓛh-16 w-16 text-purple-300Ⓛ
                     </div>
                     <h3 className="text-2xl font-bold text-white">
                       IA Aprendendo Sobre Sua Organização

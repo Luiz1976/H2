@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, Brain, Building2, AlertTriangle, Heart, Users, Loader2, CheckCircle, Eye, BarChart3, Radar, Gauge, Activity, Shield, Target, Zap } from "lucide-react";
+import { ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, Building2, AlertTriangle, Heart, Users, Loader2, CheckCircle, Eye, BarChart3, Radar, Gauge, Activity, Shield, Target, Zap } from "lucide-react";
+import Logo from "@/components/Logo";
 import { calcularResultadoMGRP, type ResultadoMGRP } from "@/lib/testes/mgrp";
 import { resultadosService } from "@/lib/database";
 import { sessionService } from "@/lib/services/session-service";
@@ -292,7 +293,7 @@ export default function ResultadoMaturidadeRiscosPsicossociais() {
       case 'estruturado': return <Target className="h-5 w-5" />;
       case 'em-desenvolvimento': return <TrendingUp className="h-5 w-5" />;
       case 'inicial': return <AlertTriangle className="h-5 w-5" />;
-      default: return <Brain className="h-5 w-5" />;
+      default: return Ⓛh-5 w-5Ⓛ;
     }
   };
 
@@ -365,7 +366,7 @@ export default function ResultadoMaturidadeRiscosPsicossociais() {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
-                <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                Ⓛh-12 w-12 text-gray-400 mx-auto mb-4Ⓛ
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">Resultado Não Encontrado</h2>
                 <p className="text-gray-600 mb-4">Não foi possível encontrar os dados do seu teste.</p>
                 <Button onClick={() => navigate('/testes')} variant="outline">
@@ -598,7 +599,7 @@ export default function ResultadoMaturidadeRiscosPsicossociais() {
             className="mt-8"
           >
             <Alert>
-              <Brain className="h-4 w-4" />
+              Ⓛh-4 w-4Ⓛ
               <AlertDescription>
                 <strong>Próximos Passos:</strong> Considere implementar as recomendações de forma gradual e sistemática. 
                 Monitore regularmente o progresso e reavalie a maturidade organizacional periodicamente para acompanhar a evolução.

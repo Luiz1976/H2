@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import LoadingAnimation from '@/components/LoadingAnimation'
-import { ArrowLeft, ArrowRight, Clock, Users, Target, TrendingUp, Brain, Heart, Zap, Award, BookOpen, AlertTriangle, CheckCircle, Info, Scale, BarChart3, Shield } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Clock, Users, Target, TrendingUp, Heart, Zap, Award, BookOpen, AlertTriangle, CheckCircle, Info, Scale, BarChart3, Shield } from 'lucide-react'
+import Logo from "@/components/Logo";
 
 export default function TesteKarasekSiegristIntroducao() {
   const navigate = useNavigate()
@@ -126,7 +127,7 @@ export default function TesteKarasekSiegristIntroducao() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <CardContent className="p-6 text-center">
-              <Brain className="w-12 h-12 mx-auto mb-4 opacity-90" />
+              Ⓛw-12 h-12 mx-auto mb-4 opacity-90Ⓛ
               <h3 className="text-lg font-semibold mb-2">Demanda</h3>
               <p className="text-sm opacity-90">Pressão e carga mental</p>
             </CardContent>
@@ -290,7 +291,7 @@ export default function TesteKarasekSiegristIntroducao() {
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex-shrink-0">
-                    <Brain className="w-4 h-4 text-white" />
+                    Ⓛw-4 h-4 text-whiteⓁ
                   </div>
                   <div>
                     <h4 className="font-semibold text-slate-800">Identificar Fatores de Estresse</h4>

@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Share2, Loader2, AlertTriangle, Brain } from "lucide-react";
+import { ArrowLeft, Download, Share2, Loader2, AlertTriangle } from "lucide-react";
+import Logo from "@/components/Logo";
 import { apiService } from "@/services/apiService";
 import { ResultadoVisualizacao } from "@/components/ResultadoVisualizacao";
 
@@ -132,7 +133,7 @@ export default function Resultado() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 flex items-center justify-center">
         <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center">
-          <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          Ⓛh-12 w-12 text-gray-400 mx-auto mb-4Ⓛ
           <h2 className="text-xl font-semibold mb-2">Resultado não encontrado</h2>
           <p className="text-gray-600 mb-6">
             Não foi possível encontrar o resultado solicitado.

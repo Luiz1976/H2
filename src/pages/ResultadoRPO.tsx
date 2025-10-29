@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, Brain, Building2, AlertTriangle, Heart, Users, Loader2, CheckCircle, Eye, BarChart3, Radar, Gauge, Activity, Shield, Zap, Briefcase, UserCheck, Home, Globe } from "lucide-react";
+import { ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, Building2, AlertTriangle, Heart, Users, Loader2, CheckCircle, Eye, BarChart3, Radar, Gauge, Activity, Shield, Zap, Briefcase, UserCheck, Home, Globe } from "lucide-react";
+import Logo from "@/components/Logo";
 import { calcularResultadoRPO, gerarRecomendacoesRPO, type ResultadoRPO } from "@/lib/testes/rpo";
 import { resultadosService } from "@/lib/database";
 import { sessionService } from "@/lib/services/session-service";
@@ -370,7 +371,7 @@ export default function ResultadoRPO() {
 
             {/* Interpretação */}
             <Alert className="mt-6">
-              <Brain className="h-4 w-4" />
+              Ⓛh-4 w-4Ⓛ
               <AlertDescription className="text-base leading-relaxed">
                 {gerarInterpretacao(resultado)}
               </AlertDescription>

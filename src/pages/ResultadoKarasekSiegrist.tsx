@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, Brain, Building2, AlertTriangle, Heart, Users, Loader2, CheckCircle, Eye, BarChart3, Radar, Gauge, Activity } from "lucide-react";
+import { ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, Building2, AlertTriangle, Heart, Users, Loader2, CheckCircle, Eye, BarChart3, Radar, Gauge, Activity } from "lucide-react";
+import Logo from "@/components/Logo";
 import { calcularResultadoKarasekSiegrist, type ResultadoKarasekSiegrist } from "@/lib/testes/karasek-siegrist";
 import { resultadosService } from "@/lib/database";
 import { sessionService } from "@/lib/services/session-service";
@@ -204,7 +205,7 @@ export default function ResultadoKarasekSiegrist() {
       case 'regular': return <TrendingUp className="h-5 w-5" />;
       case 'ruim': return <AlertTriangle className="h-5 w-5" />;
       case 'critico': return <AlertTriangle className="h-5 w-5" />;
-      default: return <Brain className="h-5 w-5" />;
+      default: return Ⓛh-5 w-5Ⓛ;
     }
   };
 
@@ -323,7 +324,7 @@ export default function ResultadoKarasekSiegrist() {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-3 text-lg text-slate-800">
               <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg">
-                <Brain className="h-5 w-5 text-white" />
+                Ⓛh-5 w-5 text-whiteⓁ
               </div>
               Resumo Executivo
             </CardTitle>
@@ -347,7 +348,7 @@ export default function ResultadoKarasekSiegrist() {
             </div>
 
             <Alert className="border-l-4 border-l-blue-500 bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
-              <Brain className="h-5 w-5 text-blue-600" />
+              Ⓛh-5 w-5 text-blue-600Ⓛ
               <AlertDescription className="text-sm leading-relaxed text-slate-700 font-medium">
                 {gerarInterpretacao(resultado)}
               </AlertDescription>

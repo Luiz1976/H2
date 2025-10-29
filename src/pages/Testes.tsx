@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Clock, FileText, Brain, Heart, Users, Shield, AlertTriangle, Star, Lock, CheckCircle2, Loader2, Calendar } from "lucide-react";
+import { Building2, Clock, FileText, Heart, Users, Shield, AlertTriangle, Star, Lock, CheckCircle2, Loader2, Calendar } from "lucide-react";
+import Logo from "@/components/Logo";
 import { useNavigate } from "react-router-dom";
 import { infoTesteClimaOrganizacional } from "@/lib/testes/clima-organizacional";
 import { infoTesteKarasekSiegrist } from "@/lib/testes/karasek-siegrist";
@@ -124,9 +125,9 @@ export default function Testes() {
 
   const getTesteIcon = (nome: string) => {
     const nomeNorm = nome.toLowerCase();
-    if (nomeNorm.includes('humaniq insight')) return <Brain className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('humaniq insight')) return Ⓛh-8 w-8 text-whiteⓁ;
     if (nomeNorm.includes('clima organizacional')) return <Building2 className="h-8 w-8 text-white" />;
-    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return <Brain className="h-8 w-8 text-white" />;
+    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return Ⓛh-8 w-8 text-whiteⓁ;
     if (nomeNorm.includes('estresse')) return <Heart className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('clima e bem-estar')) return <Users className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('maturidade') || nomeNorm.includes('mgrp')) return <Shield className="h-8 w-8 text-white" />;
@@ -317,7 +318,7 @@ export default function Testes() {
 
   const testesEstaticos = [
     { info: infoTesteClimaOrganizacional, route: '/teste/clima-organizacional', icon: <Building2 className="h-8 w-8 text-white" />, color: 'bg-blue-500', badgeColor: 'text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800', buttonColor: 'bg-blue-600 hover:bg-blue-700' },
-    { info: infoTesteKarasekSiegrist, route: '/teste/karasek-siegrist', icon: <Brain className="h-8 w-8 text-white" />, color: 'bg-purple-500', badgeColor: 'text-purple-600 border-purple-200 bg-purple-50 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800', buttonColor: 'bg-purple-600 hover:bg-purple-700', badges: ['OMS', 'OIT'] },
+    { info: infoTesteKarasekSiegrist, route: '/teste/karasek-siegrist', icon: Ⓛh-8 w-8 text-whiteⓁ, color: 'bg-purple-500', badgeColor: 'text-purple-600 border-purple-200 bg-purple-50 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800', buttonColor: 'bg-purple-600 hover:bg-purple-700', badges: ['OMS', 'OIT'] },
     { info: infoTesteEstresseOcupacional, route: '/teste/estresse-ocupacional', icon: <Heart className="h-8 w-8 text-white" />, color: 'bg-blue-500', badgeColor: 'text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800', buttonColor: 'bg-blue-600 hover:bg-blue-700' },
     { info: infoTesteClimaBemEstar, route: '/teste/clima-bem-estar', icon: <Users className="h-8 w-8 text-white" />, color: 'bg-green-500', badgeColor: 'text-green-600 border-green-200 bg-green-50 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800', buttonColor: 'bg-green-600 hover:bg-green-700' },
     { info: infoTesteMaturidadeRiscosPsicossociais, route: '/teste/maturidade-riscos-psicossociais', icon: <Shield className="h-8 w-8 text-white" />, color: 'bg-orange-500', badgeColor: 'text-orange-600 border-orange-200 bg-orange-50 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800', buttonColor: 'bg-orange-600 hover:bg-orange-700', badges: ['Organizacional', 'Gestão'] },

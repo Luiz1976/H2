@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Sparkles, Target, Heart, Zap, CheckCircle } from 'lucide-react';
+import { Sparkles, Target, Heart, Zap, CheckCircle } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 interface LoadingAnimationProps {
   onComplete: () => void;
@@ -24,7 +25,7 @@ const motivationalMessages = [
   {
     text: "Calibrando a experiência para seu perfil...",
     subtext: "Tecnologia avançada trabalhando para você",
-    icon: Brain,
+    icon: Zap,
     color: "text-purple-500"
   },
   {
@@ -129,9 +130,7 @@ export default function LoadingAnimation({
             ease: "easeInOut"
           }}
         >
-          <div className="mx-auto h-20 w-20 rounded-3xl bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center shadow-2xl">
-            <Brain className="h-10 w-10 text-white" />
-          </div>
+          <Logo size="lg" showText={false} className="mx-auto" />
         </motion.div>
 
         {/* Título */}
