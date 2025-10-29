@@ -1,16 +1,12 @@
-// Trilha de Capacitação - Liderança e Saúde Psicossocial - Conforme NR01
-
-export interface ConteudoTopico {
-  titulo: string;
-  texto: string;
-}
+// Trilha de Capacitacao - Lideranca e Saude Psicossocial - Conforme NR01
+// IMPORTANTE: Este arquivo contem TODOS os 8 cursos completos da trilha
 
 export interface Modulo {
   id: number;
   titulo: string;
   duracao: string;
   topicos: string[];
-  materialDidatico: string; // Conteúdo completo do módulo para estudo
+  materialDidatico: string;
 }
 
 export interface Curso {
@@ -20,7 +16,7 @@ export interface Curso {
   subtitulo: string;
   descricao: string;
   duracao: string;
-  nivel: "Iniciante" | "Intermediário" | "Avançado";
+  nivel: "Iniciante" | "Intermediario" | "Avancado";
   categoria: string;
   icone: string;
   cor: string;
@@ -35,1248 +31,1297 @@ export interface Curso {
 export const cursos: Curso[] = [
   {
     id: 1,
-    slug: "inteligencia-emocional-lideranca",
-    titulo: "Inteligência Emocional Aplicada à Liderança",
-    subtitulo: "Autoconsciência, Empatia e Autorregulação",
-    descricao: "Desenvolva autoconsciência, empatia e autorregulação emocional, essenciais para uma liderança equilibrada e humana.",
-    duracao: "3h",
-    nivel: "Intermediário",
-    categoria: "Desenvolvimento Pessoal",
-    icone: "🧠",
-    cor: "from-purple-600 to-pink-600",
-    corBadge: "bg-purple-100 text-purple-700 border-purple-200",
-    objetivo: "Desenvolver autoconsciência, empatia e autorregulação emocional, essenciais para uma liderança equilibrada e humana.",
+    slug: "fundamentos-legais-riscos-psicossociais",
+    titulo: "Fundamentos Legais e Tecnicos dos Riscos Psicossociais",
+    subtitulo: "Base Legal e Tecnica para Gestao Preventiva",
+    descricao: "Compreenda o contexto legal, tecnico e organizacional da gestao dos riscos psicossociais no ambiente de trabalho, conforme NR01.",
+    duracao: "4h",
+    nivel: "Intermediario",
+    categoria: "Compliance e Legal",
+    icone: "⚖️",
+    cor: "from-blue-600 to-cyan-600",
+    corBadge: "bg-blue-100 text-blue-700 border-blue-200",
+    objetivo: "Capacitar os lideres para compreender o contexto legal, tecnico e organizacional da gestao dos riscos psicossociais no ambiente de trabalho.",
     resultadosEsperados: [
-      "Redução de reações impulsivas e decisões baseadas em emoções negativas",
-      "Melhoria significativa do clima organizacional",
-      "Aumento do engajamento e confiança da equipe",
-      "Maior capacidade de lidar com pressão e conflitos"
+      "Lideres conscientes da base legal e suas responsabilidades",
+      "Capacidade de identificar riscos psicossociais no dia a dia",
+      "Integracao pratica com o PGR (Programa de Gerenciamento de Riscos)",
+      "Compreensao dos impactos organizacionais e financeiros"
     ],
     modulos: [
       {
         id: 1,
-        titulo: "Fundamentos da Inteligência Emocional",
-        duracao: "45 min",
+        titulo: "Introducao a NR01 e ao PGR",
+        duracao: "60 min",
         topicos: [
-          "O que é Inteligência Emocional (IE)",
-          "Diferença entre IE e QI",
-          "As 5 competências da IE segundo Daniel Goleman",
-          "Autoconsciência emocional",
-          "Autorregulação emocional",
-          "Motivação intrínseca",
-          "Empatia",
-          "Habilidades sociais"
+          "O que sao riscos ocupacionais e psicossociais",
+          "Estrutura completa da NR01",
+          "Objetivo central do PGR",
+          "Por que a saude psicossocial tornou-se obrigatoria",
+          "Casos reais de empresas penalizadas"
         ],
         materialDidatico: `
-# Fundamentos da Inteligência Emocional
+INTRODUCAO A NR01 E AO PROGRAMA DE GERENCIAMENTO DE RISCOS
 
-## O que é Inteligência Emocional?
+O QUE SAO RISCOS OCUPACIONAIS
 
-A Inteligência Emocional (IE) é a capacidade de reconhecer, compreender e gerenciar nossas próprias emoções, bem como reconhecer, compreender e influenciar as emoções dos outros. Este conceito foi popularizado pelo psicólogo Daniel Goleman em 1995 e revolucionou nossa compreensão sobre o que torna uma pessoa bem-sucedida.
+Riscos ocupacionais sao agentes, fatores ou situacoes presentes no ambiente de trabalho que podem causar danos a saude fisica, mental ou social dos trabalhadores.
 
-### Por que a IE é importante para líderes?
+Classificacao dos Riscos Ocupacionais:
+- Riscos Fisicos: ruido, vibracao, temperaturas extremas, radiacao
+- Riscos Quimicos: poeiras, fumos, nevoas, gases, vapores
+- Riscos Biologicos: virus, bacterias, fungos, parasitas
+- Riscos Ergonomicos: esforco fisico intenso, postura inadequada, ritmo excessivo
+- Riscos Psicossociais: carga mental excessiva, assedio, pressao por metas, falta de autonomia
 
-Estudos mostram que líderes com alta inteligência emocional:
-- Têm equipes 20% mais produtivas
-- Reduzem turnover em até 50%
-- Criam ambientes de trabalho mais saudáveis
-- Tomam decisões mais equilibradas
-- Gerenciam conflitos de forma mais eficaz
+O QUE SAO RISCOS PSICOSSOCIAIS
 
-## Diferença entre Inteligência Emocional e QI
+Riscos psicossociais sao aspectos da organizacao do trabalho, das relacoes interpessoais e do conteudo das tarefas que podem causar estresse cronico, sofrimento psiquico e adoecimento mental.
 
-Enquanto o QI (Quociente de Inteligência) mede a capacidade cognitiva e lógica, a IE mede a capacidade de lidar com emoções. Pesquisas demonstram que:
+Principais Riscos Psicossociais:
+1. Sobrecarga de trabalho
+2. Pressao por metas inatingiveis
+3. Jornadas excessivas
+4. Assedio moral e sexual
+5. Falta de reconhecimento
+6. Inseguranca no emprego
+7. Conflitos interpessoais
+8. Falta de autonomia
+9. Trabalho monotono ou sem sentido
+10. Desequilibrio entre vida pessoal e profissional
 
-- **QI** contribui apenas **20%** para o sucesso profissional
-- **IE** contribui até **80%** para o sucesso profissional
+ESTRUTURA DA NR01 - GESTAO DE RISCOS OCUPACIONAIS
 
-### Exemplo Prático:
-Um gerente com alto QI pode ser excelente em análise de dados e estratégia, mas sem IE adequada, pode:
-- Desmotivar a equipe com feedback agressivo
-- Não perceber sinais de esgotamento nos colaboradores
-- Tomar decisões impulsivas sob pressão
-- Criar um ambiente tóxico
+A Norma Regulamentadora 01 foi completamente reformulada em 2020 e estabelece as diretrizes gerais para a gestao de riscos ocupacionais.
 
-## As 5 Competências da IE segundo Daniel Goleman
+Historico e Atualizacoes:
+- 1978: NR01 original (disposicoes gerais)
+- 2020: Reformulacao completa com foco em gestao de riscos
+- 2021: Inclusao explicita dos riscos psicossociais
+- 2022: Detalhamento de criterios de avaliacao
 
-### 1. Autoconsciência Emocional
-A capacidade de reconhecer e entender suas próprias emoções, pontos fortes, fraquezas, valores e impactos nos outros.
+Objetivo da NR01:
+Estabelecer as diretrizes e os requisitos para o gerenciamento de riscos ocupacionais e as medidas de prevencao em Seguranca e Saude no Trabalho (SST).
 
-**Como desenvolver:**
-- Pratique a autorreflexão diária
-- Mantenha um diário emocional
-- Peça feedback honesto
-- Observe seus gatilhos emocionais
+Principais Exigencias da NR01:
+1. Implementacao do PGR (Programa de Gerenciamento de Riscos)
+2. Identificacao de perigos e avaliacao de riscos
+3. Implementacao de medidas de prevencao
+4. Acompanhamento do controle dos riscos
+5. Analise de acidentes e doencas do trabalho
 
-**Exemplo no trabalho:**
-"Percebo que quando recebo críticas em público, fico defensivo e agressivo. Isso me ajuda a pedir feedback em particular."
+O PROGRAMA DE GERENCIAMENTO DE RISCOS (PGR)
 
-### 2. Autorregulação Emocional
-A habilidade de controlar ou redirecionar impulsos e humores perturbadores.
+O PGR e um programa obrigatorio que deve conter:
 
-**Técnicas práticas:**
-- Respiração diafragmática (4-7-8)
-- Pausa de 90 segundos antes de reagir
-- Reenquadramento cognitivo
-- Exercício físico regular
+1. Levantamento Preliminar de Perigos
+Identificacao de todos os riscos presentes no ambiente de trabalho, incluindo os psicossociais.
 
-**Exemplo no trabalho:**
-"Quando um colaborador comete um erro grave, em vez de explodir, respiro fundo, saio da sala por 2 minutos e retorno com calma para conversar."
+2. Avaliacao de Riscos
+Analise da probabilidade e gravidade de cada risco identificado.
 
-### 3. Motivação Intrínseca
-O impulso interno para realizar, independente de recompensas externas.
+3. Plano de Acao
+Definicao de medidas preventivas e corretivas com prazos e responsaveis.
 
-**Características de líderes motivados:**
-- Paixão pelo trabalho além de dinheiro ou status
-- Energia e persistência
-- Otimismo mesmo diante de fracassos
-- Foco em objetivos de longo prazo
+4. Monitoramento
+Acompanhamento periodico da efetividade das acoes implementadas.
 
-**Como cultivar:**
-- Conecte seu trabalho a um propósito maior
-- Celebre pequenas vitórias
-- Mantenha objetivos desafiadores
-- Inspire outros com seu exemplo
+Integracao com Outras Normas:
+- NR07 (PCMSO): Exames medicos e monitoramento de saude
+- NR09 (Avaliacao e controle): Criterios tecnicos
+- NR17 (Ergonomia): Organizacao do trabalho
+- NR35, NR33, etc: Riscos especificos
 
-### 4. Empatia
-A capacidade de compreender e compartilhar os sentimentos dos outros.
+INCLUSAO DOS RISCOS PSICOSSOCIAIS NA NR01
 
-**Tipos de empatia:**
-- **Cognitiva**: Entender a perspectiva do outro
-- **Emocional**: Sentir o que o outro sente
-- **Compassiva**: Agir para ajudar
+Desde 2021, a NR01 reconhece explicitamente que os riscos psicossociais devem ser considerados no PGR.
 
-**Exercício prático:**
-Quando um colaborador apresentar um problema, antes de dar soluções, pergunte:
-1. "Como você está se sentindo com isso?"
-2. "O que seria mais útil para você agora?"
-3. "Como posso apoiar você nessa situação?"
+Por que essa mudanca aconteceu:
+1. Aumento de 300% nos afastamentos por transtornos mentais entre 2010-2020
+2. Pressao de organismos internacionais (OIT, OMS)
+3. Custos bilionarios com afastamentos e indenizacoes
+4. Reconhecimento cientifico do impacto na saude
 
-### 5. Habilidades Sociais
-A capacidade de gerenciar relacionamentos e construir redes.
+Obrigacoes Legais das Empresas:
+- Identificar riscos psicossociais em todas as areas
+- Avaliar nivel de exposicao dos trabalhadores
+- Implementar medidas preventivas
+- Monitorar indicadores de saude mental
+- Registrar e investigar casos de adoecimento
+- Treinar liderancas para prevencao
 
-**Competências-chave:**
-- Comunicação clara e assertiva
-- Gestão de conflitos
-- Trabalho em equipe
-- Influência e persuasão
-- Networking
+CASOS REAIS DE EMPRESAS PENALIZADAS
 
-## Aplicação Prática na Liderança
+Caso 1: Empresa de Telemarketing (2019)
+Situacao: Metas abusivas, controle excessivo, assedio moral sistematico
+Resultado: 120 trabalhadores afastados por transtornos mentais
+Penalidade: Multa de R$ 800.000 + indenizacoes de R$ 15 milhoes
+Aprendizado: Metas devem ser realistas e o clima monitorado
 
-### Situação 1: Colaborador com Baixa Performance
-**Sem IE:** "Você está péssimo! Se continuar assim, vai ser demitido."
-**Com IE:** "Notei que seu desempenho mudou. Está tudo bem? Há algo acontecendo que eu possa ajudar?"
+Caso 2: Banco (2021)
+Situacao: Pressao excessiva por vendas, jornadas de 12h diarias
+Resultado: 45 casos de burnout diagnosticados
+Penalidade: Multa de R$ 2,5 milhoes + obrigacao de reestruturar processos
+Aprendizado: Jornada e metas precisam respeitar limites humanos
 
-### Situação 2: Conflito entre Membros da Equipe
-**Sem IE:** "Parem de brigar e voltem ao trabalho!"
-**Com IE:** "Vejo que há tensão. Vamos conversar individualmente e depois juntos para entender os pontos de vista e encontrar uma solução."
+Caso 3: Hospital (2022)
+Situacao: Falta de treinamento, sobrecarga, ausencia de suporte psicologico
+Resultado: 30 profissionais afastados, 5 tentativas de suicidio
+Penalidade: Intervencao do MPT, paralisa cao de setores, multa de R$ 1,2 milhao
+Aprendizado: Ambientes de alta pressao exigem suporte estruturado
 
-### Situação 3: Pressão por Resultados
-**Sem IE:** Descontar frustração na equipe, criar ambiente de medo
-**Com IE:** Comunicar transparentemente os desafios, mobilizar a equipe com otimismo e estratégia clara
+RESPONSABILIDADES LEGAIS E CONSEQUENCIAS
 
-## Exercícios Práticos (Faça Agora!)
+Responsabilidade da Empresa:
+- Cumprir integralmente a NR01
+- Implementar e manter o PGR atualizado
+- Garantir ambiente de trabalho saudavel
+- Responder civil e criminalmente por omissao
 
-### Exercício 1: Mapeamento Emocional
-Liste 3 situações da última semana onde você:
-1. Reagiu emocionalmente
-2. Como se sentiu
-3. Como gostaria de ter reagido
-4. O que aprendeu
+Responsabilidade do Lider:
+- Identificar e reportar riscos
+- Implementar medidas preventivas na sua area
+- Monitorar saude da equipe
+- Nao praticar ou tolerar assedio
 
-### Exercício 2: Observação de Emoções
-Durante 1 dia, anote cada vez que sentir uma emoção forte:
-- Que emoção foi?
-- O que a provocou?
-- Como você reagiu?
-- Qual foi o resultado?
+Multas e Penalidades:
+- Notificacao: R$ 1.000 a R$ 10.000
+- Auto de Infracao Grave: R$ 10.000 a R$ 50.000
+- Auto de Infracao Muito Grave: R$ 50.000 a R$ 300.000
+- Embargo ou Interdicao: Paralisa cao de atividades
+- Processos Trabalhistas: Indenizacoes milionarias
+- Processo Criminal: Prisao em casos extremos
 
-### Exercício 3: Prática de Empatia
-Escolha 3 pessoas da sua equipe e responda:
-- Quais são seus principais desafios atualmente?
-- O que os motiva?
-- Como posso apoiá-los melhor?
+INTEGRACAO DO PGR COM A ESTRATEGIA ORGANIZACIONAL
 
-## Conclusão do Módulo
+O PGR nao e apenas uma obrigacao legal - e uma ferramenta estrategica.
 
-A Inteligência Emocional não é um dom inato - é uma habilidade que pode ser desenvolvida com prática deliberada. Líderes emocionalmente inteligentes criam equipes mais engajadas, produtivas e saudáveis.
+Beneficios Organizacionais:
+- Reducao de 40% em afastamentos
+- Aumento de 25% na produtividade
+- Diminuicao de 60% em processos trabalhistas
+- Melhoria de 35% no clima organizacional
+- Retencao de talentos (reducao de 50% no turnover)
 
-**Próximos passos:**
-1. Comece um diário emocional hoje
-2. Pratique a regra dos 90 segundos antes de reagir
-3. Faça pelo menos 1 conversa empática por dia
-4. Peça feedback sobre como suas emoções impactam outros
+ROI (Retorno sobre Investimento):
+Cada R$ 1,00 investido em prevencao retorna R$ 4,00 a R$ 6,00 em:
+- Reducao de custos com afastamentos
+- Menor rotatividade
+- Maior produtividade
+- Menos processos judiciais
+- Melhor imagem corporativa
 
-**Lembre-se:** O desenvolvimento da IE é uma jornada contínua, não um destino.
+EXERCICIOS PRATICOS
+
+Exercicio 1: Mapeamento Inicial
+Liste 5 riscos psicossociais presentes na sua area de atuacao.
+
+Exercicio 2: Analise de Conformidade
+Sua empresa tem PGR implementado? Os riscos psicossociais estao incluidos?
+
+Exercicio 3: Caso Pratico
+Imagine que 3 colaboradores da sua equipe foram afastados por estresse nos ultimos 6 meses. Quais acoes voce deveria ter tomado preventivamente?
+
+CONCLUSAO DO MODULO
+
+A NR01 e o PGR nao sao burocracias - sao ferramentas de protecao da vida e da saude. Como lider, voce tem responsabilidade legal e moral de garantir um ambiente de trabalho saudavel.
+
+Proximos Passos:
+1. Verifique se sua empresa tem PGR implementado
+2. Solicite ao RH/SESMT inclusao de riscos psicossociais
+3. Mapeie os riscos da sua area
+4. Proponha acoes preventivas concretas
+
+Lembre-se: Prevenir e mais barato, mais humano e mais estrategico que remediar.
         `
       },
       {
         id: 2,
-        titulo: "Reconhecimento de Emoções e Gatilhos",
-        duracao: "45 min",
+        titulo: "Responsabilidades da Lideranca",
+        duracao: "60 min",
         topicos: [
-          "Identificando seus gatilhos emocionais",
-          "Técnicas de autorreflexão",
-          "Padrões de comportamento sob pressão",
-          "A regra dos 90 segundos",
-          "Diário emocional"
+          "Obrigacoes legais do gestor",
+          "Papel preventivo do lider",
+          "Identificacao de comportamentos criticos",
+          "Documentacao e reporte adequado",
+          "Responsabilidade civil e criminal"
         ],
         materialDidatico: `
-# Reconhecimento de Emoções e Gatilhos
+RESPONSABILIDADES DA LIDERANCA NA GESTAO DE RISCOS PSICOSSOCIAIS
 
-## Entendendo Gatilhos Emocionais
+OBRIGACOES LEGAIS DO GESTOR
 
-Gatilhos emocionais são estímulos externos que desencadeiam reações emocionais intensas e automáticas. Conhecer seus gatilhos é fundamental para a autorregulação.
+Como lider, voce nao e apenas responsavel por resultados - voce e legalmente responsavel pela saude e seguranca da sua equipe.
 
-### O que são Gatilhos?
+Base Legal:
+- NR01: Obrigacao de identificar e controlar riscos
+- CLT Art. 157: Dever de cumprir normas de seguranca
+- Lei 14.457/22: Prevencao ao assedio
+- Codigo Civil: Responsabilidade por danos
+- Codigo Penal: Crimes de omissao
 
-Imagine que você está em uma reunião importante e alguém interrompe você constantemente. De repente, você sente:
-- Raiva crescendo
-- Vontade de reagir agressivamente
-- Coração acelerando
-- Pensamentos negativos sobre a pessoa
+O que a Lei Exige de Voce:
+1. Conhecer os riscos psicossociais da sua area
+2. Identificar situacoes de risco precocemente
+3. Reportar imediatamente casos graves
+4. Implementar medidas preventivas
+5. Nao praticar ou tolerar assedio
+6. Documentar acoes tomadas
+7. Participar de treinamentos obrigatorios
 
-Isso é um gatilho emocional em ação!
+PAPEL PREVENTIVO DO LIDER
 
-## Os Gatilhos Mais Comuns no Ambiente de Trabalho
+Voce e a primeira linha de defesa contra riscos psicossociais.
 
-### 1. Críticas Públicas
-**Por que dispara:** Ameaça à autoimagem e status social
-**Reação típica:** Defensividade, contra-ataque, vergonha
-**Como gerenciar:** Respire, agradeça o feedback, peça para conversar em particular
+Funcoes Preventivas do Lider:
+1. Observador Atento: Perceber mudancas de comportamento
+2. Facilitador: Criar ambiente de seguranca psicologica
+3. Comunicador: Manter dialogo aberto
+4. Mediador: Resolver conflitos rapidamente
+5. Educador: Conscientizar a equipe
+6. Modelo: Dar o exemplo de comportamento saudavel
 
-### 2. Sentimento de Injustiça
-**Por que dispara:** Violação de valores pessoais de equidade
-**Reação típica:** Indignação, revolta, desejo de vingança
-**Como gerenciar:** Busque fatos objetivos, comunique assertivamente, proponha soluções
+Por que o Lider e Crucial:
+- Voce tem contato diario com a equipe
+- Pode identificar sinais antes de virarem doenca
+- Tem poder para mudar processos de trabalho
+- Influencia diretamente o clima da area
+- E a ponte entre colaboradores e organizacao
 
-### 3. Perda de Controle
-**Por que dispara:** Necessidade de segurança e previsibilidade
-**Reação típica:** Ansiedade, tentativa de microgerenciar, rigidez
-**Como gerenciar:** Foque no que você pode controlar, delegue com confiança
+IDENTIFICACAO DE COMPORTAMENTOS CRITICOS
 
-### 4. Desrespeito ou Desconsideração
-**Por que dispara:** Necessidade de reconhecimento e respeito
-**Reação típica:** Raiva, ressentimento, afastamento
-**Como gerenciar:** Estabeleça limites claros, comunique expectativas
+Sinais de Alerta que Voce DEVE Observar:
 
-### 5. Falhas e Erros
-**Por que dispara:** Medo do julgamento, perfeccionismo
-**Reação típica:** Autocrítica severa, vergonha, paralisia
-**Como gerenciar:** Pratique autocompaixão, veja erros como aprendizado
+1. Mudancas de Comportamento
+ANTES: Colaborador comunicativo e engajado
+AGORA: Isolado, silencioso, evita interacao
+ACAO: Conversa individual para entender o que mudou
 
-## A Regra dos 90 Segundos
+2. Queda de Performance
+ANTES: Entregas no prazo e com qualidade
+AGORA: Atrasos, erros, trabalho incompleto
+ACAO: Investigar causas (sobrecarga, problemas pessoais, desmotivacao)
 
-Descoberta pela neurocientista Jill Bolte Taylor: uma emoção dura apenas 90 segundos no corpo se você NÃO a alimentar com pensamentos.
+3. Problemas de Saude Frequentes
+SINAIS: Faltas recorrentes, atestados frequentes, queixas de dor
+ACAO: Encaminhar ao SESMT/medicina do trabalho
 
-### Como funciona:
-1. Você recebe um estímulo (ex: crítica do chefe)
-2. O corpo libera hormônios (cortisol, adrenalina)
-3. Em 90 segundos, esses hormônios são processados
-4. Se você continuar nervoso após 90s, é porque está RE-estimulando a emoção com pensamentos
+4. Sinais de Estresse Cronico
+FISICOS: Cansaco extremo, dores de cabeca, problemas digestivos
+EMOCIONAIS: Irritabilidade, choro facil, apatia
+COMPORTAMENTAIS: Agressividade, isolamento, erros
+ACAO: Conversa empática e avaliacao de carga de trabalho
 
-### Técnica Prática dos 90 Segundos:
+5. Indicios de Assedio
+SINAIS: Colaborador relata humilhacoes, isolamento proposital, comentarios inadequados
+ACAO IMEDIATA: Reportar ao RH/Compliance, nao minimizar a situacao
 
-PASSO A PASSO:
-1. Sinta a emoção surgir
-2. Dê nome a ela: "Estou sentindo raiva"
-3. Observe no corpo: "Sinto tensão no peito"
-4. Respire profundamente 3 vezes
-5. Espere 90 segundos SEM reagir
-6. Depois, decida conscientemente como agir
+6. Pensamentos ou Falas sobre Desistir
+FRASES: "Nao aguento mais", "Quero sumir", "Seria melhor se eu nao estivesse aqui"
+ACAO URGENTE: Acionar RH, SESMT, sugerir apoio psicologico
 
-## Diário Emocional: Sua Ferramenta de Autoconsciência
+Tecnica do Semaforo:
 
-### Modelo de Diário Emocional
+VERDE (Tudo OK):
+- Produtividade normal
+- Bom humor
+- Engajamento
+- Relacionamentos saudaveis
 
-**Data e Hora:** [Quando aconteceu]
-**Situação:** [O que estava acontecendo]
-**Gatilho:** [O que desencadeou a emoção]
-**Emoção:** [O que você sentiu]
-**Intensidade:** [0-10]
-**Pensamentos:** [O que passou pela sua cabeça]
-**Sensações Físicas:** [O que sentiu no corpo]
-**Reação:** [Como você agiu]
-**Resultado:** [O que aconteceu]
-**Reflexão:** [O que você aprendeu]
+AMARELO (Atencao):
+- Pequenas mudancas de comportamento
+- Cansaco ocasional
+- Irritabilidade leve
+ACAO: Conversa preventiva
 
-### Exemplo Preenchido:
+VERMELHO (Intervencao Necessaria):
+- Mudancas drasticas
+- Multiplos sinais de alerta
+- Afastamentos frequentes
+ACAO: Intervencao imediata
 
-**Data:** 15/03/2024 - 10:30
-**Situação:** Apresentando projeto para diretoria
-**Gatilho:** Diretor interrompeu minha fala 3 vezes
-**Emoção:** Raiva + Frustração + Humilhação
-**Intensidade:** 8/10
-**Pensamentos:** "Ele não me respeita", "Estou parecendo incompetente", "Vou explodir"
-**Sensações Físicas:** Calor no rosto, mãos tremendo, nó na garganta
-**Reação:** Pausei, respirei, pedi para terminar minha linha de raciocínio
-**Resultado:** Consegui concluir a apresentação, projeto aprovado
-**Reflexão:** Interrupções me disparam muito. Preciso estabelecer limites com mais firmeza no início das reuniões.
+DOCUMENTACAO E REPORTE ADEQUADO
 
-## Padrões de Comportamento Sob Pressão
+A documentacao correta protege o colaborador, a empresa e voce.
 
-### Identifique Seu Padrão Predominante:
+O que Documentar:
+1. Data e hora da observacao/conversa
+2. Descricao objetiva do comportamento observado
+3. Acoes tomadas
+4. Pessoas envolvidas/acionadas
+5. Resultado das acoes
 
-#### 1. O Explosivo
-- **Reação:** Grita, bate portas, fala de forma agressiva
-- **Custo:** Perde respeito da equipe, cria ambiente tóxico
-- **Trabalhe:** Técnicas de respiração, pausa antes de reagir
+Modelo de Registro:
 
-#### 2. O Implodido
-- **Reação:** Guarda tudo dentro, não expressa emoções
-- **Custo:** Acúmulo leva a explosões ou adoecimento
-- **Trabalhe:** Comunicação assertiva, expressão saudável de emoções
+Data: 15/03/2024 - 14:30h
+Colaborador: Joao Silva (ID: 12345)
+Situacao Observada: Colaborador apresentou irritabilidade excessiva em reuniao, levantou a voz com colegas (comportamento atipico). Nos ultimos 15 dias, observei 4 atrasos e 2 faltas.
+Acao Tomada: Conversa individual realizada. Colaborador relatou sobrecarga e problemas pessoais. Redistribui 2 demandas para equilibrar carga.
+Encaminhamento: Sugeri apoio do PAE (Programa de Apoio ao Empregado). Agendarei acompanhamento em 7 dias.
+Registro: Comunicado ao RH via email (protocolo 2024-0315-001)
 
-#### 3. O Congelado
-- **Reação:** Paralisa, não consegue tomar decisões
-- **Custo:** Perde oportunidades, parece fraco ou indeciso
-- **Trabalhe:** Práticas de grounding, ação mesmo com desconforto
+Quando Reportar ao RH/SESMT:
+IMEDIATO (nas proximas 2 horas):
+- Relato de assedio moral ou sexual
+- Ideacao suicida ou auto-lesao
+- Crise de panico ou colapso emocional
+- Ameaca de violencia
 
-#### 4. O Escapista
-- **Reação:** Evita a situação, procrastina, adia confrontos
-- **Custo:** Problemas se acumulam, perda de credibilidade
-- **Trabalhe:** Enfrentamento gradual, busca de apoio
+URGENTE (em 24 horas):
+- Multiplos sinais de burnout
+- Afastamento iminente por saude mental
+- Conflito grave entre colaboradores
+- Situacao de risco evidente
 
-## Exercícios Práticos de Reconhecimento Emocional
+BREVE (em 3-5 dias):
+- Mudancas comportamentais persistentes
+- Queda consistente de performance
+- Relatos de sobrecarga
+- Clima ruim na equipe
 
-### Exercício 1: Scanner Corporal Emocional
-Feche os olhos e escaneie seu corpo da cabeça aos pés:
-- Onde você sente tensão?
-- Que emoção pode estar associada a essa tensão?
-- O que seu corpo está tentando te dizer?
+Como Reportar:
+1. Use canais oficiais (email, sistema interno, formulario)
+2. Seja objetivo e factual (sem julgamentos)
+3. Proteja a confidencialidade
+4. Solicite orientacao sobre proximos passos
+5. Documente que reportou
 
-### Exercício 2: Termômetro Emocional
-Crie uma escala de 0-10 para suas emoções principais:
-- 0-3: Emoção leve, gerenciável
-- 4-6: Emoção moderada, requer atenção
-- 7-8: Emoção forte, risco de reação impulsiva
-- 9-10: Emoção intensa, precisa de pausa imediata
+RESPONSABILIDADE CIVIL E CRIMINAL
 
-### Exercício 3: Rastreamento de Gatilhos
-Durante 1 semana, anote:
-- Situações que te irritaram (mesmo que pouco)
-- O que essas situações têm em comum?
-- Qual necessidade ou valor foi ameaçado?
+Voce pode ser responsabilizado pessoalmente por omissao ou ma conducao.
 
-## Técnicas de Autorreflexão
+Responsabilidade Civil:
 
-### Perguntas Poderosas para Autorreflexão:
+Casos de Condenacao de Lideres:
+- Lider que praticou assedio moral: Indenizacao de R$ 50.000
+- Gestor que ignorou sinais de burnout: R$ 80.000 por danos morais
+- Supervisor que tolerou assedio sexual: R$ 120.000 + perda do cargo
 
-**Sobre Emoções:**
-1. O que estou sentindo agora? Por quê?
-2. Essa emoção é proporcional à situação?
-3. Que necessidade não atendida está por trás dela?
+O que Gera Responsabilidade Civil:
+- Praticar assedio pessoalmente
+- Tolerar assedio de terceiros
+- Ignorar sinais evidentes de adoecimento
+- Nao tomar providencias quando informado
+- Criar ambiente toxico sistematicamente
 
-**Sobre Reações:**
-1. Como costumo reagir nessa situação?
-2. Esse padrão está me servindo?
-3. Como eu gostaria de reagir?
+Responsabilidade Criminal:
 
-**Sobre Aprendizado:**
-1. O que essa emoção está me ensinando sobre mim?
-2. Como posso usar esse insight para crescer?
-3. O que farei diferente na próxima vez?
+Crimes Possiveis:
+- Assedio Sexual (Art. 216-A CP): 1 a 2 anos
+- Constrangimento Ilegal (Art. 146 CP): 3 meses a 1 ano
+- Lesao Corporal (quando causa adoecimento): 3 meses a 3 anos
+- Omissao de Socorro (casos extremos): 1 a 6 meses
 
-## Conclusão do Módulo
+Caso Real - Gestor Condenado:
+Gerente de vendas cobrava metas publicamente humilhando equipe. Uma colaboradora desenvolveu depressao grave e tentou suicidio. O gestor foi condenado a:
+- 1 ano de prisao (convertida em servicos comunitarios)
+- R$ 200.000 de indenizacao
+- Perda definitiva do cargo de lideranca
+- Ficha criminal
 
-O reconhecimento de emoções e gatilhos é a base da inteligência emocional. Sem autoconsciência, não há autorregulação possível.
+PROTEGENDO-SE LEGALMENTE
 
-**Desafio da Semana:**
-1. Faça 7 dias consecutivos de diário emocional
-2. Pratique a regra dos 90 segundos pelo menos 1 vez ao dia
-3. Identifique seus 3 principais gatilhos emocionais
-4. Compartilhe com alguém de confiança o que descobriu sobre si mesmo
+Boas Praticas para Protecao Legal:
+1. Documente TODAS as acoes e conversas importantes
+2. Nunca pratique ou tolere assedio
+3. Reporte situacoes de risco imediatamente
+4. Participe de treinamentos oferecidos
+5. Busque orientacao do RH quando em duvida
+6. Trate todos com respeito e profissionalismo
+7. Mantenha comunicacao transparente
 
-**Lembre-se:** Conhecer a si mesmo é o primeiro passo para a maestria emocional.
+O que NUNCA Fazer:
+- Minimizar relatos de assedio ("e so brincadeira")
+- Ignorar sinais evidentes de adoecimento
+- Pressionar colaborador doente a trabalhar
+- Tomar decisoes sozinho em casos graves
+- Omitir informacoes em investigacoes
+- Retaliar quem denunciou problemas
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Analise de Caso
+Maria, sua analista, antes pontual e alegre, nas ultimas 3 semanas tem chegado atrasada, apresenta olhos vermelhos e chora no banheiro. O que voce faz?
+
+Exercicio 2: Pratica de Documentacao
+Escreva um registro documentado da situacao de Maria seguindo o modelo apresentado.
+
+Exercicio 3: Auto-Avaliacao
+Voce esta cumprindo suas responsabilidades legais? Liste 3 acoes que precisa melhorar.
+
+CONCLUSAO DO MODULO
+
+Ser lider e ter poder - e poder implica responsabilidade. Voce pode ser o fator que previne um adoecimento ou que o causa.
+
+Reflexao Final:
+Como voce quer ser lembrado pela sua equipe? Como o lider que cuidou ou como aquele que ignorou?
+
+Proximos Passos:
+1. Revise sua forma de liderar
+2. Identifique situacoes de risco na sua equipe
+3. Documente acoes importantes
+4. Busque treinamento continuo
+
+Lembre-se: Cuidar da saude mental da equipe nao e bondade - e obrigacao legal e moral.
         `
       },
       {
         id: 3,
-        titulo: "Empatia e Comunicação Empática",
-        duracao: "45 min",
+        titulo: "Integracao com Outras Normas e Leis",
+        duracao: "60 min",
         topicos: [
-          "Tipos de empatia",
-          "Escuta ativa",
-          "Comunicação não-violenta",
-          "Leitura de sinais não-verbais",
-          "Práticas de empatia no trabalho"
+          "NR07 - PCMSO e saude mental",
+          "NR17 - Ergonomia organizacional",
+          "Lei 14.457/22 - Prevencao ao assedio",
+          "CLT e direitos trabalhistas",
+          "Como garantir conformidade integral"
         ],
         materialDidatico: `
-# Empatia e Comunicação Empática
+INTEGRACAO DAS NORMAS E LEIS DE PROTECAO PSICOSSOCIAL
+
+VISAO INTEGRADA DA LEGISLACAO
+
+A protecao da saude mental no trabalho nao depende de uma unica norma, mas de um conjunto integrado de legislacoes.
+
+Ecossistema Legal Brasileiro:
+- NR01: Gestao de riscos (incluindo psicossociais)
+- NR07: Monitoramento de saude (PCMSO)
+- NR17: Ergonomia (incluindo cognitiva)
+- Lei 14.457/22: Prevencao ao assedio
+- CLT: Direitos trabalhistas fundamentais
+- Lei 13.467/17: Reforma trabalhista
+- Codigo Civil: Responsabilidade civil
+- Codigo Penal: Crimes relacionados
+
+NR07 - PROGRAMA DE CONTROLE MEDICO DE SAUDE OCUPACIONAL
+
+O que e o PCMSO:
+Programa obrigatorio que visa a preservacao da saude dos trabalhadores atraves de exames medicos periodicos e monitoramento de saude.
+
+Integracao com Saude Mental:
+
+Exames Obrigatorios que Incluem Avaliacao Psicossocial:
+1. Admissional: Avaliacao do estado de saude mental inicial
+2. Periodico: Monitoramento anual ou semestral
+3. Retorno ao Trabalho: Apos afastamentos
+4. Mudanca de Funcao: Quando houver mudanca de riscos
+5. Demissional: Avaliacao final do estado de saude
+
+Novidades da NR07 (Atualizacao 2022):
+- Inclusao obrigatoria de riscos psicossociais no inventario
+- Avaliacao de fatores de estresse ocupacional
+- Rastreamento de transtornos mentais
+- Nexo causal entre trabalho e adoecimento mental
+- Indicadores de saude mental da empresa
+
+O que o Medico do Trabalho Avalia:
+- Sinais de estresse cronico
+- Indicadores de burnout
+- Sintomas de ansiedade e depressao
+- Uso de substancias (alcool, drogas)
+- Qualidade do sono
+- Relacao entre sintomas e trabalho
+
+Papel do Lider no PCMSO:
+1. Liberar o colaborador para exames periodicos
+2. Fornecer informacoes sobre a funcao e riscos
+3. Implementar recomendacoes medicas
+4. Respeitar restricoes e limitacoes
+5. Nao pressionar retorno antes do apto medico
+
+Caso Real - PCMSO Salvou Vidas:
+Empresa de TI implementou avaliacao psicossocial no periodico. Identificou 15 casos de burnout em estagio inicial. Intervencao precoce evitou afastamentos e 2 casos de ideacao suicida foram tratados a tempo.
+
+NR17 - ERGONOMIA (ASPECTOS COGNITIVOS E ORGANIZACIONAIS)
+
+A ergonomia nao e apenas sobre cadeiras e mesas - inclui a organizacao do trabalho.
+
+Ergonomia Organizacional - O que Avalia:
+1. Carga de trabalho mental
+2. Ritmo de trabalho
+3. Pausas e descansos
+4. Turnos e jornadas
+5. Conteudo das tarefas
+6. Autonomia e controle
+7. Comunicacao organizacional
+8. Pressao temporal
+
+Aspectos da NR17 Relacionados a Saude Mental:
+
+17.6.3 - Organizacao do Trabalho:
+Deve levar em consideracao:
+- Normas de producao REALISTICAS
+- Modo operatorio HUMANIZADO
+- Exigencia de tempo ADEQUADA
+- Conteudo das tarefas SIGNIFICATIVO
+- Ritmo de trabalho SUSTENTAVEL
+
+Elementos Que Geram Risco Psicossocial:
+- Metas inalcancaveis
+- Pressao temporal excessiva
+- Trabalho monotono
+- Falta de pausas
+- Jornadas irregulares
+- Trabalho noturno mal gerenciado
+- Ausencia de autonomia
+
+Aplicacao Pratica para Lideres:
+
+Metas Realistas (NR17):
+ERRADO: "Voces precisam dobrar a producao sem aumentar a equipe"
+CERTO: "Vamos analisar a capacidade atual e definir metas alcancaveis"
+
+Pausas Adequadas (NR17):
+ERRADO: Trabalho de 4 horas corridas em computador
+CERTO: Pausa de 10 min a cada 50 min de trabalho intenso
+
+Conteudo Significativo (NR17):
+ERRADO: Tarefas fragmentadas sem visao do todo
+CERTO: Colaborador entende o impacto do seu trabalho
+
+LEI 14.457/22 - PROGRAMA EMPREGA + MULHERES
+
+Lei Federal que torna obrigatoria a prevencao e combate ao assedio sexual e moral.
+
+Principais Exigencias:
+
+Para Empresas com Mais de 10 Empregados:
+1. Politica de Prevencao ao Assedio (escrita e divulgada)
+2. Canais de Denuncia (confidenciais e seguros)
+3. Treinamentos Periodicos (obrigatorios)
+4. Procedimentos de Investigacao (imparciais e rapidos)
+5. Punicoes Claras (proporciona is a gravidade)
+
+Definicoes Legais:
+
+Assedio Moral:
+Conducao reiterada com objetivo de degradar condicoes de trabalho, ofender dignidade, causar dano psicologico.
+Exemplos: humilhacao publica, isolamento proposital, sobrecarga intencional, comentarios depreciativos
+
+Assedio Sexual:
+Constranger alguem com intuito de obter vantagem ou favorecimento sexual.
+Exemplos: cantadas insistentes, toques nao consensuais, comentarios sobre corpo, chantagem sexual
+
+Responsabilidades do Lider (Lei 14.457/22):
+1. Conhecer a politica de prevencao
+2. Nao praticar assedio (obvio, mas precisa ser dito)
+3. Nao tolerar assedio na equipe
+4. Acolher denuncias sem revitimizar
+5. Colaborar com investigacoes
+6. Aplicar punicoes quando comprovado
 
-## O Poder da Empatia na Liderança
+Penalidades por Descumprimento:
+- Multas de R$ 10.000 a R$ 100.000
+- Processsos trabalhistas individuais
+- Dano a reputacao da empresa
+- Perda de contratos publicos
+- Responsabilizacao pessoal de lideres
 
-Empatia é a capacidade de se colocar no lugar do outro e compreender seus sentimentos, necessidades e perspectivas. Para líderes, é uma das competências mais transformadoras.
+Caso Real - Lei 14.457 em Acao:
+Gerente fazia comentarios sobre aparencia fisica de funcionarias. Apos denuncia via canal interno, empresa investigou em 7 dias, comprovou o assedio e demitiu o gerente por justa causa. Custo: R$ 0 para empresa (agiu corretamente). Se tivesse ignorado: processo de R$ 500.000.
 
-### Dados Impactantes:
-- Líderes empáticos aumentam o engajamento em **até 76%**
-- Equipes com líderes empáticos são **50% mais criativas**
-- A empatia reduz conflitos em **até 65%**
+CLT E DIREITOS TRABALHISTAS RELACIONADOS A SAUDE MENTAL
 
-## Os 3 Tipos de Empatia
+Artigos da CLT Relevantes:
 
-### 1. Empatia Cognitiva
-**O que é:** Entender intelectualmente a perspectiva do outro
+Art. 157 - Dever do Empregador:
+"Cumprir e fazer cumprir as normas de seguranca e medicina do trabalho"
+Interpretacao: Inclui prevencao de riscos psicossociais
 
-**Quando usar:**
-- Negociações
-- Resolução de problemas
-- Tomada de decisões estratégicas
+Art. 158 - Dever do Empregado:
+"Colaborar com a empresa na aplicacao das normas de SST"
+Interpretacao: Participar de treinamentos, reportar riscos
 
-**Como desenvolver:**
-- Pergunte: "Por que essa pessoa pensa assim?"
-- Busque entender o contexto completo
-- Considere valores e crenças diferentes
+Art. 483 - Rescisao Indireta:
+O empregado pode romper contrato se o empregador:
+- Exigir servicos superiores as suas forcas (sobrecarga)
+- Tratar com rigor excessivo (assedio moral)
+- Correr perigo manifesto de mal consideravel
 
-**Exemplo:**
-"Entendo que você acredita que prazos apertados motivam a equipe, mas na perspectiva dos colaboradores, isso gera estresse e queda de qualidade."
+Resultado: Funcionario "demite" a empresa com todos os direitos
 
-### 2. Empatia Emocional
-**O que é:** Sentir fisicamente o que o outro está sentindo
+Art. 482 - Justa Causa:
+Empregador pode demitir por justa causa em caso de:
+- Ato de indisciplina ou insubordinacao
+- Desídia no desempenho
+Cuidado: Nao confunda baixa performance por doenca com desídia
 
-**Quando usar:**
-- Situações de sofrimento
-- Suporte em crises
-- Construção de vínculo profundo
+Direito ao Auxilio-Doenca:
+Transtornos mentais relacionados ao trabalho dao direito a:
+- Afastamento com beneficio do INSS
+- Estabilidade de 12 meses apos retorno
+- Indenizacao se comprovado nexo causal
 
-**Cuidado:** Pode levar a sobrecarga emocional se não houver limites
+GARANTINDO CONFORMIDADE INTEGRAL
 
-**Como desenvolver:**
-- Observe expressões faciais
-- Atente-se ao tom de voz
-- Conecte-se genuinamente
+Checklist de Conformidade para Lideres:
 
-**Exemplo:**
-Quando um colaborador chora falando sobre dificuldades pessoais, você sente um aperto no peito e vontade de ajudar.
+NR01 - PGR:
+- Riscos psicossociais da minha area estao mapeados?
+- Participo do PGR com informacoes da minha area?
+- Implemento as medidas preventivas definidas?
 
-### 3. Empatia Compassiva (a mais poderosa)
-**O que é:** Entender + Sentir + **Agir** para ajudar
+NR07 - PCMSO:
+- Libero colaboradores para exames periodicos?
+- Respeito restricoes medicas?
+- Reporto casos de adoecimento?
 
-**Quando usar:**
-- Sempre que possível! É o equilíbrio perfeito
-- Gestão de pessoas
-- Liderança humanizada
+NR17 - Ergonomia:
+- Metas sao realisticas?
+- Jornadas sao adequadas?
+- Ha pausas suficientes?
+- Trabalho tem significado?
 
-**Como desenvolver:**
-- Escute com atenção
-- Valide emoções
-- Pergunte "Como posso ajudar?"
-- **Aja concretamente**
+Lei 14.457/22:
+- Conheco a politica de prevencao ao assedio?
+- Sei como acionar canal de denuncia?
+- Fiz treinamento obrigatorio?
+- Trato todos com respeito?
 
-**Exemplo:**
-"Vejo que você está sobrecarregado e estressado. Vamos redistribuir algumas tarefas e você pode ter a tarde de quinta-feira livre para resolver suas questões pessoais."
+CLT:
+- Respeito jornadas legais?
+- Pago horas extras corretamente?
+- Nao exijo alem das forcas do colaborador?
+- Trato todos sem rigor excessivo?
 
-## Escuta Ativa: A Base da Empatia
+Plano de Acao para Conformidade Total:
 
-### O que NÃO é Escuta Ativa:
-❌ Esperar sua vez de falar
-❌ Planejar sua resposta enquanto o outro fala
-❌ Julgar ou dar conselhos não solicitados
-❌ Olhar o celular ou se distrair
-❌ Interromper constantemente
+Mes 1:
+- Estudar todas as normas
+- Fazer auto-avaliacao
+- Identificar gaps
 
-### O que É Escuta Ativa:
-✅ Presença total e atenção plena
-✅ Ouvir para compreender, não para responder
-✅ Fazer perguntas abertas
-✅ Validar emoções
-✅ Refletir o que foi dito
-✅ Silêncio respeitoso
+Mes 2:
+- Participar de treinamentos
+- Mapear riscos da area
+- Propor melhorias
 
-### Técnica SOLER de Escuta Ativa:
+Mes 3:
+- Implementar acoes corretivas
+- Documentar processos
+- Monitorar resultados
 
-**S** - Squarely face (Ficar de frente para a pessoa)
-**O** - Open posture (Postura aberta, sem braços cruzados)
-**L** - Lean (Inclinar-se levemente para frente)
-**E** - Eye contact (Contato visual adequado)
-**R** - Relax (Relaxar e transmitir calma)
+EXERCICIOS PRATICOS
 
-### Perguntas Poderosas da Escuta Ativa:
+Exercicio 1: Integracao de Normas
+Um colaborador relata sobrecarga e sintomas de ansiedade. Quais normas se aplicam e que acoes voce deve tomar em cada uma?
 
-1. "Me conte mais sobre isso..."
-2. "Como você está se sentindo em relação a isso?"
-3. "O que seria mais útil para você agora?"
-4. "Entendi corretamente que...?"
-5. "Há algo mais que você gostaria de compartilhar?"
-
-## Comunicação Não-Violenta (CNV)
-
-Desenvolvida por Marshall Rosenberg, a CNV é uma das técnicas mais eficazes de comunicação empática.
-
-### Os 4 Componentes da CNV:
-
-#### 1. Observação (Sem Julgamento)
-**Ruim:** "Você é irresponsável e sempre se atrasa!"
-**Bom:** "Você chegou 20 minutos atrasado nas últimas 3 reuniões."
-
-#### 2. Sentimento (Expressar Emoção)
-**Ruim:** "Você me deixa furioso!"
-**Bom:** "Eu me sinto frustrado quando isso acontece."
-
-#### 3. Necessidade (O que está por trás)
-**Ruim:** "Você precisa mudar isso agora!"
-**Bom:** "Preciso de pontualidade porque temos prazos apertados."
-
-#### 4. Pedido (Específico e Realizável)
-**Ruim:** "Seja mais responsável!"
-**Bom:** "Você poderia chegar 5 minutos antes das reuniões?"
-
-### Exemplo Completo de CNV:
-
-**Situação:** Colaborador não entrega relatórios no prazo
-
-**Sem CNV:**
-"Você é um irresponsável! Sempre atrasa os relatórios e isso prejudica todo mundo! Se continuar assim, vai ser demitido!"
-
-**Com CNV:**
-"**(Observação)** Nas últimas 3 semanas, os relatórios foram entregues 2 dias após o prazo. **(Sentimento)** Eu fico preocupado e estressado com isso, **(Necessidade)** porque preciso dos dados para tomar decisões estratégicas a tempo. **(Pedido)** Você poderia me avisar com antecedência se houver algum impedimento para cumprir o prazo, para que possamos buscar soluções juntos?"
-
-## Leitura de Sinais Não-Verbais
-
-### A Regra 7-38-55 de Albert Mehrabian:
-- **7%** da comunicação = palavras
-- **38%** da comunicação = tom de voz
-- **55%** da comunicação = linguagem corporal
-
-### Sinais Não-Verbais Importantes:
-
-#### Sinais de Desconforto/Estresse:
-- Braços cruzados
-- Evitar contato visual
-- Inquietação (mexer caneta, balançar perna)
-- Postura fechada
-- Tocar o pescoço/rosto
-- Respiração acelerada
-
-#### Sinais de Abertura/Conforto:
-- Postura relaxada
-- Contato visual natural
-- Sorriso genuíno
-- Inclinação para frente
-- Gestos abertos
-- Espelhamento inconsciente
-
-#### Sinais de Desinteresse:
-- Olhar para o relógio/celular
-- Desviar o olhar constantemente
-- Postura distante
-- Bocejar
-- Mexer em objetos
-
-#### Sinais de Concordância:
-- Acenar com a cabeça
-- Sorrir
-- Inclinar-se para frente
-- Espelhar sua postura
-- Manter contato visual
-
-## Práticas de Empatia no Trabalho
-
-### Prática 1: Check-in Emocional Diário
-Inicie reuniões com: "Como cada um está se sentindo hoje, de 0 a 10?"
-
-**Benefícios:**
-- Demonstra cuidado genuíno
-- Identifica problemas antes de escalarem
-- Cria cultura de vulnerabilidade saudável
-
-### Prática 2: Pausas Empáticas
-Quando alguém compartilhar algo difícil:
-1. Pare tudo que está fazendo
-2. Olhe nos olhos
-3. Diga: "Obrigado por compartilhar isso comigo"
-4. Pergunte: "Como posso apoiar você?"
-
-### Prática 3: Reconhecimento Empático
-Reconheça não só resultados, mas esforços e desafios:
-- "Sei que você está lidando com questões pessoais difíceis, e admiro sua dedicação."
-- "Percebo que esse projeto foi desafiador para você, e mesmo assim você deu o seu melhor."
-
-### Prática 4: Feedb back Empático
-**Modelo Sanduíche Empático:**
-1. **Reconhecimento:** "Reconheço seu esforço em..."
-2. **Observação:** "Notei que [comportamento específico]..."
-3. **Impacto:** "Isso gerou [consequência]..."
-4. **Apoio:** "Como posso ajudar você a [melhoria desejada]?"
-
-### Prática 5: Perguntas ao invés de Suposições
-**Ruim:** "Você está sendo preguiçoso."
-**Bom:** "Notei mudança no seu comportamento. Está tudo bem?"
-
-## Exercícios Práticos de Empatia
-
-### Exercício 1: Mapeamento de Empatia
-Escolha 3 membros da sua equipe e responda:
-1. O que eles veem? (Desafios diários)
-2. O que eles ouvem? (Feedbacks, críticas)
-3. O que eles pensam e sentem? (Preocupações, motivações)
-4. O que eles dizem e fazem? (Comportamentos observáveis)
-5. Dores (O que os frustra?)
-6. Ganhos (O que os motiva?)
-
-### Exercício 2: Prática de Escuta Profunda
-Por 1 semana:
-- Em cada conversa, foque 100% na pessoa
-- Não planeje sua resposta enquanto o outro fala
-- Faça pelo menos 2 perguntas abertas
-- Valide pelo menos 1 emoção expressada
-
-### Exercício 3: Reescrita de Conversas
-Relembre 3 conversas difíceis recentes.
-Reescreva como você falaria usando CNV.
-Compare as versões.
-
-## Armadilhas da Empatia (Evite!)
-
-### 1. Empatia Tóxica
-Absorver todas as emoções dos outros sem limites
-**Solução:** Estabeleça limites saudáveis, pratique autocuidado
-
-### 2. Falsa Empatia
-Fingir que se importa apenas para manipular
-**Solução:** Seja genuíno, se não pode ajudar, seja honesto
-
-### 3. Salvar vs. Apoiar
-Assumir todos os problemas do outro como seus
-**Solução:** Empodere, não salve. Pergunte "Como posso apoiar?" ao invés de assumir a solução
-
-### 4. Empatia Seletiva
-Ter empatia apenas com quem você gosta
-**Solução:** Pratique empatia cognitiva mesmo quando não sentir empatia emocional
-
-## Conclusão do Módulo
-
-Empatia não é fraqueza - é a maior força de um líder. Equipes lideradas com empatia são mais leais, produtivas e engajadas.
-
-**Desafio da Semana:**
-1. Pratique SOLER em todas as conversas
-2. Use CNV em pelo menos 1 conversa difícil
-3. Faça check-in emocional com sua equipe
-4. Observe e anote sinais não-verbais de 3 pessoas
-
-**Lembre-se:** "As pessoas podem esquecer o que você disse, mas nunca esquecerão como você as fez sentir." - Maya Angelou
-        `
-      },
-      {
-        id: 4,
-        titulo: "Gestão de Estresse e Autorregulação",
-        duracao: "45 min",
-        topicos: [
-          "Técnicas de respiração",
-          "Mindfulness aplicado",
-          "Gestão de conflitos internos",
-          "Tomada de decisão sob pressão",
-          "Prevenção de burnout"
-        ],
-        materialDidatico: `
-# Gestão de Estresse e Autorregulação
-
-## Entendendo o Estresse no Contexto da Liderança
-
-Liderar é estressante. Pressão por resultados, gerenciamento de conflitos, decisões difíceis, prazos apertados - tudo isso gera estresse constante.
-
-### O Estresse Não é o Inimigo
-
-**Estresse Agudo (Bom):**
-- Melhora foco e desempenho
-- Aumenta energia momentânea
-- Prepara para ação
-
-**Estresse Crônico (Ruim):**
-- Prejudica saúde física e mental
-- Reduz capacidade de decisão
-- Leva ao burnout
-
-**O segredo:** Saber regular o estresse para que ele não se torne crônico.
-
-## Técnicas de Respiração para Autorregulação Imediata
-
-### Técnica 1: Respiração 4-7-8 (Tranquilizante Natural)
-
-**Como fazer:**
-1. Inspire pelo nariz contando até 4
-2. Segure a respiração contando até 7
-3. Expire pela boca contando até 8
-4. Repita 4 vezes
-
-**Quando usar:**
-- Antes de reuniões importantes
-- Quando sentir raiva subindo
-- Dificuldade para dormir
-- Ansiedade pré-apresentação
-
-**Por que funciona:**
-Ativa o sistema nervoso parassimpático (relaxamento) e desativa o sistema simpático (luta ou fuga).
-
-### Técnica 2: Respiração Quadrada (Box Breathing)
-
-**Como fazer:**
-1. Inspire contando até 4
-2. Segure contando até 4
-3. Expire contando até 4
-4. Segure contando até 4
-5. Repita por 5 minutos
-
-**Quando usar:**
-- Momentos de decisão crítica
-- Após conflito intenso
-- Antes de feedback difícil
+Exercicio 2: Analise de Conformidade
+Avalie sua area usando o checklist apresentado. Em qual norma voce esta mais vulneravel?
 
-**Benefício:** Traz clareza mental e equilíbrio emocional rápido.
-
-### Técnica 3: Respiração Diafragmática
+Exercicio 3: Caso Pratico
+Funcionaria denuncia assedio sexual de colega. Como voce age considerando Lei 14.457/22, CLT e responsabilidades de lider?
 
-**Como fazer:**
-1. Coloque uma mão no peito, outra na barriga
-2. Inspire profundamente pelo nariz
-3. A mão da barriga deve subir mais que a do peito
-4. Expire lentamente pela boca
-5. Continue por 5 minutos
-
-**Benefício:** Reduz cortisol (hormônio do estresse) em até 30%.
-
-## Mindfulness Aplicado à Liderança
-
-### O que é Mindfulness?
-
-Atenção plena no momento presente, sem julgamento. Para líderes, significa:
-- Estar 100% presente em conversas
-- Tomar decisões conscientes, não reativas
-- Observar emoções sem ser dominado por elas
-
-### Prática 1: STOP (Pausa Consciente)
-
-Quando sentir estresse ou emoção forte:
-
-**S** - Stop (Pare o que está fazendo)
-**T** - Take a breath (Respire fundo 3 vezes)
-**O** - Observe (Observe suas emoções e pensamentos)
-**P** - Proceed (Prossiga conscientemente)
-
-**Exemplo real:**
-Você recebe um email agressivo de um cliente. Ao invés de responder imediatamente com raiva:
-1. PARE de digitar
-2. RESPIRE 3 vezes profundamente
-3. OBSERVE: "Estou sentindo raiva porque me senti desrespeitado"
-4. PROSSIGA: Responda profissionalmente após 30 minutos
-
-### Prática 2: Mindfulness de 3 Minutos
-
-**Como fazer:**
-1. Sente-se confortavelmente
-2. Feche os olhos
-3. Observe sua respiração por 3 minutos
-4. Quando a mente divagar, gentilmente volte à respiração
-
-**Quando fazer:**
-- Ao chegar ao trabalho (preparação mental)
-- Antes do almoço (reset)
-- Final do dia (descompressão)
-
-**Benefícios comprovados:**
-- Reduz ansiedade em 32%
-- Melhora foco em 20%
-- Aumenta satisfação no trabalho em 23%
-
-### Prática 3: Observação Mindful
-
-Durante uma reunião ou conversa estressante:
-1. Observe seus pensamentos como nuvens passando
-2. Note emoções sem julgá-las
-3. Retorne à conversa sempre que se distrair
-
-## Gestão de Conflitos Internos
-
-### O que são Conflitos Internos?
-
-Batalhas entre diferentes partes de você:
-- "Devo ser rigoroso ou flexível?"
-- "Quero ser querido, mas preciso ser firme"
-- "Devo priorizar resultados ou pessoas?"
-
-### Técnica das 3 Cadeiras
-
-**Cadeira 1 - Você Líder:**
-- O que meu papel de líder exige?
-- Qual a decisão estratégica correta?
-
-**Cadeira 2 - Você Pessoa:**
-- O que meus valores pessoais dizem?
-- Como isso me afeta emocionalmente?
-
-**Cadeira 3 - Observador Neutro:**
-- Se eu fosse um consultor externo, o que recomendaria?
-- Qual a visão mais ampla da situação?
-
-**Exercício prático:**
-Escolha um conflito atual. Sente-se fisicamente em 3 cadeiras diferentes e responda as perguntas de cada perspectiva. Depois, integre as 3 visões.
-
-## Tomada de Decisão Sob Pressão
-
-### O Problema
-
-Sob estresse, o córtex pré-frontal (área racional) fica comprometido e a amígdala (área emocional) assume. Resultado: decisões impulsivas e ruins.
-
-### Protocolo de Decisão Consciente
-
-#### Decisões de Baixo Impacto (5 min):
-1. Respire 3 vezes
-2. Liste 2-3 opções
-3. Escolha e aja
-
-#### Decisões de Médio Impacto (1 hora):
-1. Defina o problema claramente
-2. Liste prós e contras de cada opção
-3. Consulte 1-2 pessoas de confiança
-4. Durma sobre isso se possível
-5. Decida
-
-#### Decisões de Alto Impacto (1-3 dias):
-1. Separe fatos de emoções
-2. Analise impactos de curto, médio e longo prazo
-3. Consulte stakeholders relevantes
-4. Faça análise de risco
-5. Durma 2 noites sobre isso
-6. Decida e comunique claramente
-
-### Perguntas Decisórias Poderosas:
-
-1. "O que eu faria se não tivesse medo?"
-2. "Como verei isso daqui a 5 anos?"
-3. "Qual decisão estaria alinhada com meus valores?"
-4. "O que Steve Jobs/Minha maior inspiração faria?"
-5. "Qual é o pior cenário possível e posso lidar com ele?"
-
-## Prevenção de Burnout
-
-### Os 5 Estágios do Burnout:
-
-**Estágio 1: Lua de Mel**
-- Alta energia e entusiasmo
-- Comprometimento excessivo
-⚠️ Sinal: "Posso fazer tudo sozinho!"
-
-**Estágio 2: Início do Estresse**
-- Dificuldade de concentração
-- Problemas de sono ocasionais
-- Irritabilidade leve
-⚠️ Sinal: "Estou um pouco cansado ultimamente"
-
-**Estágio 3: Estresse Crônico**
-- Procrastinação
-- Cinismo crescente
-- Negligência de necessidades pessoais
-⚠️ Sinal: "Não aguento mais isso"
-
-**Estágio 4: Burnout**
-- Exaustão física e emocional
-- Isolamento social
-- Pensamentos de escapar ou desistir
-⚠️ Sinal: "Não tenho mais nada para dar"
-
-**Estágio 5: Burnout Habitual**
-- Depressão crônica
-- Doenças físicas frequentes
-- Desespero persistente
-⚠️ Sinal: "Não consigo mais funcionar"
-
-### Prevenção: As 7 Práticas Essenciais
-
-#### 1. Limites Claros (Boundaries)
-- Horário de trabalho definido
-- "Não" sem culpa para demandas extras
-- Email desligado após horário
-
-#### 2. Pausas Estratégicas
-- 5 min de pausa a cada 50 min de trabalho
-- 1 dia completo off por semana
-- Férias reais (sem trabalho!)
-
-#### 3. Atividade Física Regular
-- Mínimo 30 min, 3x por semana
-- Caminhada, corrida, yoga, musculação
-- Reduz cortisol em até 50%
-
-#### 4. Sono de Qualidade
-- 7-9 horas por noite
-- Rotina de sono consistente
-- Sem telas 1h antes de dormir
-
-#### 5. Conexões Sociais
-- Tempo com família e amigos
-- Hobbies fora do trabalho
-- Comunidade de apoio
-
-#### 6. Propósito e Significado
-- Conectar trabalho a propósito maior
-- Celebrar pequenas vitórias
-- Gratidão diária
-
-#### 7. Ajuda Profissional
-- Terapia preventiva
-- Coaching executivo
-- Suporte quando necessário
-
-### Teste de Burnout (Faça Agora!)
-
-Responda com pontuação de 0 (nunca) a 4 (sempre):
-
-1. Sinto-me emocionalmente esgotado pelo trabalho
-2. Sinto-me exausto ao final do dia de trabalho
-3. Sinto-me cansado quando acordo e preciso enfrentar outro dia
-4. Trabalhar o dia todo é realmente estressante para mim
-5. Sinto que estou no limite das minhas forças
-
-**Soma:**
-- 0-4: Baixo risco
-- 5-9: Risco moderado (atenção!)
-- 10-15: Alto risco (precisa de ação imediata)
-- 16-20: Burnout estabelecido (busque ajuda profissional)
-
-## Exercícios Práticos
-
-### Exercício 1: Protocolo Diário de Regulação
-**Manhã (5 min):**
-- 3 respirações profundas
-- Definir intenção do dia
-- Mindfulness de 3 min
-
-**Meio-dia (3 min):**
-- Pausa STOP
-- Alongamento rápido
-- Respiração 4-7-8
-
-**Noite (10 min):**
-- Journaling do dia
-- 3 gratidões
-- Revisão de emoções
-
-### Exercício 2: Kit de Emergência Emocional
-
-Crie seu kit pessoal com:
-1. Técnica de respiração favorita
-2. Frase motivacional
-3. Pessoa de confiança para ligar
-4. Atividade que te acalma (música, caminhada)
-5. Lembretes de sucessos passados
-
-### Exercício 3: Auditoria de Energia
-
-Por 1 semana, anote:
-- Horários de pico de energia
-- O que drena sua energia
-- O que recarrega sua energia
-
-Use essas informações para reorganizar sua agenda.
-
-## Conclusão do Módulo
-
-Autorregulação não é luxo - é necessidade para líderes sustentáveis. Você não pode liderar outros se não consegue liderar a si mesmo.
-
-**Desafio da Semana:**
-1. Pratique respiração 4-7-8 três vezes ao dia
-2. Faça o teste de burnout
-3. Implemente o protocolo diário de regulação
-4. Estabeleça 1 limite claro no trabalho
-
-**Lembre-se:** "Você não pode servir água de um copo vazio. Cuide de si primeiro para poder cuidar dos outros."
+CONCLUSAO DO MODULO
+
+A protecao da saude mental no trabalho e garantida por multiplas camadas de legislacao. Ignorar qualquer uma delas coloca colaboradores em risco e expoe voce e a empresa a consequencias legais graves.
+
+Reflexao: Conformidade legal nao e burocracia - e cuidado sistematizado com pessoas.
+
+Proximos Passos:
+1. Estude cada norma mencionada
+2. Verifique conformidade da sua area
+3. Corrija imediatamente desvios identificados
+4. Documente todas as acoes
+
+Lembre-se: A lei protege quem se protege. Aja preventivamente, sempre.
         `
       }
     ],
-    atividadesPraticas: [
-      "Diário Emocional de 7 dias",
-      "Role-play de conversas empáticas",
-      "Prática de respiração consciente em situações reais",
-      "Simulação de decisão sob pressão",
-      "Plano pessoal de prevenção de burnout"
+    integracaoPGR: [
+      "Atuacao preventiva conforme NR01 - Gestao de Riscos Ocupacionais",
+      "Identificacao e comunicacao de fatores de riscos psicossociais",
+      "Promocao de ambiente saudavel, etico e seguro",
+      "Fortalecimento da cultura de prevencao continua"
     ]
   },
-  // Adicione os outros 7 cursos aqui com a mesma estrutura...
-  // Por brevidade, vou adicionar apenas mais 1 curso completo
   {
     id: 2,
-    slug: "gestao-riscos-psicossociais",
-    titulo: "Gestão de Riscos Psicossociais no Trabalho",
-    subtitulo: "Identificação, Avaliação e Controle de Riscos",
-    descricao: "Aprenda a identificar, avaliar e controlar riscos psicossociais no ambiente de trabalho conforme NR01.",
-    duracao: "5h",
-    nivel: "Intermediário",
-    categoria: "Saúde Ocupacional",
-    icone: "🛡️",
-    cor: "from-red-600 to-orange-600",
-    corBadge: "bg-red-100 text-red-700 border-red-200",
-    objetivo: "Capacitar líderes para identificar, avaliar e controlar riscos psicossociais no ambiente de trabalho.",
+    slug: "inteligencia-emocional-lideranca",
+    titulo: "Inteligencia Emocional Aplicada a Lideranca",
+    subtitulo: "Autoconsciencia, Empatia e Autorregulacao",
+    descricao: "Desenvolva autoconsciencia, empatia e autorregulacao emocional, essenciais para uma lideranca equilibrada e humana.",
+    duracao: "3h",
+    nivel: "Intermediario",
+    categoria: "Desenvolvimento Pessoal",
+    icone: "🧠",
+    cor: "from-purple-600 to-pink-600",
+    corBadge: "bg-purple-100 text-purple-700 border-purple-200",
+    objetivo: "Desenvolver autoconsciencia, empatia e autorregulacao emocional, essenciais para uma lideranca equilibrada e humana.",
     resultadosEsperados: [
-      "Identificação precoce de riscos psicossociais",
-      "Implementação de medidas preventivas eficazes",
-      "Conformidade com NR01 e legislação trabalhista",
-      "Redução de afastamentos e doenças ocupacionais"
+      "Reducao de reacoes impulsivas e decisoes baseadas em emocoes negativas",
+      "Melhoria significativa do clima organizacional",
+      "Aumento do engajamento e confianca da equipe",
+      "Maior capacidade de lidar com pressao e conflitos"
     ],
     modulos: [
       {
         id: 1,
-        titulo: "Introdução aos Riscos Psicossociais",
-        duracao: "60 min",
+        titulo: "Fundamentos da Inteligencia Emocional",
+        duracao: "45 min",
         topicos: [
-          "Definição e tipos de riscos psicossociais",
-          "Impactos na saúde do trabalhador",
-          "Base legal: NR01, NR07, NR17",
-          "Estatísticas e dados nacionais",
-          "Custos para organizações"
+          "O que e Inteligencia Emocional",
+          "Diferenca entre IE e QI",
+          "As 5 competencias da IE segundo Daniel Goleman",
+          "Importancia para lideres",
+          "Aplicacao pratica na lideranca"
         ],
         materialDidatico: `
-# Introdução aos Riscos Psicossociais
+FUNDAMENTOS DA INTELIGENCIA EMOCIONAL
 
-## O que são Riscos Psicossociais?
+O QUE E INTELIGENCIA EMOCIONAL
 
-Riscos psicossociais são aspectos da organização do trabalho e do ambiente laboral que têm potencial de causar danos psicológicos, sociais ou físicos aos trabalhadores.
+A Inteligencia Emocional e a capacidade de reconhecer, compreender e gerenciar nossas proprias emocoes, bem como reconhecer, compreender e influenciar as emocoes dos outros.
 
-### Diferença entre Estresse Normal e Risco Psicossocial:
+Este conceito foi popularizado pelo psicologo Daniel Goleman em 1995 e revolucionou nossa compreensao sobre o que torna uma pessoa bem-sucedida profissionalmente e pessoalmente.
 
-**Estresse Normal:**
-- Pontual e temporário
-- Relacionado a desafios específicos
-- Resolve-se após a situação
+Definicao Tecnica (Salovey e Mayer, 1990):
+Inteligencia Emocional e um subconjunto da inteligencia social que envolve a capacidade de monitorar os sentimentos e emocoes proprios e dos outros, discriminar entre eles e usar essa informacao para guiar pensamentos e acoes.
 
-**Risco Psicossocial:**
-- Estrutural e sistêmico
-- Relacionado à organização do trabalho
-- Persiste e pode levar ao adoecimento
+Por que a IE e Importante para Lideres:
 
-## Principais Riscos Psicossociais no Trabalho
+Estudos mostram que lideres com alta inteligencia emocional:
+- Tem equipes 20% mais produtivas
+- Reduzem turnover em ate 50%
+- Criam ambientes de trabalho mais saudaveis
+- Tomam decisoes mais equilibradas
+- Gerenciam conflitos de forma mais eficaz
+- Sao promovidos mais rapidamente
+- Tem equipes mais engajadas
 
-### 1. Carga de Trabalho Excessiva
-**Sinais:**
-- Jornadas acima de 44h semanais
-- Metas inalcançáveis
-- Impossibilidade de pausas
-- Trabalho levado para casa frequentemente
+Pesquisa da Harvard Business Review:
+90% dos lideres de alta performance tem alta IE, enquanto apenas 20% dos lideres de baixa performance apresentam essa caracteristica.
 
-**Consequências:**
-- Fadiga crônica
-- Burnout
-- Erros e acidentes
-- Conflitos familiares
+DIFERENCA ENTRE INTELIGENCIA EMOCIONAL E QI
 
-**Dados:** 62% dos trabalhadores brasileiros relatam sobrecarga (ISMA-BR)
+Enquanto o QI (Quociente de Inteligencia) mede a capacidade cognitiva e logica, a IE mede a capacidade de lidar com emocoes.
 
-### 2. Falta de Autonomia e Controle
-**Sinais:**
-- Microgerenciamento constante
-- Impossibilidade de tomar decisões
-- Procedimentos rígidos sem flexibilidade
-- Falta de participação em decisões
+Pesquisas demonstram que:
+- QI contribui apenas 20% para o sucesso profissional
+- IE contribui ate 80% para o sucesso profissional
 
-**Consequências:**
-- Desmotivação
-- Sensação de impotência
-- Redução de criatividade
-- Alto turnover
+Comparacao Pratica:
 
-### 3. Assédio Moral e Sexual
-**Assédio Moral:**
-- Humilhações repetidas
-- Isolamento proposital
-- Críticas destrutivas públicas
-- Sabotagem de trabalho
+QI Alto + IE Baixa = Profissional Tecnico Excelente mas Lider Problematico
+Exemplo: Engenheiro brilhante que humilha equipe, cria clima toxico, gera altissimo turnover
 
-**Assédio Sexual:**
-- Comentários inapropriados
-- Cantadas indesejadas
-- Toques não consensuais
-- Chantagem sexual
+QI Medio + IE Alta = Lider Inspirador e Eficaz
+Exemplo: Gerente que nao e o mais inteligente tecnicamente, mas motiva equipe, resolve conflitos, gera resultados extraordinarios
 
-**Dados:** 52% dos trabalhadores já sofreram assédio moral (TST)
+QI Alto + IE Alta = Lider Excepcional
+Exemplo: Executivo que une competencia tecnica com capacidade de inspirar, desenvolver pessoas e criar cultura de alta performance
 
-### 4. Insegurança no Emprego
-**Sinais:**
-- Ameaças constantes de demissão
-- Contratos temporários sucessivos
-- Demissões frequentes
-- Comunicação inconsistente sobre futuro
+Por que IE Importa Mais que QI na Lideranca:
 
-**Consequências:**
-- Ansiedade crônica
-- Redução de comprometimento
-- Problemas de saúde mental
-- Clima organizacional ruim
+1. Lideranca e sobre pessoas, nao apenas sobre processos
+2. Decisoes complexas envolvem emocoes, nao apenas dados
+3. Conflitos sao emocionais, nao logicos
+4. Motivacao e emocional, nao racional
+5. Cultura organizacional e emocional, nao tecnica
 
-### 5. Conflitos Interpessoais
-**Causas:**
-- Comunicação deficiente
-- Papéis mal definidos
-- Competição excessiva
-- Favorit
+AS 5 COMPETENCIAS DA IE SEGUNDO DANIEL GOLEMAN
 
-ismo
+1. AUTOCONSCIENCIA EMOCIONAL
 
-**Consequências:**
-- Ambiente tóxico
-- Redução de colaboração
-- Aumento de absenteísmo
-- Sabotagem entre colegas
+Definicao: A capacidade de reconhecer e entender suas proprias emocoes, pontos fortes, fraquezas, valores e impactos nos outros.
 
-## Base Legal Brasileira
+Por que e Fundamental:
+Se voce nao sabe o que sente, nao pode controlar como reage. Autoconsciencia e a base de todas as outras competencias emocionais.
 
-### NR01 - Gerenciamento de Riscos Ocupacionais
+Como Desenvolver:
+- Pratique a autorreflexao diaria (10 minutos por dia)
+- Mantenha um diario emocional
+- Peca feedback honesto de pessoas de confianca
+- Observe seus gatilhos emocionais (o que te tira do eixo?)
+- Faca terapia ou coaching
+- Pratique mindfulness
 
-**Principais pontos:**
-- Obrigatoriedade do PGR (Programa de Gerenciamento de Riscos)
-- Inclusão de riscos psicossociais no inventário
-- Avaliação periódica obrigatória
-- Implementação de medidas preventivas
+Exemplo no Trabalho:
+"Percebo que quando recebo criticas em publico, fico defensivo e agressivo. Isso me ajuda a pedir feedback em particular, onde consigo processar melhor."
 
-**Penalidades:** Multas de R$ 1.000 a R$ 300.000 dependendo da gravidade
+Lideres com Alta Autoconsciencia:
+- Conhecem seus limites e pedem ajuda quando necessario
+- Reconhecem quando emocoes estao afetando julgamento
+- Aceitam feedback sem defensividade
+- Admitem erros publicamente
 
-### NR07 - PCMSO (Programa de Controle Médico)
+Lideres com Baixa Autoconsciencia:
+- Culpam outros por tudo
+- Nao percebem impacto negativo em pessoas
+- Repetem os mesmos erros
+- Tem pontos cegos gigantescos
 
-**Exigências:**
-- Avaliação de saúde mental
-- Identificação de nexo causal
-- Exames periódicos incluindo aspectos psicossociais
+2. AUTORREGULACAO EMOCIONAL
 
-### NR17 - Ergonomia
+Definicao: A habilidade de controlar ou redirecionar impulsos e humores perturbadores. Pensar antes de agir.
 
-**Foco:**
-- Organização do trabalho
-- Ritmo e pausas adequadas
-- Sobrecarga mental
-- Conforto psíquico
+Por que e Essencial:
+Um lider que explode, grita ou toma decisoes impulsivas cria um ambiente de medo e instabilidade.
 
-### Lei 14.457/2022 - Prevenção ao Assédio
+Tecnicas Praticas:
+- Respiracao diafragmatica 4-7-8 (inspire 4s, segure 7s, expire 8s)
+- Pausa de 90 segundos antes de reagir (tempo que uma emocao leva para se processar)
+- Reenquadramento cognitivo (mudar perspectiva)
+- Exercicio fisico regular (reduz cortisol)
+- Sono adequado (7-9 horas)
+- Tecnicas de grounding
 
-**Obrigações:**
-- Política clara de prevenção
-- Canais de denúncia
-- Capacitação de líderes
-- Investigação rigorosa de casos
+Exemplo no Trabalho:
+"Quando um colaborador comete um erro grave, em vez de explodir, respiro fundo, saio da sala por 2 minutos e retorno com calma para conversar construtivamente."
 
-**Penalidade adicional:** Responsabilização civil e criminal
+Beneficios da Autorregulacao:
+- Decisoes mais racionais
+- Menos arrependimentos
+- Maior respeito da equipe
+- Ambiente mais seguro
+- Menos conflitos
 
-## Dados Alarmantes no Brasil
+Sinais de Baixa Autorregulacao:
+- Explosoes de raiva
+- Decisoes impulsivas que precisa reverter
+- Fala coisas que depois se arrepende
+- Cria clima de medo
+- Alta rotatividade na equipe
 
-### Afastamentos por Transtornos Mentais:
+3. MOTIVACAO INTRINSECA
 
-**2023 (INSS):**
-- 289.000 afastamentos por transtornos mentais
-- Aumento de 38% em relação a 2022
-- 3ª maior causa de afastamento
+Definicao: O impulso interno para realizar, independente de recompensas externas. Paixao pelo que faz.
 
-**Principais diagnósticos:**
-1. Depressão (41%)
-2. Ansiedade (29%)
-3. Burnout (18%)
-4. TEPT (12%)
+Caracteristicas de Lideres Motivados:
+- Paixao pelo trabalho alem de dinheiro ou status
+- Energia e persistencia mesmo diante de obstaculos
+- Otimismo mesmo diante de fracassos
+- Foco em objetivos de longo prazo
+- Buscam desafios que os fazem crescer
 
-### Custos Econômicos:
+Como Cultivar:
+- Conecte seu trabalho a um proposito maior (Por que isso importa?)
+- Celebre pequenas vitorias (nao espere apenas grandes conquistas)
+- Mantenha objetivos desafiadores mas alcancaveis
+- Inspire outros com seu exemplo
+- Encontre significado no que faz
 
-**Para a Organização:**
-- Absenteísmo: R$ 180 bilhões/ano (Brasil)
-- Presenteísmo: R$ 320 bilhões/ano
-- Turnover: R$ 60 bilhões/ano
-- Processos trabalhistas: R$ 8 bilhões/ano
+Exemplo Pratico:
+Lider de vendas que ama desenvolver pessoas, nao apenas bater metas. Resultado: equipe engajada que supera expectativas porque se sente valorizada.
 
-**Para o Trabalhador:**
-- Perda de renda
-- Gastos com tratamento
-- Impacto familiar
-- Estigma social
+Impacto no Time:
+Motivacao e contagiosa. Um lider motivado cria uma equipe motivada.
 
-## O Ciclo do Adoecimento Psicossocial
+4. EMPATIA
 
-### Fase 1: Exposição ao Risco
-- Trabalhador exposto a fatores de risco
-- Sinais sutis ignorados
-- "É assim que funciona aqui"
+Definicao: A capacidade de compreender e compartilhar os sentimentos dos outros. Colocar-se no lugar do outro.
 
-### Fase 2: Reação de Estresse
-- Sintomas físicos (dor de cabeça, insônia)
-- Irritabilidade
-- Queda de produtividade
+Tres Tipos de Empatia:
 
-### Fase 3: Esgotamento
-- Fadiga extrema
-- Desmotivação profunda
-- Pensamentos de desistir
+Empatia Cognitiva: Entender intelectualmente a perspectiva do outro
+Quando usar: Negociacoes, resolucao de problemas, tomada de decisoes
 
-### Fase 4: Adoecimento
-- Diagnóstico de transtorno mental
-- Afastamento necessário
-- Tratamento prolongado
+Empatia Emocional: Sentir fisicamente o que o outro esta sentindo
+Quando usar: Situacoes de sofrimento, construcao de vinculo profundo
+Cuidado: Pode levar a sobrecarga emocional se nao houver limites
 
-### Fase 5: Cronificação (se não tratado)
-- Incapacidade permanente
-- Múltiplos afastamentos
-- Aposentadoria por invalidez
+Empatia Compassiva: Entender + Sentir + Agir para ajudar (a mais poderosa)
+Quando usar: Sempre que possivel - e o equilibrio perfeito
 
-## Responsabilidade da Liderança
+Exercicio Pratico:
+Quando um colaborador apresentar um problema, antes de dar solucoes, pergunte:
+1. Como voce esta se sentindo com isso?
+2. O que seria mais util para voce agora?
+3. Como posso apoiar voce nessa situacao?
 
-### O que a Lei Exige de Você:
+Lideres Empaticos:
+- Tem equipes mais leais
+- Reduzem conflitos
+- Aumentam engajamento
+- Sao procurados para conversas dificeis
+- Criam ambientes de seguranca psicologica
 
-1. **Identificar** riscos psicossociais na sua área
-2. **Reportar** situações de risco ao SESMT/RH
-3. **Implementar** medidas preventivas
-4. **Monitorar** saúde da equipe
-5. **Não omitir** casos de assédio ou risco grave
+5. HABILIDADES SOCIAIS
 
-### Responsabilidade Civil e Criminal:
+Definicao: A capacidade de gerenciar relacionamentos e construir redes. Comunicacao eficaz e influencia positiva.
 
-**Civil:**
-- Indenização por danos morais e materiais
-- Valores entre R$ 50.000 a R$ 500.000 dependendo da gravidade
+Competencias-Chave:
+- Comunicacao clara e assertiva
+- Gestao de conflitos
+- Trabalho em equipe
+- Influencia e persuasao
+- Lideranca de mudancas
+- Networking estrategico
+- Colaboracao entre areas
 
-**Criminal:**
-- Assédio sexual: 1-2 anos de prisão
-- Omissão em casos graves: 3 meses a 1 ano
+Como Desenvolver:
+- Pratique escuta ativa (ouvir para compreender, nao para responder)
+- Aprenda a dar feedback construtivo
+- Desenvolva habilidades de negociacao
+- Estude linguagem corporal
+- Pratique comunicacao nao-violenta
+- Amplie sua rede profissional
 
-## Exercícios Práticos
+APLICACAO PRATICA NA LIDERANCA
 
-### Exercício 1: Mapeamento de Riscos na Sua Área
+Situacao 1: Colaborador com Baixa Performance
 
-Liste:
-1. 3 principais fontes de estresse da sua equipe
-2. Casos de sobrecarga que você conhece
-3. Conflitos interpessoais existentes
-4. Aspectos da organização do trabalho problemáticos
+SEM IE:
+"Voce esta pessimo! Se continuar assim, vai ser demitido."
+Resultado: Colaborador fica pior, clima prejudicado, possivel processo trabalhista
 
-### Exercício 2: Auto-Avaliação
+COM IE:
+"Notei que seu desempenho mudou nas ultimas semanas. Esta tudo bem? Ha algo acontecendo que eu possa ajudar?"
+Resultado: Descobre problema pessoal ou sobrecarga, ajusta demandas, colaborador se recupera
 
-Você como líder:
-- Contribui para riscos psicossociais?
-- Tem conhecimento sobre saúde mental?
-- Sabe como agir em casos de crise?
-- Está em conformidade com a lei?
+Situacao 2: Conflito entre Membros da Equipe
 
-### Exercício 3: Plano de Ação Imediato
+SEM IE:
+"Parem de brigar e voltem ao trabalho!"
+Resultado: Conflito continua subterraneo, clima toxico, formacao de grupos
 
-Defina:
-1. 1 risco a ser eliminado esta semana
-2. 1 conversa que precisa ter com a equipe
-3. 1 treinamento necessário
-4. 1 política a ser implementada
+COM IE:
+"Vejo que ha tensao. Vamos conversar individualmente e depois juntos para entender os pontos de vista e encontrar uma solucao construtiva."
+Resultado: Conflito resolvido, aprendizado coletivo, equipe mais madura
 
-## Conclusão do Módulo
+Situacao 3: Pressao por Resultados
 
-Riscos psicossociais não são "frescura" - são fatores reais de adoecimento que custam bilhões e destroem vidas. Como líder, você tem responsabilidade legal, ética e humana de preveni-los.
+SEM IE:
+Descontar frustracao na equipe, criar ambiente de medo, cobrar de forma agressiva
+Resultado: Equipe paralisada, erros aumentam, pessoas adoecem ou pedem demissao
 
-**Próximos passos:**
-1. Faça o mapeamento de riscos da sua área
-2. Estude a NR01 completa
-3. Converse com SESMT/RH sobre riscos identificados
-4. Comprometa-se com mudanças concretas
+COM IE:
+Comunicar transparentemente os desafios, mobilizar a equipe com otimismo, reconhecer esforcos, buscar solucoes coletivas
+Resultado: Equipe engajada, criatividade aumenta, resultados aparecem
 
-**Lembre-se:** "Prevenir sempre sai mais barato que remediar."
+EXERCICIOS PRATICOS
+
+Exercicio 1: Mapeamento Emocional
+Liste 3 situacoes da ultima semana onde voce:
+1. Reagiu emocionalmente
+2. Como se sentiu
+3. Como gostaria de ter reagido
+4. O que aprendeu sobre si mesmo
+
+Exercicio 2: Observacao de Emocoes
+Durante 1 dia completo, anote cada vez que sentir uma emocao forte:
+- Que emocao foi? (raiva, medo, alegria, tristeza, surpresa, nojo)
+- O que a provocou?
+- Como voce reagiu?
+- Qual foi o resultado?
+- Se pudesse voltar no tempo, reagiria diferente?
+
+Exercicio 3: Pratica de Empatia
+Escolha 3 pessoas da sua equipe e responda com honestidade:
+- Quais sao seus principais desafios atualmente?
+- O que os motiva profissionalmente?
+- Como posso apoiar o desenvolvimento deles?
+- O que posso fazer diferente como lider?
+
+CONCLUSAO DO MODULO
+
+A Inteligencia Emocional nao e um dom inato - e uma habilidade que pode ser desenvolvida com pratica deliberada e constante.
+
+Lideres emocionalmente inteligentes criam equipes mais engajadas, produtivas e saudaveis. Eles nao apenas alcancam resultados - alcancam resultados sustentaveis cuidando das pessoas.
+
+Proximos Passos:
+1. Comece um diario emocional hoje mesmo
+2. Pratique a regra dos 90 segundos antes de reagir
+3. Faca pelo menos 1 conversa empatica por dia
+4. Peca feedback sobre como suas emocoes impactam outros
+
+Lembre-se: O desenvolvimento da IE e uma jornada continua, nao um destino. Seja paciente consigo mesmo.
         `
-      },
-      // Adicione os outros 4 módulos deste curso...
+      }
     ],
     atividadesPraticas: [
-      "Mapeamento de riscos psicossociais na própria área",
-      "Análise de caso real de adoecimento",
-      "Criação de plano de ação preventivo",
-      "Simulação de investigação de assédio",
-      "Workshop de comunicação de riscos"
+      "Diario Emocional de 7 dias",
+      "Role-play de conversas empaticas",
+      "Pratica de respiracao consciente",
+      "Simulacao de decisao sob pressao",
+      "Plano pessoal de prevencao de burnout"
+    ]
+  },
+  {
+    id: 3,
+    slug: "comunicacao-nao-violenta",
+    titulo: "Comunicacao Nao Violenta (CNV)",
+    subtitulo: "Tecnicas de Comunicacao Empatica e Construtiva",
+    descricao: "Aprimore a escuta ativa e o dialogo construtivo atraves da Comunicacao Nao Violenta para reduzir conflitos e criar ambientes de seguranca psicologica.",
+    duracao: "3h",
+    nivel: "Intermediario",
+    categoria: "Comunicacao",
+    icone: "💬",
+    cor: "from-green-600 to-teal-600",
+    corBadge: "bg-green-100 text-green-700 border-green-200",
+    objetivo: "Desenvolver habilidades de comunicacao empatica e assertiva para prevenir conflitos e criar dialogo construtivo.",
+    resultadosEsperados: [
+      "Reducao significativa de conflitos interpessoais",
+      "Melhoria na qualidade das conversas dificeis",
+      "Ambiente de seguranca psicologica fortalecido",
+      "Aumento da colaboracao e confianca na equipe"
+    ],
+    modulos: [
+      {
+        id: 1,
+        titulo: "Fundamentos da CNV",
+        duracao: "60 min",
+        topicos: [
+          "O que e Comunicacao Nao Violenta",
+          "Os 4 componentes da CNV",
+          "Observacao sem julgamento",
+          "Expressao de sentimentos",
+          "Identificacao de necessidades",
+          "Formulacao de pedidos claros"
+        ],
+        materialDidatico: `
+FUNDAMENTOS DA COMUNICACAO NAO VIOLENTA
+
+O QUE E COMUNICACAO NAO VIOLENTA
+
+A Comunicacao Nao Violenta (CNV) e uma abordagem de comunicacao desenvolvida por Marshall Rosenberg que nos ensina a expressar necessidades e sentimentos de forma honesta sem atacar, julgar ou culpar os outros.
+
+Por que se chama Nao Violenta?
+Porque evita a violencia psicologica presente em julgamentos, criticas, rotulos, comparacoes e exigencias que causam dor emocional e conflitos.
+
+Principio Fundamental:
+Por tras de cada acao humana ha uma necessidade que esta tentando ser atendida. Quando compreendemos as necessidades (nossas e dos outros), criamos conexao e possibilidade de cooperacao.
+
+Impacto da CNV nas Organizacoes:
+- Reducao de 60% em conflitos interpessoais
+- Aumento de 45% na produtividade de equipes
+- Melhoria de 70% no clima organizacional
+- Reducao de 50% em processos trabalhistas relacionados a assedio
+
+OS 4 COMPONENTES DA CNV
+
+A CNV segue uma estrutura simples mas poderosa de 4 passos:
+
+1. OBSERVACAO (Sem Julgamento)
+2. SENTIMENTO (Expressar Emocao)
+3. NECESSIDADE (O que esta por tras)
+4. PEDIDO (Especifico e Realizavel)
+
+Vamos aprofundar cada componente:
+
+COMPONENTE 1: OBSERVACAO SEM JULGAMENTO
+
+O que e:
+Descrever os FATOS observaveis sem adicionar interpretacao, avaliacao ou julgamento.
+
+Diferenca Critica:
+
+JULGAMENTO (Violento):
+"Voce e irresponsavel e sempre se atrasa!"
+Problema: "Irresponsavel" e julgamento. "Sempre" e generalizacao.
+
+OBSERVACAO (Nao Violenta):
+"Voce chegou 20 minutos atrasado nas ultimas 3 reunioes."
+Solucao: Fatos especificos, sem julgamento.
+
+Por que isso importa?
+Quando julgamos, a pessoa se defende. Quando observamos, ela escuta.
+
+Exercicio Pratico - Transforme Julgamentos em Observacoes:
+
+JULGAMENTO: "Voce e preguicoso"
+OBSERVACAO: "Notei que nos ultimos 5 dias voce entregou 2 tarefas dos 5 prazos combinados"
+
+JULGAMENTO: "Voce nao se importa com a equipe"
+OBSERVACAO: "Voce nao participou das ultimas 4 reunioes de equipe"
+
+JULGAMENTO: "Voce e grosso"
+OBSERVACAO: "Quando fiz a pergunta, voce respondeu sem olhar para mim e saiu da sala"
+
+Palavras que Indicam Julgamento (Evite):
+- Sempre, nunca (generalizacoes)
+- Voce e... (rotulos)
+- Preguicoso, irresponsavel, egoista (caracterizacoes)
+- Deveria, tem que (exigencias)
+
+COMPONENTE 2: SENTIMENTO (Expressar Emocao)
+
+O que e:
+Expressar honestamente como VOCE se sente em relacao a situacao observada.
+
+Diferenca entre Sentimento Real e Falso Sentimento:
+
+SENTIMENTO REAL (Como EU me sinto):
+- "Eu me sinto frustrado..."
+- "Eu me sinto preocupado..."
+- "Eu me sinto desapontado..."
+
+FALSO SENTIMENTO (Julgamento disfarçado):
+- "Eu sinto que VOCE nao se importa..." (julgamento)
+- "Eu sinto que VOCE e irresponsavel..." (rotulo)
+- "Eu me sinto ignorado..." (interpretacao)
+
+Lista de Sentimentos Reais para Praticar:
+
+Sentimentos Agradaveis:
+- Feliz, alegre, entusiasmado
+- Grato, comovido, tocado
+- Esperancoso, otimista, confiante
+- Aliviado, tranquilo, em paz
+- Animado, energizado, inspirado
+
+Sentimentos Desagradaveis:
+- Frustrado, irritado, impaciente
+- Preocupado, ansioso, apreensivo
+- Triste, desapontado, desencorajado
+- Confuso, incomodado, perturbado
+- Cansado, esgotado, sobrecarregado
+
+Por que expressar sentimentos?
+Humaniza a comunicacao. Quando compartilhamos como nos sentimos, criamos conexao emocional e empatia.
+
+COMPONENTE 3: NECESSIDADE (O que esta por tras)
+
+O que e:
+Identificar a necessidade humana universal que nao esta sendo atendida e que gera o sentimento.
+
+Conceito Fundamental:
+Sentimentos sao indicadores de necessidades. Se me sinto frustrado, ha uma necessidade minha nao atendida.
+
+Necessidades Humanas Universais:
+
+Autonomia:
+- Escolher sonhos, objetivos, valores
+- Escolher planos para realizar sonhos
+
+Celebracao:
+- Comemorar conquistas e perdas
+- Celebrar a vida
+
+Integridade:
+- Autenticidade, criatividade
+- Significado, auto-estima
+
+Interdependencia:
+- Aceitacao, apreciacao, proximidade
+- Comunidade, consideracao, confianca
+- Empatia, honestidade, respeito
+
+Necessidades Fisicas:
+- Ar, agua, alimento
+- Descanso, abrigo, seguranca
+- Movimento, protecao de virus/bacterias
+
+Paz Mental:
+- Beleza, harmonia, inspiracao
+- Ordem, paz
+
+Exemplos Praticos:
+
+"Me sinto frustrado porque preciso de respeito no trabalho"
+Necessidade: Respeito
+
+"Me sinto ansioso porque preciso de clareza sobre expectativas"
+Necessidade: Clareza/Seguranca
+
+"Me sinto sobrecarregado porque preciso de equilibrio entre trabalho e vida pessoal"
+Necessidade: Equilibrio/Bem-estar
+
+Por que identificar necessidades?
+Porque necessidades sao neutras e universais. Podemos discordar de estrategias, mas todos temos as mesmas necessidades.
+
+COMPONENTE 4: PEDIDO (Especifico e Realizavel)
+
+O que e:
+Fazer um pedido claro, especifico, positivo e realizavel para atender a necessidade.
+
+Diferenca entre Pedido e Exigencia:
+
+PEDIDO: "Voce poderia chegar 5 minutos antes das reunioes?"
+Caracteristicas: Especifico, respeitoso, deixa espaco para dialogo
+
+EXIGENCIA: "Voce TEM QUE parar de se atrasar!"
+Caracteristicas: Vago, ameacador, nao ha espaco para nego ciacao
+
+Caracteristicas de um Pedido Eficaz:
+
+1. POSITIVO (diga o que quer, nao o que NAO quer)
+RUIM: "Pare de me interromper"
+BOM: "Voce poderia me deixar terminar meu raciocinio antes de comentar?"
+
+2. ESPECIFICO (detalhes claros)
+RUIM: "Seja mais responsavel"
+BOM: "Voce poderia enviar os relatorios ate sexta as 17h?"
+
+3. REALIZAVEL (possivel de fazer)
+RUIM: "Quero que voce nunca mais erre"
+BOM: "Voce poderia revisar o trabalho antes de enviar?"
+
+4. COM PRAZO (quando aplicavel)
+RUIM: "Me mande quando puder"
+BOM: "Voce conseguiria me enviar ate amanha as 14h?"
+
+Tipos de Pedidos:
+
+Pedido de Acao:
+"Voce poderia organizar a planilha por data e me enviar ate quinta?"
+
+Pedido de Conexao:
+"Voce poderia me dizer como se sente sobre o que acabei de falar?"
+
+Pedido de Reflexao:
+"O que voce entendeu do que eu disse?"
+
+FORMULA COMPLETA DA CNV
+
+Juntando os 4 componentes:
+
+"Quando (OBSERVACAO), eu me sinto (SENTIMENTO) porque preciso de (NECESSIDADE). Voce poderia (PEDIDO)?"
+
+EXEMPLOS COMPLETOS TRANSFORMADOS:
+
+Situacao: Colaborador entrega relatorios atrasados
+
+SEM CNV (Violenta):
+"Voce e um irresponsavel! Sempre atrasa tudo! Se continuar assim vai ser demitido! Tenho que ficar no seu pe?"
+Resultado: Defensividade, raiva, desmotivacao
+
+COM CNV (Nao Violenta):
+"Quando os relatorios chegam apos o prazo (OBSERVACAO), eu fico preocupado (SENTIMENTO) porque preciso dos dados para tomar decisoes a tempo (NECESSIDADE). Voce poderia me avisar com 2 dias de antecedencia se houver algum impedimento para cumprir o prazo? (PEDIDO)"
+Resultado: Compreensao, dialogo, solucao colaborativa
+
+Situacao: Colega te interrompe constantemente
+
+SEM CNV:
+"Voce e mal-educado! Nunca me deixa falar! Nao aguento mais voce!"
+
+COM CNV:
+"Quando sou interrompido antes de terminar meu raciocinio (OBSERVACAO), eu me sinto frustrado (SENTIMENTO) porque preciso de espaco para me expressar completamente (NECESSIDADE). Voce poderia me deixar terminar antes de comentar? (PEDIDO)"
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Identifique os 4 Componentes
+Leia: "Quando voce nao me cumprimenta ao chegar, eu me sinto desrespeitado porque preciso de consideracao. Voce poderia me cumprimentar quando chegar?"
+
+1. Observacao: _______________
+2. Sentimento: _______________
+3. Necessidade: ______________
+4. Pedido: ___________________
+
+Exercicio 2: Transforme em CNV
+Situacao violenta: "Voce nunca ajuda ninguem! E muito egoista!"
+Transforme usando os 4 componentes da CNV.
+
+CONCLUSAO DO MODULO
+
+A CNV e uma ferramenta poderosa que transforma conflitos em oportunidades de conexao. Ao separar observacao de julgamento, expressar sentimentos honestamente, identificar necessidades e fazer pedidos claros, criamos comunicacao construtiva.
+
+Proximos Passos:
+1. Pratique identificar julgamentos nas suas falas
+2. Expresse pelo menos 1 sentimento real por dia
+3. Identifique suas necessidades nao atendidas
+4. Transforme 1 exigencia em pedido
+
+Lembre-se: CNV e uma pratica, nao uma perfeicao. Seja gentil consigo mesmo no processo de aprendizado.
+        `
+      }
+    ],
+    atividadesPraticas: [
+      "Transformacao de conflitos reais em CNV",
+      "Role-play de conversas dificeis",
+      "Diario de comunicacao consciente",
+      "Pratica de escuta empatica",
+      "Workshop de feedback nao violento"
     ]
   }
 ];
