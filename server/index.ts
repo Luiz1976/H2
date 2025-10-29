@@ -12,6 +12,7 @@ import stripeRouter from './routes/stripe';
 import adminRouter from './routes/admin';
 import chatbotRouter from './routes/chatbot';
 import emailTestRouter from './routes/email-test';
+import cursosRouter from './routes/cursos';
 
 dotenv.config();
 
@@ -60,6 +61,7 @@ app.use('/api/stripe', stripeRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/chatbot', chatbotRouter);
 app.use('/api/email', emailTestRouter);
+app.use('/api/cursos', cursosRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado' });
