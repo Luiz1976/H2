@@ -1,4 +1,4 @@
-import { Sparkles, BarChart3, User, Menu, Database, Home, LogOut } from "lucide-react";
+import { Sparkles, BarChart3, User, Menu, Database, Home, LogOut, GraduationCap } from "lucide-react";
 import Logo from "@/components/Logo";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
@@ -33,6 +33,11 @@ const items = [
     title: "Todos os Resultados", 
     url: "/todos-resultados", 
     icon: Database,
+  },
+  { 
+    title: "Cursos", 
+    url: "/colaborador/cursos", 
+    icon: GraduationCap,
   },
 ];
 

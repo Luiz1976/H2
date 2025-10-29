@@ -77,6 +77,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import CheckoutCanceladoPage from "./pages/CheckoutCanceladoPage";
 import RecuperarSenha from "./pages/RecuperarSenha";
+import ColaboradorCursos from "./pages/colaborador/ColaboradorCursos";
 import { Chatbot } from "./components/Chatbot";
 
 function App() {
@@ -146,6 +147,16 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['colaborador']}>
                     <Colaborador />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/colaborador/cursos" 
+                element={
+                  <ProtectedRoute allowedRoles={['colaborador']}>
+                    <MainLayout>
+                      <ColaboradorCursos />
+                    </MainLayout>
                   </ProtectedRoute>
                 } 
               />
