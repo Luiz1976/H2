@@ -225,12 +225,6 @@ router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest,
       return res.status(401).json({ error: 'Não autorizado' });
     }
 
-    // Verificar disponibilidade do curso
-    const { disponivel, motivo } = await verificarDisponibilidadeCurso(colaboradorId, cursoSlug);
-    if (!disponivel) {
-      return res.status(403).json({ error: motivo || 'Curso não disponível' });
-    }
-
     // Verificar se todos os módulos foram completados
     const progresso = await db.query.cursoProgresso.findFirst({
       where: and(
@@ -242,6 +236,9 @@ router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest,
     if (!progresso) {
       return res.status(400).json({ error: 'Complete todos os módulos antes da avaliação' });
     }
+
+    // Se o colaborador já tem progresso, significa que o curso foi liberado em algum momento
+    // Permitir avaliação mesmo se disponibilidade foi alterada posteriormente
 
     const modulosCompletadosArray = Array.isArray(progresso.modulosCompletados) 
       ? progresso.modulosCompletados 
