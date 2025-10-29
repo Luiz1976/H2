@@ -58,7 +58,7 @@ export function EmpresaSidebar() {
 
   return (
     <Sidebar
-      className="border-none bg-card/50 backdrop-blur-xl"
+      className="border-r border-gray-200 bg-white"
       collapsible="icon"
     >
       <div className="flex h-full flex-col">
