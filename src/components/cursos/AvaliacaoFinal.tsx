@@ -48,36 +48,36 @@ const gerarQuestoes = (curso: Curso): Questao[] => {
     if (topicos.length > 0) {
       // Criar pergunta sobre o primeiro tópico importante
       const topicoDestaque = topicos[0];
+      const opcoesEmbaralhadas = [
+        "Conceitos não relacionados ao tema",
+        topicoDestaque,
+        "Assuntos fora do escopo do curso",
+        "Teorias sem aplicação prática"
+      ].sort(() => Math.random() - 0.5);
+      
       questoes.push({
         id: questaoId++,
         pergunta: `No módulo "${modulo.titulo}", qual é um dos principais tópicos abordados?`,
-        opcoes: [
-          "Conceitos não relacionados ao tema",
-          topicoDestaque,
-          "Assuntos fora do escopo do curso",
-          "Teorias sem aplicação prática"
-        ].sort(() => Math.random() - 0.5), // Embaralhar opções
-        respostaCorreta: ["Conceitos não relacionados ao tema", topicoDestaque, "Assuntos fora do escopo do curso", "Teorias sem aplicação prática"]
-          .sort(() => Math.random() - 0.5)
-          .indexOf(topicoDestaque)
+        opcoes: opcoesEmbaralhadas,
+        respostaCorreta: opcoesEmbaralhadas.indexOf(topicoDestaque)
       });
     }
 
     // Criar pergunta sobre objetivos específicos do módulo (se houver tópicos)
     if (topicos.length > 1) {
       const topicoSecundario = topicos[Math.min(1, topicos.length - 1)];
+      const opcoesEmbaralhadas2 = [
+        topicoSecundario,
+        "Estratégias de marketing digital",
+        "Programação de computadores",
+        "Gestão financeira pessoal"
+      ].sort(() => Math.random() - 0.5);
+      
       questoes.push({
         id: questaoId++,
         pergunta: `Qual dos seguintes tópicos é abordado no módulo "${modulo.titulo}"?`,
-        opcoes: [
-          topicoSecundario,
-          "Estratégias de marketing digital",
-          "Programação de computadores",
-          "Gestão financeira pessoal"
-        ].sort(() => Math.random() - 0.5),
-        respostaCorreta: [topicoSecundario, "Estratégias de marketing digital", "Programação de computadores", "Gestão financeira pessoal"]
-          .sort(() => Math.random() - 0.5)
-          .indexOf(topicoSecundario)
+        opcoes: opcoesEmbaralhadas2,
+        respostaCorreta: opcoesEmbaralhadas2.indexOf(topicoSecundario)
       });
     }
   });
@@ -85,18 +85,18 @@ const gerarQuestoes = (curso: Curso): Questao[] => {
   // Adicionar pergunta sobre resultados esperados
   if (curso.resultadosEsperados && curso.resultadosEsperados.length > 0) {
     const resultadoDestaque = curso.resultadosEsperados[0];
+    const opcoesEmbaralhadas3 = [
+      "Nenhum resultado prático mensurável",
+      resultadoDestaque,
+      "Certificação em outra área não relacionada",
+      "Apenas conhecimento teórico sem aplicação"
+    ].sort(() => Math.random() - 0.5);
+    
     questoes.push({
       id: questaoId++,
       pergunta: `Qual é um dos resultados esperados ao concluir este curso?`,
-      opcoes: [
-        "Nenhum resultado prático mensurável",
-        resultadoDestaque,
-        "Certificação em outra área não relacionada",
-        "Apenas conhecimento teórico sem aplicação"
-      ].sort(() => Math.random() - 0.5),
-      respostaCorreta: ["Nenhum resultado prático mensurável", resultadoDestaque, "Certificação em outra área não relacionada", "Apenas conhecimento teórico sem aplicação"]
-        .sort(() => Math.random() - 0.5)
-        .indexOf(resultadoDestaque)
+      opcoes: opcoesEmbaralhadas3,
+      respostaCorreta: opcoesEmbaralhadas3.indexOf(resultadoDestaque)
     });
   }
 
