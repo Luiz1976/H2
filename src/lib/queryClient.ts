@@ -7,6 +7,11 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: true, // Recarregar ao focar na janela
       refetchOnMount: true, // Recarregar ao montar o componente
       retry: 1,
+      queryFn: async ({ queryKey }) => {
+        // Usar a primeira chave como endpoint
+        const endpoint = queryKey[0] as string;
+        return await apiRequest(endpoint);
+      },
     },
   },
 });
