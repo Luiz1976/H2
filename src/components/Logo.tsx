@@ -1,4 +1,4 @@
-import logoFullImage from '@/assets/logo-full.png';
+import logoTransparentImage from '@/assets/logo-transparent.png';
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -6,7 +6,7 @@ interface LogoProps {
   className?: string;
 }
 
-// Tamanhos ajustados para o logo completo HQ com texto
+// Tamanhos ajustados para o logo HQ com fundo transparente
 const sizeClasses = {
   sm: 'h-8 w-auto',     // Pequeno - sidebars, headers compactos
   md: 'h-12 w-auto',    // Médio - headers padrão
@@ -18,7 +18,7 @@ export default function Logo({ size = 'md', showText = true, className = '' }: L
   return (
     <div className={`flex items-center ${className}`} data-testid="logo-humaniq">
       <img 
-        src={logoFullImage} 
+        src={logoTransparentImage} 
         alt="HumaniQ AI - Plataforma de Avaliação Psicossocial" 
         className={`${sizeClasses[size]} object-contain`}
         data-testid="img-logo"
