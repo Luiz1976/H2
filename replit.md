@@ -26,6 +26,10 @@ HumaniQ is a hierarchical user management system (Admin → Company → Employee
   - **User Experience**: Seamless navigation on mobile with swipe-to-close drawer functionality
   - **Test ID**: `button-mobile-menu` for automated testing
 - **Responsive Padding**: Adjusted content padding for better mobile viewing (p-4 on mobile, p-6 on desktop)
+- **Sidebar Background Fix (29/10/2025)**: 
+  - **Desktop**: Fixed transparent sidebar by changing `--sidebar-background: 0 0% 98%` to `0 0% 100%` in `index.css` and updating all sidebar components to use `bg-white`
+  - **Mobile**: Fixed transparent Sheet drawer by adding `!bg-white` with important modifier to force white background on `SheetContent` in `src/components/ui/sidebar.tsx` (line 165)
+  - **Result**: All sidebars now have solid white background on both desktop and mobile devices
 
 ## User Preferences
 I prefer simple language and clear explanations. I want iterative development with frequent updates. Ask before making major architectural changes. Do not make changes to the `shared` folder without explicit instruction. I prefer detailed explanations for complex features or decisions.
