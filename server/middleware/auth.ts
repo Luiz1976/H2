@@ -9,18 +9,29 @@ export interface AuthRequest extends Request {
 }
 
 export function authenticateToken(req: AuthRequest, res: Response, next: NextFunction) {
+  console.log('🔐 [AUTH] Iniciando autenticação...');
+  console.log('🔐 [AUTH] Headers:', req.headers);
+  
   const authHeader = req.headers['authorization'];
+  console.log('🔐 [AUTH] Authorization header:', authHeader);
+  
   const token = authHeader && authHeader.split(' ')[1];
+  console.log('🔐 [AUTH] Token extraído:', token ? `${token.substring(0, 20)}...` : 'null');
 
   if (!token) {
+    console.error('❌ [AUTH] Token não fornecido');
     return res.status(401).json({ error: 'Access token required' });
   }
 
   try {
+    console.log('🔐 [AUTH] Verificando token...');
     const user = verifyToken(token);
+    console.log('✅ [AUTH] Token válido! User:', user);
     req.user = user;
     next();
   } catch (error) {
+    console.error('❌ [AUTH] Erro ao verificar token:', error);
+    console.error('❌ [AUTH] Token que falhou:', token);
     return res.status(403).json({ error: 'Invalid or expired token' });
   }
 }
