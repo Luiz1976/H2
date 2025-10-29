@@ -3529,6 +3529,982 @@ Proximos Passos:
 
 Lembre-se: Saude mental e tao importante quanto saude fisica. Trate com seriedade.
         `
+      },
+      {
+        id: 2,
+        titulo: "Fatores de Risco Psicossocial no Ambiente de Trabalho",
+        duracao: "55 min",
+        topicos: [
+          "Conceito de riscos psicossociais",
+          "Principais fatores de risco (NR-1 e ISO 45003)",
+          "Sobrecarga e ritmo de trabalho",
+          "Falta de autonomia e controle",
+          "Conflitos interpessoais e clima toxico"
+        ],
+        materialDidatico: `
+FATORES DE RISCO PSICOSSOCIAL NO AMBIENTE DE TRABALHO
+
+INTRODUCAO
+
+Riscos psicossociais sao condicoes do trabalho que podem causar danos a saude mental e fisica dos trabalhadores. Diferente de riscos fisicos ou quimicos, sao invisiveis mas extremamente impactantes.
+
+A NR-1 (2021) tornou obrigatoria a gestao de riscos psicossociais nas organizacoes brasileiras. A ISO 45003 (2021) estabelece diretrizes internacionais.
+
+Impacto dos Riscos Psicossociais:
+- Custos globais de $1 trilhao em produtividade perdida (OMS)
+- Principal causa de afastamento do trabalho no Brasil
+- 86% dos trabalhadores brasileiros relatam sofrer algum impacto (ISMA-BR)
+
+CONCEITO DE RISCOS PSICOSSOCIAIS
+
+Definicao (ISO 45003):
+Riscos psicossociais sao aspectos do design do trabalho, organizacao e gestao do trabalho, e seus contextos sociais e ambientais, que tem potencial de causar danos psicologicos ou fisicos.
+
+Exemplos Praticos:
+- Trabalhar sob pressao excessiva constantemente
+- Nao ter clareza sobre o que se espera de voce
+- Sofrer assedio ou discriminacao
+- Ter trabalho monotono e sem significado
+- Ter conflito entre trabalho e vida pessoal
+- Falta de apoio da lideranca
+- Inseguranca sobre o futuro do emprego
+
+Diferenca Entre Risco e Perigo:
+
+PERIGO PSICOSSOCIAL:
+Condicao com potencial de causar dano.
+Exemplo: "Prazos apertados"
+
+RISCO PSICOSSOCIAL:
+Probabilidade + Severidade do dano.
+Exemplo: "Prazos impossíveis recorrentes que levam a exaustão e erros"
+
+PRINCIPAIS FATORES DE RISCO (NR-1 e ISO 45003)
+
+A NR-1 estabelece que empresas devem identificar perigos e avaliar riscos psicossociais.
+A ISO 45003 categoriza riscos em 3 dimensões:
+
+DIMENSAO 1: ORGANIZACAO DO TRABALHO
+
+1. CARGA DE TRABALHO (Quantidade/Ritmo)
+- Trabalho excessivo de forma constante
+- Prazos irrealistas
+- Pressao de tempo continua
+- Interrupcoes frequentes
+
+Sinais de Alerta:
+- Horas extras rotineiras
+- Trabalho levado para casa
+- Reunioes consecutivas sem intervalo
+- Metas inalcancaveis
+
+2. HORARIOS E JORNADAS
+- Jornadas longas (>10h regularmente)
+- Trabalho em turnos/noturno
+- Imprevisibilidade de horarios
+- Dificuldade de conciliacao trabalho-vida
+
+Pesquisa: Trabalhar >55h por semana aumenta em 35% risco de AVC e 17% risco de doenca cardiaca.
+
+3. MONOTONIA E SUBUTILIZACAO
+- Trabalho repetitivo sem desafio
+- Subqualificacao (pessoa com alta capacidade em trabalho simples)
+- Falta de variedade
+- Tedio
+
+Consequencia: Bore-out (burnout por tedio)
+
+4. AMBIGUIDADE E CONFLITO DE PAPEL
+- Falta de clareza sobre responsabilidades
+- Expectativas conflitantes
+- Multiplos chefes com demandas incompativeis
+- Mudancas constantes de prioridades
+
+DIMENSAO 2: FATORES SOCIAIS E RELACIONAIS
+
+5. FALTA DE APOIO
+- Lideranca ausente ou abusiva
+- Isolamento social
+- Falta de trabalho em equipe
+- Ausencia de mentoria
+
+Pesquisa: Colaboradores com chefes de suporte tem 40% menos risco de burnout.
+
+6. CONFLITOS INTERPESSOAIS
+- Brigas recorrentes
+- Fofocas e intrigas
+- Falta de civilidade
+- Competicao destrutiva
+
+7. ASSEDIO E VIOLENCIA
+- Assedio moral (humilhacao, perseguicao)
+- Assedio sexual
+- Discriminacao
+- Bullying
+- Agressao verbal ou fisica
+
+8. CLIMA ORGANIZACIONAL TOXICO
+- Cultura do medo
+- Falta de confianca
+- Comunicacao inadequada
+- Ausencia de seguranca psicologica
+
+DIMENSAO 3: CONDICOES DE EMPREGO
+
+9. INSEGURANCA NO EMPREGO
+- Ameaca de demissao
+- Contratos precarios
+- Reestruturacoes constantes
+- Incerteza sobre futuro
+
+10. FALTA DE RECONHECIMENTO
+- Esforco nao valorizado
+- Ausencia de feedback positivo
+- Promocoes injustas
+- Salarios inadequados ao esforco
+
+Desequilibrio Esforco-Recompensa (Modelo Siegrist):
+Quando esforco alto + reconhecimento baixo = Alto risco de adoecimento
+
+11. FALTA DE CONTROLE E AUTONOMIA
+- Decisoes impostas sem consulta
+- Impossibilidade de influenciar o trabalho
+- Microgerenciamento
+- Rigidez excessiva
+
+Modelo Demanda-Controle (Karasek):
+Alta demanda + Baixo controle = Maior risco psicossocial
+
+SOBRECARGA E RITMO DE TRABALHO
+
+Sobrecarga e um dos fatores de risco mais prevalentes.
+
+Tipos de Sobrecarga:
+
+1. SOBRECARGA QUANTITATIVA
+Muito trabalho, pouco tempo.
+Exemplo: 80 emails/dia, 15 reunioes/semana, 5 projetos simultaneos.
+
+2. SOBRECARGA QUALITATIVA
+Trabalho muito complexo para nivel de competencia.
+Exemplo: Pessoa junior responsavel por decisoes estrategicas complexas.
+
+3. SOBRECARGA EMOCIONAL
+Lidar com situacoes emocionalmente desgastantes.
+Exemplo: Atendimento de clientes agressivos, comunicar demissoes, mediar conflitos graves.
+
+Consequencias da Sobrecarga Cronica:
+- Exaustao fisica e mental
+- Erros e retrabalho
+- Desmotivacao
+- Burnout
+- Problemas fisicos (hipertensao, insonia)
+- Alta rotatividade
+
+Como Identificar Sobrecarga na Sua Equipe:
+
+Indicadores Quantitativos:
+- Horas extras frequentes
+- Prazos constantemente nao cumpridos
+- Backlog crescente
+- Baixa qualidade do trabalho
+
+Indicadores Qualitativos (Conversas):
+"Estou afogado em demandas"
+"Nao da tempo de fazer nada bem feito"
+"Trabalho ate tarde todo dia"
+"Nao sei por onde comecar"
+
+Accoes de Gestao de Sobrecarga:
+
+1. MAPEIE CARGA REAL
+Peca que equipe liste todas as tarefas/projetos atuais. Muitas vezes lideres subestimam a carga.
+
+2. PRIORIZE BRUTALMENTE
+Use matriz Eisenhower: Urgente/Importante. Elimine ou delegue o resto.
+
+3. REDISTRIBUA
+Se uma pessoa esta sobrecarregada, redistribua tarefas (nao adicione mais pessoas sobrecarregadas).
+
+4. RENEGOCIE PRAZOS
+Prazos irrealistas geram so estresse e baixa qualidade. Seja honesto com stakeholders.
+
+5. AUTOMATIZE/SIMPLIFIQUE
+Elimine burocracias inuteis e automatize tarefas repetitivas.
+
+FALTA DE AUTONOMIA E CONTROLE
+
+Autonomia e a capacidade de influenciar decisoes sobre o proprio trabalho.
+
+Por Que Autonomia e Importante:
+
+Pesquisa (Daniel Pink - Drive):
+Autonomia e uma das 3 necessidades fundamentais humanas (junto com Competencia e Proposito).
+
+Efeitos da Falta de Autonomia:
+- Desmotivacao profunda
+- Sensacao de impotencia
+- Comportamento passivo (nao sugerem melhorias)
+- Frustração e ressentimento
+- Saida de talentos
+
+Sinais de Falta de Autonomia:
+
+- "Nao posso decidir nada sem aprovação"
+- "Sou tratado como executor, nao pensante"
+- "Minhas ideias nunca sao consideradas"
+- "Sou microgerenciado"
+
+Como Aumentar Autonomia (Sem Perder Controle):
+
+1. DEFINA O "QUE" E "PORQUE", NAO O "COMO"
+De missao e resultado esperado. Deixe pessoa escolher metodologia.
+
+2. DELEGUE DECISOES
+Sempre que possivel, deixe a pessoa mais proxima do problema decidir.
+
+3. CONVIDE PARTICIPACAO EM DECISOES
+"Como voce faria isso?" "O que voce acha dessa proposta?"
+
+4. PERMITA EXPERIMENTACAO
+"Teste essa abordagem. Se nao funcionar, ajustamos."
+
+5. EVITE REVERTER DECISOES SEM NECESSIDADE
+Se delegou, confie. So intervenha em caso critico.
+
+CONFLITOS INTERPESSOAIS E CLIMA TOXICO
+
+Conflitos ocasionais sao normais. Conflitos cronicos e clima toxico sao riscos graves.
+
+Caracteristicas de Clima Toxico:
+
+1. FOFOCAS E INTRIGAS
+Informacoes distorcidas circulam pelos corredores.
+
+2. PANELLINHAS E EXCLUSAO
+Grupos fechados que isolam outros.
+
+3. COMPETICAO DESTRUTIVA
+"Jogar colega debaixo do onibus" para se promover.
+
+4. COMUNICACAO AGRESSIVA
+Gritos, emails passivo-agressivos, sarcasmo.
+
+5. AUSENCIA DE CONFIANCA
+Ninguem confia em ninguem. Tudo e politico.
+
+6. MEDO DE REPRESALIAS
+Pessoas tem medo de falar a verdade ou discordar.
+
+Consequencias:
+- Alta rotatividade
+- Baixa produtividade
+- Adoecimento mental
+- Saida dos melhores talentos (toxicos ficam)
+
+Como Transformar Clima Toxico:
+
+1. DIAGNOSTIQUE (Anonimo)
+Pesquisa de clima para entender causas especificas.
+
+2. CONFRONTE COMPORTAMENTOS TOXICOS
+Nao tolere bullying, assedio ou desrespeito. Acao imediata.
+
+3. MODELE COMPORTAMENTO SAUDAVEL
+Lideres dao o tom. Se voce fofoca, a equipe fofoca.
+
+4. CRIE REGRAS CLARAS DE CONVIVENCIA
+"Nesta equipe: respeitamos opinioes, resolvemos conflitos diretamente, nao toleramos assedio."
+
+5. PROMOVA COLABORACAO
+Incentive projetos colaborativos. Reconheca trabalho em equipe.
+
+6. INTERVENHA EM CONFLITOS
+Nao deixe conflitos apodrecerem. Medeie rapidamente.
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Mapeamento de Riscos
+Liste 5 riscos psicossociais presentes na sua equipe agora. Classifique cada um por gravidade (baixa/media/alta).
+
+Exercicio 2: Priorizacao de Acoes
+Dos riscos identificados, qual voce pode influenciar diretamente? Qual acao concreta pode tomar esta semana?
+
+Exercicio 3: Conversa de Check-in
+Agende 1:1 com cada membro da equipe e pergunte:
+"Como voce esta se sentindo em relacao a carga de trabalho?"
+"Ha algo que esta dificultando seu trabalho?"
+"O que eu posso fazer para apoiar voce?"
+
+CONCLUSAO DO MODULO
+
+Riscos psicossociais nao sao "frescura" - sao ameacas reais a saude e produtividade. A boa noticia: grande parte e prevenivel com gestao consciente.
+
+Lideres tem papel fundamental em reduzir riscos psicossociais atraves de:
+- Distribuicao justa de carga
+- Concessao de autonomia
+- Criacao de clima saudavel
+- Comunicacao clara
+- Reconhecimento adequado
+
+Proximos Passos:
+1. Mapeie os riscos psicossociais da sua equipe
+2. Priorize os 3 riscos mais criticos
+3. Defina 1 acao concreta para cada risco
+4. Acompanhe evolucao mensalmente
+
+Lembre-se: Prevenir e mais barato e eficaz que remediar.
+        `
+      },
+      {
+        id: 3,
+        titulo: "Intervencao e Primeiros Socorros Psicologicos",
+        duracao: "50 min",
+        topicos: [
+          "Quando e como intervir",
+          "Primeiros socorros psicologicos no trabalho",
+          "Abordagem empatica em crises",
+          "Encaminhamento para apoio profissional",
+          "Limites da atuacao do lider"
+        ],
+        materialDidatico: `
+INTERVENCAO E PRIMEIROS SOCORROS PSICOLOGICOS
+
+INTRODUCAO
+
+Primeiros Socorros Psicologicos (PSP) sao intervencoes iniciais para ajudar uma pessoa em sofrimento emocional agudo. Nao e terapia - e acolhimento e estabilizacao ate que suporte profissional seja acessado.
+
+Como lider, voce provavelmente encontrara situacoes de crise emocional: colaborador chorando apos feedback, pessoa em panico, comunicacao de diagnostico grave, perda de familiar, etc.
+
+Saber o basico de PSP pode fazer diferenca significativa.
+
+QUANDO E COMO INTERVIR
+
+Sinais de Que Intervencao Imediata e Necessaria:
+
+SINAIS VERBAIS:
+- "Nao aguento mais"
+- "Preferia estar morto"
+- "Nao vejo saida"
+- "Vou fazer algo que vao se arrepender"
+- "Quero sumir"
+
+SINAIS COMPORTAMENTAIS:
+- Choro incontrolavel
+- Hiperventilacao/panico
+- Agressividade repentina
+- Isolamento extremo
+- Despedidas incomuns ("Obrigado por tudo, voce foi importante")
+- Mudanca drastica de comportamento
+
+SINAIS FISICOS:
+- Tremores
+- Palidez extrema
+- Sudorese
+- Falta de ar
+- Desorientacao
+
+Quando Intervir:
+
+INTERVENHA IMEDIATAMENTE:
+- Risco de auto-lesao ou suicidio
+- Crise de panico
+- Colapso emocional publico
+- Agressividade iminente
+
+AGENDE CONVERSA PRIVADA EM 24H:
+- Mudanca gradual de comportamento
+- Sinais de esgotamento
+- Relato de dificuldades pessoais
+- Queda de desempenho
+
+NAO IGNORE NUNCA:
+Qualquer mencao a desistir da vida, suicidio ou auto-lesao deve ser levada a serio, mesmo que dita em tom de "brincadeira".
+
+Como Abordar:
+
+CERTO:
+1. Local privado e seguro
+2. Tom calmo e acolhedor
+3. "Percebi que voce nao esta bem. Gostaria de conversar?"
+4. Escute sem julgar
+5. Valide sentimentos
+6. Ofereça apoio concreto
+
+ERRADO:
+1. Conversa em publico/aberta
+2. Tom acusatorio: "O que esta acontecendo com voce?"
+3. Minimizar: "Nao e nada demais"
+4. Dar conselhos genericos: "E so pensar positivo"
+5. Forcar a pessoa a falar
+6. Prometer sigilo absoluto (em casos de risco de vida, precisa avisar ajuda)
+
+PRIMEIROS SOCORROS PSICOLOGICOS NO TRABALHO
+
+Protocolo de Primeiros Socorros Psicologicos (OMS - adaptado):
+
+PASSO 1: OBSERVE E APROXIME-SE COM RESPEITO
+
+Observe a situacao antes de intervir.
+- A pessoa esta em perigo fisico?
+- Ha outras pessoas ao redor (privacidade)?
+- A pessoa esta receptiva a ajuda?
+
+Aproxime-se calmamente:
+"Oi, [nome]. Vi que voce nao esta bem. Posso ajudar em algo?"
+
+PASSO 2: ESCUTE ATIVAMENTE (NAO PRESSIONE)
+
+Ofereça escuta, nao force:
+"Estou aqui se voce quiser conversar."
+
+Se pessoa aceita:
+- Escute sem interromper
+- Nao julgue
+- Nao minimize
+- Nao de conselhos prematuros
+
+Use silencio confortavel. Deixe pessoa processar.
+
+PASSO 3: CONFORTE E ACALME
+
+Valide emocoes:
+"Entendo que isso e muito dificil para voce."
+"E normal se sentir assim diante dessa situacao."
+
+Ajude a pessoa a se acalmar:
+- Se hiperventilacao: "Vamos respirar juntos. Inspira... expira..."
+- Ofereça agua
+- Guie para lugar calmo e privado
+- Evite toque fisico sem permissao (pode piorar em alguns casos)
+
+PASSO 4: AVALIE NECESSIDADES E PREOCUPACOES
+
+Pergunte:
+"O que voce precisa agora?"
+"Como posso ajudar voce?"
+"Ha algo urgente que precisa ser resolvido?"
+
+Ajude a identificar necessidades basicas:
+- Seguranca (esta em perigo?)
+- Necessidades fisicas (comida, descanso?)
+- Apoio social (alguem para buscar? familiar?)
+
+PASSO 5: OFEREÇA AJUDA PRATICA
+
+NAO:
+"Se precisar de alguma coisa, me procure."
+(Generico demais, pessoa em crise nao vai buscar)
+
+SIM:
+"Vou cancelar suas reunioes de hoje para voce descansar."
+"Vou ligar para o RH agora para acessar apoio psicologico."
+"Posso ligar para alguem da sua familia?"
+
+Ofereça opcoes concretas, nao jogue responsabilidade de volta.
+
+PASSO 6: CONECTE COM APOIO CONTINUADO
+
+Primeiros socorros e primeira resposta. Pessoa precisa de suporte profissional.
+
+Conecte com:
+- Psicologo da empresa (se houver)
+- Programa de Apoio ao Empregado (PAE)
+- SESMT (Servico Especializado em Seguranca e Medicina do Trabalho)
+- Psicologo/psiquiatra particular
+- CAPS (Centro de Atencao Psicossocial - SUS)
+- Em caso de risco de vida: 188 (CVV) ou 192 (SAMU)
+
+NAO assuma responsabilidade de "resolver" o problema sozinho.
+
+ABORDAGEM EMPATICA EM CRISES
+
+Frases que Ajudam:
+
+"Eu me importo com voce e quero ajudar."
+"Voce nao esta sozinho nisso."
+"E corajoso voce ter compartilhado isso comigo."
+"Nao tenho todas as respostas, mas vamos buscar ajuda juntos."
+"Isso deve estar muito dificil para voce."
+
+Frases que Prejudicam (EVITE):
+
+"Eu sei como voce se sente." (Nao, voce nao sabe)
+"Poderia ser pior." (Minimiza sofrimento)
+"Pensa positivo!" (Invalida emocao)
+"Supera isso." (Acusatorio)
+"Outras pessoas passam por coisa pior." (Comparacao prejudicial)
+"Voce e forte, vai conseguir." (Pressao adicional)
+"Isso e frescura/mimimi." (Invalidacao total)
+
+Validacao vs Solucao:
+
+Em crises, pessoa precisa primeiro de VALIDACAO, depois de SOLUCAO.
+
+Exemplo:
+
+Colaborador: "Estou em burnout. Nao consigo mais trabalhar."
+
+ERRADO (Solucao imediata):
+"Entao vamos redistribuir suas tarefas e voce tira uns dias de folga."
+
+CERTO (Validacao primeiro):
+"Isso deve estar sendo muito pesado para voce. Obrigado por confiar em mim. Vamos pensar juntos em como aliviar isso."
+
+Tecnica do Espelhamento Emocional:
+
+Reflita a emocao que voce percebe:
+"Voce parece muito cansado."
+"Vejo que voce esta assustado com essa situacao."
+"Percebo tristeza no seu tom."
+
+Isso mostra que voce esta atento e valida o que a pessoa sente.
+
+ENCAMINHAMENTO PARA APOIO PROFISSIONAL
+
+Como Sugerir Apoio Psicologico Sem Ofender:
+
+ERRADO:
+"Voce precisa de terapia." (Sooa como acusacao/diagnostico)
+"Voce esta louco, procura um psicologo." (Estigmatizante)
+
+CERTO:
+"Ja pensou em conversar com um profissional de saude mental? Eles tem ferramentas que podem ajudar muito."
+"Temos um programa de apoio psicologico na empresa. Posso te passar o contato? Muita gente tem se beneficiado."
+"Essa situacao e pesada demais para resolver sozinho. Que tal buscarmos um profissional que possa te apoiar melhor?"
+
+Normalizacao:
+
+Reduza estigma mostrando que e normal e saudavel:
+"Assim como vamos ao medico quando estamos com dor fisica, psicologo nos ajuda com dor emocional."
+"Eu ja fiz terapia e me ajudou muito." (se for verdade)
+"Saude mental e tao importante quanto saude fisica."
+
+Facilite o Acesso:
+
+Remova barreiras:
+- Forneca contatos diretos (nao jogue para pessoa buscar)
+- Se empresa tem PAE, explique como funciona
+- Ofereça flexibilidade de horario para consultas
+- Garanta confidencialidade
+
+Recursos Importantes:
+
+- CVV (Centro de Valorizacao da Vida): 188 (24h, gratis, apoio emocional e prevencao suicidio)
+- CAPS (Centro de Atencao Psicossocial): Atendimento SUS para casos graves
+- PAE (Programa de Apoio ao Empregado): Se empresa oferece
+- Psicologo/Psiquiatra: Encaminhamento via plano de saude ou particular
+- SAMU: 192 (emergencias medicas incluindo psiquiatricas)
+
+LIMITES DA ATUACAO DO LIDER
+
+O Que Voce PODE Fazer:
+
+- Acolher e escutar com empatia
+- Oferecer suporte pratico imediato
+- Conectar com recursos profissionais
+- Ajustar carga de trabalho temporariamente
+- Demonstrar cuidado genuino
+- Manter confidencialidade (exceto risco de vida)
+- Acompanhar evolucao
+
+O Que Voce NAO PODE/DEVE Fazer:
+
+- DIAGNOSTICAR ("Voce tem depressao")
+- PRESCREVER TRATAMENTO ("Toma esse remedio")
+- FAZER TERAPIA (Voce nao e psicologo)
+- ASSUMIR PAPEL DE SALVADOR (Co-dependencia)
+- PROMETER SIGILO EM CASOS DE RISCO DE VIDA
+- IGNORAR SINAIS DE ALERTA GRAVES
+- PRESSIONAR PESSOA A "MELHORAR" RAPIDAMENTE
+
+Quando Envolver RH/Emergencia:
+
+ENVOLVA RH:
+- Situacao grave que exige afastamento
+- Necessidade de ajustes de funcao
+- Assedio ou violencia
+- Solicitacao de apoio estruturado (PAE)
+
+LIGUE 188 (CVV) ou 192 (SAMU):
+- Mencao explicita de suicidio
+- Tentativa de auto-lesao
+- Crise psicotica (perda de contato com realidade)
+- Agressividade incontrolavel
+
+Nao Carregue Sozinho:
+
+Cuidar de alguem em crise e emocionalmente desgastante. Busque suporte para voce tambem:
+- Converse com RH sobre caso (anonimizando se possivel)
+- Procure supervisao com profissional
+- Cuide da sua propria saude mental
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Role-Play de Intervencao
+Com um colega, simule situacao de colaborador em crise. Pratique protocolo de primeiros socorros psicologicos.
+
+Exercicio 2: Mapeamento de Recursos
+Liste todos os recursos de apoio psicologico disponiveis na sua empresa e comunidade. Tenha essa lista acessivel.
+
+Exercicio 3: Reflexao Pessoal
+Como voce reage em situacoes emocionalmente intensas? Voce tende a evitar, minimizar, ou acolher? O que pode melhorar?
+
+CONCLUSAO DO MODULO
+
+Primeiros socorros psicologicos nao e resolver o problema - e estabilizar, acolher e conectar com quem pode resolver.
+
+Como lider, voce nao precisa ter todas as respostas. Precisa ter empatia, coragem para intervir e conhecimento de recursos disponiveis.
+
+Muitas vezes, simplesmente estar presente e dizer "Eu me importo. Voce nao esta sozinho" ja faz diferenca enorme.
+
+Proximos Passos:
+1. Mapeie recursos de apoio da empresa
+2. Pratique escuta empatica em conversas cotidianas
+3. Observe sua equipe para sinais de alerta
+4. Cuide da sua propria saude mental
+
+Lembre-se: Voce pode salvar vidas ao identificar sinais e agir com empatia.
+        `
+      },
+      {
+        id: 4,
+        titulo: "Criacao de Ambiente Psicologicamente Saudavel",
+        duracao: "45 min",
+        topicos: [
+          "Caracteristicas de ambientes saudaveis",
+          "Promocao de bem-estar e engajamento",
+          "Programas de prevencao de riscos",
+          "Papel da lideranca na saude mental",
+          "Metricas e monitoramento de saude organizacional"
+        ],
+        materialDidatico: `
+CRIACAO DE AMBIENTE PSICOLOGICAMENTE SAUDAVEL
+
+INTRODUCAO
+
+Ambientes de trabalho psicologicamente saudaveis nao acontecem por acaso - sao intencionalmente construidos atraves de politicas, praticas e, especialmente, lideranca.
+
+Beneficios de Ambientes Saudaveis:
+- 21% mais lucratividade (Gallup)
+- 41% menos absenteismo
+- 59% menos rotatividade
+- 3x mais inovacao
+- 66% mais engajamento
+
+Investir em saude mental nao e altruismo - e estrategia de negocios.
+
+CARACTERISTICAS DE AMBIENTES SAUDAVEIS
+
+1. SEGURANCA PSICOLOGICA
+
+Pessoas se sentem seguras para:
+- Fazer perguntas sem medo de parecer "burras"
+- Admitir erros sem punicao
+- Discordar respeitosamente
+- Assumir riscos calculados
+- Ser autenticas
+
+Praticas:
+- Lideres admitem erros publicamente
+- Erros sao tratados como aprendizado, nao falha moral
+- Perguntas sao celebradas, nao ridicularizadas
+- Diversidade de opiniao e valorizada
+
+2. CLAREZA DE EXPECTATIVAS E PAPEIS
+
+Pessoas sabem:
+- O que se espera delas
+- Como seu trabalho contribui para objetivos maiores
+- Quem sao seus stakeholders
+- Criterios de sucesso
+
+Praticas:
+- Descricoes de cargo claras
+- Metas SMART
+- Feedback regular
+- Alinhamento de expectativas em 1:1
+
+3. CARGA DE TRABALHO SUSTENTAVEL
+
+Trabalho desafiador mas nao esgotante.
+
+Praticas:
+- Monitoramento de horas extras
+- Redistribuicao quando necessario
+- Priorizacao clara
+- Realismo em prazos
+- Pausas e descanso respeitados
+
+4. AUTONOMIA E PARTICIPACAO
+
+Pessoas tem voz e influencia sobre seu trabalho.
+
+Praticas:
+- Decisoes consultivas
+- Flexibilidade de metodos
+- Participacao em planejamento
+- Ideias sao ouvidas e consideradas
+
+5. RECONHECIMENTO E CRESCIMENTO
+
+Esforco e resultado sao valorizados.
+
+Praticas:
+- Reconhecimento regular (formal e informal)
+- Oportunidades de desenvolvimento
+- Promocoes justas
+- Salarios competitivos
+- Feedback construtivo
+
+6. RELACOES POSITIVAS
+
+Conexoes humanas saudaveis.
+
+Praticas:
+- Momentos de integracao
+- Resolucao rapida de conflitos
+- Tolerancia zero a assedio
+- Cultura de respeito
+
+7. EQUILIBRIO TRABALHO-VIDA
+
+Vida pessoal e respeitada.
+
+Praticas:
+- Flexibilidade de horario quando possivel
+- Trabalho remoto/hibrido
+- Respeito a limites (nao exigir respostas fora do horario)
+- Licencas e ferias respeitadas
+
+PROMOCAO DE BEM-ESTAR E ENGAJAMENTO
+
+Bem-estar e Engajamento sao conceitos relacionados mas distintos:
+
+BEM-ESTAR:
+Estado de saude fisica, mental e social.
+
+ENGAJAMENTO:
+Conexao emocional e comprometimento com o trabalho.
+
+Pesquisa (Gallup):
+Apenas 13% dos trabalhadores globalmente estao engajados. 24% estao ativamente desengajados (prejudicam ativamente a organizacao).
+
+Drivers de Engajamento:
+
+1. PROPOSITO E SIGNIFICADO
+Trabalho tem sentido, nao e so "pagar as contas".
+
+Como Fortalecer:
+- Conecte trabalho individual a missao maior
+- Mostre impacto real do trabalho
+- Celebre contribuicoes significativas
+
+2. DESENVOLVIMENTO E APRENDIZADO
+Oportunidade de crescer e aprender.
+
+Como Fortalecer:
+- Programas de capacitacao
+- Desafios progressivos
+- Mentoria
+- Budget para cursos/eventos
+
+3. RELACOES DE QUALIDADE
+Conexoes positivas com colegas e lideres.
+
+Como Fortalecer:
+- 1:1 regulares e genuinos
+- Momentos informais (cafe, almoco)
+- Celebracoes de equipe
+- Apoio mutuo
+
+4. CONTRIBUICAO VALORIZADA
+Sentir que o que faz importa.
+
+Como Fortalecer:
+- Reconhecimento especifico e frequente
+- Envolvimento em decisoes
+- Feedback positivo
+
+Programas de Bem-Estar Eficazes:
+
+Nivel 1 - BASICO (Todas empresas deveriam ter):
+- PAE (Programa de Apoio ao Empregado) com acesso a psicologos
+- Politica anti-assedio clara e aplicada
+- Flexibilidade basica de horarios
+- Canais de denuncia anonimos
+
+Nivel 2 - INTERMEDIARIO:
+- Treinamentos de lideranca em saude mental
+- Pesquisas periodicas de clima/engajamento
+- Programas de qualidade de vida (ginastica laboral, nutricao)
+- Dias de saude mental
+
+Nivel 3 - AVANCADO:
+- Gestao integrada de riscos psicossociais
+- Programas de mindfulness/meditacao
+- Espacos de descompressao
+- Politica de trabalho remoto/hibrido estruturada
+- Licencas sabbaticias
+
+PROGRAMAS DE PREVENCAO DE RISCOS
+
+Prevencao e mais eficaz e barata que remediacao.
+
+Modelo de Prevencao em 3 Niveis (OMS):
+
+PREVENCAO PRIMARIA (Evitar que problema surja)
+Objetivo: Reduzir fatores de risco
+Acoes:
+- Design de trabalho saudavel
+- Treinamento de lideran ca
+- Promocao de equilibrio
+- Cultura de seguranca psicologica
+
+PREVENCAO SECUNDARIA (Detectar cedo)
+Objetivo: Identificar sinais precoces
+Acoes:
+- Check-ins regulares 1:1
+- Pesquisas de pulso
+- Monitoramento de indicadores (absenteismo, rotatividade)
+- Treinamento de identificacao de sinais
+
+PREVENCAO TERCIARIA (Tratar e reabilitar)
+Objetivo: Apoiar recuperacao
+Acoes:
+- PAE e suporte psicologico
+- Ajustes de funcao/carga
+- Retorno gradual pos-afastamento
+- Acompanhamento pos-crise
+
+Ciclo de Gestao de Riscos (NR-1):
+
+1. IDENTIFICAR PERIGOS
+Quais fatores de risco existem?
+
+2. AVALIAR RISCOS
+Qual probabilidade e gravidade?
+
+3. CONTROLAR RISCOS
+Eliminacao > Reducao > Controles administrativos > EPIs
+
+4. MONITORAR E REVISAR
+Esta funcionando? O que mudou?
+
+PAPEL DA LIDERANCA NA SAUDE MENTAL
+
+Lideres tem impacto direto e massivo na saude mental da equipe.
+
+Pesquisa (Mind Share Partners):
+- 70% dos colaboradores dizem que o gestor impacta mais sua saude mental que medico ou terapeuta
+- Lideres sao responsaveis por 70% da variacao em engajamento da equipe
+
+O Que Lideres Devem Fazer:
+
+1. MODELAR COMPORTAMENTO SAUDAVEL
+- Tirar ferias
+- Respeitar horarios
+- Falar abertamente sobre saude mental
+- Buscar apoio quando necessario
+
+Se voce trabalha 12h/dia, envia email meia-noite e nunca tira ferias, voce esta dizendo que isso e esperado.
+
+2. CRIAR CONVERSAS REGULARES
+
+1:1 semanais ou quinzenais focados nao so em tarefas, mas em bem-estar:
+"Como voce esta se sentindo?"
+"Algo te preocupando?"
+"Como posso apoiar melhor?"
+
+3. AGIR NOS FEEDBACKS
+
+Pesquisas de clima sao inuteis se nao ha acao. Se equipe reporta sobrecarga, aja concretamente.
+
+4. TREINAMENTO CONTINUO
+
+Lideres devem ser treinados em:
+- Identificacao de sinais de risco
+- Primeiros socorros psicologicos
+- Gestao de conflitos
+- Comunicacao empatica
+
+5. DAR AUTONOMIA E CONFIANCA
+
+Microgerenciamento e toxico. Confie na equipe.
+
+METRICAS E MONITORAMENTO DE SAUDE ORGANIZACIONAL
+
+"O que nao e medido nao e gerenciado." - Peter Drucker
+
+Indicadores de Saude Mental Organizacional:
+
+INDICADORES REATIVOS (Problemas ja aconteceram):
+- Taxa de absenteismo (faltas por doenca)
+- Taxa de afastamentos por transtornos mentais (CID F)
+- Taxa de rotatividade voluntaria
+- Numero de queixas/denuncias
+- Processos trabalhistas
+
+INDICADORES PROATIVOS (Prevencao):
+- Resultado de pesquisas de clima/engajamento
+- Indice de seguranca psicologica (escala de Edmondson)
+- Participacao em programas de bem-estar
+- Cobertura de treinamentos de lideranca
+- Indice de sobrecarga (horas extras, backlog)
+
+INDICADORES DE RESULTADO (Impacto final):
+- Produtividade
+- Qualidade do trabalho
+- Inovacao (ideias implementadas)
+- NPS interno (recomendacao da empresa)
+- Indice de saude organizacional
+
+Exemplo de Dashboard de Saude Mental:
+
+Metricas Mensais:
+- Absenteismo: X% (meta <3%)
+- Afastamentos CID-F: X casos
+- Rotatividade: X% (meta <10% ao ano)
+- Resultado pesquisa pulso: X/10
+- Cobertura PAE: X% da equipe
+
+Analise:
+- Tendencia dos ultimos 6 meses
+- Comparacao entre areas/times
+- Correlacao com eventos (reestruturacao, lancamento, etc)
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Avaliacao do Ambiente
+Use checklist de caracteristicas de ambientes saudaveis e avalie sua equipe (1-10 em cada). Onde esta o maior gap?
+
+Exercicio 2: Plano de Acao
+Escolha 3 acoes concretas para melhorar saude mental da equipe nos proximos 90 dias.
+
+Exercicio 3: Conversa de Bem-Estar
+Na proxima semana, em cada 1:1, dedique 10 minutos para perguntar genuinamente como pessoa esta e o que precisa.
+
+CONCLUSAO DO MODULO
+
+Criar ambientes psicologicamente saudaveis e uma jornada continua, nao um projeto com data de termino.
+
+Organizacoes que priorizam saude mental colhem beneficios em:
+- Menor rotatividade e absenteismo
+- Maior produtividade e inovacao
+- Atracao e retencao de talentos
+- Reputacao e marca empregadora
+- Resultados financeiros
+
+E tudo comeca com lideranca consciente, empatica e comprometida.
+
+Proximos Passos:
+1. Avalie o ambiente atual da sua equipe
+2. Implemente 1 pratica de promocao de bem-estar esta semana
+3. Estabeleca metricas de monitoramento
+4. Treine-se continuamente em gestao de saude mental
+
+Lembre-se: Colaboradores saudaveis = Organizacao saudavel = Resultados sustentaveis.
+        `
       }
     ],
     atividadesPraticas: [
