@@ -79,6 +79,7 @@ import CheckoutCanceladoPage from "./pages/CheckoutCanceladoPage";
 import RecuperarSenha from "./pages/RecuperarSenha";
 import ColaboradorCursos from "./pages/colaborador/ColaboradorCursos";
 import CursoDetalhes from "./pages/colaborador/CursoDetalhes";
+import ValidarCertificado from "./pages/ValidarCertificado";
 import { Chatbot } from "./components/Chatbot";
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
               {/* Rotas públicas - SEM autenticação */}
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/quick-check" element={<QuickCheckEstresse />} />
+              <Route path="/validar-certificado/:codigo?" element={<ValidarCertificado />} />
               <Route path="/checkout/:planType" element={<CheckoutPage />} />
               <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
               <Route path="/checkout/cancelado" element={<CheckoutCanceladoPage />} />
