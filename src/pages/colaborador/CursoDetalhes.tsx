@@ -135,6 +135,13 @@ export default function CursoDetalhes() {
       if (response.status === 404) return null;
       if (!response.ok) throw new Error('Erro ao buscar certificado');
       return response.json();
+    },
+    // Polling automático: verifica a cada 2 segundos se o certificado foi criado (se avaliação foi realizada mas certificado não existe)
+    refetchInterval: (query) => {
+      const avaliacaoRealizada = progresso?.avaliacaoFinalRealizada || false;
+      const temCertificado = !!query.state.data;
+      // Se avaliação foi realizada mas certificado não existe, faz polling a cada 2s
+      return (avaliacaoRealizada && !temCertificado) ? 2000 : false;
     }
   });
 
@@ -175,7 +182,7 @@ export default function CursoDetalhes() {
   const todosModulosCompletados = modulosCompletados.length === curso.modulos.length;
   const avaliacaoHabilitada = todosModulosCompletados && !progresso?.avaliacaoFinalRealizada;
   const avaliacaoRealizada = progresso?.avaliacaoFinalRealizada || false;
-  const possuiCertificado = !!certificado;
+  const possuiCertificado = !!certificado || avaliacaoRealizada; // Habilita se tem certificado OU se passou na avaliação
 
   const handleCompletarModulo = (moduloId: number) => {
     if (!modulosCompletados.includes(moduloId)) {
@@ -449,6 +456,18 @@ export default function CursoDetalhes() {
           <TabsContent value="certificado">
             {certificado ? (
               <CertificadoView certificado={certificado} curso={curso} />
+            ) : avaliacaoRealizada ? (
+              <Card className="border-2 border-blue-200">
+                <CardContent className="p-12 text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <h3 className="text-xl font-bold text-blue-700 mb-2">
+                    Gerando seu certificado...
+                  </h3>
+                  <p className="text-gray-600">
+                    Aguarde um momento enquanto emitimos seu certificado digital.
+                  </p>
+                </CardContent>
+              </Card>
             ) : (
               <Card className="border-2 border-gray-200">
                 <CardContent className="p-12 text-center">
