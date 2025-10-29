@@ -41,8 +41,20 @@ export default function CursoDetalhes() {
     queryFn: async () => {
       try {
         console.log('📚 [CURSO-FRONTEND] Buscando progresso do curso:', slug);
-        const token = localStorage.getItem('token');
+        let token = localStorage.getItem('token');
+        
+        // FIX CRÍTICO: Verificar se token é string "null" e converter para null
+        if (token === 'null' || token === 'undefined' || !token) {
+          console.error('❌ [CURSO-FRONTEND] Token inválido no localStorage:', token);
+          token = null;
+        }
+        
         console.log('📚 [CURSO-FRONTEND] Token presente?', !!token);
+        console.log('📚 [CURSO-FRONTEND] Token (primeiros 30 chars):', token ? token.substring(0, 30) + '...' : 'NENHUM');
+        
+        if (!token) {
+          throw new Error('Token de autenticação não encontrado. Por favor, faça login novamente.');
+        }
         
         const response = await fetch(`/api/cursos/progresso/${slug}`, {
           headers: {
@@ -83,7 +95,7 @@ export default function CursoDetalhes() {
           }
           
           const novoProgresso = await createResponse.json();
-          console.log('✅ [CURSO-FRONTEND] Progresso criado:', novoProgresso);
+          console.log('✅ [CURSO-FRONTEND] Progresso criado com sucesso:', novoProgresso);
           return novoProgresso;
         }
         
@@ -107,9 +119,16 @@ export default function CursoDetalhes() {
   const { data: certificado } = useQuery({
     queryKey: ['/api/cursos/certificado', slug],
     queryFn: async () => {
+      let token = localStorage.getItem('token');
+      if (token === 'null' || token === 'undefined' || !token) {
+        token = null;
+      }
+      
+      if (!token) return null;
+      
       const response = await fetch(`/api/cursos/certificado/${slug}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         }
       });
       
