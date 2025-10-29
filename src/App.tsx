@@ -82,6 +82,7 @@ import { Chatbot } from "./components/Chatbot";
 function App() {
   console.log('🔍 [APP] Componente App iniciado');
   console.log('🔍 [APP] Location atual:', window.location.href);
+  console.log('🔍 [APP] LandingPage importado?', LandingPage ? 'SIM' : 'NÃO');
   
   return (
   <QueryClientProvider client={queryClient}>
@@ -93,6 +94,7 @@ function App() {
           <AuthProvider>
             <Chatbot />
             <Routes>
+              {/* Rotas públicas - SEM autenticação */}
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/quick-check" element={<QuickCheckEstresse />} />
               <Route path="/checkout/:planType" element={<CheckoutPage />} />
