@@ -4873,6 +4873,1004 @@ Proximos Passos:
 
 Lembre-se: Tolerancia zero com assedio. Uma cultura de respeito comeca com voce.
         `
+      },
+      {
+        id: 2,
+        titulo: "Identificacao e Intervencao em Casos de Assedio",
+        duracao: "50 min",
+        topicos: [
+          "Como investigar denuncias",
+          "Acolhimento da vitima",
+          "Protecao contra retaliacao",
+          "Medidas disciplinares adequadas",
+          "Responsabilidade civil e criminal"
+        ],
+        materialDidatico: `
+IDENTIFICACAO E INTERVENCAO EM CASOS DE ASSEDIO
+
+INTRODUCAO
+
+Quando um caso de assedio e denunciado ou identificado, a forma como a organizacao responde define se a vitima sera protegida ou revitimizada, se o agressor sera responsabilizado ou continuara agindo, e se a cultura organizacional sera de tolerancia zero ou omissao.
+
+Gestao inadequada de casos de assedio:
+- Aumenta risco juridico exponencialmente
+- Multiplica dano emocional a vitima
+- Cria precedente perigoso ("aqui nao da nada")
+- Destroi confianca na organizacao
+
+COMO INVESTIGAR DENUNCIAS
+
+Principio Fundamental:
+Toda denuncia deve ser levada a serio e investigada com agilidade, imparcialidade e confidencialidade.
+
+Protocolo de Investigacao:
+
+PASSO 1: RECEBIMENTO DA DENUNCIA
+
+Canais possiveis:
+- Canal de denuncia anonimo (Compliance/Ouvidoria)
+- Relato direto ao lider/RH
+- Comite de Etica
+- Sindicato
+- Email corporativo
+
+Ao receber denuncia:
+- Agradeca a coragem de reportar
+- Garanta confidencialidade (dentro do possivel)
+- Documente TUDO por escrito
+- Nao minimize, julgue ou questione veracidade prematuramente
+- Informe os proximos passos
+
+Frase-chave:
+"Obrigado por confiar em mim/nesta empresa. Vamos tratar isso com a seriedade que merece. Vou documentar tudo que voce compartilhar e iniciar investigacao imediata. Posso fazer algumas perguntas para entender melhor?"
+
+PASSO 2: DOCUMENTACAO INICIAL
+
+Registre:
+- Data, hora, local da denuncia
+- Nome da vitima (ou anonimo, se aplicavel)
+- Nome do suposto agressor
+- Descricao detalhada dos fatos
+- Datas aproximadas dos incidentes
+- Testemunhas (se houver)
+- Evidencias (emails, mensagens, gravacoes - se houver)
+
+Perguntas clarificadoras:
+- "Pode descrever exatamente o que aconteceu?"
+- "Quando isso ocorreu pela primeira vez?"
+- "Quantas vezes aconteceu?"
+- "Havia outras pessoas presentes?"
+- "Voce comunicou verbalmente ou por escrito que esse comportamento te incomodava?"
+- "Voce tem algum registro (mensagens, emails, anotacoes)?"
+
+IMPORTANTE: Nao conduza interrogatorio. Seja empatico e acolhedor.
+
+PASSO 3: MEDIDAS IMEDIATAS DE PROTECAO
+
+Mesmo antes da conclusao da investigacao, proteja a vitima:
+
+Opcoes:
+- Separacao fisica (mudar sala/turno do agressor, nao da vitima)
+- Afastamento temporario do suposto agressor (com remuneracao)
+- Proibicao de contato entre partes
+- Acompanhamento psicologico para vitima
+- Flexibilidade de horario para vitima
+
+NUNCA:
+- Afastar ou transferir vitima (e punicao disfarçada)
+- Expor vitima a contato continuo com agressor
+- Minimizar ou pedir "paciencia"
+- Sugerir que vitima "exagerou"
+
+PASSO 4: INVESTIGACAO FORMAL
+
+Quem conduz:
+- Comite de Etica interno
+- RH com treinamento especifico
+- Empresa externa de compliance (casos graves/complexos)
+- Nunca o lider direto de uma das partes
+
+Oitivas (Entrevistas):
+
+1. VITIMA
+- Local privado, seguro, com testemunha neutra (preferencialmente RH)
+- Perguntas abertas, nao indutivas
+- Permitir que conte a historia sem interrupcoes
+- Registrar fielmente, preferencialmente gravado com consentimento
+
+2. SUPOSTO AGRESSOR
+- Direito de defesa e fundamental
+- Apresentar acusacoes de forma objetiva
+- Ouvir versao sem julgamento previo
+- Registrar tudo
+
+3. TESTEMUNHAS
+- Pessoas que presenciaram ou tem conhecimento
+- Entrevistas separadas (nao coletivas)
+- Perguntas sobre fatos observados, nao opinioes
+
+PASSO 5: ANALISE DE EVIDENCIAS
+
+Tipos de evidencia:
+- Mensagens (WhatsApp, email, SMS)
+- Gravacoes (audio/video)
+- Documentos
+- Registros de presenca/local
+- Cameras de seguranca
+- Historico de denuncias anteriores contra o mesmo agressor
+
+Avalie:
+- Consistencia entre relatos
+- Concordancia entre evidencias e depoimentos
+- Padrao de comportamento (caso recorrente)
+
+PASSO 6: CONCLUSAO DA INVESTIGACAO
+
+Possiveis conclusoes:
+1. Procedente (Assedio comprovado)
+2. Parcialmente Procedente (Algumas condutas comprovadas)
+3. Improcedente (Nao ha evidencias suficientes)
+4. Infundada (Denuncia falsa, com ma-fe)
+
+Prazo:
+Investigacao deve ser concluida em 30 dias corridos (prazo razoavel). Casos complexos podem estender, mas comunique as partes.
+
+PASSO 7: MEDIDAS POS-INVESTIGACAO
+
+Se PROCEDENTE:
+- Aplicacao de medida disciplinar ao agressor (advertencia, suspensao, demissao por justa causa)
+- Documentacao formal completa
+- Comunicacao a vitima sobre medidas tomadas (sem detalhes disciplinares por privacidade)
+- Monitoramento para garantir nao-retaliacao
+
+Se IMPROCEDENTE:
+- Arquivamento do caso com justificativa
+- Comunicacao as partes
+- Orientacao educativa (se houver comportamento inadequado mas nao configurou assedio)
+- Protecao contra retaliacao da parte acusada falsamente
+
+ACOLHIMENTO DA VITIMA
+
+A forma como vitima e tratada define se ela se recuperara ou ficara ainda mais traumatizada.
+
+Principios do Acolhimento:
+
+1. ACREDITE (Presuncao de Veracidade Inicial)
+
+Nao:
+- "Tem certeza que nao foi mal-entendido?"
+- "Voce nao esta exagerando?"
+- "Sera que voce nao provocou?"
+
+Sim:
+- "Obrigado por compartilhar. Isso nao deveria ter acontecido."
+- "Vamos investigar e tomar medidas adequadas."
+- "Voce nao tem culpa disso."
+
+2. CONFIDENCIALIDADE
+
+Garanta que apenas pessoas estritamente necessarias saberao (RH, Comite Etica, Juridico). Vazamento de informacao e violacao grave.
+
+3. NAO-JULGAMENTO
+
+Evite perguntas que culpabilizam:
+- "Voce estava usando o que?"
+- "Voce deu motivo?"
+- "Por que nao disse nao mais claramente?"
+
+4. OFEREÇA SUPORTE PRATICO
+
+- Encaminhe para psicologo
+- Ofereça dias de afastamento remunerado se necessario
+- Flexibilize horario
+- Oriente sobre direitos legais
+- Conecte com advogado (se aplicavel)
+
+5. ACOMPANHAMENTO CONTINUO
+
+Nao abandone a vitima pos-investigacao. Check-ins regulares:
+"Como voce esta?"
+"Ha algo mais que possamos fazer?"
+"Voce esta se sentindo segura?"
+
+PROTECAO CONTRA RETALIACAO
+
+Retaliacao e qualquer acao negativa contra quem denunciou ou testemunhou.
+
+Exemplos de Retaliacao:
+- Demissao ou rebaixamento
+- Transferencia punitiva
+- Sobrecarga de trabalho
+- Isolamento social
+- Difamacao
+- Ameacas
+
+Retaliacao e ILEGAL (Art. 146-A do Codigo Penal, incluido pela Lei 14.457/2022).
+
+Como Prevenir Retaliacao:
+
+1. COMUNICACAO CLARA
+Ao concluir investigacao, comunique formalmente:
+"Qualquer ato de retaliacao contra [vitima/testemunhas] sera tratado como falta grave e podera resultar em demissao por justa causa."
+
+2. MONITORAMENTO ATIVO
+Nos 6 meses seguintes, monitore:
+- Mudancas na avaliacao de desempenho da vitima
+- Transferencias ou alteracoes de funcao
+- Comentarios ou comportamentos hostis de colegas/lideranca
+
+3. CANAL ABERTO
+Informe vitima/testemunhas:
+"Se voce sofrer qualquer tipo de retaliacao, me comunique imediatamente."
+
+4. SANCAO RIGOROSA
+Se retaliacao for identificada, sancao deve ser equivalente ou superior ao assedio original.
+
+MEDIDAS DISCIPLINARES ADEQUADAS
+
+A sancao deve ser proporcional a gravidade, reincidencia e impacto.
+
+Escalada Disciplinar:
+
+1. ADVERTENCIA VERBAL
+- Casos leves, primeira ocorrencia, sem ma-fe
+- Exemplo: Piada inapropriada isolada, sem intencao de ofender, apos feedback imediato parou
+
+2. ADVERTENCIA ESCRITA
+- Casos moderados ou reincidencia apos advertencia verbal
+- Exemplo: Comentarios inapropriados recorrentes mesmo apos orientacao
+
+3. SUSPENSAO
+- Casos graves ou reincidencia apos advertencia escrita
+- Exemplo: Assedio moral com humilhacao publica, mas sem dano psicologico severo
+
+4. DEMISSAO POR JUSTA CAUSA
+- Casos muito graves, assedio sexual, reincidencia grave, dano severo
+- Exemplo: Assedio sexual com contato fisico, assedio moral sistematico que gerou afastamento da vitima, retaliacao pos-denuncia
+
+Jurisprudencia:
+Tribunais tem confirmado justa causa em casos de:
+- Assedio sexual (qualquer intensidade)
+- Assedio moral recorrente
+- Retaliacao pos-denuncia
+
+Base Legal:
+- CLT Art. 482 (alínea "b" - incontinencia de conduta; "j" - ato lesivo da honra)
+- Lei 14.457/2022 (Programa Emprega + Mulheres)
+
+RESPONSABILIDADE CIVIL E CRIMINAL
+
+Assedio nao e apenas questao trabalhista/disciplinar - e tambem CIVIL e CRIMINAL.
+
+RESPONSABILIDADE CRIMINAL (Agressor):
+
+ASSEDIO SEXUAL:
+- Crime: Art. 216-A do Codigo Penal
+- Pena: 1 a 2 anos de detencao
+- Acao penal: Publica condicionada a representacao
+
+CONSTRANGIMENTO ILEGAL:
+- Crime: Art. 146 do Codigo Penal (violencia ou grave ameaca para obrigar a fazer/nao fazer algo)
+- Pena: 3 meses a 1 ano
+
+INJURIA/DIFAMACAO/CALUNA:
+- Crimes contra honra (Art. 138, 139, 140 do CP)
+
+STALKING (Perseguicao):
+- Crime: Art. 147-A do CP
+- Pena: 6 meses a 2 anos
+
+RESPONSABILIDADE CIVIL (Agressor + Empresa):
+
+Agressor:
+- Indenizacao por danos morais a vitima
+
+Empresa (Responsabilidade Objetiva):
+- Se sabia e nao agiu
+- Se deveria saber (sinais evidentes) e nao agiu
+- Se nao tem politica de prevencao
+- Se nao investigou denuncia adequadamente
+- Se retaliou denunciante
+
+Valores de Indenizacao (Jurisprudencia):
+- Assedio moral: R$ 5 mil a R$ 50 mil+
+- Assedio sexual: R$ 10 mil a R$ 100 mil+
+- Casos graves com dano psicologico severo: R$ 100 mil a R$ 500 mil+
+
+Precedente Importante:
+TST-RR-0010551-50.2016.5.03.0027 (2020): Empresa condenada a pagar R$ 80 mil por assedio moral a gerente que adoeceu, mesmo tendo investigado, porque medidas foram insuficientes.
+
+RESPONSABILIDADE DO LIDER:
+
+Lider que:
+- Presenciou e nao agiu
+- Sabia e omitiu
+- Praticou assedio
+
+Pode ser:
+- Demitido por justa causa
+- Responsabilizado civilmente
+- Denunciado criminalmente
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Protocolo de Investigacao
+Um colaborador denuncia assedio moral do gestor. Descreva passo a passo como voce conduziria investigacao.
+
+Exercicio 2: Acolhimento
+Como voce acolheria uma vitima de assedio sexual que esta chorando, tremendo e com vergonha de relatar?
+
+Exercicio 3: Medida Disciplinar
+Caso: Funcionario de 10 anos na empresa, bom desempenho, fez comentario sexual explicito para coléga. E primeira ocorrencia, mas comentario foi grave e ofensivo. Qual medida disciplinar?
+
+CONCLUSAO DO MODULO
+
+Intervencao adequada em casos de assedio:
+- Protege a vitima
+- Responsabiliza o agressor
+- Protege a organizacao de passivos legais
+- Envia mensagem clara: assedio nao sera tolerado
+
+Lideres devem estar preparados para agir com agilidade, imparcialidade, empatia e firmeza.
+
+Proximos Passos:
+1. Conheca o protocolo de denuncia da empresa
+2. Pratique acolhimento empatico
+3. Documente tudo sempre
+4. Aja rapido em qualquer sinal de assedio
+
+Lembre-se: Omissao e cumplicidade. Intervencao adequada salva vidas e protege todos.
+        `
+      },
+      {
+        id: 3,
+        titulo: "Criacao de Cultura de Respeito e Prevencao",
+        duracao: "45 min",
+        topicos: [
+          "Politicas e codigos de conduta eficazes",
+          "Treinamentos e campanhas de conscientizacao",
+          "Canais de denuncia seguros e anonimos",
+          "Papel da lideranca na modelagem de comportamento",
+          "Metricas e monitoramento"
+        ],
+        materialDidatico: `
+CRIACAO DE CULTURA DE RESPEITO E PREVENCAO
+
+INTRODUCAO
+
+A melhor forma de combater assedio e preveni-lo. Organizacoes com cultura de respeito enraizada tem 80% menos casos de assedio (pesquisa EEOC - Equal Employment Opportunity Commission).
+
+Criar cultura de respeito exige:
+1. Politicas claras
+2. Treinamento continuo
+3. Lideranca exemplar
+4. Canais de denuncia eficazes
+5. Consequencias reais para violacoes
+
+POLITICAS E CODIGOS DE CONDUTA EFICAZES
+
+Politica de Prevencao de Assedio deve incluir:
+
+1. DEFINICOES CLARAS
+
+"Nesta empresa, consideramos assedio moral:
+[Definicao clara com exemplos]
+
+Consideramos assedio sexual:
+[Definicao clara com exemplos]"
+
+Evite linguagem juridica complexa. Use exemplos concretos.
+
+2. DECLARACAO DE TOLERANCIA ZERO
+
+"[Nome da Empresa] tem tolerancia zero com qualquer forma de assedio, discriminacao ou retaliacao. Violacoes serao investigadas e punidas rigorosamente, podendo resultar em demissao por justa causa."
+
+3. RESPONSABILIDADES
+
+De TODOS:
+- Tratar colegas com respeito
+- Reportar assedio testemunhado
+- Cooperar com investigacoes
+
+De LIDERES:
+- Modelar comportamento respeitoso
+- Intervir imediatamente em condutas inadequadas
+- Acolher denuncias
+- Nao retaliar
+
+De RH/COMPLIANCE:
+- Investigar denuncias
+- Aplicar medidas disciplinares
+- Monitorar eficacia da politica
+
+4. PROCEDIMENTOS DE DENUNCIA
+
+"Se voce sofrer ou testemunhar assedio, pode denunciar atraves de:
+- Canal de denuncia anonimo: [link/telefone]
+- RH: [email/telefone]
+- Comite de Etica: [contato]
+- Ouvidoria externa: [contato]
+
+Todas as denuncias serao investigadas com confidencialidade."
+
+5. PROTECAO CONTRA RETALIACAO
+
+"Qualquer retaliacao contra denunciante ou testemunha sera tratada como falta gravissima."
+
+6. REVISAO E ATUALIZACAO
+
+"Esta politica sera revisada anualmente e atualizada conforme necessario."
+
+Onde Comunicar a Politica:
+
+- Onboarding (primeiro dia de trabalho)
+- Intranet/portal da empresa
+- Cartazes em areas comuns
+- Email anual de reforco
+- Reunioes de equipe
+- Contratos de trabalho (anexo)
+
+TREINAMENTOS E CAMPANHAS DE CONSCIENTIZACAO
+
+Treinamento eficaz nao e palestra de 1h uma vez ao ano. E processo continuo.
+
+Modelo de Treinamento:
+
+OBRIGATORIO PARA TODOS (Anual):
+- O que e assedio (definicoes, exemplos)
+- Impactos (vitima, organizacao)
+- Como denunciar
+- Protecao contra retaliacao
+- Cultura de respeito
+- Duracao: 2-3 horas
+- Formato: Presencial ou online com certificacao
+
+OBRIGATORIO PARA LIDERANCA (Semestral):
+- Tudo do treinamento geral +
+- Como identificar sinais de assedio
+- Como acolher denuncias
+- Protocolo de investigacao
+- Responsabilidades legais
+- Exemplos de casos reais
+- Duracao: 4-6 horas
+- Formato: Presencial com role-play
+
+TREINAMENTO DE NOVOS CONTRATADOS (Onboarding):
+- Politica de prevencao
+- Canais de denuncia
+- Expectativas de comportamento
+- Duracao: 1 hora
+- Formato: Online + assinatura de ciencia
+
+Campanhas de Conscientizacao:
+
+CAMPANHA DO LACINHO BRANCO (Novembro - Combate a Violencia contra Mulher):
+- Palestras
+- Cartazes
+- Emails
+- Compromisso publico de lideres
+
+CAMPANHA INTERNA (Trimestral):
+- Tema: "Respeito e nosso valor"
+- Cartazes com frases: "Piada sexista nao tem graca", "Assedio e crime", "Respeito comeca com voce"
+- Videos curtos (1-2 min) com testemunhos (anonimos)
+- Quiz interativo sobre assedio
+
+SEMANA DE PREVENCAO (Anual):
+- Palestras com especialistas
+- Oficinas praticas
+- Espaco para duvidas anonimas
+- Relancamento da politica
+
+CANAIS DE DENUNCIA SEGUROS E ANONIMOS
+
+Um dos maiores obstaculos a denuncia e o medo. Canais de denuncia devem ser:
+
+1. MULTIPLOS
+
+Ofereça varias opcoes:
+- Canal online anonimo (plataforma externa)
+- Email/telefone de RH
+- Ouvidoria externa
+- Comite de Etica
+- Lider direto (se confiar)
+- Caixa de sugestoes anonimas
+
+2. ANONIMOS (OPCAO)
+
+Plataformas externas (ex: SafeSpace, IntegrityLine, Contato Seguro) garantem anonimato total se pessoa desejar.
+
+Importante: Anonimato dificulta investigacao, mas e melhor receber denuncia anonima que nenhuma denuncia.
+
+3. ACESSIVEIS 24/7
+
+Assedio nao acontece apenas em horario comercial. Canal deve estar disponivel sempre.
+
+4. CONFIDENCIAIS
+
+Apenas pessoas autorizadas (RH, Compliance, Juridico) tem acesso. Vazamento de informacao e falta grave.
+
+5. COM RETORNO
+
+Denunciante deve receber:
+- Confirmacao de recebimento (imediato)
+- Atualizacao sobre andamento (7-15 dias)
+- Conclusao (30 dias)
+
+Se denuncia anonima, usar protocolo para acompanhamento.
+
+6. DIVULGADOS AMPLAMENTE
+
+De nada adianta ter canal se ninguem sabe. Divulgue em:
+- Onboarding
+- Email trimestral
+- Intranet
+- Cartazes
+- Reunioes de equipe
+
+PAPEL DA LIDERANCA NA MODELAGEM DE COMPORTAMENTO
+
+Cultura nao e o que esta escrito - e o que e tolerado.
+
+Se lider faz piadas sexistas mas politica proibe, a cultura real e: "aqui vale tudo".
+
+Comportamentos que Lideres DEVEM Modelar:
+
+1. RESPEITO UNIVERSAL
+
+Trate todos com dignidade, independente de cargo, genero, raca, orientacao sexual.
+
+2. LINGUAGEM PROFISSIONAL
+
+Evite:
+- Piadinhas de duplo sentido
+- Comentarios sobre aparencia fisica
+- Apelidos constrangedores
+- Linguagem sexualizada
+
+3. ESPACO SEGURO PARA FEEDBACK
+
+"Se eu fizer ou disser algo que te incomoda, por favor me avise. Eu quero aprender."
+
+4. INTERVENCAO IMEDIATA
+
+Se presenciar comportamento inadequado, intervenha na hora:
+
+"[Nome], esse comentario nao e apropriado. Por favor, evite."
+
+5. ACOLHIMENTO DE DENUNCIAS
+
+Se alguem relata assedio, sua primeira reacao define se outros tambem reportarao.
+
+CERTO:
+"Obrigado por me contar. Vamos tratar disso com seriedade."
+
+ERRADO:
+"Ah, ele e assim mesmo, nao leva a mal."
+
+6. CONSEQUENCIAS CONSISTENTES
+
+Se politica diz "tolerancia zero", deve haver consequencia real. Nao pode ter excecao para "alto desempenho" ou "amigo da diretoria".
+
+Exemplos de Lideres que Fazem Diferenca:
+
+Lider A (Empresa X): Toda segunda-feira, em reuniao de equipe, dedica 2 minutos para reforcar valores:
+"Lembrem-se: tratamos todos com respeito. Se virem algo inadequado, reportem. Voces tem meu apoio total."
+Resultado: 0 casos de assedio em 3 anos.
+
+Lider B (Empresa Y): Ao ouvir piada machista de colaborador, interrompeu publicamente:
+"Esse tipo de piada nao e aceito aqui. Respeito e inegociavel."
+Resultado: Nunca mais houve piadinhas na equipe dele.
+
+METRICAS E MONITORAMENTO
+
+O que e medido e gerenciado. Indicadores importantes:
+
+INDICADORES DE PREVENCAO:
+
+1. COBERTURA DE TREINAMENTO
+Meta: 100% dos colaboradores treinados anualmente
+Meta: 100% dos lideres treinados semestralmente
+
+2. CONHECIMENTO DA POLITICA
+Pesquisa anual: "Voce conhece a politica de prevencao de assedio da empresa?"
+Meta: >90% "Sim"
+
+3. CONHECIMENTO DOS CANAIS
+Pesquisa: "Voce sabe como denunciar assedio?"
+Meta: >90% "Sim"
+
+INDICADORES DE CULTURA:
+
+4. PESQUISA DE CLIMA (Anonima)
+"Sinto-me seguro(a) e respeitado(a) neste ambiente de trabalho."
+Meta: >85% "Concordo/Concordo totalmente"
+
+"Confio que denuncias de assedio serao tratadas adequadamente."
+Meta: >80% "Concordo/Concordo totalmente"
+
+5. INDICE DE SEGURANCA PSICOLOGICA
+Escala de Edmondson adaptada.
+
+INDICADORES DE INCIDENCIA:
+
+6. NUMERO DE DENUNCIAS
+Atencao: AUMENTO de denuncias pode ser POSITIVO (indica que pessoas confiam no processo).
+Analise a tendencia ao longo de 2-3 anos.
+
+7. TEMPO MEDIO DE INVESTIGACAO
+Meta: <30 dias
+
+8. TAXA DE PROCEDENCIA
+% de denuncias procedentes vs improcedentes
+
+9. REINCIDENCIA
+% de agressores reincidentes (deve ser 0% se medidas foram adequadas)
+
+INDICADORES DE IMPACTO:
+
+10. AFASTAMENTOS POR ASSEDIO
+Meta: Reducao ano a ano
+
+11. PROCESSOS TRABALHISTAS POR ASSEDIO
+Meta: 0
+
+12. ROTATIVIDADE VOLUNTARIA
+Pessoas saem por assedio nao resolvido? Analise em entrevistas de desligamento.
+
+Dashboard de Monitoramento (Exemplo):
+
+Mes Atual:
+- Cobertura de treinamento: 95%
+- Denuncias recebidas: 2
+- Denuncias em investigacao: 1
+- Denuncias concluidas: 1 (procedente)
+- Tempo medio de investigacao: 22 dias
+- Seguranca psicologica (pesquisa): 82%
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Criacao de Politica
+Elabore em 1 pagina a politica de prevencao de assedio da sua empresa (ou melhore a existente).
+
+Exercicio 2: Campanha de Conscientizacao
+Planeje uma campanha de 1 semana sobre prevencao de assedio para sua organizacao. Inclua 3 acoes concretas.
+
+Exercicio 3: Modelagem de Comportamento
+Liste 3 comportamentos que voce, como lider, pode modelar esta semana para fortalecer cultura de respeito.
+
+CONCLUSAO DO MODULO
+
+Prevenir assedio e mais eficaz (e barato) que remediar. Organizacoes com cultura de respeito enraizada protegem pessoas, reputacao e resultados.
+
+Lideres sao os principais agentes de mudanca cultural. Sua postura, palavras e acoes moldam a cultura mais que qualquer politica escrita.
+
+Proximos Passos:
+1. Revise a politica de prevencao da sua empresa
+2. Garanta que 100% da equipe seja treinada
+3. Modele comportamento respeitoso consistentemente
+4. Monitore indicadores de cultura
+
+Lembre-se: Cultura de respeito se constroi dia a dia, comportamento a comportamento.
+        `
+      },
+      {
+        id: 4,
+        titulo: "Aspectos Legais e Jurisprudencia Atualizada",
+        duracao: "40 min",
+        topicos: [
+          "Legislacao brasileira sobre assedio (CLT, Codigo Penal, Lei 14.457/2022)",
+          "Jurisprudencia recente do TST",
+          "Responsabilidades da empresa e do lider",
+          "Provas e documentacao em processos",
+          "Prevencao de passivos trabalhistas"
+        ],
+        materialDidatico: `
+ASPECTOS LEGAIS E JURISPRUDENCIA ATUALIZADA
+
+INTRODUCAO
+
+Assedio nao e apenas questao etica - e questao LEGAL com consequencias civeis, trabalhistas e criminais severas.
+
+Lideres que desconhecem a legislacao colocam:
+- A si mesmos em risco (responsabilizacao pessoal)
+- A empresa em risco (indenizacoes milionarias)
+- Vitimas em risco (dano continuado)
+
+LEGISLACAO BRASILEIRA SOBRE ASSEDIO
+
+1. CONSTITUICAO FEDERAL (1988)
+
+Art. 5º: Dignidade humana, igualdade, proibicao de discriminacao
+
+Fundamento constitucional: Assedio viola dignidade humana.
+
+2. CODIGO PENAL
+
+ASSEDIO SEXUAL (Art. 216-A):
+"Constranger alguem com o intuito de obter vantagem ou favorecimento sexual, prevalecendo-se o agente da sua condicao de superior hierarquico ou ascendencia inerentes ao exercicio de emprego, cargo ou funcao."
+
+Pena: 1 a 2 anos de detencao
+Aumento de pena: 1/3 se vitima e menor de 18 anos
+
+Acao Penal: Publica condicionada a representacao da vitima
+
+CONSTRANGIMENTO ILEGAL (Art. 146):
+Violencia ou grave ameaca para obrigar a fazer/nao fazer algo
+
+PERSEGUICAO - STALKING (Art. 147-A - Lei 14.132/2021):
+"Perseguir alguem, reiteradamente e por qualquer meio, ameacando-lhe a integridade fisica ou psicologica, restringindo-lhe a capacidade de locomocao ou, de qualquer forma, invadindo ou perturbando sua esfera de liberdade ou privacidade."
+
+Pena: 6 meses a 2 anos + multa
+
+CRIMES CONTRA HONRA:
+- Caluna (Art. 138): Imputar falsamente crime
+- Difamacao (Art. 139): Imputar fato ofensivo a reputacao
+- Injuria (Art. 140): Ofender dignidade/decoro
+
+3. CONSOLIDACAO DAS LEIS DO TRABALHO (CLT)
+
+DEMISSAO POR JUSTA CAUSA (Art. 482):
+
+Alinea "b" - Incontinencia de conduta: Comportamento sexual inadequado
+Alinea "j" - Ato lesivo da honra: Assedio moral
+
+Empregador pode demitir assediador por justa causa.
+
+RESCISAO INDIRETA (Art. 483):
+
+Empregado pode considerar rescindido o contrato (demissao indireta com direito a verbas rescisoria completas) se:
+- Sofrer rigor excessivo (alínea b)
+- Ser tratado com rigor excessivo ou de forma desumana (alínea a)
+- Sofrer perigo manifesto de mal considerável (alínea c)
+
+4. LEI 14.457/2022 - PROGRAMA EMPREGA + MULHERES
+
+Marco legislativo mais recente e importante sobre assedio.
+
+Principais Pontos:
+
+Art. 3º: Altera CLT para incluir prevencao de assedio sexual e outras formas de violencia no ambito do trabalho.
+
+MEDIDAS OBRIGATORIAS (Art. 3º):
+Empresas com CIPA devem:
+- Incluir prevencao de assedio em treinamentos
+- Adotar procedimentos para receber e acompanhar denuncias
+- Criar canais especificos para denuncias (preservando anonimato)
+
+CANAL DE DENUNCIA (Art. 3º-A, CLT):
+Empresas privadas com mais de 10 empregados e obrigatorio ter canal para denunciar assedio sexual e outras formas de violencia.
+
+PROTECAO CONTRA RETALIACAO (Art. 3º-B, CLT):
+Vedada dispensa discriminatoria ou retaliacao a denunciante ou testemunha.
+
+Prazo: Empresas tem 180 dias a partir de marco/2023 para implementar.
+
+5. NORMA REGULAMENTADORA NR-1 (2021)
+
+Obriga empresas a identificar perigos e gerenciar riscos psicossociais, incluindo assedio moral e sexual.
+
+6. JURISPRUDENCIA DO TST E TRT
+
+Jurisprudencia e como tribunais interpretam e aplicam leis. Tem forca de orientacao e precedente.
+
+CASOS PARADIGMATICOS:
+
+CASO 1: ASSEDIO MORAL - GERENTE DE BANCO (TST-RR-0010551-50.2016.5.03.0027)
+
+Fatos: Gerente sofreu assedio moral de superior, desenvolveu transtorno mental, foi afastada.
+Decisao: Banco condenado a pagar R$ 80 mil de indenizacao + pensao vitalicia.
+Fundamento: Empresa sabia e nao tomou medidas eficazes.
+
+Licao: Mesmo que empresa tenha investigado, se medidas foram insuficientes, empresa responde.
+
+CASO 2: ASSEDIO SEXUAL - INDENIZACAO RECORDE (TRT-2 0001090-12.2018.5.02.0464)
+
+Fatos: Funcionaria assediada sexualmente por gerente durante anos. Empresa ignorou denuncias.
+Decisao: Empresa condenada a pagar R$ 300 mil (R$ 100 mil danos morais + R$ 200 mil danos esteticos por transtorno desenvolvido).
+
+Licao: Ignorar denuncias gera responsabilidade objetiva + danos agravados.
+
+CASO 3: ASSEDIO MORAL COLETIVO (TRT-15 0010720-63.2017.5.15.0037)
+
+Fatos: Empresa impunha metas abusivas, humilhava publicamente quem nao atingia.
+Decisao: Empresa condenada a pagar danos morais coletivos + individuais a todos afetados.
+
+Licao: Assedio coletivo (cultura toxica) gera responsabilidade massiva.
+
+CASO 4: PIADA SEXISTA = JUSTA CAUSA (TRT-4 0020219-26.2018.5.04.0512)
+
+Fatos: Funcionario fez piada sexista repetidamente mesmo apos advertencia.
+Decisao: Justa causa mantida.
+Fundamento: Piadas sexistas configuram assedio sexual.
+
+Licao: "Era so uma piada" NAO e defesa valida.
+
+CASO 5: INDENIZACAO POR OMISSAO (TST-AIRR-1289-48.2013.5.03.0027)
+
+Fatos: Empresa sabia de assedio de cliente contra funcionaria e nao a protegeu.
+Decisao: Empresa condenada a indenizar.
+Fundamento: Empresa tem dever de proteger empregados, inclusive de terceiros.
+
+Licao: Omissao = Cumplicidade.
+
+SUMULA TST Nº 428 (Aplicacao Subsidiaria do CDC):
+Assedio pode ser enquadrado tambem como relacao de consumo em certas situacoes.
+
+RESPONSABILIDADES DA EMPRESA E DO LIDER
+
+RESPONSABILIDADE DA EMPRESA:
+
+1. RESPONSABILIDADE OBJETIVA (Teoria do Risco)
+Empresa responde pelos atos de seus empregados, INDEPENDENTE de culpa, se:
+- Assedio ocorreu no ambiente de trabalho OU
+- Assedio esta relacionado ao trabalho (mesmo fora do horario/local)
+
+2. RESPONSABILIDADE POR OMISSAO
+Empresa responde se:
+- Sabia ou deveria saber do assedio e nao agiu
+- Nao tem politica de prevencao
+- Nao investigou denuncia adequadamente
+- Nao puniu assediador
+- Retaliou denunciante
+
+3. RESPONSABILIDADE MESMO COM POLITICA
+Ter politica escrita nao exime. Politica deve ser APLICADA.
+
+Precedente: Empresa tinha politica, mas nao a aplicou = condenada.
+
+RESPONSABILIDADE DO LIDER:
+
+Lider pode ser responsabilizado:
+
+TRABALHISTA:
+- Empresa pode demiti-lo por justa causa (se ele assediou ou omitiu)
+
+CIVIL:
+- Vitima pode processar lider PESSOALMENTE (solidariamente com empresa)
+- Empresa pode processar lider em acao regressiva (cobrando de volta indenizacao paga a vitima)
+
+CRIMINAL:
+- Lider pode ser denunciado criminalmente se praticou assedio sexual, stalking, crimes contra honra
+
+Exemplo Real:
+Gerente condenado pessoalmente a pagar R$ 20 mil de indenizacao a funcionaria que assediou moralmente, ALEM da empresa ter pago R$ 50 mil.
+
+PROVAS E DOCUMENTACAO EM PROCESSOS
+
+Em processos trabalhistas, quem alega precisa provar. Mas ha peculiaridades.
+
+ÔNUS DA PROVA:
+
+Regra Geral: Quem alega prova.
+Vitima alega assedio → vitima prova
+
+Excecao: INVERSAO DO ONUS DA PROVA (quando vitima tem prova minima/indicio):
+Vitima apresenta indicios → empresa precisa provar que NAO houve assedio
+
+Quando ha inversao:
+- Desigualdade de poder (vitima vs superior hierarquico)
+- Dificuldade de prova (assedio geralmente sem testemunhas)
+- Indicios relevantes (mensagens, mudanca de comportamento)
+
+TIPOS DE PROVA:
+
+1. PROVA DOCUMENTAL
+- Emails, mensagens (WhatsApp, SMS)
+- Prints de conversas
+- Gravacoes (audio/video)
+- Atestados medicos
+- Laudos psicologicos
+- Registro de denuncias
+- Atas de reunioes
+
+2. PROVA TESTEMUNHAL
+- Colegas que presenciaram
+- Psicologos que atenderam vitima
+- Familiares sobre mudanca de comportamento
+
+3. PROVA PERICIAL
+- Pericia psicologica/psiquiatrica para comprovar dano
+
+GRAVACOES SEM CONSENTIMENTO SAO VALIDAS?
+
+SIM, se:
+- Feita pela propria vitima (nao por terceiro)
+- Para defender direito proprio
+- Nao houver violacao de privacidade extrema
+
+Precedente STF (RE 583.937): Licita gravacao ambiental feita por um dos interlocutores.
+
+Importante: Orientar vitima a DOCUMENTAR TUDO:
+- Prints de mensagens
+- Emails
+- Anotacoes de incidentes (data, hora, local, o que foi dito/feito)
+- Nomes de testemunhas
+
+PREVENCAO DE PASSIVOS TRABALHISTAS
+
+Como Reduzir Risco de Condenacoes:
+
+1. POLITICA ESCRITA E DIVULGADA
+Ter politica clara de prevencao e primeiro passo.
+
+2. TREINAMENTO OBRIGATORIO
+100% de cobertura, anualmente, com certificacao.
+
+3. CANAL DE DENUNCIA EFETIVO
+Anonimo, acessivel, divulgado.
+
+4. INVESTIGACAO RAPIDA E IMPARCIAL
+Prazo maximo 30 dias.
+Documentacao completa.
+
+5. MEDIDAS DISCIPLINARES CONSISTENTES
+Sem excecoes para "estrelas" ou "amigos".
+
+6. PROTECAO CONTRA RETALIACAO
+Monitoramento ativo.
+
+7. DOCUMENTACAO DETALHADA
+Registre TUDO:
+- Denuncias recebidas
+- Investigacoes realizadas
+- Depoimentos
+- Evidencias
+- Decisoes tomadas
+- Comunicacao as partes
+
+Documentacao e sua defesa em processo.
+
+8. COMPLIANCE E AUDITORIA
+Revisar anualmente:
+- Eficacia da politica
+- Numero de casos
+- Tempo de investigacao
+- Satisfacao com processo
+
+9. SEGURO DE RESPONSABILIDADE CIVIL (D&O)
+Pode cobrir indenizacoes (mas NAO exime de responsabilidade).
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Analise de Caso Juridico
+Leia acord ao TST-RR-0010551-50.2016.5.03.0027 (resumo disponivel online). Identifique:
+- Fatos
+- Decisao
+- Fundamento
+- Licoes para gestao
+
+Exercicio 2: Mapeamento de Riscos Legais
+Sua empresa tem:
+- Politica de prevencao? (Sim/Nao)
+- Canal de denuncia? (Sim/Nao)
+- Treinamento anual? (Sim/Nao)
+
+Se alguma resposta e "Nao", ha risco legal.
+
+Exercicio 3: Documentacao de Caso Hipotetico
+Imagine que recebeu denuncia de assedio moral. Descreva TODOS os documentos que voce produziria ao longo da investigacao.
+
+CONCLUSAO DO MODULO
+
+Aspectos legais de assedio sao complexos mas essenciais. Desconhece-los nao e desculpa - e negligencia.
+
+Lideres e empresas que:
+- Conhecem legislacao
+- Implementam politicas eficazes
+- Agem rapidamente em denuncias
+- Documentam tudo
+
+...estao protegidos legal e eticamente.
+
+Proximos Passos:
+1. Estude Lei 14.457/2022 completa
+2. Conhea jurisprudencia recente do TST
+3. Garanta conformidade legal da empresa
+4. Documente rigorosamente qualquer caso
+
+Lembre-se: Lei nao tolera omissao. Conhecimento e acao salvam organizacoes e pessoas.
+        `
       }
     ],
     atividadesPraticas: [
