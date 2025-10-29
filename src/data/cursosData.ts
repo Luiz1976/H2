@@ -6217,6 +6217,1100 @@ Proximos Passos:
 
 Lembre-se: Sucesso sem saude e bem-estar nao e sucesso - e um caminho para o colapso.
         `
+      },
+      {
+        id: 2,
+        titulo: "Reconhecimento e Gestao do Estresse",
+        duracao: "50 min",
+        topicos: [
+          "Fisiologia do estresse",
+          "Sinais e sintomas de estresse cronico",
+          "Estressores ocupacionais",
+          "Tecnicas de manejo do estresse",
+          "Estresse positivo vs. negativo (Eustresse vs. Distresse)"
+        ],
+        materialDidatico: `
+RECONHECIMENTO E GESTAO DO ESTRESSE
+
+INTRODUCAO
+
+Estresse nao e o inimigo - e a resposta do corpo a desafios. O problema e o estresse CRONICO desregulado que mata lentamente.
+
+Dados Alarmantes:
+- 90% dos brasileiros sofrem ansiedade e estresse (ISMA-BR)
+- Estresse cronico aumenta risco de infarto em 40%, AVC em 50%
+- Custo anual do estresse no trabalho: $300 bilhoes (EUA)
+
+A boa noticia: estresse e gerenciavel quando reconhecido e tratado adequadamente.
+
+FISIOLOGIA DO ESTRESSE
+
+O que acontece no corpo quando enfrentamos estresse:
+
+FASE 1: ALARME (Resposta de Luta ou Fuga)
+
+Estimulo estressor (prazo apertado, conflito, ameaca) ativa o sistema nervoso simpatico:
+
+1. HIPOTALAMO (cerebro) libera CRH
+2. HIPOFISE libera ACTH
+3. GLANDULAS ADRENAIS liberam:
+   - CORTISOL (hormonio do estresse)
+   - ADRENALINA e NORADRENALINA
+
+Efeitos imediatos (em segundos):
+- Frequencia cardiaca dispara (mais sangue para musculos)
+- Pressao arterial sobe
+- Respiracao acelera (mais oxigenio)
+- Pupilas dilatam (visao aguçada)
+- Glicose liberada no sangue (energia rapida)
+- Digestao desacelera (nao e prioridade agora)
+- Sistema imunologico suprimido temporariamente
+
+FUNCAO EVOLUTIVA:
+Isso salvou nossos ancestrais de predadores. Corpo se prepara para LUTAR ou FUGIR.
+
+Problema: Nosso cerebro NAO diferencia ameaca fisica (leao) de ameaca psicologica (email agressivo do chefe). Resposta e a mesma.
+
+FASE 2: RESISTENCIA (Adaptacao)
+
+Se estressor continua (semanas/meses), corpo tenta se adaptar:
+- Cortisol permanece elevado
+- Corpo usa reservas de energia
+- Adaptacao aparente (voce "se acostuma")
+
+FASE 3: EXAUSTAO (Esgotamento)
+
+Reservas acabam. Corpo colapsa:
+- Sistema imunologico falha
+- Doencas aparecem (gastrite, hipertensao, depressao)
+- Burnout
+- Adoecimento fisico e mental grave
+
+SINAIS E SINTOMAS DE ESTRESSE CRONICO
+
+FISICOS:
+- Tensao muscular (especialmente pescoco, ombros, mandibula)
+- Dores de cabeca frequentes
+- Problemas gastricos (gastrite, refluxo, intestino irritavel)
+- Insonia ou sono nao-reparador
+- Cansaco cronico
+- Queda de cabelo
+- Problemas de pele (acne, dermatite)
+- Alteracoes de peso (ganho ou perda)
+- Sistema imunologico enfraquecido (gripar frequentemente)
+- Hipertensao
+- Palpitacoes
+
+EMOCIONAIS:
+- Irritabilidade constante
+- Ansiedade generalizada
+- Tristeza ou apatia
+- Sensacao de sobrecarga
+- Dificuldade de relaxar
+- Preocupacao excessiva
+- Mudancas de humor repentinas
+- Choro facil
+
+COGNITIVOS:
+- Dificuldade de concentracao
+- Esquecimentos frequentes
+- Pensamentos negativos recorrentes
+- Dificuldade de tomar decisoes
+- Pensamento acelerado (mente nao desliga)
+- Pessimismo
+
+COMPORTAMENTAIS:
+- Isolamento social
+- Procrastinacao
+- Uso excessivo de alcool/cafe/tabaco
+- Mudanca de apetite (comer demais ou muito pouco)
+- Roer unhas, estalar dedos
+- Evitacao de responsabilidades
+- Conflitos interpessoais aumentados
+
+Auto-Avaliacao:
+Quantos desses sintomas voce tem regularmente (>3x por semana)?
+- 0-3: Estresse baixo
+- 4-7: Estresse moderado - atencao
+- 8-12: Estresse alto - intervencao necessaria
+- 13+: Estresse severo - busque ajuda profissional
+
+ESTRESSORES OCUPACIONAIS
+
+Os principais causadores de estresse no trabalho:
+
+1. SOBRECARGA DE TRABALHO
+Volume excessivo + prazos apertados + pressao continua
+
+2. FALTA DE CONTROLE/AUTONOMIA
+Nao poder influenciar decisoes sobre proprio trabalho
+
+3. AMBIGUIDADE DE PAPEL
+Nao saber exatamente o que se espera
+
+4. CONFLITO DE PAPEL
+Demandas contraditorias
+
+5. INSEGURANCA NO EMPREGO
+Medo de demissao, instabilidade
+
+6. RELACIONAMENTOS RUINS
+Conflitos, falta de apoio, assedio
+
+7. FALTA DE RECONHECIMENTO
+Esforco nao valorizado
+
+8. DESEQUILIBRIO ESFORCO-RECOMPENSA
+Muito esforco, pouca recompensa (salario, promocao, reconhecimento)
+
+9. MUDANCAS ORGANIZACIONAIS
+Reestruturacoes, fusoes, mudancas de lideranca
+
+10. AMBIENTE FISICO INADEQUADO
+Barulho, frio/calor, ergonomia ruim
+
+Pesquisa (Karasek):
+Combinacao ALTA DEMANDA + BAIXO CONTROLE = Maior risco de estresse
+
+Modelo Siegrist:
+ALTO ESFORCO + BAIXA RECOMPENSA = Risco dobrado de doenca cardiovascular
+
+TECNICAS DE MANEJO DO ESTRESSE
+
+Manejo de estresse requer abordagem em 3 niveis:
+
+NIVEL 1: ELIMINACAO DO ESTRESSOR (Melhor solucao)
+
+Se possivel, elimine a fonte:
+- Sobrecarga? Redistribua tarefas
+- Conflito? Resolva
+- Ambiente ruim? Melhore
+
+Nem sempre e possivel eliminar, mas sempre questione: "Posso mudar a situacao?"
+
+NIVEL 2: MUDANCA DE PERCEPCAO (Reinterpretacao)
+
+Se nao pode mudar situacao, mude como voce a interpreta.
+
+Tecnica de Reframe Cognitivo:
+
+ESTRESSOR: "Tenho apresentacao importante amanha"
+
+Interpretacao Estressante: "Vou fracassar. Todos vao me julgar. Minha carreira depende disso."
+Resposta: Panico, insonia, performance ruim
+
+Reframe: "E uma oportunidade de mostrar meu trabalho. Estou preparado. Se errar, aprendo."
+Resposta: Ansiedade controlada, energia canalizada
+
+Pergunte-se:
+- Isso realmente e tao catastrofico quanto parece?
+- Qual o pior cenario REALISTA? Eu consigo lidar com isso?
+- Como vou ver isso daqui a 5 anos?
+- O que aconselharia um amigo nessa situacao?
+
+NIVEL 3: GESTAO DA RESPOSTA FISIOLOGICA
+
+Quando nao pode eliminar estressor nem mudar percepcao, regule resposta do corpo.
+
+TECNICA 1: RESPIRACAO DIAFRAGMATICA (Mais Eficaz)
+
+Como:
+1. Sente-se confortavelmente
+2. Mao no abdomen
+3. Inspire pelo nariz (4 segundos), inflando abdomen
+4. Segure (2 segundos)
+5. Expire pela boca (6 segundos), esvaziando abdomen
+6. Repita 5-10 ciclos
+
+POR QUE FUNCIONA:
+Respiracao profunda ativa sistema nervoso parassimpatico (relaxamento), anulando sistema simpatico (estresse).
+
+USE: Antes de reuniao importante, apos conflito, ao sentir ansiedade subindo.
+
+TECNICA 2: RELAXAMENTO MUSCULAR PROGRESSIVO (Jacobson)
+
+Como:
+1. Tensione grupo muscular (ex: punhos) por 5 segundos
+2. Libere abruptamente
+3. Observe diferenca entre tensao e relaxamento
+4. Repita com outros grupos (bracos, ombros, rosto, pernas)
+
+Duracao: 10-15 minutos
+
+USE: Antes de dormir, apos dia estressante.
+
+TECNICA 3: MINDFULNESS (Atencao Plena)
+
+Foco total no momento presente, sem julgamento.
+
+Exercicio de 5 Minutos:
+1. Sente-se confortavelmente
+2. Foque na respiracao
+3. Quando mente divagar (vai divagar), gentilmente traga de volta para respiracao
+4. Repita
+
+Pesquisa: 8 semanas de mindfulness reduzem cortisol em 25% e sintomas de ansiedade em 40%.
+
+TECNICA 4: ATIVIDADE FISICA REGULAR
+
+Exercicio e o melhor remedio natural para estresse.
+
+COMO FUNCIONA:
+- Libera endorfinas (analgesico natural)
+- Reduz cortisol
+- Melhora sono
+- Aumenta autoestima
+- Proporciona pausa mental
+
+RECOMENDACAO OMS:
+- 150 min/semana de exercicio moderado (caminhada rapida, danca, ciclismo)
+OU
+- 75 min/semana de exercicio intenso (corrida, natacao, HIIT)
+
+NAO PRECISA SER ACADEMIA: Caminhada no almoco, subir escadas, danca em casa.
+
+TECNICA 5: GESTAO DO TEMPO
+
+Procrastinacao e desorganizacao GERAM estresse.
+
+Metodo Pomodoro:
+- 25 min foco total em 1 tarefa
+- 5 min pausa
+- Apos 4 pomodoros, pausa de 15-30 min
+
+Matriz Eisenhower:
+- Urgente + Importante: Faca agora
+- Importante + Nao-Urgente: Agende (mais importante!)
+- Urgente + Nao-Importante: Delegue
+- Nao-Urgente + Nao-Importante: Elimine
+
+TECNICA 6: CONEXOES SOCIAIS
+
+Conversar com amigos/familia reduz cortisol.
+
+Acao: Almoce com colega, ligue para amigo, participe de grupo.
+
+TECNICA 7: SONO ADEQUADO
+
+Sono < 6h = Cortisol elevado, desregulacao emocional, capacidade reduzida de lidar com estresse.
+
+Higiene do Sono:
+- Mesmos horarios
+- Quarto escuro, fresco
+- Sem telas 1h antes
+- Evite cafeina apos 14h
+
+ESTRESSE POSITIVO vs. NEGATIVO (EUSTRESSE vs. DISTRESSE)
+
+Nem todo estresse e ruim.
+
+EUSTRESSE (Estresse Positivo):
+Desafio estimulante que promove crescimento.
+
+Caracteristicas:
+- Intensidade moderada
+- Temporario
+- Voce se sente energizado
+- Aumenta performance
+- Ha controle e recursos para lidar
+
+Exemplos:
+- Casamento
+- Mudanca para emprego melhor
+- Lancamento de projeto importante
+- Praticar esporte desafiador
+- Aprender habilidade nova
+
+DISTRESSE (Estresse Negativo):
+Ameaca percebida que supera recursos.
+
+Caracteristicas:
+- Intensidade alta ou cronica
+- Prolongado
+- Voce se sente exausto
+- Reduz performance
+- Falta de controle ou recursos
+
+Exemplos:
+- Sobrecarga constante
+- Assedio
+- Inseguranca no emprego
+- Conflitos nao-resolvidos
+- Doenca grave
+
+Zona de Desempenho Otimo (Curva Yerkes-Dodson):
+
+Estresse Baixo = Performance Baixa (tedio, desengajamento)
+Estresse Moderado = Performance Alta (foco, motivacao, energia)
+Estresse Excessivo = Performance Baixa (ansiedade, paralisia, erros)
+
+Objetivo: Manter-se na zona de estresse moderado (eustresse).
+
+Como:
+- Se muito estresse: Use tecnicas de reducao
+- Se pouco estresse: Busque desafios
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Rastreamento de Estresse
+Durante 1 semana, anote diariamente (escala 1-10):
+- Nivel de estresse
+- Principais estressores
+- Sintomas fisicos/emocionais
+- O que ajudou a reduzir
+
+Identifique padroes.
+
+Exercicio 2: Pratica de Respiracao
+Todos os dias, 2x (manha e tarde), pratique 5 minutos de respiracao diafragmatica.
+
+Exercicio 3: Reframe Cognitivo
+Identifique 1 pensamento estressante recorrente.
+Reescreva usando reframe racional.
+
+CONCLUSAO DO MODULO
+
+Estresse e inevitavel. Estresse cronico nao-gerenciado e opcional.
+
+Reconhecer sinais precocemente e usar tecnicas de manejo e a diferenca entre saude sustentavel e colapso inevitavel.
+
+Lideres que gerenciam proprio estresse:
+- Tem performance superior
+- Tomam decisoes melhores
+- Inspiram equipe
+- Evitam burnout
+
+Proximos Passos:
+1. Avalie seu nivel atual de estresse
+2. Identifique seus 3 principais estressores
+3. Escolha 2 tecnicas de manejo para praticar esta semana
+4. Monitore mudancas
+
+Lembre-se: Estresse gerenciado e combustivel. Estresse descontrolado e veneno.
+        `
+      },
+      {
+        id: 3,
+        titulo: "Prevencao e Recuperacao do Burnout",
+        duracao: "45 min",
+        topicos: [
+          "O que e Sindrome de Burnout",
+          "Diferencas entre estresse, burnout e depressao",
+          "Sinais de alerta do burnout",
+          "Fatores de risco e protecao",
+          "Estrategias de recuperacao"
+        ],
+        materialDidatico: `
+PREVENCAO E RECUPERACAO DO BURNOUT
+
+INTRODUCAO
+
+Burnout nao e "so cansaco". E uma sindrome ocupacional reconhecida pela OMS (CID-11, 2022) como "estresse ocupacional cronico nao-gerenciado".
+
+Dados Preocupantes:
+- 30% dos trabalhadores brasileiros tem burnout (ISMA-BR)
+- Afastamentos por burnout aumentaram 200% em 5 anos
+- Recuperacao completa pode levar 6 meses a 2 anos
+
+Burnout destrói carreiras, relacionamentos e saude. Mas e prevenivel e reversivel.
+
+O QUE E SINDROME DE BURNOUT
+
+Definicao OMS (CID-11):
+Sindrome resultante de estresse cronico no local de trabalho que nao foi gerenciado com sucesso.
+
+Caracterizado por 3 Dimensoes (Maslach):
+
+1. EXAUSTAO EMOCIONAL
+Sentimento de estar emocionalmente esgotado e sem recursos.
+
+"Nao aguento mais."
+"Estou vazio."
+"Acordo cansado mesmo dormindo."
+
+2. DESPERSONALIZACAO (Cinismo)
+Atitude negativa, cinica, distante em relacao ao trabalho e pessoas.
+
+"Tanto faz."
+"Nao me importo mais."
+"Odeio meus clientes/pacientes/alunos."
+
+3. REDUCAO DA REALIZACAO PROFISSIONAL
+Sentimento de incompetencia e falta de produtividade.
+
+"Nao sirvo para isso."
+"Nada do que faco da certo."
+"Perdi minha habilidade."
+
+IMPORTANTE: Burnout e ESPECIFICO DO TRABALHO, nao generalizado para toda vida (diferente de depressao).
+
+DIFERENCAS ENTRE ESTRESSE, BURNOUT E DEPRESSAO
+
+Muitas vezes confundidos. Sao diferentes.
+
+ESTRESSE:
+- Reacao de curto prazo a pressao
+- Voce SE SENTE SOBRECARREGADO
+- Melhora quando estressor e removido
+- "Muita coisa acontecendo"
+
+BURNOUT:
+- Resultado de estresse cronico nao-gerenciado (meses/anos)
+- Voce SE SENTE VAZIO, SEM ENERGIA
+- Nao melhora so tirando ferias
+- Relacionado especificamente ao TRABALHO
+- "Nada importa mais"
+
+DEPRESSAO:
+- Transtorno mental clinico (pode ou nao estar relacionado ao trabalho)
+- Afeta TODAS as areas da vida (trabalho, familia, hobbies)
+- Inclui sintomas como: tristeza profunda, perda de prazer em tudo, pensamentos suicidas
+- Requer tratamento profissional (psiquiatria)
+- "Nao tenho mais vontade de viver"
+
+Relacao:
+Estresse cronico → Burnout → Pode evoluir para Depressao
+
+Tabela Comparativa:
+
+| Aspecto | Estresse | Burnout | Depressao |
+|---------|----------|---------|-----------|
+| Duracao | Curto prazo | Medio/longo prazo | Persistente |
+| Emocao dominante | Ansiedade | Apatia | Tristeza profunda |
+| Energia | Hiperatividade | Exaustao | Letargia |
+| Esperanca | "Vai melhorar" | "Nao vai mudar" | "Nao ha esperanca" |
+| Escopo | Situacional | Trabalho | Toda vida |
+| Recuperacao | Descanso | Mudancas estruturais | Tratamento profissional |
+
+SINAIS DE ALERTA DO BURNOUT
+
+Burnout nao acontece de repente - e um processo. Reconhecer sinais precoces e crucial.
+
+ESTAGIO 1: COMPULSAO PARA PROVAR-SE (Primeiros Meses)
+
+- Trabalhar muitas horas
+- Aceitar todo projeto
+- Querer provar valor constantemente
+- Negar limites
+
+"Eu consigo! So mais esse projeto..."
+
+ESTAGIO 2: NEGLIGENCIA DE NECESSIDADES (Meses)
+
+- Parar de fazer pausas
+- Sono irregular
+- Alimentacao ruim
+- Abandonar hobbies
+- "Nao tenho tempo para..."
+
+ESTAGIO 3: DESLOCAMENTO DE CONFLITOS (6+ meses)
+
+- Irritabilidade aumentada
+- Culpar outros
+- Ver problemas como ameacas
+- Cinismo crescente
+
+"A empresa nao valoriza ninguem."
+
+ESTAGIO 4: REVISAO DE VALORES
+
+- Trabalho vira UNICO foco
+- Relacoes pessoais negligenciadas
+- Isolamento social
+- Perda de hobbies
+
+ESTAGIO 5: NEGACAO DE PROBLEMAS
+
+- Intolerancia crescente
+- Agressividade
+- Problemas vistos como falta de tempo, nao de esgotamento
+
+ESTAGIO 6: RETRAIMENTO
+
+- Evitacao de interacoes sociais
+- Cinismo extremo
+- Sentimento de desesperanca
+
+ESTAGIO 7: MUDANCAS COMPORTAMENTAIS OBVIAS
+
+- Alteracoes drasticas de personalidade
+- Uso de substancias (alcool, remedios)
+- Comportamento de risco
+
+ESTAGIO 8: DESPERSONALIZACAO
+
+- Perda de contato com proprias necessidades
+- Funcionamento automatico
+- Vazio interior
+
+ESTAGIO 9: VAZIO INTERIOR
+
+- Sentimento de insignificancia
+- Apatia profunda
+- Exaustao total
+
+ESTAGIO 10: DEPRESSAO
+
+- Desesperanca completa
+- Exaustao fisica e mental
+- Pensamentos suicidas (casos extremos)
+
+PONTO CRITICO: Estagios 1-4 ainda sao reversiveis com mudancas de comportamento.
+Estagios 5+ exigem intervencao profissional.
+
+FATORES DE RISCO E PROTECAO
+
+FATORES DE RISCO (Aumentam chance de burnout):
+
+ORGANIZACIONAIS:
+- Sobrecarga cronica
+- Falta de controle/autonomia
+- Recompensa inadequada
+- Colapso de comunidade (conflitos, isolamento)
+- Falta de justica (favoritismo, discriminacao)
+- Conflito de valores
+
+INDIVIDUAIS:
+- Perfeccionismo excessivo
+- Dificuldade de dizer "nao"
+- Necessidade extrema de aprovacao
+- Falta de limites trabalho-vida
+- Autocobranca excessiva
+
+CONTEXTUAIS:
+- Trabalho emocional intenso (saude, educacao, servico social)
+- Exposicao a trauma (policiais, bombeiros)
+- Falta de suporte social
+- Instabilidade economica/emprego
+
+FATORES DE PROTECAO (Reduzem risco):
+
+- AUTONOMIA: Controle sobre como, quando, onde trabalhar
+- SUPORTE SOCIAL: Amigos, familia, colegas de confianca
+- RECONHECIMENTO: Esforco valorizado
+- PROPOSITO: Trabalho tem significado
+- EQUILIBRIO: Fronteiras claras entre trabalho e vida pessoal
+- AUTOCUIDADO: Sono, alimentacao, exercicio, lazer
+- RESILIENCIA: Capacidade de se recuperar de adversidades
+- VALORES ALINHADOS: Trabalho condizente com principios pessoais
+
+ESTRATEGIAS DE PREVENCAO DO BURNOUT
+
+PREVENCAO PRIMARIA (Evitar que aconteca):
+
+1. ESTABELECA LIMITES CLAROS
+- Horarios definidos (ex: nao trabalhar apos 19h)
+- Fins de semana protegidos
+- Ferias anuais OBRIGATORIAS
+
+2. PRATIQUE O "NAO" ESTRATEGICO
+Nao aceite todo projeto. Priorize.
+
+3. GESTAO DE ENERGIA, NAO SO TEMPO
+Identifique quando voce tem mais energia (manha/tarde/noite) e agende tarefas importantes nesse periodo.
+
+4. PAUSAS REGULARES
+- Tecnica Pomodoro (25 min trabalho + 5 min pausa)
+- Almoco FORA da mesa
+- Micro-pausas a cada hora (levantar, alongar)
+
+5. CULTIVE VIDA FORA DO TRABALHO
+- Hobbies
+- Relacoes sociais
+- Atividades prazerosas sem "utilidade"
+
+PREVENCAO SECUNDARIA (Detectar cedo):
+
+6. AUTO-MONITORAMENTO
+Semanalmente, pergunte-se:
+- Estou cansado mesmo dormindo bem?
+- Estou cinico/irritado constantemente?
+- Perdi prazer no trabalho?
+
+Se sim a 2+, atencao.
+
+7. FEEDBACK DE TERCEIROS
+Pessoas proximas percebem mudancas antes de voce.
+"Tenho parecido diferente ultimamente?"
+
+ESTRATEGIAS DE RECUPERACAO DO BURNOUT
+
+Se voce JA esta em burnout:
+
+PASSO 1: RECONHECA E ACEITE
+Negar so piora. Burnout nao e fraqueza - e consequencia de sistema insustentavel.
+
+PASSO 2: BUSQUE AJUDA PROFISSIONAL
+- Psicologo/Psiquiatra
+- Medico (burnout causa problemas fisicos)
+
+PASSO 3: AFASTE-SE (Se Necessario)
+Em casos moderados a graves, afastamento temporario (15-90 dias) pode ser essencial.
+
+Lei: Burnout e CID-11 (Z73.0) - elegivel para afastamento pelo INSS.
+
+PASSO 4: DESCANSE RADICALMENTE
+Nao e "descanso ativo" (viajar, fazer curso). E descanso PROFUNDO:
+- Dormir sem alarme
+- Nao fazer nada "produtivo"
+- Permitir-se ser "inutil"
+
+PASSO 5: RECONECTE COM PRAZER
+Faca coisas APENAS porque gosta, sem objetivo.
+
+PASSO 6: REAVALIAÇAO PROFUNDA
+- Este trabalho esta alinhado com meus valores?
+- As condicoes sao sustentaveis?
+- Preciso mudar de funcao/empresa/carreira?
+
+Recuperacao pode exigir mudancas dificeis (mudar de area, reduzir carga, mudar de empresa).
+
+PASSO 7: RETORNO GRADUAL
+Nao volte 100% de imediato. Aumente carga progressivamente.
+
+PASSO 8: IMPLEMENTE MUDANCAS ESTRUTURAIS
+Se voltar para mesmas condicoes, burnout volta.
+
+Mudancas necessarias:
+- Renegociar carga
+- Estabelecer limites
+- Buscar suporte
+- Mudar de role/empresa
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Auto-Avaliacao de Burnout (Escala de Maslach)
+Avalie cada afirmacao (0=nunca, 5=sempre):
+- Sinto-me emocionalmente esgotado pelo trabalho (Exaustao)
+- Sinto-me vazio ao fim do dia (Exaustao)
+- Trato colegas/clientes de forma impessoal (Despersonalizacao)
+- Sinto que nao realizo nada de valor (Reducao de Realizacao)
+
+Score >15: Alto risco de burnout
+
+Exercicio 2: Mapeamento de Fatores de Risco
+Liste seus fatores de risco (organizacionais, individuais, contextuais).
+Liste seus fatores de protecao.
+Razao Risco/Protecao alta = Vulnerabilidade.
+
+Exercicio 3: Plano de Prevencao
+Escolha 3 acoes concretas de prevencao para implementar nas proximas 2 semanas.
+
+CONCLUSAO DO MODULO
+
+Burnout nao e inevitavel. E resultado de sistema de trabalho insustentavel mantido por muito tempo.
+
+Prevenir burnout exige:
+- Limites claros
+- Autocuidado nao-negociavel
+- Reconhecimento de sinais precoces
+- Coragem para mudar o que nao funciona
+
+Se voce ja esta em burnout, recuperacao e possivel, mas exige tempo, ajuda e mudancas estruturais.
+
+Proximos Passos:
+1. Avalie seu risco de burnout
+2. Implemente 1 limite claro esta semana
+3. Se em burnout, busque ajuda profissional
+4. Reconecte com uma atividade prazerosa
+
+Lembre-se: Voce nao e maquina. Sustentabilidade > Produtividade a qualquer custo.
+        `
+      },
+      {
+        id: 4,
+        titulo: "Promocao de Bem-Estar e Equilibrio na Equipe",
+        duracao: "40 min",
+        topicos: [
+          "Como promover qualidade de vida na equipe",
+          "Programas de bem-estar eficazes",
+          "Flexibilidade e equilibrio trabalho-vida",
+          "Cultura de autocuidado",
+          "Metricas de bem-estar organizacional"
+        ],
+        materialDidatico: `
+PROMOCAO DE BEM-ESTAR E EQUILIBRIO NA EQUIPE
+
+INTRODUCAO
+
+Lider que nao cuida do bem-estar da equipe colhe:
+- Alta rotatividade
+- Afastamentos medicos
+- Baixa produtividade
+- Clima toxico
+- Resultados insustentaveis
+
+Lider que promove bem-estar colhe:
+- Lealdade e retencao
+- Saude e energia
+- Alta performance sustentavel
+- Clima positivo
+- Resultados consistentes
+
+Investir em bem-estar nao e altruismo - e estrategia.
+
+COMO PROMOVER QUALIDADE DE VIDA NA EQUIPE
+
+Qualidade de Vida no Trabalho (QVT) e multidimensional.
+
+Modelo de Walton (8 Dimensoes de QVT):
+
+1. COMPENSACAO JUSTA E ADEQUADA
+- Salario compativel com mercado
+- Beneficios justos
+- Equidade interna
+
+Acao do Lider:
+- Defenda salarios justos para equipe
+- Reconheca contribuicoes (nao so com dinheiro)
+
+2. CONDICOES DE TRABALHO
+- Seguranca fisica
+- Ambiente adequado (temperatura, ruido, iluminacao)
+- Ergonomia
+- Recursos necessarios (equipamentos, ferramentas)
+
+Acao do Lider:
+- Identifique e resolva problemas ergonomicos
+- Garanta recursos adequados
+- Monitore ambiente fisico
+
+3. USO E DESENVOLVIMENTO DE CAPACIDADES
+- Trabalho desafiador mas nao esmagador
+- Variedade de tarefas
+- Autonomia
+- Feedback sobre desempenho
+
+Acao do Lider:
+- Delegue tarefas desafiadoras
+- Ofereça oportunidades de aprendizado
+- De autonomia
+- Feedback regular e construtivo
+
+4. OPORTUNIDADE DE CRESCIMENTO
+- Desenvolvimento de carreira
+- Promocoes justas
+- Capacitacao continua
+
+Acao do Lider:
+- Plano de desenvolvimento individual (PDI) para cada pessoa
+- Acesso a treinamentos
+- Transparencia em criterios de promocao
+
+5. INTEGRACAO SOCIAL
+- Ausencia de preconceito/discriminacao
+- Relacionamentos positivos
+- Senso de comunidade
+
+Acao do Lider:
+- Tolerancia zero para discriminacao
+- Promova integracao da equipe
+- Facilite relacionamentos
+
+6. CONSTITUCIONALISMO (Direitos)
+- Respeito a direitos trabalhistas
+- Privacidade
+- Liberdade de expressao
+- Tratamento justo
+
+Acao do Lider:
+- Respeite direitos
+- Permita feedback e discordancia respeitosa
+- Trate todos com justica
+
+7. TRABALHO E ESPACO TOTAL DE VIDA
+- Equilibrio trabalho-vida pessoal
+- Horarios razoaveis
+- Respeito ao tempo pessoal
+
+Acao do Lider:
+- Nao exija horas extras constantes
+- Respeite fins de semana e ferias
+- Flexibilidade quando possivel
+
+8. RELEVANCIA SOCIAL
+- Trabalho tem proposito
+- Empresa tem responsabilidade social
+- Orgulho de trabalhar na organizacao
+
+Acao do Lider:
+- Conecte trabalho individual a missao maior
+- Mostre impacto real
+- Celebre contribuicoes
+
+PROGRAMAS DE BEM-ESTAR EFICAZES
+
+Programas de bem-estar corporativo podem ter ROI de 300% (para cada R$1 investido, retorno de R$3 em reducao de custos medicos e aumento de produtividade).
+
+Mas so funcionam se bem desenhados e implementados.
+
+NIVEL 1: BASICO (Minimo Esperado)
+
+1. PROGRAMA DE APOIO AO EMPREGADO (PAE)
+- Acesso gratuito e confidencial a psicologos
+- Orientacao juridica, financeira
+- Apoio em crises pessoais
+
+2. GINASTICA LABORAL
+- 10-15 min de alongamento/exercicio leve
+- 2-3x por semana
+- No proprio local de trabalho
+
+3. CAMPANHAS DE SAUDE
+- Vacinacao (gripe, covid)
+- Exames periodicos
+- Palestras sobre saude
+
+NIVEL 2: INTERMEDIARIO (Diferencial Competitivo)
+
+4. FLEXIBILIDADE DE HORARIO
+- Horarios flexiveis
+- Trabalho remoto/hibrido
+- Banco de horas
+
+5. PROGRAMAS DE ATIVIDADE FISICA
+- Convenio com academia subsidiado
+- Aulas de yoga/pilates/danca
+- Grupos de corrida/ciclismo
+
+6. NUTRICAO
+- Cafes da manha saudaveis
+- Frutas disponiveis
+- Opcoes vegetarianas/veganas
+- Consulta com nutricionista
+
+7. ESPACOS DE DESCOMPRESSAO
+- Sala de descanso
+- Area de convivencia
+- Espaco ao ar livre
+
+NIVEL 3: AVANCADO (Lideranca em Bem-Estar)
+
+8. PROGRAMAS DE MINDFULNESS/MEDITACAO
+- Apps subsidiados (Calm, Headspace)
+- Sessoes guiadas
+- Sala de meditacao
+
+9. PROGRAMA DE GESTAO FINANCEIRA
+- Educacao financeira
+- Consultoria de investimentos
+- Auxilio emergencial
+
+10. BENEFICIOS PARENTAIS
+- Licenca maternidade/paternidade estendida
+- Creche ou auxilio-creche
+- Flexibilidade para pais
+
+11. DIAS DE SAUDE MENTAL
+- 1-2 dias por ano para cuidar de saude mental
+- Sem necessidade de atestado
+
+12. PROGRAMA DE RECONHECIMENTO
+- Reconhecimento regular (formal e informal)
+- Premios por desempenho
+- Celebracoes de marcos
+
+COMO IMPLEMENTAR:
+
+PASSO 1: DIAGNOSTICO
+Pesquisa anonima: "O que voces precisam para melhorar bem-estar?"
+
+PASSO 2: PRIORIZACAO
+Escolha 3-5 iniciativas baseadas em:
+- Necessidade da equipe
+- Viabilidade (custo, tempo)
+- Impacto esperado
+
+PASSO 3: PILOTO
+Teste com grupo pequeno. Ajuste.
+
+PASSO 4: IMPLEMENTACAO
+Lance para todos.
+
+PASSO 5: AVALIACAO
+Apos 3-6 meses, avalie:
+- Taxa de adesao
+- Satisfacao
+- Impacto (absenteismo, rotatividade, clima)
+
+PASSO 6: AJUSTE E EXPANDA
+Melhore o que funciona. Elimine o que nao funciona.
+
+FLEXIBILIDADE E EQUILIBRIO TRABALHO-VIDA
+
+Flexibilidade e um dos fatores mais valorizados por trabalhadores pos-pandemia.
+
+Tipos de Flexibilidade:
+
+1. HORARIO FLEXIVEL
+Nao exige presenca em horario fixo.
+Exemplo: Pode trabalhar 7h-15h ou 10h-18h
+
+2. TRABALHO REMOTO/HIBRIDO
+Parte ou todo trabalho de casa.
+
+3. SEMANA COMPRIMIDA
+Trabalha 40h em 4 dias (10h/dia) e folga sexta-feira.
+
+4. BANCO DE HORAS
+Trabalhou extra hoje? Sai mais cedo outro dia.
+
+5. FLEXIBILIDADE DE LOCALIZACAO
+Pode trabalhar de qualquer lugar (digital nomads).
+
+Beneficios da Flexibilidade:
+
+- Reducao de 25% no estresse
+- Aumento de 20% na satisfacao
+- Reducao de tempo em deslocamento
+- Melhor equilibrio familia-trabalho
+- Atracao e retencao de talentos
+
+Desafios e Solucoes:
+
+DESAFIO: "Como garantir produtividade?"
+SOLUCAO: Foque em resultados, nao horas. Use OKRs.
+
+DESAFIO: "Comunicacao fica prejudicada"
+SOLUCAO: Ferramentas (Slack, Zoom). Reunioes assincronas.
+
+DESAFIO: "Nem todos podem ter flexibilidade (operacional)"
+SOLUCAO: Ofereça outros beneficios equivalentes (bonus, reconhecimento).
+
+CULTURA DE AUTOCUIDADO
+
+Cultura de autocuidado = Autocuidado e valorizado, incentivado e praticado desde a lideranca.
+
+Sinais de Cultura SEM Autocuidado:
+
+- Lider nunca tira ferias e orgulha-se disso
+- Emails a meia-noite sao normalizados
+- Quem sai no horario e visto como "fraco"
+- Burnout e badge of honor ("trabalho duro")
+- Doente? Trabalha mesmo assim
+
+Consequencias: Burnout coletivo, rotatividade alta, resultados insustentaveis.
+
+Sinais de Cultura COM Autocuidado:
+
+- Lider modela equilibrio (tira ferias, respeita horarios)
+- Pausas e descanso sao incentivados
+- Flexibilidade e oferecida
+- Saude mental e tratada como saude fisica
+- Reconhecimento de limites e respeitado
+
+Como Construir Cultura de Autocuidado:
+
+1. LIDERANCA MODELA
+Voce E o exemplo. Se voce nao cuida de si, equipe nao cuidara.
+
+2. COMUNICACAO CLARA
+"Nesta equipe, incentivamos equilibrio. Tirem ferias. Respeitem horarios."
+
+3. POLITICAS EXPLICITAS
+- Nao enviar emails apos 19h
+- Ferias obrigatorias
+- Pausas incentivadas
+
+4. RECONHECA EQUILIBRIO
+Celebre quem mantem equilibrio, nao so quem trabalha 12h/dia.
+
+5. REMOVA BARREIRAS
+Se pessoa tem medo de tirar ferias, ha problema estrutural. Resolva.
+
+METRICAS DE BEM-ESTAR ORGANIZACIONAL
+
+"O que nao e medido nao e gerenciado."
+
+Indicadores de Bem-Estar:
+
+INDICADORES DE RESULTADO (Lagging):
+
+1. ABSENTEISMO
+% de faltas. Meta: <3%
+
+2. ROTATIVIDADE VOLUNTARIA
+% que pede demissao. Meta: <10%/ano
+
+3. AFASTAMENTOS POR SAUDE MENTAL
+Numero de afastamentos CID-F. Meta: Reducao ano a ano
+
+4. UTILIZACAO DE BENEFICIOS
+% que usa PAE, academia, etc.
+
+INDICADORES DE PROCESSO (Leading):
+
+5. PESQUISA DE BEM-ESTAR (Trimestral)
+"Como voce avalia seu bem-estar no trabalho?" (1-10)
+Meta: >7
+
+6. INDICE DE EQUILIBRIO TRABALHO-VIDA
+"Consigo equilibrar trabalho e vida pessoal" (1-10)
+Meta: >7
+
+7. HORAS EXTRAS
+Media de horas extras/pessoa/mes
+Meta: <10h
+
+8. DIAS DE FERIAS TIRADOS
+% de dias de ferias usados
+Meta: >90%
+
+INDICADORES QUALITATIVOS:
+
+9. ENTREVISTA DE PERMANENCIA
+"O que te faz ficar aqui?" Identifica o que funciona.
+
+10. ENTREVISTA DE SAIDA
+"Por que voce esta saindo?" Identifica o que nao funciona.
+
+Dashboard de Bem-Estar (Exemplo):
+
+Mes Atual:
+- Absenteismo: 2.5%
+- Rotatividade: 8%/ano
+- Bem-estar medio (pesquisa): 7.2/10
+- Equilibrio trabalho-vida: 6.8/10
+- Horas extras medias: 12h/pessoa
+- Utilizacao PAE: 15%
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Diagnostico de QVT
+Avalie sua equipe nas 8 dimensoes de Walton (1-10). Onde esta o maior gap?
+
+Exercicio 2: Planejamento de Programa
+Escolha 3 iniciativas de bem-estar que voce pode implementar nos proximos 90 dias. Liste acoes concretas.
+
+Exercicio 3: Metricas de Baseline
+Estabeleça linha de base atual:
+- Absenteismo: ____%
+- Rotatividade: ____%
+- Bem-estar medio (se tiver pesquisa): ____
+
+Acompanhe trimestralmente.
+
+CONCLUSAO DO MODULO
+
+Promover bem-estar da equipe nao e luxo - e responsabilidade fundamental da lideranca.
+
+Equipes saudaveis e equilibradas:
+- Entregam resultados sustentaveis
+- Sao leais e engajadas
+- Inovam mais
+- Adoecem menos
+- Ficam mais tempo
+
+Investimento em bem-estar tem ROI claro e mensuravel.
+
+Proximos Passos:
+1. Avalie bem-estar atual da sua equipe
+2. Implemente 1 iniciativa de bem-estar este mes
+3. Modele equilibrio voce mesmo
+4. Monitore metricas de bem-estar
+
+Lembre-se: Equipe saudavel = Resultados saudaveis. Cuide das pessoas e elas cuidarao dos resultados.
+        `
       }
     ],
     atividadesPraticas: [
