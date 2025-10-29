@@ -1,41 +1,7 @@
 # HumaniQ - Plataforma de Avaliação Psicológica
 
 ## Overview
-HumaniQ is a hierarchical user management system (Admin → Company → Employee) designed for mass psychological assessments in the workplace. It aims to streamline testing, analyze work-life quality, psychosocial risks, organizational climate, and occupational stress, providing data isolation between companies. The platform offers comprehensive tools for monitoring psychosocial states and managing risks, aligning with regulatory and international standards.
-
-## Current Status (29/10/2025)
-**MVP Readiness:** ⚠️ 85% Complete - Requires critical API keys configuration  
-**See:** `RELATORIO_MVP.md` for detailed analysis  
-**Blockers:** Missing GEMINI_API_KEY and STRIPE_PUBLISHABLE_KEY environment variables
-
-### Brand Identity
-- **Logo (29/10/2025)**: Official HumaniQ AI corporate logo
-  - **Location**: `src/assets/logo-transparent.png` (primary logo), `src/assets/favicon.png` (browser icon)
-  - **Component**: Reusable `Logo` component at `src/components/Logo.tsx`
-  - **Design**: Professional "HQ" lettermark with blue-to-purple gradient and "HUMANIQ AI" text below. Modern, clean corporate identity with white/transparent background - NO religious or spiritual elements
-  - **Sizes**: Supports 4 size variants (sm, md, lg, xl) with responsive scaling
-  - **Usage**: Integrated throughout the platform (31 files) including landing page header, footer, dashboards, test pages, reports, and all system pages
-  - **Import**: `import Logo from '@/components/Logo'`
-  - **Applied**: Logo appears clean on all backgrounds without colored containers
-
-### Mobile Responsiveness (29/10/2025)
-- **Complete Responsive Design**: All layouts and pages are fully responsive across all devices
-- **Mobile Sidebar Navigation**: Implemented mobile-first sidebar with hamburger menu
-  - **Component**: `MobileHeader` at `src/components/layout/MobileHeader.tsx`
-  - **Functionality**: 
-    - Shows hamburger menu button (☰) only on mobile devices (< 768px)
-    - Opens sidebar as a slide-out Sheet/drawer on mobile
-    - Displays HumaniQ logo in center of mobile header
-    - Desktop: Traditional persistent sidebar (hidden on mobile)
-    - Mobile: Sheet-based drawer sidebar triggered by hamburger menu
-  - **Integration**: Added to all main layouts (MainLayout, EmpresaLayout, AdminLayout)
-  - **User Experience**: Seamless navigation on mobile with swipe-to-close drawer functionality
-  - **Test ID**: `button-mobile-menu` for automated testing
-- **Responsive Padding**: Adjusted content padding for better mobile viewing (p-4 on mobile, p-6 on desktop)
-- **Sidebar Background Fix (29/10/2025)**: 
-  - **Desktop**: Fixed transparent sidebar by changing `--sidebar-background: 0 0% 98%` to `0 0% 100%` in `index.css` and updating all sidebar components to use `bg-white`
-  - **Mobile**: Fixed transparent Sheet drawer by adding `!bg-white` with important modifier to force white background on `SheetContent` in `src/components/ui/sidebar.tsx` (line 165)
-  - **Result**: All sidebars now have solid white background on both desktop and mobile devices
+HumaniQ is a hierarchical user management system (Admin → Company → Employee) designed for mass psychological assessments in the workplace. It aims to streamline testing, analyze work-life quality, psychosocial risks, organizational climate, and occupational stress, providing data isolation between companies. The platform offers comprehensive tools for monitoring psychosocial states and managing risks, aligning with regulatory and international standards. Its business vision is to provide a robust, AI-powered solution for organizational health, offering significant market potential in corporate wellness and risk management.
 
 ## User Preferences
 I prefer simple language and clear explanations. I want iterative development with frequent updates. Ask before making major architectural changes. Do not make changes to the `shared` folder without explicit instruction. I prefer detailed explanations for complex features or decisions.
@@ -43,7 +9,7 @@ I prefer simple language and clear explanations. I want iterative development wi
 ## System Architecture
 
 ### UI/UX Decisions
-The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, responsive design. Revolutionary glassmorphism designs with animated elements are used for advanced dashboards. Components like `ResultadoVisualizacao` unify test result display.
+The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, responsive design across all devices. Revolutionary glassmorphism designs with animated elements are employed for advanced dashboards. A consistent, professional "HQ" lettermark logo with a blue-to-purple gradient is used throughout the platform. Components like `ResultadoVisualizacao` unify test result display, and `MobileHeader` provides mobile-first sidebar navigation.
 
 ### Technical Implementations
 - **Backend**: Express.js + TypeScript
@@ -53,58 +19,23 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
 - **Authentication**: JWT + bcrypt
 - **State Management**: React Query (TanStack Query)
 - **Routing**: React Router DOM
-- **API Structure**: RESTful API
-- **Security**: JWT tokens, CORS enabled
-- **Performance**: PostgreSQL connection pool
-- **Payment Processing**: Stripe (Checkout Sessions, Webhooks, Subscription Management)
 
 ### Feature Specifications
 - **User Roles**: Admin, Company, Employee with distinct permissions.
-- **Invitation System**: Hierarchical invitations (Admin invites Company, Company invites Employee).
-- **Psychological Tests**: Supports multiple types including QVT, RPO, Clima e Bem-Estar, Estresse Ocupacional, Karasek-Siegrist, PAS, MGRP, and **HumaniQ Insight** (comprehensive organizational climate assessment with 48 questions across 4 dimensions: Psychological Safety, Internal Communication, Belonging, and Organizational Justice). **Integration with AI & PRG**: HumaniQ Insight results are automatically aggregated and included in the AI-powered psychosocial analysis (Estado Psicossocial) and PRG (Programa de Gestão de Riscos) reports, contributing to overall organizational health metrics, risk assessments, and strategic recommendations.
-- **Result Visualization**: Unified component for consistent display.
-- **Data Isolation**: Companies view only their employees' results; employees view only their own.
-- **Psychosocial State Monitoring**: Aggregated, anonymized insights with AI-powered analysis (Google Gemini API), risk classification, automated recommendations, and a glassmorphism UI. Compliant with NR1 and ISO 45003.
-- **PRG Module (Programa de Gestão de Riscos Psicossociais)**: Full psychosocial risk management dashboard with real-time data, dynamic filters, 6 KPI cards, AI-powered analysis, interactive tabs, and 3 embedded charts (Risk Matrix, Risk Distribution, Parliament Chart). Includes professional company identification headers and HumaniQ AI institutional branding footer.
-  - **Export Options**:
-    - **(1) PDF Complete Report**: Professional HTML report following PGR market standards, with cover page, clickable table of contents, detailed KPI analysis, psychosocial dimensions, risk matrix, AI analysis, comprehensive recommendations (9 fields), compliance section, and "Sobre a HumaniQ AI" section.
-    - **(2) QR Code Público - Relatório Executivo**: Free public access system via QR Code, generating a shareable URL to a complete executive report with professional responsive design, 6 main tabs (Resumo Executivo, Indicadores Detalhados, Dimensões Psicossociais, Análise de Riscos, Análise IA, Plano de Ações), and HumaniQ AI institutional footer.
-    - **(3) Action Plan HTML**: Complete implementation guide with step-by-step actions, timelines, and budget estimates for all recommendations.
-- **Colaborador Module**: Enhanced collaborator profile management including `avatar` field and a dedicated endpoint for employee data.
-- **ERP Integration Module**: Comprehensive integration with 9 major Brazilian ERPs (TOTVS, SAP, SENIOR, SANKHYA, MICROSOFT Dynamics 365, ORACLE, BENNER, LINX, OUTRO) for bulk employee invite generation using direct login credentials. Features backend endpoints for login, fetching employee data, bulk invitations, and connection health checks. Frontend uses a simplified modal for user input.
-- **Test Availability Control System**: Manages test availability and recurrence for employees. New `teste_disponibilidade` table tracks status, recurrence periods, and release history. Features automatic blocking of completed tests, company controls for manual release and recurrence configuration, and informative employee views with availability status and next availability dates.
-  - **CORREÇÃO CRÍTICA (27/10/2025)**: Implementado bloqueio síncrono obrigatório de testes após conclusão no endpoint `/api/testes/resultado`. Anteriormente, o bloqueio era executado de forma assíncrona em background (`setImmediate`), permitindo falhas silenciosas que deixavam testes disponíveis mesmo após conclusão. Agora, o bloqueio é executado de forma síncrona antes de responder ao cliente, garantindo integridade total. Se o bloqueio falhar, uma exceção é lançada e o processo é interrompido. Logs detalhados de auditoria foram adicionados para rastreamento completo do processo.
-- **Enhanced Company Invitation System (28/10/2025)**: Sistema aprimorado de convites empresariais com controle de acesso temporal.
-  - **Novos Campos**: CNPJ da empresa (validado), número de colaboradores planejado, e tempo de acesso ao sistema em dias
-  - **Bloqueio Automático**: Empresas e colaboradores têm acesso bloqueado automaticamente após expiração do período definido
-  - **Middleware de Verificação**: `checkEmpresaExpiration` verifica automaticamente status de acesso em cada requisição de autenticação
-  - **Restauração Manual**: Admin pode restaurar acesso via endpoints `/api/empresas/:id/restaurar-acesso` e `/api/empresas/:id/bloquear-acesso`
-  - **Campos no Schema**: `empresas.cnpj`, `empresas.numeroColaboradores`, `empresas.diasAcesso`, `empresas.dataExpiracao`, `empresas.ativa`
-  - **Validação**: Todos os testes só podem ser realizados uma vez por colaborador (sistema já implementado via `teste_disponibilidade`)
-- **Quick Check de Estresse Ocupacional**: Interactive demonstrative test at `/quick-check` for visitor conversion. Features an identical interface to platform tests, including pre-test animation, question layout, processing animation, and a result screen with graphs, risk classification, and optimized CTAs. Incorporates conversion strategies like preview cards, personalized risk alerts, social proof, benefit listings, and comparative tables.
-- **Landing Page Profissional**: Marketing landing page at `/landing` designed for client conversion. Features modern design with gradients and glassmorphism, applying NLP and mental triggers (authority, scarcity, urgency, social proof, reciprocity, contrast) through content structure, interactive sections, and strategic CTAs.
-- **Admin Convites Page Redesign**: UI/UX overhaul of the `/admin/convites` page with a modern card-based layout, gradient backgrounds, glassmorphism effects, enhanced statistics dashboard (5 KPI cards), smart status badges, modal-based invite creation, quick action buttons, and advanced filtering.
-- **CEO Dashboard Enhancement (Company Details)**: 30+ strategic indicators with intelligent insights for individual companies, including Organizational Health Index, Retention Rate, coverage metrics, 5-level alert system, temporal analysis, risk analysis panel, and predictive metrics. Located at `/admin/empresas/:id`.
-- **Admin Executive Dashboard**: Comprehensive business intelligence dashboard at `/admin` for CEO-level decision making. Features aggregated metrics from all companies including:
-  - **Financial Metrics**: MRR (Monthly Recurring Revenue), ARR (Annual Recurring Revenue), revenue growth, ticket medio, revenue projections
-  - **Conversion Funnel**: Complete tracking from landing page visits → demo tests → checkout → purchases with conversion rates at each stage
-  - **Strategic KPIs**: LTV (Valor Vitalício), CAC (Custo de Aquisição de Cliente), LTV/CAC Ratio, Payback Period
-  - **Business Growth**: Active companies, new companies this month, churn rate, growth percentage
-  - **Collaborator Metrics**: Total collaborators, active count, average per company, monthly growth
-  - **Plan Distribution**: Breakdown by Essencial, Profissional, and Enterprise plans with revenue attribution
-  - **Interactive Charts**: 6-month revenue trends, plan distribution pie chart, conversion funnel visualization
-  - **Future Projections**: Next month revenue forecast, quarterly projection based on growth trends
-- **Stripe Payment Integration**: Complete subscription payment system with Stripe Checkout Sessions. Features include:
-  - Three pricing tiers: Essencial (R$15/employee), Profissional (R$25/employee), Enterprise (R$35/employee)
-  - Checkout pages at `/checkout/:planType` with Stripe Checkout integration
-  - Success and cancellation pages (`/checkout/success`, `/checkout/cancelado`)
-  - Backend API routes for creating checkout sessions, managing subscriptions, and canceling subscriptions
-  - Webhook handlers for Stripe events (checkout.session.completed, subscription updates, payment failures)
-  - Database schema extensions for storing Stripe customer IDs, subscription IDs, plan types, and subscription status
-  - Landing page integration with "Começar Agora" buttons linking to checkout flows
+- **Invitation System**: Hierarchical invitations (Admin invites Company, Company invites Employee) with temporal access control, CNPJ validation, and planned employee counts.
+- **Psychological Tests**: Supports various tests including QVT, RPO, Clima e Bem-Estar, Estresse Ocupacional, Karasek-Siegrist, PAS, MGRP, and HumaniQ Insight (comprehensive organizational climate assessment). Test results are integrated with AI & PRG for psychosocial analysis. Tests are automatically blocked after completion.
+- **Psychosocial State Monitoring**: Aggregated, anonymized insights with AI-powered analysis, risk classification, automated recommendations, compliant with NR1 and ISO 45003.
+- **PRG Module (Programa de Gestão de Riscos Psicossociais)**: Full psychosocial risk management dashboard with real-time data, AI-powered analysis, interactive charts, and export options including professional PDF reports, public QR Code executive reports, and HTML action plans.
+- **Colaborador Module**: Enhanced employee profile management.
+- **ERP Integration Module**: Integration with 9 major Brazilian ERPs for bulk employee invitation generation.
+- **Course Availability Control System**: Manages course access and recurrence, requiring explicit company administrator approval. All courses are locked by default upon employee creation.
+- **Quick Check de Estresse Ocupacional**: Interactive demonstrative test at `/quick-check` for visitor conversion, mirroring platform test experience.
+- **Landing Page Profissional**: Marketing landing page at `/landing` designed for client conversion, utilizing NLP and mental triggers.
+- **Admin Dashboards**: Redesigned Admin Convites page with modern UI/UX and an Executive Dashboard for CEO-level business intelligence, including financial, conversion, strategic KPIs, and growth metrics.
+- **Stripe Payment Integration**: Complete subscription payment system with three pricing tiers, checkout pages, webhook handling, and database schema extensions for subscription management.
 
 ### System Design Choices
-Migration from Supabase to a local API backend. Manual Zod schemas are used. API returns camelCase.
+The system migrated from Supabase to a local API backend. Manual Zod schemas are used for validation, and the API consistently returns camelCase. A PostgreSQL connection pool is used for performance.
 
 ## External Dependencies
 - **Database**: Neon PostgreSQL
