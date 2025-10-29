@@ -176,8 +176,26 @@ export default function CertificadoView({ certificado, curso }: CertificadoViewP
 
                   {/* Coluna 3: Certificação e Código */}
                   <div className="text-center space-y-2 sm:space-y-3 sm:col-span-2 lg:col-span-1">
-                    <div className="border-t-2 border-gray-900 pt-2 mb-2 mx-auto w-40 sm:w-48">
-                      <p className="text-xs sm:text-sm font-semibold text-gray-900">Certificado por HumaniQ AI</p>
+                    <div className="pt-2 mb-2 mx-auto">
+                      {/* Assinatura manuscrita elegante */}
+                      <div className="mb-3 flex justify-center">
+                        <p 
+                          className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent"
+                          style={{ 
+                            fontFamily: "'Brush Script MT', 'Lucida Handwriting', cursive",
+                            fontStyle: 'italic',
+                            transform: 'rotate(-2deg)',
+                            textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
+                            letterSpacing: '0.05em'
+                          }}
+                        >
+                          HumaniQ AI
+                        </p>
+                      </div>
+                      {/* Linha de assinatura */}
+                      <div className="border-t-2 border-gray-900 pt-2 mx-auto w-40 sm:w-48">
+                        <p className="text-xs sm:text-sm font-semibold text-gray-900">Certificado por HumaniQ AI</p>
+                      </div>
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs text-gray-600">Código de Autenticação:</p>
