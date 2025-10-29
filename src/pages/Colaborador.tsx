@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, BarChart3, Zap, Shield, Users, Building2, Heart, Target, TrendingUp, Award } from "lucide-react";
+import { Sparkles, BarChart3, Zap, Shield, Users, Building2, Heart, Target, TrendingUp, Award } from "lucide-react";
+import Logo from "@/components/Logo";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { colaboradorService, ColaboradorCompleto } from "@/services/colaboradorService";
@@ -32,7 +33,7 @@ const Colaborador = () => {
 
   const features = [
     {
-      icon: Brain,
+      icon: Sparkles,
       title: "Testes Científicos",
       description: "8 testes psicológicos validados cientificamente",
       color: "text-blue-500"
@@ -87,7 +88,7 @@ const Colaborador = () => {
                 />
               ) : (
                 <div className="relative mx-auto h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-green-500 flex items-center justify-center shadow-2xl transform group-hover:scale-105 transition-all duration-300">
-                  <Brain className="h-12 w-12 text-white drop-shadow-lg animate-pulse" />
+                  <Logo size="md" showText={false} />
                 </div>
               )}
             </div>
@@ -215,7 +216,7 @@ const Colaborador = () => {
               <div className="relative mb-8 mx-auto w-fit">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/40 to-purple-500/40 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500"></div>
                 <div className="relative bg-gradient-to-br from-blue-500 to-purple-600 p-6 rounded-3xl shadow-2xl group-hover:shadow-blue-500/25 transition-all duration-500">
-                   <Brain className="h-16 w-16 text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 drop-shadow-lg" />
+                   <Logo size="lg" showText={false} className="group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 drop-shadow-lg" />
                  </div>
               </div>
               

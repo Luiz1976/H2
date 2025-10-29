@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, BarChart3, Zap, Shield } from "lucide-react";
+import { BarChart3, Zap, Shield } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -21,11 +22,9 @@ const Index = () => {
       <div className="max-w-4xl mx-auto text-center space-y-8">
         {/* Logo e Título */}
         <div className="space-y-4">
-          <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-glow">
-            <Brain className="h-8 w-8 text-primary-foreground" />
-          </div>
+          <Logo size="xl" showText={false} className="mx-auto" />
           <h1 className="text-5xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-            HumaniQ
+            HumaniQ AI
           </h1>
           <p className="text-2xl text-muted-foreground max-w-2xl mx-auto">
             Plataforma de avaliação psicológica e análise comportamental baseada em ciência
@@ -36,7 +35,7 @@ const Index = () => {
         <div className="grid md:grid-cols-3 gap-6 mt-12">
           <Card className="bg-gradient-card border-border/50 hover:shadow-glow transition-all duration-300">
             <CardHeader className="text-center">
-              <Brain className="h-8 w-8 mx-auto text-primary mb-2" />
+              <Logo size="md" showText={false} className="mx-auto mb-2" />
               <CardTitle>Testes Científicos</CardTitle>
               <CardDescription>
                 8 testes psicológicos validados cientificamente
