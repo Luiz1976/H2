@@ -349,15 +349,25 @@ export default function CursoDetalhes() {
                         {expandido ? "Ocultar Conteúdo" : "Ver Conteúdo"}
                       </Button>
                       
-                      {!moduloConcluido && (
+                      {!moduloConcluido && expandido && (
                         <Button
                           variant="outline"
+                          className="border-green-600 text-green-700 hover:bg-green-50 hover:text-green-800"
                           onClick={() => handleCompletarModulo(modulo.id)}
                           disabled={completarModuloMutation.isPending}
                           data-testid={`button-completar-modulo-${modulo.id}`}
                         >
-                          <CheckCircle2 className="h-4 w-4 mr-2" />
-                          Marcar como Concluído
+                          {completarModuloMutation.isPending ? (
+                            <>
+                              <div className="animate-spin h-4 w-4 mr-2 border-2 border-green-600 border-t-transparent rounded-full" />
+                              Marcando...
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle2 className="h-4 w-4 mr-2" />
+                              Marcar como Concluído
+                            </>
+                          )}
                         </Button>
                       )}
                     </div>
