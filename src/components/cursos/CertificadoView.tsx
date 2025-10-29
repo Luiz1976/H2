@@ -194,9 +194,6 @@ export default function CertificadoView({ certificado, curso }: CertificadoViewP
                   <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
                   <span>Certificado Válido e Autêntico</span>
                 </div>
-                <p className="text-xs text-gray-500 px-2">
-                  CNPJ: 00.000.000/0001-00 | www.humaniq.ai | contato@humaniq.ai
-                </p>
                 <p className="text-xs text-gray-400 break-all px-2">
                   Este certificado pode ser validado em: {certificado.qrCodeUrl}
                 </p>
