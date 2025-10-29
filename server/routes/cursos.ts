@@ -197,13 +197,27 @@ router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest,
       });
     }
 
-    // Verificar se já realizou avaliação
-    if (progresso.avaliacaoFinalRealizada) {
-      return res.status(400).json({ error: 'Avaliação já realizada' });
+    // Verificar número de tentativas (máximo 3)
+    const tentativasAtuais = progresso.tentativasAvaliacao || 0;
+    
+    if (tentativasAtuais >= 3) {
+      return res.status(400).json({ 
+        error: 'Você já utilizou todas as 3 tentativas disponíveis para esta avaliação',
+        tentativasRestantes: 0
+      });
+    }
+
+    // Verificar se já foi aprovado anteriormente
+    if (progresso.avaliacaoFinalRealizada && progresso.avaliacaoFinalPontuacao && progresso.avaliacaoFinalPontuacao >= (totalQuestoes * 0.7)) {
+      return res.status(400).json({ 
+        error: 'Avaliação já aprovada anteriormente',
+        aprovado: true
+      });
     }
 
     // Aprovar se pontuação >= 70%
     const aprovado = pontuacao >= (totalQuestoes * 0.7);
+    const novaTentativa = tentativasAtuais + 1;
 
     // Criar avaliação
     const [avaliacao] = await db.insert(cursoAvaliacoes).values({
@@ -221,13 +235,19 @@ router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest,
     await db
       .update(cursoProgresso)
       .set({
-        avaliacaoFinalRealizada: true,
+        avaliacaoFinalRealizada: aprovado, // Só marca como realizada se aprovado
         avaliacaoFinalPontuacao: pontuacao,
+        tentativasAvaliacao: novaTentativa,
         dataUltimaAtualizacao: new Date(),
       })
       .where(eq(cursoProgresso.id, progresso.id));
 
-    return res.status(201).json({ ...avaliacao, aprovado });
+    return res.status(201).json({ 
+      ...avaliacao, 
+      aprovado,
+      tentativaAtual: novaTentativa,
+      tentativasRestantes: 3 - novaTentativa
+    });
   } catch (error) {
     console.error('Erro ao salvar avaliação:', error);
     return res.status(500).json({ error: 'Erro ao salvar avaliação' });

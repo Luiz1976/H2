@@ -110,7 +110,17 @@ export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }:
   const [respostas, setRespostas] = useState<Record<number, number>>({});
   const [questoes] = useState<Questao[]>(gerarQuestoes(curso));
   const [tempoInicio, setTempoInicio] = useState<number | null>(null);
-  const [resultadoFinal, setResultadoFinal] = useState<any>(null);
+  const [resultadoFinal, setResultadoFinal] = useState<{
+    aprovado: boolean;
+    pontuacao: number;
+    totalQuestoes: number;
+    tentativaAtual: number;
+    tentativasRestantes: number;
+  } | null>(null);
+
+  const tentativasRealizadas = progresso?.tentativasAvaliacao || 0;
+  const tentativasRestantes = 3 - tentativasRealizadas;
+  const jaAprovado = avaliacaoRealizada && progresso?.avaliacaoFinalPontuacao && progresso.avaliacaoFinalPontuacao >= (questoes.length * 0.7);
 
   const submeterAvaliacaoMutation = useMutation({
     mutationFn: async (dados: any) => {
@@ -119,7 +129,7 @@ export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }:
         body: JSON.stringify(dados)
       });
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['/api/cursos/progresso', curso.slug] });
       setResultadoFinal(data);
       
@@ -191,8 +201,16 @@ export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }:
     ? Math.round((resultadoFinal.pontuacao / resultadoFinal.totalQuestoes) * 100)
     : 0;
 
-  // Se já foi realizada
-  if (avaliacaoRealizada && !resultadoFinal) {
+  // Função para refazer a avaliação
+  const refazerAvaliacao = () => {
+    setResultadoFinal(null);
+    setRespostas({});
+    setInicioAvaliacao(false);
+    setTempoInicio(null);
+  };
+
+  // Se já foi aprovado
+  if (jaAprovado && !resultadoFinal) {
     return (
       <Card className="border-2 border-green-200 bg-green-50">
         <CardContent className="p-12 text-center">
@@ -200,8 +218,11 @@ export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }:
           <h3 className="text-2xl font-bold text-green-700 mb-2">
             Avaliação Concluída!
           </h3>
-          <p className="text-green-600">
-            Você já realizou a avaliação final deste curso.
+          <p className="text-green-600 mb-2">
+            Você já foi aprovado na avaliação final deste curso.
+          </p>
+          <p className="text-sm text-gray-600">
+            Nota: {progresso?.avaliacaoFinalPontuacao} de {questoes.length} ({Math.round((progresso?.avaliacaoFinalPontuacao || 0) / questoes.length * 100)}%)
           </p>
         </CardContent>
       </Card>
@@ -228,6 +249,9 @@ export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }:
               <p className="text-gray-700">
                 Seu certificado foi emitido automaticamente e está disponível na aba "Certificado"!
               </p>
+              <div className="mt-4 text-sm text-gray-600">
+                Tentativa {resultadoFinal.tentativaAtual} de 3
+              </div>
             </>
           ) : (
             <>
@@ -241,9 +265,40 @@ export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }:
               <p className="text-lg text-red-700">
                 Você acertou {resultadoFinal.pontuacao} de {resultadoFinal.totalQuestoes} questões
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 mb-4">
                 É necessário acertar pelo menos 70% para ser aprovado.
               </p>
+              
+              {resultadoFinal.tentativasRestantes > 0 ? (
+                <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4">
+                  <p className="text-yellow-800 font-semibold mb-2">
+                    Você ainda tem {resultadoFinal.tentativasRestantes} tentativa{resultadoFinal.tentativasRestantes > 1 ? 's' : ''} restante{resultadoFinal.tentativasRestantes > 1 ? 's' : ''}
+                  </p>
+                  <p className="text-sm text-yellow-700 mb-4">
+                    Revise o conteúdo dos módulos e tente novamente!
+                  </p>
+                  <Button
+                    onClick={refazerAvaliacao}
+                    className="w-full bg-yellow-600 hover:bg-yellow-700"
+                    data-testid="button-refazer-avaliacao"
+                  >
+                    Tentar Novamente
+                  </Button>
+                </div>
+              ) : (
+                <div className="bg-red-50 border-2 border-red-300 rounded-lg p-4">
+                  <p className="text-red-800 font-semibold">
+                    Você utilizou todas as 3 tentativas disponíveis
+                  </p>
+                  <p className="text-sm text-red-700 mt-2">
+                    Entre em contato com o administrador do curso para mais informações.
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-4 text-sm text-gray-600">
+                Tentativa {resultadoFinal.tentativaAtual} de 3
+              </div>
             </>
           )}
         </CardContent>
@@ -278,7 +333,7 @@ export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }:
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4" />
-                Nível de dificuldade: Fácil
+                Você tem direito a 3 tentativas
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4" />
@@ -286,6 +341,17 @@ export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }:
               </li>
             </ul>
           </div>
+
+          {tentativasRealizadas > 0 && (
+            <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4">
+              <p className="text-yellow-800 font-semibold">
+                ⚠️ Tentativas utilizadas: {tentativasRealizadas} de 3
+              </p>
+              <p className="text-sm text-yellow-700 mt-1">
+                Você ainda tem {tentativasRestantes} tentativa{tentativasRestantes > 1 ? 's' : ''} disponível{tentativasRestantes > 1 ? 'is' : ''}
+              </p>
+            </div>
+          )}
 
           <Button
             size="lg"

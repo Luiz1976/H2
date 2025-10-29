@@ -375,6 +375,7 @@ export const cursoProgresso = pgTable('curso_progresso', {
   progressoPorcentagem: integer('progresso_porcentagem').default(0).notNull(),
   avaliacaoFinalRealizada: boolean('avaliacao_final_realizada').default(false).notNull(),
   avaliacaoFinalPontuacao: integer('avaliacao_final_pontuacao'),
+  tentativasAvaliacao: integer('tentativas_avaliacao').default(0).notNull(),
   dataInicio: timestamp('data_inicio', { withTimezone: true }).defaultNow().notNull(),
   dataUltimaAtualizacao: timestamp('data_ultima_atualizacao', { withTimezone: true }).defaultNow().notNull(),
   dataConclusao: timestamp('data_conclusao', { withTimezone: true }),
@@ -398,6 +399,7 @@ export const insertCursoProgressoSchema = z.object({
   progressoPorcentagem: z.number().optional(),
   avaliacaoFinalRealizada: z.boolean().optional(),
   avaliacaoFinalPontuacao: z.number().optional().nullable(),
+  tentativasAvaliacao: z.number().optional(),
   dataConclusao: z.date().optional().nullable(),
   metadados: z.any().optional(),
 });
