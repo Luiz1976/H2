@@ -3,6 +3,11 @@
 ## Overview
 HumaniQ is a hierarchical user management system (Admin → Company → Employee) designed for mass psychological assessments in the workplace. It aims to streamline testing, analyze work-life quality, psychosocial risks, organizational climate, and occupational stress, providing data isolation between companies. The platform offers comprehensive tools for monitoring psychosocial states and managing risks, aligning with regulatory and international standards.
 
+## Current Status (29/10/2025)
+**MVP Readiness:** ⚠️ 85% Complete - Requires critical API keys configuration  
+**See:** `RELATORIO_MVP.md` for detailed analysis  
+**Blockers:** Missing GEMINI_API_KEY and STRIPE_PUBLISHABLE_KEY environment variables
+
 ### Brand Identity
 - **Logo (28/10/2025)**: Modern, exclusive corporate logo for HumaniQ AI
   - **Location**: `src/assets/logo.png`
