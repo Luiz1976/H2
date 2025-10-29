@@ -174,11 +174,10 @@ export default function CertificadoView({ certificado, curso }: CertificadoViewP
                     )}
                   </div>
 
-                  {/* Coluna 3: Assinatura e Código */}
+                  {/* Coluna 3: Certificação e Código */}
                   <div className="text-center space-y-2 sm:space-y-3 sm:col-span-2 lg:col-span-1">
                     <div className="border-t-2 border-gray-900 pt-2 mb-2 mx-auto w-40 sm:w-48">
-                      <p className="text-xs sm:text-sm font-semibold text-gray-900 break-words">{certificado.assinaturaDigital}</p>
-                      <p className="text-xs text-gray-600">Diretor de Educação</p>
+                      <p className="text-xs sm:text-sm font-semibold text-gray-900">Certificado por HumaniQ AI</p>
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs text-gray-600">Código de Autenticação:</p>
