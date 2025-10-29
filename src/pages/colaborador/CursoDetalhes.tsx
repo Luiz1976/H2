@@ -40,29 +40,64 @@ export default function CursoDetalhes() {
     queryKey: ['/api/cursos/progresso', slug],
     queryFn: async () => {
       try {
+        console.log('📚 [CURSO-FRONTEND] Buscando progresso do curso:', slug);
+        const token = localStorage.getItem('token');
+        console.log('📚 [CURSO-FRONTEND] Token presente?', !!token);
+        
         const response = await fetch(`/api/cursos/progresso/${slug}`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${token}`
           }
         });
         
+        console.log('📚 [CURSO-FRONTEND] Status da busca:', response.status);
+        
         if (response.status === 404) {
+          console.log('📚 [CURSO-FRONTEND] Progresso não existe, criando...');
+          console.log('📚 [CURSO-FRONTEND] Dados para criação:', {
+            cursoId: curso.id.toString(),
+            cursoSlug: slug,
+            totalModulos: curso.modulos.length
+          });
+          
           // Criar novo progresso
-          const createResponse = await apiRequest('/api/cursos/progresso', {
+          const createResponse = await fetch('/api/cursos/progresso', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({
               cursoId: curso.id.toString(),
               cursoSlug: slug,
               totalModulos: curso.modulos.length
             })
           });
-          return createResponse;
+          
+          console.log('📚 [CURSO-FRONTEND] Status da criação:', createResponse.status);
+          
+          if (!createResponse.ok) {
+            const errorText = await createResponse.text();
+            console.error('❌ [CURSO-FRONTEND] Erro ao criar progresso:', errorText);
+            throw new Error(`Erro ao criar progresso: ${errorText}`);
+          }
+          
+          const novoProgresso = await createResponse.json();
+          console.log('✅ [CURSO-FRONTEND] Progresso criado:', novoProgresso);
+          return novoProgresso;
         }
         
-        if (!response.ok) throw new Error('Erro ao buscar progresso');
-        return response.json();
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('❌ [CURSO-FRONTEND] Erro ao buscar progresso:', errorText);
+          throw new Error(`Erro ao buscar progresso: ${errorText}`);
+        }
+        
+        const progressoExistente = await response.json();
+        console.log('✅ [CURSO-FRONTEND] Progresso encontrado:', progressoExistente);
+        return progressoExistente;
       } catch (error) {
-        console.error('Erro ao buscar/criar progresso:', error);
+        console.error('❌ [CURSO-FRONTEND] Erro geral:', error);
         throw error;
       }
     }
