@@ -1027,6 +1027,1057 @@ Proximos Passos:
 
 Lembre-se: O desenvolvimento da IE e uma jornada continua, nao um destino. Seja paciente consigo mesmo.
         `
+      },
+      {
+        id: 3,
+        titulo: "Gestao de Emocoes em Situacoes de Alta Pressao",
+        duracao: "50 min",
+        topicos: [
+          "Reconhecendo gatilhos emocionais",
+          "Tecnicas de regulacao em tempo real",
+          "Comunicacao assertiva sob pressao",
+          "Prevencao de decisoes impulsivas",
+          "Recuperacao pos-crise"
+        ],
+        materialDidatico: `
+GESTAO DE EMOCOES EM SITUACOES DE ALTA PRESSAO
+
+INTRODUCAO
+
+Lideres enfrentam constantemente situacoes de alta pressao: prazos apertados, metas desafiadoras, conflitos urgentes, crises inesperadas. Nestas situacoes, a capacidade de manter a inteligencia emocional pode ser a diferenca entre o sucesso e o fracasso.
+
+Pesquisas mostram que 70% das decisoes ruins sao tomadas sob pressao emocional nao gerenciada.
+
+RECONHECENDO GATILHOS EMOCIONAIS
+
+Gatilhos emocionais sao estimulos que provocam reacoes emocionais automaticas e intensas, geralmente baseadas em experiencias passadas.
+
+Gatilhos Comuns de Lideres:
+1. Sensacao de perda de controle
+2. Questionamento da autoridade
+3. Pressao por resultados imediatos
+4. Criticas publicas
+5. Fracasso ou erro da equipe
+6. Comparacoes desfavoraveis com outros
+7. Falta de reconhecimento superior
+8. Desafios a competencia tecnica
+9. Situacoes de injustica
+10. Ameacas ao status ou posicao
+
+Como Identificar Seus Gatilhos:
+Faca um diario de situacoes onde voce reagiu de forma desproporcional nas ultimas semanas:
+- O que aconteceu exatamente?
+- Qual foi sua reacao?
+- Qual emocao sentiu primeiro?
+- Isso te lembra alguma situacao do passado?
+- Qual e o padrao comum entre essas situacoes?
+
+TECNICAS DE REGULACAO EM TEMPO REAL
+
+1. TECNICA DOS 90 SEGUNDOS (Jill Bolte Taylor - Neurocientista)
+
+Quando uma emocao e disparada, ela dura apenas 90 segundos no corpo. Apos isso, e voce quem escolhe mante-la ou nao.
+
+Como aplicar:
+- Sinta a emocao surgir
+- Respire profundamente
+- Observe-a sem reagir
+- Conte ate 90 segundos
+- Decida conscientemente como agir
+
+2. TECNICA STOP
+
+S - Stop (Pare)
+T - Take a breath (Respire fundo)
+O - Observe (O que esta acontecendo? O que estou sentindo?)
+P - Proceed (Continue conscientemente)
+
+3. ANCORAGEM FISICA
+
+Quando sentir emocao forte:
+- Pressione os pes no chao
+- Sinta o peso do corpo na cadeira
+- Toque objetos ao redor
+- Beba um gole de agua lentamente
+- Isso traz voce de volta ao presente
+
+4. REESTRUTURACAO COGNITIVA RAPIDA
+
+Transforme pensamentos automaticos:
+
+Pensamento Automatico: "Este colaborador e incompetente!"
+Reestruturacao: "Ele esta com dificuldade. O que posso fazer para apoiar?"
+
+Pensamento Automatico: "Vou ser demitido por essa falha!"
+Reestruturacao: "Erros acontecem. Qual e a solucao? O que posso aprender?"
+
+5. TECNICA DA TERCEIRA PESSOA
+
+Quando estiver em situacao tensa, pense em si mesmo na terceira pessoa:
+"Joao esta sentindo raiva porque a meta nao foi atingida. Qual seria a melhor decisao para Joao tomar agora?"
+
+Pesquisas mostram que essa simples mudanca de perspectiva aumenta em 300% a capacidade de tomar decisoes racionais.
+
+COMUNICACAO ASSERTIVA SOB PRESSAO
+
+Comunicacao assertiva e a capacidade de expressar pensamentos, sentimentos e necessidades de forma clara, honesta e respeitosa, sem agressividade ou passividade.
+
+Modelo de Comunicacao sob Pressao:
+
+1. RECONHECA A EMOCAO (sua e do outro)
+"Percebo que esta situacao esta causando tensao."
+
+2. DECLARE OS FATOS (sem julgamentos)
+"A meta foi de X, alcancamos Y."
+
+3. EXPRESSE IMPACTO (sem acusacoes)
+"Isso gera preocupacao porque..."
+
+4. BUSQUE SOLUCOES (colaborativamente)
+"Como podemos resolver isso juntos?"
+
+Exemplo Pratico:
+
+Situacao: Colaborador entrega projeto com atraso grave
+
+ERRADO (Agressivo):
+"Voce e irresponsavel! Isso e inaceitavel! Estou pensando em te tirar do projeto!"
+
+ERRADO (Passivo):
+"Ah, tudo bem... nao tem problema... a gente resolve..."
+
+CERTO (Assertivo):
+"Entendo que imprevistos acontecem. O projeto tinha prazo para ontem e foi entregue hoje, o que impactou a apresentacao ao cliente. Preciso entender o que aconteceu e como podemos evitar isso no futuro. Podemos conversar?"
+
+PREVENCAO DE DECISOES IMPULSIVAS
+
+Sob pressao, o cerebro primitivo (amigdala) assume o controle, reduzindo a capacidade de pensamento racional.
+
+Sinais de Que Voce Esta Prestes a Tomar Decisao Impulsiva:
+- Sensacao de urgencia extrema
+- Pensamento preto-e-branco
+- Vocabulario absoluto ("sempre", "nunca", "tudo", "nada")
+- Sensacao de raiva ou medo intenso
+- Necessidade de "dar uma licao"
+- Vontade de agir imediatamente
+
+Protocolo de Decisao Sob Pressao:
+
+1. PAUSA OBRIGATORIA
+Se a decisao pode esperar 24h, espere. Se nao pode, espere pelo menos 30 minutos.
+
+2. CONSULTA
+Fale com pelo menos uma pessoa de confianca antes de decidir.
+
+3. CENARIOS
+Liste: Melhor cenario, Pior cenario, Cenario mais provavel.
+
+4. PERGUNTA-CHAVE
+"Como eu veria essa decisao daqui 1 ano?"
+
+5. VALORES
+"Essa decisao esta alinhada com meus valores e principios?"
+
+RECUPERACAO POS-CRISE
+
+Mesmo lideres emocionalmente inteligentes tem momentos de perda de controle. O importante e como se recuperam.
+
+Passos para Recuperacao:
+
+1. RECONHECIMENTO HONESTO
+Se voce reagiu mal, reconheca. Com voce mesmo e, se necessario, com os outros.
+
+2. ANALISE SEM AUTO-FLAGELACAO
+"O que me levou a reagir assim? O que posso aprender?"
+Nao: "Sou um pessimo lider! Sou um fracasso!"
+
+3. REPARACAO
+Se sua reacao afetou outros, repare:
+"Ontem, na reuniao, reagi de forma exaltada. Isso foi inadequado. Peco desculpas. Estou trabalhando para melhorar."
+
+4. PLANO DE PREVENCAO
+O que voce fara diferente na proxima situacao similar?
+
+5. AUTO-CUIDADO
+Exercicio, sono, alimentacao saudavel, lazer - tudo isso aumenta sua resiliencia emocional.
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Mapa de Gatilhos
+Durante uma semana, anote todas as vezes que sentir emocoes fortes:
+- Situacao
+- Emocao
+- Intensidade (1-10)
+- Possivel gatilho
+Ao final, identifique padroes.
+
+Exercicio 2: Treino da Pausa
+Em situacoes cotidianas de menor pressao, pratique a tecnica STOP antes de responder emails, mensagens ou perguntas.
+
+Exercicio 3: Simulacao Mental
+Imagine 3 situacoes de alta pressao que podem acontecer com voce.
+Para cada uma, visualize-se aplicando as tecnicas de regulacao emocional e respondendo de forma construtiva.
+
+CONCLUSAO DO MODULO
+
+Gerir emocoes sob pressao nao significa suprimi-las ou finge-las nao existirem. Significa reconhece-las, compreende-las e escolher conscientemente como responder.
+
+Lideres que dominam essa habilidade:
+- Tomam decisoes mais acertadas
+- Mantem a confianca da equipe mesmo em crises
+- Reduzem arrependimentos posteriores
+- Criam cultura de resiliencia
+- Inspiram pelo exemplo
+
+Proximos Passos:
+1. Identifique seus 3 principais gatilhos emocionais
+2. Pratique a tecnica dos 90 segundos diariamente
+3. Crie um protocolo pessoal para decisoes sob pressao
+4. Compartilhe com alguem de confianca que pode te ajudar a perceber quando voce esta sendo reativo
+
+Lembre-se: Voce nao pode controlar tudo que acontece, mas pode controlar como responde.
+        `
+      },
+      {
+        id: 4,
+        titulo: "Feedback Emocionalmente Inteligente",
+        duracao: "45 min",
+        topicos: [
+          "Importancia do feedback para desenvolvimento",
+          "Modelo de feedback construtivo",
+          "Como receber feedback sem defensividade",
+          "Feedforward: foco no futuro",
+          "Criando cultura de feedback continuo"
+        ],
+        materialDidatico: `
+FEEDBACK EMOCIONALMENTE INTELIGENTE
+
+INTRODUCAO
+
+Feedback e uma das ferramentas mais poderosas de desenvolvimento humano. Pesquisas mostram que equipes com cultura de feedback tem:
+- 39% mais engajamento
+- 29% mais produtividade
+- 52% menos turnover
+- 3x mais inovacao
+
+Porem, feedback mal dado pode causar desmotivacao, ressentimento e ate processos trabalhistas.
+
+IMPORTANCIA DO FEEDBACK PARA DESENVOLVIMENTO
+
+O Que e Feedback:
+Feedback e uma informacao sobre desempenho, comportamento ou resultado que ajuda a pessoa a manter o que esta funcionando e ajustar o que nao esta.
+
+Por Que Feedback e Essencial:
+
+1. CLAREZA DE EXPECTATIVAS
+Sem feedback, colaboradores adivinham o que e esperado deles.
+
+2. CORRECAO DE ROTA
+Pequenos ajustes agora evitam grandes problemas depois.
+
+3. RECONHECIMENTO
+Feedback positivo e um dos maiores motivadores humanos.
+
+4. DESENVOLVIMENTO ACELERADO
+Feedback acelera a curva de aprendizado.
+
+5. FORTALECIMENTO DE RELACOES
+Feedback honesto e respeitoso cria confianca.
+
+O Custo da Ausencia de Feedback:
+- Colaboradores continuam cometendo os mesmos erros
+- Bons comportamentos nao sao reforçados
+- Problemas pequenos viram crises
+- Pessoas talentosas saem por falta de direcao
+- Clima de trabalho deteriora
+
+Dados Alarmantes:
+- 69% dos colaboradores dizem que trabalhariam mais se recebessem reconhecimento
+- 65% dos colaboradores querem mais feedback do que recebem
+- 98% dos lideres falham em dar feedback regularmente
+
+MODELO DE FEEDBACK CONSTRUTIVO
+
+O modelo SCI - Situacao, Comportamento, Impacto
+
+1. SITUACAO (Contexto especifico)
+Defina quando e onde ocorreu.
+
+2. COMPORTAMENTO (Fatos observaveis)
+Descreva o que a pessoa fez ou disse, sem julgamentos.
+
+3. IMPACTO (Consequencia objetiva)
+Explique qual foi o resultado do comportamento.
+
+Exemplo de Feedback Construtivo:
+
+RUIM:
+"Voce e desorganizado e isso esta atrapalhando a equipe."
+
+BOM:
+"Na reuniao de ontem (SITUACAO), voce chegou 15 minutos atrasado sem avisar e sem o relatorio que ficou de trazer (COMPORTAMENTO). Isso fez a reuniao atrasar, algumas decisoes nao puderam ser tomadas e percebi frustracao nos colegas (IMPACTO). Como podemos evitar isso?"
+
+MODELO COMPLETO COM INTELIGENCIA EMOCIONAL:
+
+PASSO 1: PREPARACAO
+Antes de dar feedback, pergunte-se:
+- Qual e meu objetivo? (desenvolvimento, punicao, desabafo?)
+- Estou emocionalmente equilibrado?
+- Tenho fatos ou apenas impressoes?
+- O momento e adequado?
+- O local e apropriado?
+
+PASSO 2: ABERTURA EMPATICA
+"Gostaria de conversar sobre [tema]. Este e um bom momento para voce?"
+
+PASSO 3: SCI + PERGUNTA
+Situacao + Comportamento + Impacto + "O que aconteceu? Como voce ve isso?"
+
+PASSO 4: ESCUTA ATIVA
+Deixe a pessoa falar. Nao interrompa. Busque entender, nao rebater.
+
+PASSO 5: CONSTRUCAO CONJUNTA
+"Como podemos resolver isso? O que voce precisa de mim?"
+
+PASSO 6: ACORDO E ACOMPANHAMENTO
+"Entao vamos fazer [acao]. Vamos revisar isso em [data]."
+
+FEEDBACK POSITIVO TAMBEM PRECISA SER ESPECIFICO
+
+RUIM:
+"Voce e otimo! Parabens!"
+
+BOM:
+"Na apresentacao de ontem (SITUACAO), voce apresentou os dados de forma clara, respondeu todas as perguntas com seguranca e conseguiu convencer o cliente sobre a proposta (COMPORTAMENTO). Isso resultou no fechamento do contrato e mostrou sua evolucao tecnica (IMPACTO). Parabens!"
+
+O feedback positivo especifico:
+- Reforce o comportamento correto
+- Mostra que voce presta atencao
+- Motiva genuinamente
+- Ajuda a pessoa a entender seu valor
+
+COMO RECEBER FEEDBACK SEM DEFENSIVIDADE
+
+A Armadilha da Defensividade:
+Quando recebemos feedback negativo, o cerebro ativa mecanismos de defesa automaticos:
+- Negacao ("Isso nao e verdade!")
+- Justificativa ("Foi porque...")
+- Contra-ataque ("E voce tambem...")
+- Minimizacao ("Nao foi tao grave assim...")
+
+Isso bloqueia totalmente o aprendizado.
+
+Tecnica para Receber Feedback Construtivamente:
+
+1. RESPIRE E PAUSE
+Antes de reagir, respire fundo 3 vezes.
+
+2. AGRADECA
+"Obrigado por compartilhar isso comigo."
+
+3. BUSQUE ENTENDER
+Faca perguntas para esclarecer, nao para rebater:
+- "Pode me dar um exemplo especifico?"
+- "Como voce gostaria que eu fizesse diferente?"
+- "O que mais voce percebeu?"
+
+4. REFLITA ANTES DE RESPONDER
+"Vou refletir sobre isso. Posso voltar a falar com voce amanha?"
+
+5. EXTRAIA O APRENDIZADO
+Mesmo que o feedback seja mal dado ou parcialmente incorreto, ha algo util ali?
+
+6. ACAO
+Feedback sem acao e desperdicio. Decida o que voce VAI mudar.
+
+Frase Poderosa:
+"Feedback e um presente. Mesmo quando dificil de receber, alguem se importou o suficiente para me dizer algo que pode me ajudar a melhorar."
+
+FEEDFORWARD: FOCO NO FUTURO
+
+Marshall Goldsmith, renomado coach executivo, criou o conceito de Feedforward para complementar o Feedback.
+
+Diferenca:
+- FEEDBACK: Olha para o passado ("O que voce fez...")
+- FEEDFORWARD: Olha para o futuro ("Da proxima vez, voce poderia...")
+
+Vantagens do Feedforward:
+- Menos defensividade (nao ha acusacao sobre o passado)
+- Mais acao (foco em solucoes)
+- Mais produtivo (energiza ao inves de desanimar)
+- Mais construtivo (cria possibilidades)
+
+Exemplo:
+
+FEEDBACK (Passado):
+"Na apresentacao de ontem, voce nao olhou para a plateia e leu os slides, o que deixou a apresentacao monótona."
+
+FEEDFORWARD (Futuro):
+"Na proxima apresentacao, se voce olhar mais para a plateia e usar os slides apenas como apoio, contando a historia com suas palavras, vai ter muito mais impacto."
+
+Quando Usar Cada Um:
+- FEEDBACK: Para reconhecer conquistas, corrigir desvios graves, providenciar aprendizado sobre erros
+- FEEDFORWARD: Para desenvolvimento continuo, coaching, planejamento de melhorias
+
+CRIANDO CULTURA DE FEEDBACK CONTINUO
+
+Feedback nao deve ser um evento anual ou esporadico. Deve ser parte natural do dia a dia.
+
+Como Criar Cultura de Feedback:
+
+1. MODELE O COMPORTAMENTO
+Peça feedback regularmente:
+"Como voce avalia minha lideranca neste projeto?"
+"O que posso fazer melhor para apoiar voce?"
+
+2. NORMALIZE O FEEDBACK
+Crie momentos estruturados:
+- Check-ins semanais de 15 minutos
+- Retrospectivas mensais
+- Feedbacks de projetos concluidos
+
+3. AGRADECA E AJA
+Quando receber feedback, agradeca publicamente e demonstre que voce agiu.
+
+4. CELEBRE EVOLUCOES
+Quando alguem melhorar com base em feedback, reconheca publicamente.
+
+5. PROTEJA O FEEDBACK HONESTO
+Se alguem der feedback corajoso, nunca punas ou ridicularizes.
+
+6. ENSINE AS TECNICAS
+Treine a equipe em como dar e receber feedback.
+
+Sinais de Cultura de Feedback Saudavel:
+- Pessoas pedem feedback ativamente
+- Feedback positivo e dado com frequencia
+- Feedback construtivo e recebido sem drama
+- Conflitos sao resolvidos com dialogo
+- Erros sao vistos como aprendizados
+- Ha confianca na equipe
+
+Sinais de Cultura Toxica de Feedback:
+- Feedback so acontece formalmente (avaliacao anual)
+- Pessoas tem medo de dar feedback
+- Feedback e visto como ataque
+- Defensividade e norma
+- Problemas ficam subterraneos
+- Politicagem e fofoca substituem feedback direto
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Feedback Proprio
+Escolha 3 pessoas (chefe, par, subordinado) e peca feedback estruturado:
+"Em uma escala de 1-10, como voce avalia [aspecto X] da minha lideranca? O que eu poderia fazer para chegar a 10?"
+
+Exercicio 2: Pratica SCI
+Escreva 3 feedbacks (2 positivos, 1 construtivo) usando o modelo SCI para pessoas da sua equipe. Depois, entregue-os.
+
+Exercicio 3: Feedforward Pessoal
+Para algo que voce quer melhorar em si mesmo, peça Feedforward (sugestoes futuras) a 5 pessoas diferentes.
+
+CONCLUSAO DO MODULO
+
+Feedback emocionalmente inteligente transforma relacoes, acelera desenvolvimento e cria culturas de alta performance.
+
+A diferenca entre equipes mediocres e extraordinarias muitas vezes esta na qualidade e frequencia do feedback.
+
+Proximos Passos:
+1. De pelo menos 1 feedback positivo especifico por dia essa semana
+2. Pratique o modelo SCI em um feedback construtivo
+3. Peca feedback estruturado a 3 pessoas
+4. Quando receber feedback, pratique a tecnica de nao defensividade
+
+Lembre-se: Feedback nao e opcional para quem quer liderar com excelencia. E habilidade essencial.
+        `
+      },
+      {
+        id: 5,
+        titulo: "Construcao de Resiliencia Emocional da Equipe",
+        duracao: "45 min",
+        topicos: [
+          "O que e resiliencia organizacional",
+          "Fatores que fortalecem resiliencia",
+          "Criando seguranca psicologica",
+          "Gestao de adversidades coletivas",
+          "Celebracao de conquistas e aprendizados"
+        ],
+        materialDidatico: `
+CONSTRUCAO DE RESILIENCIA EMOCIONAL DA EQUIPE
+
+INTRODUCAO
+
+Resiliencia nao e apenas uma caracteristica individual - e tambem uma capacidade organizacional que pode ser desenvolvida intencionalmente.
+
+Equipes resilientes:
+- Recuperam-se mais rapido de crises
+- Mantem performance sob pressao
+- Adaptam-se melhor a mudancas
+- Tem menor absenteismo e turnover
+- Inovam mais
+- Tem melhor saude mental coletiva
+
+O QUE E RESILIENCIA ORGANIZACIONAL
+
+Definicao:
+Resiliencia organizacional e a capacidade de uma equipe ou organizacao de antecipar, preparar-se, responder e adaptar-se a mudancas incrementais e rupturas repentinas, a fim de sobreviver e prosperar.
+
+Componentes da Resiliencia Organizacional:
+
+1. ROBUSTEZ
+Capacidade de manter funcoes criticas sob condicoes adversas.
+
+2. REDUNDANCIA
+Ter recursos extras (pessoas, processos, informacoes) para quando algo falhar.
+
+3. FLEXIBILIDADE
+Capacidade de adaptar estruturas, processos e mentalidades.
+
+4. RAPIDEZ
+Velocidade de resposta a situacoes imprevistas.
+
+5. INTELIGENCIA
+Capacidade de aprender com experiencias e antecipar riscos.
+
+6. COLABORACAO
+Trabalho conjunto para resolucao de problemas.
+
+Equipes NAO Resilientes:
+- Paralisam diante de mudancas
+- Culpam outros por problemas
+- Mantem processos obsoletos
+- Tem comunicacao fragmentada
+- Escondem erros
+- Tem alto nivel de estresse cronico
+- Perdem talentos constantemente
+
+Equipes Resilientes:
+- Adaptam-se rapidamente
+- Assumem responsabilidade compartilhada
+- Inovam processos
+- Comunicam abertamente
+- Aprendem com erros
+- Tem estresse agudo mas recuperam
+- Reteem e atraem talentos
+
+FATORES QUE FORTALECEM RESILIENCIA
+
+1. CLAREZA DE PROPOSITO
+Equipes que sabem "por que" existem enfrentam melhor o "como" dificil.
+
+Acoes Praticas:
+- Revise regularmente missao e valores
+- Conecte tarefas diarias ao proposito maior
+- Celebre contribuicoes ao proposito
+- Conte historias de impacto real do trabalho da equipe
+
+2. CONFIANCA MUTUA
+Confianca e a base da resiliencia. Sem confianca, equipes fragmentam sob pressao.
+
+Acoes Praticas:
+- Cumpra compromissos consistentemente
+- Admita erros abertamente
+- De credito publicamente
+- Proteja a equipe de ataques externos
+- Seja transparente sobre desafios
+- Evite favoritismos
+
+3. COMUNICACAO ABERTA
+Resiliencia exige informacao fluindo livremente.
+
+Acoes Praticas:
+- Reunioes regulares de alinhamento
+- Canais abertos para duvidas
+- Compartilhamento proativo de informacoes
+- Escuta ativa de preocupacoes
+- Explicacao clara de decisoes
+
+4. AUTONOMIA E COMPETENCIA
+Equipes que se sentem capazes e autonomas lidam melhor com desafios.
+
+Acoes Praticas:
+- Delegue decisoes sempre que possivel
+- Invista em capacitacao continua
+- Permita experimentacao (com seguranca)
+- Reconheca expertise individual
+- Evite microgerenciamento
+
+5. APOIO EMOCIONAL E SOCIAL
+Conexoes humanas sao amortecedores de estresse.
+
+Acoes Praticas:
+- Crie espacos para conversas informais
+- Demonstre empatia genuina
+- Apoie em momentos pessoais dificeis
+- Incentive relacionamentos positivos
+- Promova integracao da equipe
+
+6. OTIMISMO REALISTA
+Nao e ingenuidade - e a capacidade de ver possibilidades mesmo em crises.
+
+Acoes Praticas:
+- Enquadre problemas como desafios
+- Destaque progressos, nao apenas problemas
+- Reconheca dificuldades mas mostre caminhos
+- Compartilhe casos de superacao
+- Mantenha esperanca sem negar realidade
+
+CRIANDO SEGURANCA PSICOLOGICA
+
+Seguranca Psicologica e a crença compartilhada de que o ambiente e seguro para assumir riscos interpessoais - como fazer perguntas, admitir erros, propor ideias e desafiar o status quo.
+
+Pesquisa do Google (Projeto Aristoteles):
+Apos analisar centenas de equipes, descobriram que o fator numero 1 de equipes de alta performance e seguranca psicologica.
+
+Amy Edmondson (Harvard): Equipes com alta seguranca psicologica tem:
+- 27% menos erros medicos (hospitais)
+- 67% mais inovacao
+- 76% mais engajamento
+- 50% mais produtividade
+
+Sinais de FALTA de Seguranca Psicologica:
+- Pessoas tem medo de fazer perguntas ("nao quero parecer burro")
+- Erros sao escondidos
+- Ninguem desafia ideias ruins
+- Silencio em reunioes
+- Fofocas nos corredores
+- Alta rotatividade
+- Conformidade excessiva
+
+Sinais de ALTA Seguranca Psicologica:
+- Perguntas sao valorizadas
+- Erros sao compartilhados para aprendizado
+- Debates saudaveis acontecem
+- Participacao ativa em reunioes
+- Conversas diretas e honestas
+- Retencao de talentos
+- Inovacao constante
+
+Como Criar Seguranca Psicologica:
+
+1. MODELE VULNERABILIDADE
+"Eu errei nisso. O que posso aprender?"
+"Nao sei a resposta. Alguem tem ideias?"
+
+2. AGRADECA QUEM FAZ PERGUNTAS
+"Otima pergunta! Agradeço voce ter levantado isso."
+
+3. NORMALIZE ERROS
+"Erros sao tuicao de aprendizado. O que aprendemos com isso?"
+
+4. NUNCA ENVERGONHE PUBLICAMENTE
+Feedback construtivo e privado. Reconhecimento e publico.
+
+5. CONVIDE DISCORDANCIA
+"Alguem ve isso de forma diferente? Eu quero ouvir."
+
+6. PROTEJA QUEM FALA A VERDADE
+Se alguem trouxe um problema real, mesmo incomodo, proteja essa pessoa.
+
+7. CRIE RITUAIS DE COMPARTILHAMENTO
+"Falha da Semana": cada um compartilha um erro e aprendizado (incluindo voce).
+
+GESTAO DE ADVERSIDADES COLETIVAS
+
+Quando crises acontecem (perda de cliente importante, reestruturacao, pandemia, falhas graves), a forma como o lider gerencia define se a equipe sai fortalecida ou destruida.
+
+Protocolo de Gestao de Crise:
+
+FASE 1: ESTABILIZACAO IMEDIATA (Primeiras 24-48h)
+
+1. Comunique rapido e honestamente
+"Aconteceu X. Ainda nao temos todas as respostas. Aqui esta o que sabemos. Aqui esta o que estamos fazendo. Vou atualizar voces em [prazo]."
+
+2. Garanta seguranca basica
+Salarios, saude, recursos essenciais - garanta o que for possivel.
+
+3. Esteja presente e visivel
+Nao desapareca. Lidere da frente.
+
+FASE 2: RESPOSTA ORGANIZADA (Primeiros dias/semanas)
+
+1. Forme equipe de resposta
+Pessoas certas para resolver o problema.
+
+2. Crie plano de acao claro
+Passos especificos, responsaveis, prazos.
+
+3. Mantenha comunicacao regular
+Updates frequentes, mesmo que seja "ainda estamos trabalhando nisso".
+
+4. Cuide da saude emocional
+Sessoes de desabafo, apoio psicologico se necessario.
+
+FASE 3: RECUPERACAO E APRENDIZADO (Medio prazo)
+
+1. Extraia licoes
+"O que funcionou? O que nao funcionou? O que faremos diferente?"
+
+2. Reconheca esforcos
+"Obrigado por [acao especifica]. Isso fez diferenca."
+
+3. Ajuste processos
+Previna repeticao do problema.
+
+4. Restaure rotinas saudaveis
+Retome reunioes normais, celebracoes, etc.
+
+FASE 4: CRESCIMENTO POS-CRISE (Longo prazo)
+
+1. Conte a historia de superacao
+"Enfrentamos X, fizemos Y, aprendemos Z, agora estamos melhores."
+
+2. Fortifica a equipe
+"Se superamos aquilo, podemos superar qualquer coisa."
+
+3. Implemente mudancas duradouras
+Transforme aprendizados em novos processos.
+
+CELEBRACAO DE CONQUISTAS E APRENDIZADOS
+
+Equipes resilientes celebram. Nao apenas grandes vitorias, mas tambem pequenos progressos e aprendizados.
+
+Por Que Celebrar e Importante:
+
+1. NEUROLOGICO
+Celebracoes liberam dopamina, criando associacao positiva com o trabalho e motivando repeticao de comportamentos bem-sucedidos.
+
+2. SOCIAL
+Celebracoes fortalecem vinculos e criam memorias compartilhadas.
+
+3. CULTURAL
+Celebracoes comunicam valores: "isso e importante para nos".
+
+4. MOTIVACIONAL
+Celebracoes energizam para proximos desafios.
+
+O Que Celebrar:
+
+- Metas atingidas
+- Projetos concluidos
+- Aprendizados de erros
+- Aniversarios de equipe
+- Reconhecimentos externos
+- Evolucao individual de membros
+- Superacao de obstaculos
+- Comportamentos alinhados a valores
+
+Como Celebrar (Nao Precisa Ser Caro):
+
+- Reconhecimento publico em reuniao
+- Email/mensagem destacando conquista
+- Almoco ou cafe especial de equipe
+- Pausas para comemorar marcos
+- Quadro de celebracoes
+- Historias de sucesso compartilhadas
+- Agradecimentos personalizados
+
+Armadilha a Evitar:
+Celebrar apenas resultados financeiros. Celebre tambem esforco, colaboracao, aprendizado, resiliencia.
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Auditoria de Resiliencia
+Avalie sua equipe de 1-10 em cada fator de resiliencia listado. Onde estao os pontos fracos? Crie plano de acao para os 2 mais baixos.
+
+Exercicio 2: Indice de Seguranca Psicologica
+Faca uma pesquisa anonima com sua equipe com estas perguntas:
+- Me sinto seguro para fazer perguntas
+- Me sinto seguro para admitir erros
+- Me sinto seguro para discordar do lider
+- Me sinto seguro para propor ideias diferentes
+
+Escala: 1 (discordo totalmente) a 5 (concordo totalmente)
+Se media estiver abaixo de 4, ha trabalho a fazer.
+
+Exercicio 3: Ritual de Celebracao
+Implemente ao menos 1 ritual regular de celebracao esta semana.
+
+CONCLUSAO DO MODULO
+
+Resiliencia coletiva nao acontece por acaso. E construida deliberadamente atraves de acoes consistentes do lider.
+
+Equipes resilientes sao vantagem competitiva sustentavel. Em mundo volatil e incerto, resiliencia vale mais que qualquer plano estrategico perfeito.
+
+Proximos Passos:
+1. Avalie nivel de resiliencia da sua equipe
+2. Implemente ao menos 1 acao para criar seguranca psicologica
+3. Crie plano de comunicacao para proxima crise (preventivo)
+4. Implemente 1 ritual regular de celebracao
+
+Lembre-se: Voce constroi resiliencia da equipe nos dias calmos, nao durante a tempestade.
+        `
+      },
+      {
+        id: 6,
+        titulo: "Tomada de Decisao com Inteligencia Emocional",
+        duracao: "40 min",
+        topicos: [
+          "Papel das emocoes nas decisoes",
+          "Vies cognitivos que distorcem decisoes",
+          "Equilibrio entre razao e intuicao",
+          "Decisoes eticas sob pressao",
+          "Envolvimento da equipe em decisoes criticas"
+        ],
+        materialDidatico: `
+TOMADA DE DECISAO COM INTELIGENCIA EMOCIONAL
+
+INTRODUCAO
+
+Decisoes de lideres impactam vidas, carreiras, negoc ios e resultados organizacionais. Tomar decisoes equilibradas, considerando razao e emocao, e uma das habilidades mais criticas da lideranca.
+
+Dado Alarmante:
+Pesquisas mostram que 70% das decisoes estrategicas falham - e a principal causa e decisao baseada em emocoes nao gerenciadas ou ignorancia deliberada de fatores emocionais.
+
+PAPEL DAS EMOCOES NAS DECISOES
+
+Mito: "Decisoes boas sao 100% racionais, sem emocoes."
+
+Realidade: Emocoes sao essenciais para decisoes eficazes.
+
+Antonio Damasio (Neurocientista):
+Pacientes com lesoes na area cerebral responsavel por emocoes (cortex pre-frontal ventromedial) conseguem raciocinar perfeitamente, mas sao incapazes de tomar decisoes simples do dia a dia.
+
+Emocoes sao sinais que nos ajudam a:
+- Priorizar (o que e realmente importante?)
+- Avaliar riscos (isso e perigoso?)
+- Prever consequencias sociais (como outros reagirao?)
+- Acessar experiencias passadas (ja vivi algo similar?)
+
+O Problema NAO sao as Emocoes:
+O problema e quando emocoes controlam decisoes sem consciencia ou reflexao.
+
+Emocao Sem Razao = Impulsividade
+Razao Sem Emocao = Paralisia ou Decisoes Desumanas
+
+Ideal = Integracao Consciente de Razao e Emocao
+
+VIES COGNITIVOS QUE DISTORCEM DECISOES
+
+Vies cognitivos sao atalhos mentais que nosso cerebro usa para economizar energia, mas que frequentemente nos levam a erros de julgamento.
+
+Principais Vieses que Afetam Lideres:
+
+1. VIES DE CONFIRMACAO
+Tendencia a buscar, interpretar e lembrar informacoes que confirmam nossas crencas pre-existentes.
+
+Exemplo:
+Lider acredita que colaborador X e preguicoso. Passa a notar apenas comportamentos que confirmam isso, ignorando evidencias contrarias.
+
+Como Evitar:
+- Busque ativamente evidencias contrarias
+- Consulte pessoas com visoes diferentes
+- Questione suas proprias certezas
+
+2. VIES DE ANCORAGEM
+Confiar excessivamente na primeira informacao recebida.
+
+Exemplo:
+Primeira oferta salarial de candidato foi R$8.000. Mesmo descobrindo que mercado paga R$12.000, a decisao fica "ancorada" nos R$8.000.
+
+Como Evitar:
+- Pesquise multiplas fontes antes de decidir
+- Ignore a primeira informacao e comece novamente
+- Use dados objetivos como referencia
+
+3. VIES DE EXCESSO DE CONFIANCA
+Superestimar nossas capacidades e a precisao de nossos julgamentos.
+
+Exemplo:
+"Tenho certeza que esse produto vai ser sucesso!" (sem pesquisa de mercado adequada)
+
+Como Evitar:
+- Busque feedback honesto de outros
+- Analise decisoes passadas (quantas vezes voce estava "certo absoluto" e errou?)
+- Use dados, nao apenas intuicao
+
+4. VIES DE GRUPO (GROUPTHINK)
+Pressao para conformidade em grupos coesos suprime discordancia e pensamento critico.
+
+Exemplo:
+Equipe executiva concorda com decisao ruim porque ninguem quer contrariar CEO.
+
+Como Evitar:
+- Convide ativamente discordancia
+- De voz igual a todos
+- Atribua "advogado do diabo" em decisoes importantes
+
+5. VIES DE DISPONIBILIDADE
+Superestimar probabilidade de eventos que vem facilmente a memoria (geralmente os mais recentes ou dramaticos).
+
+Exemplo:
+Apos acidente de trabalho, lider superestima risco e paralisa operacao desnecessariamente.
+
+Como Evitar:
+- Use estatisticas reais, nao apenas memoria
+- Considere casos que NAO aconteceram tambem
+- Amplie perspectiva temporal
+
+6. VIES DO CUSTO AFUNDADO (SUNK COST)
+Continuar investindo em decisao ruim porque ja investiu muito.
+
+Exemplo:
+"Ja gastamos R$500mil neste projeto que claramente nao vai funcionar. Vamos gastar mais R$200mil para 'nao perder o investimento'."
+
+Como Evitar:
+- Considere apenas custos e beneficios FUTUROS
+- Pergunte: "Se estivesse decidindo do zero hoje, o que faria?"
+- Aceite que perdas passadas sao irrelevaveis
+
+EQUILIBRIO ENTRE RAZAO E INTUICAO
+
+Intuicao nao e magia - e processamento rapido de padroes baseado em experiencia acumulada.
+
+Gary Klein (Psicologo): Estudou bombeiros, enfermeiros de UTI e militares em combate. Descobriu que profissionais experientes tomam decisoes corretas em fraçoes de segundo usando intuicao - mas essa intuicao vem de anos de experiencia.
+
+Quando Confiar na Intuicao:
+1. Voce tem experiencia profunda na area
+2. Decisao precisa ser rapida
+3. Contexto e similar a situacoes que voce ja enfrentou
+4. Custo do erro e baixo/recuperavel
+
+Quando NAO Confiar Apenas na Intuicao:
+1. Voce nao tem experiencia na area
+2. Ha tempo para analise
+3. Situacao e inedita ou muito complexa
+4. Custo do erro e alto/irreversivel
+
+Modelo de Decisao Integrativa:
+
+PASSO 1: INTUICAO INICIAL
+Qual e sua primeira sensacao sobre isso?
+
+PASSO 2: COLETA DE DADOS
+Quais sao os fatos? Numeros? Evidencias?
+
+PASSO 3: ANALISE RACIONAL
+Quais sao opcoes? Pros e contras de cada? Riscos?
+
+PASSO 4: CHECAGEM EMOCIONAL
+Como voce SE SENTE sobre cada opcao? E a equipe? E outras partes interessadas?
+
+PASSO 5: INTEGRACAO
+O que razao e emocao estao dizendo? Estao alinhadas ou em conflito?
+
+PASSO 6: DECISAO CONSCIENTE
+Escolha com clareza sobre por que escolheu.
+
+DECISOES ETICAS SOB PRESSAO
+
+Decisoes eticas sao aquelas onde ha conflito entre interesses, valores ou certo/errado.
+
+Exemplos:
+- Demitir colaborador com desempenho ruim mas que esta passando por crise pessoal
+- Manter informacao confidencial quando revelar ajudaria alguem
+- Priorizar lucro vs. impacto social
+- Proteger a empresa vs. apoiar colaborador em situacao de assedio
+
+Modelo de Decisao Etica:
+
+1. IDENTIFIQUE O DILEMA ETICO
+Qual e exatamente o conflito de valores?
+
+2. LISTE AS PARTES AFETADAS
+Quem sera impactado por essa decisao? Como?
+
+3. CONSIDERE PRINCIPIOS ETICOS
+- Legalidade (e legal?)
+- Justica (e justo?)
+- Utilidade (gera maior bem para maior numero?)
+- Direitos (respeita direitos fundamentais?)
+- Virtude (e o que pessoa integra faria?)
+
+4. TESTE DE PUBLICIDADE
+"E se essa decisao fosse manchete de jornal amanha, eu me sentiria confortavel?"
+
+5. CONSULTA
+Em decisoes eticas complexas, consulte compliance, RH, legal ou mentor de confianca.
+
+6. DECIDA E COMUNIQUE CLARAMENTE
+Explique a razao da decisao, especialmente para afetados.
+
+Principio Fundamental:
+Sob pressao, mantenha-se fiel a valores fundamentais. Atalhos eticos destroem reputacao, carreira e organizacoes.
+
+ENVOLVIMENTO DA EQUIPE EM DECISOES CRITICAS
+
+Nem toda decisao precisa ou deve ser compartilhada. Mas decisoes que afetam a equipe diretamente tem muito a ganhar com participacao.
+
+Modelo de Decisao de Vroom-Yetton:
+
+DECISAO AUTOCRATICA (Lider decide sozinho)
+Quando usar:
+- Decisao urgente
+- Voce tem toda informacao necessaria
+- Aceitacao da equipe nao e critica
+- Equipe confia em voce
+
+DECISAO CONSULTIVA (Lider ouve equipe mas decide)
+Quando usar:
+- Equipe tem informacoes importantes
+- Aceitacao e importante mas nao critica
+- Ha algum tempo disponivel
+
+DECISAO COLABORATIVA (Equipe decide junto com lider)
+Quando usar:
+- Aceitacao da equipe e critica
+- Equipe tem competencia para decidir
+- Ha tempo adequado
+- Decisao afeta equipe diretamente
+
+DECISAO DELEGADA (Equipe decide, lider apoia)
+Quando usar:
+- Equipe tem competencia superior ao lider no tema
+- Desenvolvimento da equipe e objetivo
+- Equipe esta madura e comprometida
+- Decisao nao tem impacto estrategico alto
+
+Beneficios de Envolver a Equipe:
+- Decisoes de melhor qualidade (mais informacao, perspectivas)
+- Maior aceitacao e comprometimento
+- Desenvolvimento de capacidade decisoria da equipe
+- Aumento de engajamento
+- Reducao de resistencia a implementacao
+
+Armadilhas a Evitar:
+- "Pseudo-participacao": Fingir que equipe decide mas decisao ja estava tomada
+- Delegar decisao mas criticar depois
+- Envolver equipe em decisao que nao tem competencia para tomar
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Analise de Decisao Passada
+Escolha uma decisao importante que voce tomou recentemente. Analise:
+- Quais emocoes voce estava sentindo?
+- Quais vieses podem ter influenciado?
+- Voce equilibrou razao e intuicao?
+- Se pudesse decidir novamente, faria diferente?
+
+Exercicio 2: Protocolo Pessoal de Decisao
+Crie seu proprio protocolo para decisoes importantes. Inclua:
+- Tempo minimo de reflexao
+- Pessoas que voce deve consultar
+- Perguntas obrigatorias a responder
+- Checklist de vieses
+- Criterios de decisao
+
+Exercicio 3: Decisao Participativa
+Escolha uma decisao proxima que afeta sua equipe. Pratique envolve-los usando modelo consultivo ou colaborativo.
+
+CONCLUSAO DO MODULO
+
+Decisoes moldam destinos. Lideres emocionalmente inteligentes tomam decisoes equilibradas, conscientes, eticas e inclusivas.
+
+Nao existe formula magica para decisoes perfeitas. Mas existe processo disciplinado que aumenta significativamente a qualidade e aceitacao das decisoes.
+
+Proximos Passos:
+1. Identifique seus principais vieses cognitivos
+2. Crie seu protocolo pessoal de decisao
+3. Pratique modelo de decisao integrativa em proxima decisao importante
+4. Envolva sua equipe em uma decisao relevante
+
+Lembre-se: Voce sera julgado pelas decisoes que toma. Tome-as com consciencia, coragem e cuidado.
+        `
       }
     ],
     atividadesPraticas: [
