@@ -53,20 +53,28 @@ class ConviteService {
 
   // Criar novo convite
   async criarConvite(dados: Omit<ConviteData, 'id' | 'dataCriacao' | 'status' | 'colaboradoresUsaram' | 'colaboradoresRestantes' | 'codigoConvite'>): Promise<ConviteData> {
-    try {
-      // Chama o serviço híbrido para criar o convite no Supabase
-      const novoConvite = await hybridInvitationService.createInvitation(dados);
-      
-      // Adiciona o novo convite ao mapa em memória para consistência local
-      this.convites.set(novoConvite.codigoConvite, novoConvite);
-      this.salvarDados(); // Opcional: pode manter para fallback ou remover se Supabase for a única fonte
-      
-      return novoConvite;
-    } catch (error) {
-      console.error("Falha ao criar convite via serviço híbrido:", error);
-      // Opcional: implementar um fallback para o método antigo se necessário
-      throw error;
-    }
+    const codigo = this.gerarCodigoConvite();
+    const agora = new Date();
+    
+    const convite: ConviteData = {
+      id: codigo,
+      codigoConvite: codigo,
+      dataCriacao: agora,
+      status: 'ativo',
+      colaboradoresUsaram: 0,
+      colaboradoresRestantes: dados.numeroColaboradores,
+      dataExpiracao: dados.tipoLiberacao === 'prazo' && dados.prazoDias 
+        ? new Date(agora.getTime() + dados.prazoDias * 24 * 60 * 60 * 1000)
+        : undefined,
+      ...dados
+    };
+
+    this.convites.set(codigo, convite);
+    this.salvarDados();
+    
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    return convite;
   }
 
   // Criar convite com código específico (para correções)
