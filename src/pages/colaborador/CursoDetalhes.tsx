@@ -267,10 +267,9 @@ export default function CursoDetalhes() {
 
         {/* Tabs de Conteúdo */}
         <Tabs defaultValue="visao-geral" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-white border-2">
+          <TabsList className="grid w-full grid-cols-4 bg-white border-2">
             <TabsTrigger value="visao-geral" data-testid="tab-visao-geral">Visão Geral</TabsTrigger>
             <TabsTrigger value="modulos" data-testid="tab-modulos">Módulos</TabsTrigger>
-            <TabsTrigger value="praticas" data-testid="tab-praticas">Práticas</TabsTrigger>
             <TabsTrigger 
               value="avaliacao" 
               data-testid="tab-avaliacao"
@@ -435,39 +434,6 @@ export default function CursoDetalhes() {
                 </Card>
               );
             })}
-          </TabsContent>
-
-          {/* Atividades Práticas */}
-          <TabsContent value="praticas" className="space-y-4">
-            <Card className="border-2 border-orange-100">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <BookOpen className="h-6 w-6 text-orange-600" />
-                  <CardTitle>Atividades Práticas</CardTitle>
-                </div>
-                <CardDescription>
-                  Exercícios e dinâmicas para aplicar o conhecimento na prática
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {curso.atividadesPraticas && curso.atividadesPraticas.length > 0 ? (
-                  <ul className="space-y-3">
-                    {curso.atividadesPraticas.map((atividade, index) => (
-                      <li key={index} className="flex items-start gap-3 p-4 bg-orange-50 rounded-lg border border-orange-100">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-white text-sm font-bold flex-shrink-0">
-                          {index + 1}
-                        </div>
-                        <span className="text-gray-700">{atividade}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-gray-600">
-                    As atividades práticas serão apresentadas durante os módulos do curso.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
           </TabsContent>
 
           {/* Avaliação Final */}
