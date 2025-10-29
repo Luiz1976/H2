@@ -76,13 +76,18 @@ router.post('/progresso', authenticateToken, async (req: AuthRequest, res) => {
 // Marcar módulo como completado
 router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (req: AuthRequest, res) => {
   try {
+    console.log('📝 [CURSOS] Requisição para marcar módulo como concluído recebida');
     const { cursoSlug, moduloId } = req.params;
     const colaboradorId = req.user?.userId;
+    
+    console.log('📝 [CURSOS] Params:', { cursoSlug, moduloId, colaboradorId });
 
     if (!colaboradorId) {
+      console.error('❌ [CURSOS] Colaborador não autenticado');
       return res.status(401).json({ error: 'Não autorizado' });
     }
 
+    console.log('📝 [CURSOS] Buscando progresso no banco...');
     const progresso = await db.query.cursoProgresso.findFirst({
       where: and(
         eq(cursoProgresso.colaboradorId, colaboradorId),
@@ -91,20 +96,31 @@ router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (
     });
 
     if (!progresso) {
-      return res.status(404).json({ error: 'Progresso não encontrado' });
+      console.error('❌ [CURSOS] Progresso não encontrado para:', { colaboradorId, cursoSlug });
+      return res.status(404).json({ error: 'Progresso não encontrado. Crie o progresso primeiro visitando a página do curso.' });
     }
+
+    console.log('✅ [CURSOS] Progresso encontrado:', progresso.id);
 
     const modulosCompletadosArray = Array.isArray(progresso.modulosCompletados) 
       ? progresso.modulosCompletados 
       : [];
     
+    console.log('📝 [CURSOS] Módulos completados antes:', modulosCompletadosArray);
+    
     // Adicionar módulo se ainda não foi completado
-    if (!modulosCompletadosArray.includes(parseInt(moduloId))) {
-      modulosCompletadosArray.push(parseInt(moduloId));
+    const moduloIdNum = parseInt(moduloId);
+    if (!modulosCompletadosArray.includes(moduloIdNum)) {
+      modulosCompletadosArray.push(moduloIdNum);
+      console.log('✅ [CURSOS] Módulo adicionado:', moduloIdNum);
+    } else {
+      console.log('⚠️  [CURSOS] Módulo já estava completado:', moduloIdNum);
     }
 
     const novaProgresso = Math.round((modulosCompletadosArray.length / progresso.totalModulos) * 100);
+    console.log('📊 [CURSOS] Novo progresso calculado:', novaProgresso + '%');
 
+    console.log('📝 [CURSOS] Atualizando banco de dados...');
     const [progressoAtualizado] = await db
       .update(cursoProgresso)
       .set({
@@ -116,10 +132,15 @@ router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (
       .where(eq(cursoProgresso.id, progresso.id))
       .returning();
 
+    console.log('✅ [CURSOS] Progresso atualizado com sucesso!');
     return res.json(progressoAtualizado);
   } catch (error) {
-    console.error('Erro ao atualizar progresso:', error);
-    return res.status(500).json({ error: 'Erro ao atualizar progresso' });
+    console.error('❌ [CURSOS] Erro ao atualizar progresso:', error);
+    console.error('❌ [CURSOS] Stack trace:', (error as Error).stack);
+    return res.status(500).json({ 
+      error: 'Erro ao atualizar progresso',
+      details: (error as Error).message 
+    });
   }
 });
 
