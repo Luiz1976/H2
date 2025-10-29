@@ -1,4 +1,5 @@
-import { Building2, UserPlus, Users, Menu, LogOut, Home, Brain, FileText } from "lucide-react";
+import { Building2, UserPlus, Users, Menu, LogOut, Home, Activity, FileText } from "lucide-react";
+import Logo from "@/components/Logo";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
 import {
@@ -32,7 +33,7 @@ const items = [
   { 
     title: "Estado Psicossocial da Empresa", 
     url: "/empresa/estado-psicossocial", 
-    icon: Brain,
+    icon: Activity,
   },
   { 
     title: "PRG", 

@@ -1,4 +1,5 @@
-import { Brain, BarChart3, User, Menu, Database, Home, LogOut } from "lucide-react";
+import { Sparkles, BarChart3, User, Menu, Database, Home, LogOut } from "lucide-react";
+import Logo from "@/components/Logo";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
 import { useState, useEffect } from "react";
@@ -26,7 +27,7 @@ const items = [
   { 
     title: "Testes", 
     url: "/testes", 
-    icon: Brain,
+    icon: Sparkles,
   },
   { 
     title: "Todos os Resultados", 
@@ -170,25 +171,11 @@ export function AppSidebar() {
         {/* Header - Logo e Toggle */}
         <div className="flex h-20 items-center justify-between px-6 border-b border-border/10">
           {!isCollapsed && (
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
-                <Brain className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-foreground">
-                  HumaniQ
-                </h1>
-                <p className="text-xs text-muted-foreground">
-                  Inteligência Psicossocial
-                </p>
-              </div>
-            </div>
+            <Logo size="md" showText={true} />
           )}
           {isCollapsed && (
             <div className="flex items-center justify-center w-full">
-              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                <Brain className="h-4 w-4 text-primary-foreground" />
-              </div>
+              <Logo size="sm" showText={false} />
             </div>
           )}
           <SidebarTrigger className="h-9 w-9 hover:bg-accent/50 rounded-xl transition-colors" />
