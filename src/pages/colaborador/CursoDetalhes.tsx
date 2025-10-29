@@ -303,14 +303,40 @@ export default function CursoDetalhes() {
                   </CardHeader>
                   <CardContent>
                     {expandido && (
-                      <ul className="space-y-2 mb-4">
-                        {modulo.conteudo.map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
-                            <ChevronRight className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="space-y-6 mb-4">
+                        {/* Tópicos do Módulo */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                            <BookOpen className="h-5 w-5" />
+                            Tópicos Abordados:
+                          </h4>
+                          <ul className="space-y-2">
+                            {modulo.topicos.map((item, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-sm text-blue-800">
+                                <CheckCircle2 className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Material Didático Completo */}
+                        <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+                          <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2 text-lg">
+                            📚 Material de Estudo Completo
+                          </h4>
+                          <div 
+                            className="prose prose-sm max-w-none"
+                            style={{
+                              whiteSpace: 'pre-wrap',
+                              lineHeight: '1.8',
+                              color: '#374151'
+                            }}
+                          >
+                            {modulo.materialDidatico}
+                          </div>
+                        </div>
+                      </div>
                     )}
                     
                     <div className="flex gap-2">
