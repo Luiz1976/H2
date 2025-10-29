@@ -13,7 +13,34 @@ export default function ColaboradorCursos() {
     queryKey: ['/api/curso-disponibilidade/colaborador/cursos'],
   });
 
+  // Buscar certificados (cursos concluídos)
+  const { data: certificados = [] } = useQuery<any[]>({
+    queryKey: ['/api/cursos/meus-certificados'],
+  });
+
+  // Buscar progresso dos cursos para calcular tempo de estudo
+  const { data: progressoCursos = [] } = useQuery<any[]>({
+    queryKey: ['/api/cursos/progresso'],
+  });
+
   const cursosLiberados = cursosDisponiveis.filter((c) => c.disponivel);
+  const cursosConcluidos = certificados.length;
+  
+  // Calcular tempo total de estudo (estimado com base no progresso)
+  const tempoTotalEstudo = progressoCursos.reduce((total, progresso) => {
+    // Estimar tempo baseado no progresso e duração do curso
+    const progressoPorcentagem = progresso.progressoPorcentagem || 0;
+    const modulosCompletados = Array.isArray(progresso.modulosCompletados) 
+      ? progresso.modulosCompletados.length 
+      : 0;
+    
+    // Assumir ~15 minutos por módulo completado
+    return total + (modulosCompletados * 15);
+  }, 0);
+  
+  const tempoEstudoFormatado = tempoTotalEstudo >= 60 
+    ? `${Math.floor(tempoTotalEstudo / 60)}h ${tempoTotalEstudo % 60}min`
+    : `${tempoTotalEstudo}min`;
 
   const getNivelColor = (nivel: string) => {
     switch (nivel) {
@@ -71,7 +98,9 @@ export default function ColaboradorCursos() {
                   <Award className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">0</p>
+                  <p className="text-2xl font-bold text-gray-900" data-testid="text-cursos-concluidos">
+                    {cursosConcluidos}
+                  </p>
                   <p className="text-sm text-gray-600">Cursos Concluídos</p>
                 </div>
               </div>
@@ -85,7 +114,9 @@ export default function ColaboradorCursos() {
                   <Clock className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">0h</p>
+                  <p className="text-2xl font-bold text-gray-900" data-testid="text-tempo-estudo">
+                    {tempoTotalEstudo === 0 ? '0h' : tempoEstudoFormatado}
+                  </p>
                   <p className="text-sm text-gray-600">Tempo de Estudo</p>
                 </div>
               </div>

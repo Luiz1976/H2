@@ -318,7 +318,7 @@ router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest,
             .update(cursoDisponibilidade)
             .set({ 
               disponivel: false,
-              dataUltimaAtualizacao: new Date()
+              updatedAt: new Date()
             })
             .where(eq(cursoDisponibilidade.id, disponibilidadeExistente.id));
           
@@ -483,6 +483,26 @@ router.get('/validar-certificado/:codigo', async (req, res) => {
   } catch (error) {
     console.error('Erro ao validar certificado:', error);
     return res.status(500).json({ error: 'Erro ao validar certificado' });
+  }
+});
+
+// Listar todo o progresso de cursos do colaborador
+router.get('/progresso', authenticateToken, async (req: AuthRequest, res) => {
+  try {
+    const colaboradorId = req.user?.userId;
+
+    if (!colaboradorId) {
+      return res.status(401).json({ error: 'Não autorizado' });
+    }
+
+    const progressos = await db.query.cursoProgresso.findMany({
+      where: eq(cursoProgresso.colaboradorId, colaboradorId)
+    });
+
+    return res.json(progressos);
+  } catch (error) {
+    console.error('Erro ao buscar progressos:', error);
+    return res.status(500).json({ error: 'Erro ao buscar progressos' });
   }
 });
 
