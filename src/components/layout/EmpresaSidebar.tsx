@@ -66,18 +66,11 @@ export function EmpresaSidebar() {
         {/* Header - Logo e Toggle */}
         <div className="flex h-20 items-center justify-between px-6 border-b border-border/10">
           {!isCollapsed && (
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg">
-                <Building2 className="h-5 w-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  HumaniQ
-                </span>
-                <span className="text-xs text-muted-foreground font-medium">
-                  Empresa
-                </span>
-              </div>
+            <Logo size="xl" showText={true} />
+          )}
+          {isCollapsed && (
+            <div className="flex items-center justify-center w-full">
+              <Logo size="lg" showText={false} />
             </div>
           )}
           <SidebarTrigger className="h-8 w-8 hover:bg-accent/50 transition-colors">

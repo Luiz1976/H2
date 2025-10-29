@@ -171,11 +171,11 @@ export function AppSidebar() {
         {/* Header - Logo e Toggle */}
         <div className="flex h-20 items-center justify-between px-6 border-b border-border/10">
           {!isCollapsed && (
-            <Logo size="md" showText={true} />
+            <Logo size="xl" showText={true} />
           )}
           {isCollapsed && (
             <div className="flex items-center justify-center w-full">
-              <Logo size="sm" showText={false} />
+              <Logo size="lg" showText={false} />
             </div>
           )}
           <SidebarTrigger className="h-9 w-9 hover:bg-accent/50 rounded-xl transition-colors" />
