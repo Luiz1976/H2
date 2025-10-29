@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/progresso/:cursoSlug', authenticateToken, async (req: AuthRequest, res) => {
   try {
     const { cursoSlug } = req.params;
-    const colaboradorId = req.user?.id;
+    const colaboradorId = req.user?.userId;
 
     if (!colaboradorId) {
       return res.status(401).json({ error: 'Não autorizado' });
@@ -37,7 +37,7 @@ router.get('/progresso/:cursoSlug', authenticateToken, async (req: AuthRequest, 
 // Iniciar ou atualizar progresso de um curso
 router.post('/progresso', authenticateToken, async (req: AuthRequest, res) => {
   try {
-    const colaboradorId = req.user?.id;
+    const colaboradorId = req.user?.userId;
     const { cursoId, cursoSlug, totalModulos } = req.body;
 
     if (!colaboradorId) {
@@ -77,7 +77,7 @@ router.post('/progresso', authenticateToken, async (req: AuthRequest, res) => {
 router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (req: AuthRequest, res) => {
   try {
     const { cursoSlug, moduloId } = req.params;
-    const colaboradorId = req.user?.id;
+    const colaboradorId = req.user?.userId;
 
     if (!colaboradorId) {
       return res.status(401).json({ error: 'Não autorizado' });
@@ -127,7 +127,7 @@ router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (
 router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest, res) => {
   try {
     const { cursoSlug } = req.params;
-    const colaboradorId = req.user?.id;
+    const colaboradorId = req.user?.userId;
     const { cursoId, respostas, pontuacao, totalQuestoes, tempoGasto } = req.body;
 
     if (!colaboradorId) {
@@ -199,7 +199,7 @@ router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest,
 router.post('/certificado/:cursoSlug', authenticateToken, async (req: AuthRequest, res) => {
   try {
     const { cursoSlug } = req.params;
-    const colaboradorId = req.user?.id;
+    const colaboradorId = req.user?.userId;
     const { cursoId, cursoTitulo, cargaHoraria } = req.body;
 
     if (!colaboradorId) {
@@ -268,7 +268,7 @@ router.post('/certificado/:cursoSlug', authenticateToken, async (req: AuthReques
 router.get('/certificado/:cursoSlug', authenticateToken, async (req: AuthRequest, res) => {
   try {
     const { cursoSlug } = req.params;
-    const colaboradorId = req.user?.id;
+    const colaboradorId = req.user?.userId;
 
     if (!colaboradorId) {
       return res.status(401).json({ error: 'Não autorizado' });
@@ -327,7 +327,7 @@ router.get('/validar-certificado/:codigo', async (req, res) => {
 // Listar todos os certificados do colaborador
 router.get('/meus-certificados', authenticateToken, async (req: AuthRequest, res) => {
   try {
-    const colaboradorId = req.user?.id;
+    const colaboradorId = req.user?.userId;
 
     if (!colaboradorId) {
       return res.status(401).json({ error: 'Não autorizado' });
