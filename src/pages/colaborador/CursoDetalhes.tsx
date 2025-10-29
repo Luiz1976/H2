@@ -148,8 +148,11 @@ export default function CursoDetalhes() {
         })
       });
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Forçar recarga imediata dos dados
+      queryClient.setQueryData(['/api/cursos/progresso', slug], data);
       queryClient.invalidateQueries({ queryKey: ['/api/cursos/progresso', slug] });
+      
       toast({
         title: "Módulo concluído!",
         description: "Continue progredindo no curso.",
