@@ -297,6 +297,42 @@ router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest,
       })
       .where(eq(cursoProgresso.id, progresso.id));
 
+    // 🔒 BLOQUEIO AUTOMÁTICO: Se aprovado, bloquear o curso automaticamente
+    if (aprovado) {
+      try {
+        console.log('🔒 [BLOQUEIO-AUTO] Iniciando bloqueio automático do curso após aprovação');
+        console.log('🔒 [BLOQUEIO-AUTO] Colaborador:', colaboradorId);
+        console.log('🔒 [BLOQUEIO-AUTO] Curso:', cursoSlug);
+
+        // Buscar registro de disponibilidade
+        const disponibilidadeExistente = await db.query.cursoDisponibilidade.findFirst({
+          where: and(
+            eq(cursoDisponibilidade.colaboradorId, colaboradorId),
+            eq(cursoDisponibilidade.cursoId, cursoSlug)
+          )
+        });
+
+        if (disponibilidadeExistente) {
+          // Bloquear curso
+          await db
+            .update(cursoDisponibilidade)
+            .set({ 
+              disponivel: false,
+              dataUltimaAtualizacao: new Date()
+            })
+            .where(eq(cursoDisponibilidade.id, disponibilidadeExistente.id));
+          
+          console.log('✅ [BLOQUEIO-AUTO] Curso bloqueado automaticamente após conclusão');
+        } else {
+          console.log('⚠️ [BLOQUEIO-AUTO] Registro de disponibilidade não encontrado');
+        }
+      } catch (bloqueioError) {
+        // Log do erro mas não falhar a avaliação
+        console.error('❌ [BLOQUEIO-AUTO] Erro ao bloquear curso automaticamente:', bloqueioError);
+        console.error('⚠️ [BLOQUEIO-AUTO] Avaliação registrada com sucesso, mas bloqueio falhou');
+      }
+    }
+
     return res.status(201).json({ 
       ...avaliacao, 
       aprovado,
