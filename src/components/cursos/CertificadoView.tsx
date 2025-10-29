@@ -37,26 +37,36 @@ export default function CertificadoView({ certificado, curso }: CertificadoViewP
     
     setBaixando(true);
     try {
-      // Capturar o certificado como imagem
+      // Capturar o certificado como imagem com alta qualidade
       const canvas = await html2canvas(certificadoRef.current, {
-        scale: 3,
+        scale: 2,
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false,
+        windowWidth: 1200,
+        windowHeight: 850,
       });
 
-      // Criar PDF
-      const imgData = canvas.toDataURL('image/png');
+      // Criar PDF em orientação paisagem A4
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
         format: 'a4',
       });
 
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const pdfWidth = pdf.internal.pageSize.getWidth(); // 297mm
+      const pdfHeight = pdf.internal.pageSize.getHeight(); // 210mm
+
+      // Calcular proporções para preencher o PDF sem distorção
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
       
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = (pdfHeight - imgHeight * ratio) / 2;
+      
+      const imgData = canvas.toDataURL('image/png', 1.0);
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
       pdf.save(`certificado-${curso.slug}-${certificado.codigoAutenticacao}.pdf`);
     } catch (error) {
       console.error('Erro ao gerar PDF:', error);
@@ -94,7 +104,7 @@ export default function CertificadoView({ certificado, curso }: CertificadoViewP
         </CardContent>
       </Card>
 
-      {/* Certificado - 100% Responsivo */}
+      {/* Certificado - 100% Responsivo e otimizado para PDF */}
       <div className="w-full overflow-x-auto">
         <div
           ref={certificadoRef}
@@ -102,7 +112,8 @@ export default function CertificadoView({ certificado, curso }: CertificadoViewP
           style={{ 
             minWidth: '280px',
             maxWidth: '1200px',
-            margin: '0 auto'
+            margin: '0 auto',
+            aspectRatio: '1.414'
           }}
         >
           {/* Header Decorativo */}
@@ -179,18 +190,28 @@ export default function CertificadoView({ certificado, curso }: CertificadoViewP
                     <div className="pt-2 mb-2 mx-auto">
                       {/* Assinatura manuscrita elegante */}
                       <div className="mb-3 flex justify-center">
-                        <p 
-                          className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent"
-                          style={{ 
-                            fontFamily: "'Brush Script MT', 'Lucida Handwriting', cursive",
-                            fontStyle: 'italic',
-                            transform: 'rotate(-2deg)',
-                            textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
-                            letterSpacing: '0.05em'
-                          }}
-                        >
-                          HumaniQ AI
-                        </p>
+                        <svg width="180" height="60" viewBox="0 0 180 60" className="w-36 sm:w-44 md:w-48" xmlns="http://www.w3.org/2000/svg">
+                          <defs>
+                            <linearGradient id="signatureGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" style={{ stopColor: '#2563eb', stopOpacity: 1 }} />
+                              <stop offset="50%" style={{ stopColor: '#9333ea', stopOpacity: 1 }} />
+                              <stop offset="100%" style={{ stopColor: '#2563eb', stopOpacity: 1 }} />
+                            </linearGradient>
+                          </defs>
+                          <text 
+                            x="90" 
+                            y="40" 
+                            fontSize="32" 
+                            fontFamily="'Brush Script MT', 'Lucida Handwriting', cursive" 
+                            fontStyle="italic"
+                            fontWeight="bold"
+                            fill="url(#signatureGradient)" 
+                            textAnchor="middle"
+                            transform="rotate(-2 90 30)"
+                          >
+                            HumaniQ AI
+                          </text>
+                        </svg>
                       </div>
                       {/* Linha de assinatura */}
                       <div className="border-t-2 border-gray-900 pt-2 mx-auto w-40 sm:w-48">
