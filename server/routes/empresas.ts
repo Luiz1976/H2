@@ -1300,13 +1300,14 @@ router.get('/prg', authenticateToken, async (req: AuthRequest, res) => {
     };
 
     // Calcular KPIs baseados nas dimensões reais dos metadados
+    // ⚠️ IMPORTANTE: Retorna 0 quando não há dados, não valores fictícios
     const kpis = {
-      indiceEstresse: getDimensaoValor(['estresse', 'demanda', 'carga']) || 0,
-      climaPositivo: getDimensaoValor(['clima', 'ambiente', 'organizacional']) || 0,
-      satisfacaoChefia: getDimensaoValor(['lideranca', 'chefia', 'lider', 'gestor']) || 0,
-      riscoBurnout: Math.max(0, 100 - getDimensaoValor(['burnout', 'exaustao', 'esgotamento'])),
+      indiceEstresse: resultadosList.length > 0 ? getDimensaoValor(['estresse', 'demanda', 'carga']) : 0,
+      climaPositivo: resultadosList.length > 0 ? getDimensaoValor(['clima', 'ambiente', 'organizacional']) : 0,
+      satisfacaoChefia: resultadosList.length > 0 ? getDimensaoValor(['lideranca', 'chefia', 'lider', 'gestor']) : 0,
+      riscoBurnout: resultadosList.length > 0 ? getDimensaoValor(['burnout', 'exaustao', 'esgotamento']) : 0,
       maturidadePRG: resultadosList.length > 0 ? Math.min(65 + (resultadosList.length / 10), 100) : 0,
-      segurancaPsicologica: getDimensaoValor(['seguranca', 'psicologica', 'apoio']) || 0
+      segurancaPsicologica: resultadosList.length > 0 ? getDimensaoValor(['seguranca', 'psicologica', 'apoio']) : 0
     };
 
     // Índice global (mesma lógica do estado-psicossocial)
@@ -1783,13 +1784,14 @@ router.get('/prg/publico/:token', async (req, res) => {
     };
 
     // Calcular KPIs baseados nas dimensões reais
+    // ⚠️ IMPORTANTE: Retorna 0 quando não há dados, não valores fictícios
     const kpis = {
-      indiceEstresse: getDimensaoValor(['estresse', 'demanda', 'carga']) || 0,
-      climaPositivo: getDimensaoValor(['clima', 'ambiente', 'organizacional']) || 0,
-      satisfacaoChefia: getDimensaoValor(['lideranca', 'chefia', 'lider', 'gestor']) || 0,
-      riscoBurnout: Math.max(0, 100 - getDimensaoValor(['burnout', 'exaustao', 'esgotamento'])),
+      indiceEstresse: resultadosList.length > 0 ? getDimensaoValor(['estresse', 'demanda', 'carga']) : 0,
+      climaPositivo: resultadosList.length > 0 ? getDimensaoValor(['clima', 'ambiente', 'organizacional']) : 0,
+      satisfacaoChefia: resultadosList.length > 0 ? getDimensaoValor(['lideranca', 'chefia', 'lider', 'gestor']) : 0,
+      riscoBurnout: resultadosList.length > 0 ? getDimensaoValor(['burnout', 'exaustao', 'esgotamento']) : 0,
       maturidadePRG: resultadosList.length > 0 ? Math.min(65 + (resultadosList.length / 10), 100) : 0,
-      segurancaPsicologica: getDimensaoValor(['seguranca', 'psicologica', 'apoio']) || 0
+      segurancaPsicologica: resultadosList.length > 0 ? getDimensaoValor(['seguranca', 'psicologica', 'apoio']) : 0
     };
 
     const indiceGlobal = todasDimensoes.length > 0
