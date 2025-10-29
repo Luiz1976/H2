@@ -371,7 +371,7 @@ export default function ResultadoRPO() {
 
             {/* Interpretação */}
             <Alert className="mt-6">
-              Ⓛh-4 w-4Ⓛ
+              <Logo size="sm" showText={false} />
               <AlertDescription className="text-base leading-relaxed">
                 {gerarInterpretacao(resultado)}
               </AlertDescription>

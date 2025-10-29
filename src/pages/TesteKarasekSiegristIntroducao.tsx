@@ -127,7 +127,7 @@ export default function TesteKarasekSiegristIntroducao() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <CardContent className="p-6 text-center">
-              Ⓛw-12 h-12 mx-auto mb-4 opacity-90Ⓛ
+              <Logo size="lg" showText={false} className="mx-auto mb-4 opacity-90" />
               <h3 className="text-lg font-semibold mb-2">Demanda</h3>
               <p className="text-sm opacity-90">Pressão e carga mental</p>
             </CardContent>
@@ -291,7 +291,7 @@ export default function TesteKarasekSiegristIntroducao() {
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex-shrink-0">
-                    Ⓛw-4 h-4 text-whiteⓁ
+                    <Logo size="sm" showText={false} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-slate-800">Identificar Fatores de Estresse</h4>

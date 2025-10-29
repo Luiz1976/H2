@@ -205,7 +205,7 @@ export default function ResultadoKarasekSiegrist() {
       case 'regular': return <TrendingUp className="h-5 w-5" />;
       case 'ruim': return <AlertTriangle className="h-5 w-5" />;
       case 'critico': return <AlertTriangle className="h-5 w-5" />;
-      default: return Ⓛh-5 w-5Ⓛ;
+      default: return <Logo size="sm" showText={false} />;
     }
   };
 
@@ -324,7 +324,7 @@ export default function ResultadoKarasekSiegrist() {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-3 text-lg text-slate-800">
               <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg">
-                Ⓛh-5 w-5 text-whiteⓁ
+                <Logo size="sm" showText={false} />
               </div>
               Resumo Executivo
             </CardTitle>
@@ -348,7 +348,7 @@ export default function ResultadoKarasekSiegrist() {
             </div>
 
             <Alert className="border-l-4 border-l-blue-500 bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
-              Ⓛh-5 w-5 text-blue-600Ⓛ
+              <Logo size="sm" showText={false} />
               <AlertDescription className="text-sm leading-relaxed text-slate-700 font-medium">
                 {gerarInterpretacao(resultado)}
               </AlertDescription>

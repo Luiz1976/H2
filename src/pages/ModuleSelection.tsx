@@ -28,7 +28,7 @@ export default function ModuleSelection() {
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg">
-              Ⓛh-8 w-8Ⓛ
+              <Logo size="sm" showText={false} />
             </div>
             <div className="flex flex-col items-start">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
