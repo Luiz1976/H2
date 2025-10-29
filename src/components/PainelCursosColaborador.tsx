@@ -276,7 +276,10 @@ export function PainelCursosColaborador({ colaboradorId }: PainelCursosColaborad
                               size="sm"
                               variant="outline"
                               className="bg-white hover:bg-green-50 border-green-300"
-                              onClick={() => window.open(`/colaborador/cursos/${curso.slug}/certificado`, '_blank')}
+                              onClick={() => {
+                                // Abrir certificado em nova aba para visualização
+                                window.open(`/empresa/colaborador/${colaboradorId}/certificado/${curso.slug}`, '_blank');
+                              }}
                               data-testid={`button-ver-certificado-${curso.slug}`}
                             >
                               <ExternalLink className="h-4 w-4 mr-2" />
@@ -285,7 +288,10 @@ export function PainelCursosColaborador({ colaboradorId }: PainelCursosColaborad
                             <Button
                               size="sm"
                               className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
-                              onClick={() => window.open(`/colaborador/cursos/${curso.slug}/certificado`, '_blank')}
+                              onClick={() => {
+                                // Abrir certificado em nova aba - o botão de download estará lá
+                                window.open(`/empresa/colaborador/${colaboradorId}/certificado/${curso.slug}`, '_blank');
+                              }}
                               data-testid={`button-baixar-certificado-${curso.slug}`}
                             >
                               <Download className="h-4 w-4 mr-2" />

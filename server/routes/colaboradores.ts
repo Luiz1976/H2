@@ -186,4 +186,47 @@ router.get('/:id/cursos-detalhes', authenticateToken, async (req: AuthRequest, r
   }
 });
 
+// Endpoint para empresa buscar certificado específico de um colaborador
+router.get('/:id/certificado/:cursoSlug', authenticateToken, async (req: AuthRequest, res) => {
+  try {
+    const { id, cursoSlug } = req.params;
+
+    // Verificar se é uma empresa autenticada
+    if (req.user?.role !== 'empresa') {
+      return res.status(403).json({ error: 'Acesso negado. Apenas empresas podem acessar este endpoint.' });
+    }
+
+    // Verificar se o colaborador pertence à empresa
+    const [colaborador] = await db
+      .select()
+      .from(colaboradores)
+      .where(and(
+        eq(colaboradores.id, id),
+        eq(colaboradores.empresaId, req.user.empresaId!)
+      ))
+      .limit(1);
+
+    if (!colaborador) {
+      return res.status(404).json({ error: 'Colaborador não encontrado ou não pertence à sua empresa' });
+    }
+
+    // Buscar certificado
+    const certificado = await db.query.cursoCertificados.findFirst({
+      where: and(
+        eq(cursoCertificados.colaboradorId, id),
+        eq(cursoCertificados.cursoSlug, cursoSlug)
+      )
+    });
+
+    if (!certificado) {
+      return res.status(404).json({ error: 'Certificado não encontrado' });
+    }
+
+    res.json(certificado);
+  } catch (error) {
+    console.error('Erro ao buscar certificado do colaborador:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 export default router;

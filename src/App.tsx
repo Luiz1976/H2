@@ -80,6 +80,7 @@ import RecuperarSenha from "./pages/RecuperarSenha";
 import ColaboradorCursos from "./pages/colaborador/ColaboradorCursos";
 import CursoDetalhes from "./pages/colaborador/CursoDetalhes";
 import ValidarCertificado from "./pages/ValidarCertificado";
+import EmpresaColaboradorCertificado from "./pages/empresa/EmpresaColaboradorCertificado";
 import { Chatbot } from "./components/Chatbot";
 
 function App() {
@@ -210,6 +211,15 @@ function App() {
                 <Route path="resultados" element={<EmpresaResultados />} />
                 <Route path="colaborador/:colaboradorId/resultados" element={<EmpresaColaboradorResultados />} />
               </Route>
+              {/* Rota para visualização de certificado pela empresa (sem sidebar) */}
+              <Route 
+                path="/empresa/colaborador/:colaboradorId/certificado/:cursoSlug" 
+                element={
+                  <ProtectedRoute allowedRoles={['empresa', 'admin']}>
+                    <EmpresaColaboradorCertificado />
+                  </ProtectedRoute>
+                } 
+              />
               <Route 
                 path="/GestaoAI" 
                 element={
