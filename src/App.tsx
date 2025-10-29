@@ -79,6 +79,7 @@ import CheckoutCanceladoPage from "./pages/CheckoutCanceladoPage";
 import RecuperarSenha from "./pages/RecuperarSenha";
 import ColaboradorCursos from "./pages/colaborador/ColaboradorCursos";
 import CursoDetalhes from "./pages/colaborador/CursoDetalhes";
+import ColaboradorCertificado from "./pages/colaborador/ColaboradorCertificado";
 import ValidarCertificado from "./pages/ValidarCertificado";
 import EmpresaColaboradorCertificado from "./pages/empresa/EmpresaColaboradorCertificado";
 import { Chatbot } from "./components/Chatbot";
@@ -171,6 +172,14 @@ function App() {
                     <MainLayout>
                       <CursoDetalhes />
                     </MainLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/colaborador/cursos/:slug/certificado" 
+                element={
+                  <ProtectedRoute allowedRoles={['colaborador']}>
+                    <ColaboradorCertificado />
                   </ProtectedRoute>
                 } 
               />
