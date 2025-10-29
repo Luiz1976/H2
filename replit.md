@@ -9,13 +9,14 @@ HumaniQ is a hierarchical user management system (Admin → Company → Employee
 **Blockers:** Missing GEMINI_API_KEY and STRIPE_PUBLISHABLE_KEY environment variables
 
 ### Brand Identity
-- **Logo (28/10/2025)**: Modern, exclusive corporate logo for HumaniQ AI
-  - **Location**: `src/assets/logo.png`
+- **Logo (29/10/2025)**: Official HumaniQ AI corporate logo
+  - **Location**: `src/assets/logo-transparent.png` (primary logo), `src/assets/favicon.png` (browser icon)
   - **Component**: Reusable `Logo` component at `src/components/Logo.tsx`
-  - **Design**: Modern corporate "HQ" lettermark design with blue-to-purple gradient, geometric elements, and tech-forward aesthetic. NO religious or spiritual elements - pure corporate tech design
-  - **Sizes**: Supports 4 size variants (sm, md, lg, xl) with optional text display
-  - **Usage**: Integrated throughout the platform including landing page header, footer, and system pages
+  - **Design**: Professional "HQ" lettermark with blue-to-purple gradient and "HUMANIQ AI" text below. Modern, clean corporate identity with white/transparent background - NO religious or spiritual elements
+  - **Sizes**: Supports 4 size variants (sm, md, lg, xl) with responsive scaling
+  - **Usage**: Integrated throughout the platform (31 files) including landing page header, footer, dashboards, test pages, reports, and all system pages
   - **Import**: `import Logo from '@/components/Logo'`
+  - **Applied**: Logo appears clean on all backgrounds without colored containers
 
 ### Mobile Responsiveness (29/10/2025)
 - **Complete Responsive Design**: All layouts and pages are fully responsive across all devices
