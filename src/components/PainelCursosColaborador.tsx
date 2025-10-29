@@ -180,6 +180,76 @@ export function PainelCursosColaborador({ colaboradorId }: PainelCursosColaborad
           const statusInfo = getStatusBadge(curso.status);
           const StatusIcon = statusInfo.icon;
 
+          // Se curso concluído e tem certificado, mostrar apenas o certificado
+          if (curso.certificado && curso.status === 'concluido') {
+            return (
+              <Card 
+                key={curso.id} 
+                className="border-2 border-green-200 hover:border-green-300 hover:shadow-2xl transition-all duration-300 bg-gradient-to-r from-green-50/80 to-emerald-50/80 backdrop-blur overflow-hidden"
+                data-testid={`card-certificado-${curso.slug}`}
+              >
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    {/* Informações do Certificado */}
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <Award className="h-8 w-8 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-bold text-green-900 mb-1 truncate">
+                          {curso.titulo}
+                        </h3>
+                        <div className="flex items-center gap-2 text-sm text-green-700 mb-1">
+                          <Calendar className="h-4 w-4 flex-shrink-0" />
+                          <span className="truncate">
+                            Emitido em {format(new Date(curso.certificado.dataEmissao), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge className="bg-green-100 text-green-700 border-green-200">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Certificado Emitido
+                          </Badge>
+                          <span className="text-xs text-green-600 font-mono">
+                            {curso.certificado.codigoAutenticacao}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Botões de Ação */}
+                    <div className="flex gap-2 flex-shrink-0">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="bg-white hover:bg-green-50 border-green-300"
+                        onClick={() => {
+                          window.open(`/empresa/colaborador/${colaboradorId}/certificado/${curso.slug}`, '_blank');
+                        }}
+                        data-testid={`button-ver-certificado-${curso.slug}`}
+                      >
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Ver
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white"
+                        onClick={() => {
+                          window.open(`/empresa/colaborador/${colaboradorId}/certificado/${curso.slug}`, '_blank');
+                        }}
+                        data-testid={`button-baixar-certificado-${curso.slug}`}
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Baixar PDF
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          }
+
+          // Para cursos não concluídos ou sem certificado, mostrar informações completas
           return (
             <Card 
               key={curso.id} 
@@ -227,7 +297,7 @@ export function PainelCursosColaborador({ colaboradorId }: PainelCursosColaborad
                     </div>
 
                     {/* Progresso */}
-                    {curso.progresso && (
+                    {curso.progresso && !curso.certificado && (
                       <div className="space-y-2 mb-4">
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium text-gray-700">Progresso do Curso</span>
@@ -252,58 +322,8 @@ export function PainelCursosColaborador({ colaboradorId }: PainelCursosColaborad
                       </div>
                     )}
 
-                    {/* Certificado */}
-                    {curso.certificado && (
-                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
-                              <Award className="h-6 w-6 text-white" />
-                            </div>
-                            <div>
-                              <p className="font-bold text-green-900">Certificado Emitido</p>
-                              <div className="flex items-center gap-2 text-sm text-green-700">
-                                <Calendar className="h-3 w-3" />
-                                {format(new Date(curso.certificado.dataEmissao), "dd 'de' MMMM 'de' yyyy 'às' HH:mm", { locale: ptBR })}
-                              </div>
-                              <p className="text-xs text-green-600 mt-1">
-                                Código: {curso.certificado.codigoAutenticacao}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="bg-white hover:bg-green-50 border-green-300"
-                              onClick={() => {
-                                // Abrir certificado em nova aba para visualização
-                                window.open(`/empresa/colaborador/${colaboradorId}/certificado/${curso.slug}`, '_blank');
-                              }}
-                              data-testid={`button-ver-certificado-${curso.slug}`}
-                            >
-                              <ExternalLink className="h-4 w-4 mr-2" />
-                              Ver
-                            </Button>
-                            <Button
-                              size="sm"
-                              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
-                              onClick={() => {
-                                // Abrir certificado em nova aba - o botão de download estará lá
-                                window.open(`/empresa/colaborador/${colaboradorId}/certificado/${curso.slug}`, '_blank');
-                              }}
-                              data-testid={`button-baixar-certificado-${curso.slug}`}
-                            >
-                              <Download className="h-4 w-4 mr-2" />
-                              Baixar PDF
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Data de Conclusão */}
-                    {curso.progresso?.dataConclusao && (
+                    {/* Data de Conclusão se houver progresso */}
+                    {curso.progresso?.dataConclusao && !curso.certificado && (
                       <div className="flex items-center gap-2 text-sm text-gray-600 mt-3">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span>
