@@ -363,3 +363,121 @@ export const updateTesteDisponibilidadeSchema = z.object({
   historicoLiberacoes: z.any().optional(),
   metadados: z.any().optional(),
 });
+
+// Tabela de Progresso de Cursos
+export const cursoProgresso = pgTable('curso_progresso', {
+  id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+  colaboradorId: uuid('colaborador_id').references(() => colaboradores.id, { onDelete: 'cascade' }).notNull(),
+  cursoId: varchar('curso_id', { length: 100 }).notNull(),
+  cursoSlug: varchar('curso_slug', { length: 255 }).notNull(),
+  modulosCompletados: jsonb('modulos_completados').default([]).notNull(),
+  totalModulos: integer('total_modulos').notNull(),
+  progressoPorcentagem: integer('progresso_porcentagem').default(0).notNull(),
+  avaliacaoFinalRealizada: boolean('avaliacao_final_realizada').default(false).notNull(),
+  avaliacaoFinalPontuacao: integer('avaliacao_final_pontuacao'),
+  dataInicio: timestamp('data_inicio', { withTimezone: true }).defaultNow().notNull(),
+  dataUltimaAtualizacao: timestamp('data_ultima_atualizacao', { withTimezone: true }).defaultNow().notNull(),
+  dataConclusao: timestamp('data_conclusao', { withTimezone: true }),
+  metadados: jsonb('metadados').default({}),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  colaboradorIdx: index('idx_curso_progresso_colaborador_id').on(table.colaboradorId),
+  cursoIdx: index('idx_curso_progresso_curso_id').on(table.cursoId),
+  uniqueColabCurso: uniqueIndex('idx_curso_progresso_colab_curso_unique').on(table.colaboradorId, table.cursoId),
+}));
+
+export type CursoProgresso = typeof cursoProgresso.$inferSelect;
+
+export const insertCursoProgressoSchema = z.object({
+  colaboradorId: z.string().uuid(),
+  cursoId: z.string(),
+  cursoSlug: z.string(),
+  modulosCompletados: z.any().optional(),
+  totalModulos: z.number(),
+  progressoPorcentagem: z.number().optional(),
+  avaliacaoFinalRealizada: z.boolean().optional(),
+  avaliacaoFinalPontuacao: z.number().optional().nullable(),
+  dataConclusao: z.date().optional().nullable(),
+  metadados: z.any().optional(),
+});
+
+export type InsertCursoProgresso = z.infer<typeof insertCursoProgressoSchema>;
+
+// Tabela de Certificados de Cursos
+export const cursoCertificados = pgTable('curso_certificados', {
+  id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+  colaboradorId: uuid('colaborador_id').references(() => colaboradores.id, { onDelete: 'cascade' }).notNull(),
+  cursoId: varchar('curso_id', { length: 100 }).notNull(),
+  cursoSlug: varchar('curso_slug', { length: 255 }).notNull(),
+  cursoTitulo: varchar('curso_titulo', { length: 500 }).notNull(),
+  colaboradorNome: varchar('colaborador_nome', { length: 255 }).notNull(),
+  cargaHoraria: varchar('carga_horaria', { length: 50 }).notNull(),
+  dataEmissao: timestamp('data_emissao', { withTimezone: true }).defaultNow().notNull(),
+  codigoAutenticacao: varchar('codigo_autenticacao', { length: 100 }).notNull().unique(),
+  qrCodeUrl: text('qr_code_url'),
+  assinaturaDigital: text('assinatura_digital'),
+  validado: boolean('validado').default(true).notNull(),
+  metadados: jsonb('metadados').default({}),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  colaboradorIdx: index('idx_curso_certificados_colaborador_id').on(table.colaboradorId),
+  cursoIdx: index('idx_curso_certificados_curso_id').on(table.cursoId),
+  codigoIdx: index('idx_curso_certificados_codigo').on(table.codigoAutenticacao),
+  uniqueColabCurso: uniqueIndex('idx_curso_certificados_colab_curso_unique').on(table.colaboradorId, table.cursoId),
+}));
+
+export type CursoCertificado = typeof cursoCertificados.$inferSelect;
+
+export const insertCursoCertificadoSchema = z.object({
+  colaboradorId: z.string().uuid(),
+  cursoId: z.string(),
+  cursoSlug: z.string(),
+  cursoTitulo: z.string(),
+  colaboradorNome: z.string(),
+  cargaHoraria: z.string(),
+  codigoAutenticacao: z.string(),
+  qrCodeUrl: z.string().optional().nullable(),
+  assinaturaDigital: z.string().optional().nullable(),
+  validado: z.boolean().optional(),
+  metadados: z.any().optional(),
+});
+
+export type InsertCursoCertificado = z.infer<typeof insertCursoCertificadoSchema>;
+
+// Tabela de Avaliações Finais de Cursos
+export const cursoAvaliacoes = pgTable('curso_avaliacoes', {
+  id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+  colaboradorId: uuid('colaborador_id').references(() => colaboradores.id, { onDelete: 'cascade' }).notNull(),
+  cursoId: varchar('curso_id', { length: 100 }).notNull(),
+  cursoSlug: varchar('curso_slug', { length: 255 }).notNull(),
+  respostas: jsonb('respostas').notNull(),
+  pontuacao: integer('pontuacao').notNull(),
+  totalQuestoes: integer('total_questoes').notNull(),
+  aprovado: boolean('aprovado').notNull(),
+  tempoGasto: integer('tempo_gasto'),
+  dataRealizacao: timestamp('data_realizacao', { withTimezone: true }).defaultNow().notNull(),
+  metadados: jsonb('metadados').default({}),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  colaboradorIdx: index('idx_curso_avaliacoes_colaborador_id').on(table.colaboradorId),
+  cursoIdx: index('idx_curso_avaliacoes_curso_id').on(table.cursoId),
+  aprovadoIdx: index('idx_curso_avaliacoes_aprovado').on(table.aprovado),
+}));
+
+export type CursoAvaliacao = typeof cursoAvaliacoes.$inferSelect;
+
+export const insertCursoAvaliacaoSchema = z.object({
+  colaboradorId: z.string().uuid(),
+  cursoId: z.string(),
+  cursoSlug: z.string(),
+  respostas: z.any(),
+  pontuacao: z.number(),
+  totalQuestoes: z.number(),
+  aprovado: z.boolean(),
+  tempoGasto: z.number().optional().nullable(),
+  metadados: z.any().optional(),
+});
+
+export type InsertCursoAvaliacao = z.infer<typeof insertCursoAvaliacaoSchema>;
