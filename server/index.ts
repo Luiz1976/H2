@@ -11,6 +11,7 @@ import testeDisponibilidadeRouter from './routes/teste-disponibilidade';
 import stripeRouter from './routes/stripe';
 import adminRouter from './routes/admin';
 import chatbotRouter from './routes/chatbot';
+import emailTestRouter from './routes/email-test';
 
 dotenv.config();
 
@@ -58,6 +59,7 @@ app.use('/api/teste-disponibilidade', testeDisponibilidadeRouter);
 app.use('/api/stripe', stripeRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/chatbot', chatbotRouter);
+app.use('/api/email', emailTestRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado' });
@@ -80,6 +82,8 @@ app.listen(PORT, () => {
   console.log(`   GET  /api/colaboradores/me`);
   console.log(`   GET  /api/testes`);
   console.log(`   POST /api/testes/resultado`);
+  console.log(`   POST /api/email/test-email (ADMIN)`);
+  console.log(`   GET  /api/email/email-status (ADMIN)`);
 });
 
 export default app;

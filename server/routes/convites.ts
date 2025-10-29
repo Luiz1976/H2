@@ -5,6 +5,7 @@ import { hashPassword, generateInviteToken } from '../utils/auth';
 import { authenticateToken, requireAdmin, requireEmpresa, AuthRequest } from '../middleware/auth';
 import { eq, and, gt } from 'drizzle-orm';
 import { z } from 'zod';
+import { enviarConviteEmpresa, enviarConviteColaborador, enviarBoasVindas } from '../services/emailService';
 
 const router = express.Router();
 
@@ -46,9 +47,25 @@ router.post('/empresa', authenticateToken, requireAdmin, async (req: AuthRequest
       })
       .returning();
 
+    const linkConvite = `${process.env.FRONTEND_URL || 'http://localhost:5000'}/convite/empresa/${token}`;
+
+    // Enviar email de convite (não bloqueia a resposta)
+    enviarConviteEmpresa(emailContato, nomeEmpresa, linkConvite)
+      .then(success => {
+        if (success) {
+          console.log('✅ Email de convite enviado para:', emailContato);
+        } else {
+          console.warn('⚠️ Falha ao enviar email de convite para:', emailContato);
+        }
+      })
+      .catch(error => {
+        console.error('❌ Erro ao enviar email de convite:', error);
+      });
+
     res.status(201).json({
       convite,
-      linkConvite: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/convite/empresa/${token}`,
+      linkConvite,
+      emailEnviado: true, // Indica que o email foi agendado para envio
     });
   } catch (error) {
     console.error('Erro ao criar convite empresa:', error);
@@ -91,12 +108,37 @@ router.post('/colaborador', authenticateToken, requireEmpresa, async (req: AuthR
       })
       .returning();
 
+    const linkConvite = `${process.env.FRONTEND_URL || 'http://localhost:5000'}/convite/colaborador/${token}`;
+
+    // Buscar nome da empresa para incluir no email
+    const [empresa] = await db
+      .select()
+      .from(empresas)
+      .where(eq(empresas.id, req.user!.empresaId!))
+      .limit(1);
+
+    // Enviar email de convite (não bloqueia a resposta)
+    if (empresa) {
+      enviarConviteColaborador(email, nome, empresa.nomeEmpresa, linkConvite)
+        .then(success => {
+          if (success) {
+            console.log('✅ Email de convite enviado para:', email);
+          } else {
+            console.warn('⚠️ Falha ao enviar email de convite para:', email);
+          }
+        })
+        .catch(error => {
+          console.error('❌ Erro ao enviar email de convite:', error);
+        });
+    }
+
     res.status(201).json({
       success: true,
       message: 'Convite criado com sucesso',
       data: {
         ...convite,
-        linkConvite: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/convite/colaborador/${token}`,
+        linkConvite,
+        emailEnviado: true,
       }
     });
   } catch (error) {
