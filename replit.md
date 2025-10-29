@@ -29,6 +29,22 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
 - **Colaborador Module**: Enhanced employee profile management.
 - **ERP Integration Module**: Integration with 9 major Brazilian ERPs for bulk employee invitation generation.
 - **Course Availability Control System (29/10/2025)**: Complete course access management system requiring explicit company administrator approval. All courses are locked by default upon employee creation. **Automatic Blocking**: Courses are automatically blocked when collaborator passes the final evaluation (score ≥ 70%), while certificate access remains available. Features database table `curso_disponibilidade`, backend API endpoints, auto-seeding on collaborator creation, company management UI at `/empresa/colaborador/:id/resultados`, and proper access enforcement on progress/module endpoints.
+- **Interactive Course Panel for Companies (29/10/2025)**: Advanced interactive dashboard located at `/empresa/colaborador/:id/resultados` tab "Cursos e Certificados" featuring:
+  - Real-time visualization of all 8 courses with completion status
+  - Completed courses with certificate issuance date/time
+  - In-progress courses with progress indicators
+  - Pending courses identification
+  - Centralized access to all issued certificates with direct download
+  - Modern glassmorphism design with animated elements
+  - Advanced filtering (All, Completed, In Progress, Available, Blocked)
+  - Real-time search by course name or category
+  - 4 statistical cards showing: Total Courses, Completed, In Progress, Available
+  - Complete course information: icon, title, duration, modules, progress percentage
+  - Visual progress bars for ongoing courses
+  - Certificate cards with QR code, authentication code, issuance date
+  - Direct PDF download and view buttons for certificates
+  - Responsive design for all devices
+  - Backend endpoint: `GET /api/colaboradores/:id/cursos-detalhes` (company role only)
 - **Quick Check de Estresse Ocupacional**: Interactive demonstrative test at `/quick-check` for visitor conversion, mirroring platform test experience.
 - **Landing Page Profissional**: Marketing landing page at `/landing` designed for client conversion, utilizing NLP and mental triggers.
 - **Admin Dashboards**: Redesigned Admin Convites page with modern UI/UX and an Executive Dashboard for CEO-level business intelligence, including financial, conversion, strategic KPIs, and growth metrics.

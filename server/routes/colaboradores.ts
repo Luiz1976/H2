@@ -1,9 +1,10 @@
 import express from 'express';
-import { db } from '../../db';
-import { colaboradores } from '../../shared/schema';
+import { db } from '../db';
+import { colaboradores, cursoProgresso, cursoCertificados, cursoDisponibilidade } from '../../shared/schema';
 import { authenticateToken, AuthRequest } from '../middleware/auth';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { z } from 'zod';
+import { cursos } from '../../src/data/cursosData';
 
 const router = express.Router();
 
@@ -96,6 +97,91 @@ router.patch('/:id', authenticateToken, async (req: AuthRequest, res) => {
     });
   } catch (error) {
     console.error('Erro ao atualizar colaborador:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Endpoint para empresa buscar cursos e certificados de um colaborador
+router.get('/:id/cursos-detalhes', authenticateToken, async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params;
+
+    // Verificar se é uma empresa autenticada
+    if (req.user?.role !== 'empresa') {
+      return res.status(403).json({ error: 'Acesso negado. Apenas empresas podem acessar este endpoint.' });
+    }
+
+    // Verificar se o colaborador pertence à empresa
+    const [colaborador] = await db
+      .select()
+      .from(colaboradores)
+      .where(and(
+        eq(colaboradores.id, id),
+        eq(colaboradores.empresaId, req.user.empresaId!)
+      ))
+      .limit(1);
+
+    if (!colaborador) {
+      return res.status(404).json({ error: 'Colaborador não encontrado ou não pertence à sua empresa' });
+    }
+
+    // Buscar todos os certificados do colaborador
+    const certificados = await db.query.cursoCertificados.findMany({
+      where: eq(cursoCertificados.colaboradorId, id),
+      orderBy: (cursoCertificados, { desc }) => [desc(cursoCertificados.dataEmissao)]
+    });
+
+    // Buscar progresso de todos os cursos
+    const progressos = await db.query.cursoProgresso.findMany({
+      where: eq(cursoProgresso.colaboradorId, id)
+    });
+
+    // Buscar disponibilidade dos cursos
+    const disponibilidades = await db.query.cursoDisponibilidade.findMany({
+      where: eq(cursoDisponibilidade.colaboradorId, id)
+    });
+
+    // Mapear cursos com todas as informações
+    const cursosCompletos = cursos.map(curso => {
+      const progresso = progressos.find(p => p.cursoSlug === curso.slug);
+      const certificado = certificados.find(c => c.cursoSlug === curso.slug);
+      const disponibilidade = disponibilidades.find(d => d.cursoId === curso.slug);
+
+      return {
+        ...curso,
+        disponivel: disponibilidade?.disponivel || false,
+        progresso: progresso ? {
+          id: progresso.id,
+          progressoPorcentagem: progresso.progressoPorcentagem || 0,
+          modulosCompletados: progresso.modulosCompletados || [],
+          avaliacaoFinalRealizada: progresso.avaliacaoFinalRealizada,
+          avaliacaoFinalPontuacao: progresso.avaliacaoFinalPontuacao,
+          dataConclusao: progresso.dataConclusao,
+          dataUltimaAtualizacao: progresso.dataUltimaAtualizacao,
+        } : null,
+        certificado: certificado ? {
+          id: certificado.id,
+          dataEmissao: certificado.dataEmissao,
+          codigoAutenticacao: certificado.codigoAutenticacao,
+          qrCodeUrl: certificado.qrCodeUrl,
+        } : null,
+        status: certificado ? 'concluido' : 
+                progresso && progresso.progressoPorcentagem > 0 ? 'em_andamento' : 
+                disponibilidade?.disponivel ? 'disponivel' : 'bloqueado'
+      };
+    });
+
+    res.json({
+      cursosCompletos,
+      resumo: {
+        totalCursos: cursos.length,
+        concluidos: certificados.length,
+        emAndamento: progressos.filter(p => p.progressoPorcentagem > 0 && !p.avaliacaoFinalRealizada).length,
+        disponiveis: disponibilidades.filter(d => d.disponivel).length,
+      }
+    });
+  } catch (error) {
+    console.error('Erro ao buscar cursos do colaborador:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });

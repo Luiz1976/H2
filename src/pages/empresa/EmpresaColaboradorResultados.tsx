@@ -21,6 +21,7 @@ import { authService } from '@/services/authService';
 import { ResultadoPopup } from '@/components/ResultadoPopup';
 import { GerenciamentoTestesColaborador } from '@/components/GerenciamentoTestesColaborador';
 import { GerenciamentoCursosColaborador } from '@/components/GerenciamentoCursosColaborador';
+import { PainelCursosColaborador } from '@/components/PainelCursosColaborador';
 
 interface Colaborador {
   id: string;
@@ -379,7 +380,7 @@ export default function EmpresaColaboradorResultados() {
 
       {/* Abas para Resultados e Gerenciamento de Testes */}
       <Tabs defaultValue="resultados" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-6">
+        <TabsList className="grid w-full grid-cols-4 mb-6">
           <TabsTrigger value="resultados" data-testid="tab-resultados">
             Resultados dos Testes
           </TabsTrigger>
@@ -388,6 +389,9 @@ export default function EmpresaColaboradorResultados() {
           </TabsTrigger>
           <TabsTrigger value="gerenciar-cursos" data-testid="tab-gerenciar-cursos">
             Gerenciar Cursos
+          </TabsTrigger>
+          <TabsTrigger value="cursos-certificados" data-testid="tab-cursos-certificados">
+            Cursos e Certificados
           </TabsTrigger>
         </TabsList>
 
@@ -534,6 +538,12 @@ export default function EmpresaColaboradorResultados() {
               colaboradorId={colaborador.id}
               colaboradorNome={colaborador.nome}
             />
+          )}
+        </TabsContent>
+
+        <TabsContent value="cursos-certificados">
+          {colaborador && (
+            <PainelCursosColaborador colaboradorId={colaborador.id} />
           )}
         </TabsContent>
       </Tabs>
