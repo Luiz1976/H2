@@ -22,67 +22,86 @@ interface Questao {
   respostaCorreta: number;
 }
 
-// Gerar questões baseadas no curso
+// Gerar questões baseadas no conteúdo real do curso
 const gerarQuestoes = (curso: Curso): Questao[] => {
-  const questoesBase: Questao[] = [
-    {
-      id: 1,
-      pergunta: `Qual é o objetivo principal do curso "${curso.titulo}"?`,
-      opcoes: [
-        curso.objetivo,
-        "Aprender programação básica",
-        "Desenvolver habilidades de vendas",
-        "Estudar matemática avançada"
-      ],
-      respostaCorreta: 0
-    },
-    {
-      id: 2,
-      pergunta: `Qual a categoria deste curso?`,
-      opcoes: [
-        "Tecnologia da Informação",
-        curso.categoria,
-        "Marketing Digital",
-        "Recursos Humanos"
-      ],
-      respostaCorreta: 1
-    },
-    {
-      id: 3,
-      pergunta: `Quantos módulos compõem este curso?`,
-      opcoes: [
-        `${Math.max(1, curso.modulos.length - 1)} módulos`,
-        `${curso.modulos.length} módulos`,
-        `${curso.modulos.length + 1} módulos`,
-        `${curso.modulos.length + 2} módulos`
-      ],
-      respostaCorreta: 1
-    },
-    {
-      id: 4,
-      pergunta: `Qual é o nível de dificuldade deste curso?`,
-      opcoes: [
-        curso.nivel === "Iniciante" ? "Avançado" : "Iniciante",
-        curso.nivel,
-        "Expert",
-        "Profissional"
-      ],
-      respostaCorreta: 1
-    },
-    {
-      id: 5,
-      pergunta: `Qual a carga horária total do curso?`,
-      opcoes: [
-        "1h",
-        "2h",
-        curso.duracao,
-        "10h"
-      ],
-      respostaCorreta: 2
-    },
-  ];
+  const questoes: Questao[] = [];
+  let questaoId = 1;
 
-  return questoesBase;
+  // Adicionar 1-2 perguntas sobre o objetivo e resultados do curso
+  questoes.push({
+    id: questaoId++,
+    pergunta: `Qual é o objetivo principal do curso "${curso.titulo}"?`,
+    opcoes: [
+      curso.objetivo,
+      "Aprender apenas teoria sem aplicação prática",
+      "Desenvolver habilidades técnicas não relacionadas",
+      "Estudar conteúdos genéricos sem foco específico"
+    ],
+    respostaCorreta: 0
+  });
+
+  // Para cada módulo, criar perguntas baseadas nos tópicos
+  curso.modulos.forEach((modulo, moduloIndex) => {
+    // Pegar os principais tópicos do módulo
+    const topicos = modulo.topicos || [];
+    
+    if (topicos.length > 0) {
+      // Criar pergunta sobre o primeiro tópico importante
+      const topicoDestaque = topicos[0];
+      questoes.push({
+        id: questaoId++,
+        pergunta: `No módulo "${modulo.titulo}", qual é um dos principais tópicos abordados?`,
+        opcoes: [
+          "Conceitos não relacionados ao tema",
+          topicoDestaque,
+          "Assuntos fora do escopo do curso",
+          "Teorias sem aplicação prática"
+        ].sort(() => Math.random() - 0.5), // Embaralhar opções
+        respostaCorreta: ["Conceitos não relacionados ao tema", topicoDestaque, "Assuntos fora do escopo do curso", "Teorias sem aplicação prática"]
+          .sort(() => Math.random() - 0.5)
+          .indexOf(topicoDestaque)
+      });
+    }
+
+    // Criar pergunta sobre objetivos específicos do módulo (se houver tópicos)
+    if (topicos.length > 1) {
+      const topicoSecundario = topicos[Math.min(1, topicos.length - 1)];
+      questoes.push({
+        id: questaoId++,
+        pergunta: `Qual dos seguintes tópicos é abordado no módulo "${modulo.titulo}"?`,
+        opcoes: [
+          topicoSecundario,
+          "Estratégias de marketing digital",
+          "Programação de computadores",
+          "Gestão financeira pessoal"
+        ].sort(() => Math.random() - 0.5),
+        respostaCorreta: [topicoSecundario, "Estratégias de marketing digital", "Programação de computadores", "Gestão financeira pessoal"]
+          .sort(() => Math.random() - 0.5)
+          .indexOf(topicoSecundario)
+      });
+    }
+  });
+
+  // Adicionar pergunta sobre resultados esperados
+  if (curso.resultadosEsperados && curso.resultadosEsperados.length > 0) {
+    const resultadoDestaque = curso.resultadosEsperados[0];
+    questoes.push({
+      id: questaoId++,
+      pergunta: `Qual é um dos resultados esperados ao concluir este curso?`,
+      opcoes: [
+        "Nenhum resultado prático mensurável",
+        resultadoDestaque,
+        "Certificação em outra área não relacionada",
+        "Apenas conhecimento teórico sem aplicação"
+      ].sort(() => Math.random() - 0.5),
+      respostaCorreta: ["Nenhum resultado prático mensurável", resultadoDestaque, "Certificação em outra área não relacionada", "Apenas conhecimento teórico sem aplicação"]
+        .sort(() => Math.random() - 0.5)
+        .indexOf(resultadoDestaque)
+    });
+  }
+
+  // Limitar a 10 questões no máximo
+  return questoes.slice(0, 10);
 };
 
 export default function AvaliacaoFinal({ curso, progresso, avaliacaoRealizada }: AvaliacaoFinalProps) {
