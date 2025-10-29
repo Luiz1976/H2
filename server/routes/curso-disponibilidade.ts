@@ -104,6 +104,7 @@ router.get('/colaborador/cursos', authenticateToken, requireColaborador, async (
           categoria: curso.categoria,
           icone: curso.icone,
           cor: curso.cor,
+          modulos: curso.modulos || [],
           disponivel,
           motivo,
           proximaDisponibilidade,

@@ -178,7 +178,7 @@ export default function ColaboradorCursos() {
                   </div>
                   <div className="flex items-center gap-1">
                     <BookOpen className="h-4 w-4" />
-                    <span>{curso.modulos.length} módulos</span>
+                    <span>{curso.modulos?.length || 0} módulos</span>
                   </div>
                 </div>
                 <Button 
