@@ -83,6 +83,7 @@ import ColaboradorCertificado from "./pages/colaborador/ColaboradorCertificado";
 import ValidarCertificado from "./pages/ValidarCertificado";
 import EmpresaColaboradorCertificado from "./pages/empresa/EmpresaColaboradorCertificado";
 import { Chatbot } from "./components/Chatbot";
+import { OnlineStatus } from "./components/OnlineStatus";
 
 function App() {
   console.log('🔍 [APP] Componente App iniciado');
@@ -98,6 +99,7 @@ function App() {
         <BrowserRouter>
           <AuthProvider>
             <Chatbot />
+            <OnlineStatus />
             <Routes>
               {/* Rotas públicas - SEM autenticação */}
               <Route path="/landing" element={<LandingPage />} />
