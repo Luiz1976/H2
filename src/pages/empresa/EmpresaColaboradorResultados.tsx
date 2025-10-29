@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 import { authService } from '@/services/authService';
 import { ResultadoPopup } from '@/components/ResultadoPopup';
 import { GerenciamentoTestesColaborador } from '@/components/GerenciamentoTestesColaborador';
+import { GerenciamentoCursosColaborador } from '@/components/GerenciamentoCursosColaborador';
 
 interface Colaborador {
   id: string;
@@ -378,12 +379,15 @@ export default function EmpresaColaboradorResultados() {
 
       {/* Abas para Resultados e Gerenciamento de Testes */}
       <Tabs defaultValue="resultados" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
+        <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="resultados" data-testid="tab-resultados">
             Resultados dos Testes
           </TabsTrigger>
           <TabsTrigger value="gerenciar" data-testid="tab-gerenciar-testes">
             Gerenciar Testes
+          </TabsTrigger>
+          <TabsTrigger value="gerenciar-cursos" data-testid="tab-gerenciar-cursos">
+            Gerenciar Cursos
           </TabsTrigger>
         </TabsList>
 
@@ -518,6 +522,15 @@ export default function EmpresaColaboradorResultados() {
         <TabsContent value="gerenciar">
           {colaborador && (
             <GerenciamentoTestesColaborador
+              colaboradorId={colaborador.id}
+              colaboradorNome={colaborador.nome}
+            />
+          )}
+        </TabsContent>
+
+        <TabsContent value="gerenciar-cursos">
+          {colaborador && (
+            <GerenciamentoCursosColaborador
               colaboradorId={colaborador.id}
               colaboradorNome={colaborador.nome}
             />
