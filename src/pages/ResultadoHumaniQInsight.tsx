@@ -22,7 +22,7 @@ import {
   Cell
 } from 'recharts';
 import {
-  Brain,
+  
   Users,
   Heart,
   Scale,
@@ -35,6 +35,7 @@ import {
   Lightbulb,
   Download
 } from 'lucide-react';
+import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 
 interface DimensaoResultado {
@@ -403,7 +404,7 @@ Mensura a percepção de fairness nos processos decisorios, distribuicao de reco
           <Card className="shadow-xl border-none bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Brain className="h-5 w-5 text-purple-600" />
+                <Logo size="sm" showText={false} className="h-5 w-5 text-purple-600" />
                 Análise Detalhada
               </CardTitle>
               <CardDescription>

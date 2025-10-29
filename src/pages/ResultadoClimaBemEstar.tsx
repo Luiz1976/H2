@@ -7,11 +7,12 @@ import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, Brain, 
+  ArrowLeft, Download, Share2, RefreshCw, TrendingUp, Award, 
   Building2, AlertTriangle, Heart, Users, Loader2, CheckCircle, Eye, 
   BarChart3, Radar, Gauge, Activity, Shield, MessageCircle, UserCheck, 
   Scale, Sparkles, Target, Zap, Info, ChevronRight
 } from "lucide-react";
+import Logo from '@/components/Logo';
 import { calcularResultadoClimaBemEstar, gerarRecomendacoesInsight, type ResultadoClimaBemEstar } from "@/lib/testes/clima-bem-estar";
 import { resultadosService } from "@/lib/database";
 import { sessionService } from "@/lib/services/session-service";
@@ -445,7 +446,7 @@ export default function ResultadoClimaBemEstar() {
               <div className="flex gap-4">
                 <div className="flex-shrink-0">
                   <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                    <Brain className="h-5 w-5 text-emerald-600" />
+                    <Logo size="sm" showText={false} className="h-5 w-5 text-emerald-600" />
                   </div>
                 </div>
                 <div className="flex-1">

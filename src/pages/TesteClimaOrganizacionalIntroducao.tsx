@@ -25,9 +25,10 @@ import {
   Sparkles,
   Award,
   TrendingUp,
-  Brain,
+  
   Clock
 } from 'lucide-react'
+import Logo from '@/components/Logo';
 
 export default function TesteClimaOrganizacionalIntroducao() {
   const navigate = useNavigate()

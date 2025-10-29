@@ -22,12 +22,13 @@ import {
   Activity,
   TrendingUp,
   Lightbulb,
-  Brain,
+  
   Home,
   Briefcase,
   UserCheck,
   Scale
 } from 'lucide-react';
+import Logo from '@/components/Logo';
 import { infoTesteRPO } from '@/lib/testes/rpo';
 
 const TesteRPOIntroducao: React.FC = () => {

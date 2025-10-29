@@ -17,12 +17,13 @@ import {
   Play,
   BarChart3,
   TrendingUp,
-  Brain,
+  
   Clock,
   Award,
   Puzzle,
   Building2
 } from 'lucide-react'
+import Logo from '@/components/Logo';
 
 export default function TesteHumaniQInsightIntroducao() {
   const navigate = useNavigate()
@@ -112,7 +113,7 @@ export default function TesteHumaniQInsightIntroducao() {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-purple-700 rounded-full flex items-center justify-center shadow-lg">
-              <Brain className="w-8 h-8 text-white" />
+              <Logo size="sm" showText={false} className="w-8 h-8 text-white" />
             </div>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-violet-800 to-purple-700 bg-clip-text text-transparent">

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
-  Brain, 
+  
   Heart, 
   Shield, 
   TrendingUp, 
@@ -14,6 +14,7 @@ import {
   Users,
   Lightbulb
 } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 interface ResultadoKarasekSiegrist {
   riscoGeral: {
@@ -42,7 +43,7 @@ const dimensaoInfo: Record<string, {
     nome: 'Demanda Psicológica',
     descricao: 'Refere-se à carga mental e emocional exigida pelo trabalho',
     impacto: 'Altos níveis podem levar ao esgotamento e estresse crônico',
-    icon: <Brain className="h-5 w-5" />
+    icon: <Logo size="sm" showText={false} className="h-5 w-5" />
   },
   'controle-autonomia': {
     nome: 'Controle e Autonomia',

@@ -15,7 +15,7 @@ import {
   Download,
   QrCode,
   FileSpreadsheet,
-  Brain,
+  
   Users,
   Shield,
   Activity,
@@ -31,6 +31,7 @@ import {
   Briefcase,
   Clock
 } from "lucide-react";
+import Logo from '@/components/Logo';
 import MatrizRisco from "@/components/prg/MatrizRisco";
 import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
 import GraficoRadarDimensoes from "@/components/prg/GraficoRadarDimensoes";
@@ -1512,7 +1513,7 @@ export default function EmpresaPRG() {
                       OMS Guidelines
                     </Badge>
                     <Badge variant="outline" className="bg-white/5 border-white/20 text-white/80 backdrop-blur-xl">
-                      <Brain className="h-3 w-3 mr-1" />
+                      <Logo size="sm" showText={false} className="h-3 w-3 mr-1" />
                       ISO 45003
                     </Badge>
                   </div>
@@ -1650,7 +1651,7 @@ export default function EmpresaPRG() {
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl blur-xl opacity-50 animate-pulse"></div>
                   <div className="relative p-4 bg-gradient-to-br from-purple-500/30 to-blue-500/30 rounded-2xl backdrop-blur-xl border border-white/20">
-                    <Brain className="h-8 w-8 text-white animate-pulse" />
+                    <Logo size="sm" showText={false} className="h-8 w-8 text-white animate-pulse" />
                   </div>
                 </div>
                 <div>
@@ -2003,7 +2004,7 @@ export default function EmpresaPRG() {
                   d.dimensao && ['Burnout', 'Exaustão', 'Esgotamento'].some(termo => d.dimensao.includes(termo))
                 ).length === 0 && (
                   <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                    <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
+                    <Logo size="sm" showText={false} className="h-12 w-12 text-blue-400 mx-auto mb-3" />
                     <p className="text-white/70">Aguardando testes específicos de burnout</p>
                     <p className="text-white/50 text-sm mt-1">O risco atual é calculado com base nos indicadores gerais de estresse</p>
                   </div>
@@ -2074,7 +2075,7 @@ export default function EmpresaPRG() {
                   d.dimensao && ['Satisfação', 'Saúde', 'Crescimento', 'Compensação', 'Condições'].some(termo => d.dimensao.includes(termo))
                 ).length === 0 && (
                   <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                    <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
+                    <Logo size="sm" showText={false} className="h-12 w-12 text-blue-400 mx-auto mb-3" />
                     <p className="text-white/70">Aguardando testes de Qualidade de Vida no Trabalho</p>
                     <p className="text-white/50 text-sm mt-1">Realize avaliações de QVT para ver indicadores detalhados aqui</p>
                   </div>
@@ -2158,7 +2159,7 @@ export default function EmpresaPRG() {
                   d.dimensao && ['Assédio', 'Violência', 'Segurança Psicológica'].some(termo => d.dimensao.includes(termo))
                 ).length === 0 && (
                   <div className="text-center py-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                    <Brain className="h-12 w-12 text-blue-400 mx-auto mb-3" />
+                    <Logo size="sm" showText={false} className="h-12 w-12 text-blue-400 mx-auto mb-3" />
                     <p className="text-white/70">Aguardando testes específicos de assédio e segurança</p>
                     <p className="text-white/50 text-sm mt-1">O indicador atual é baseado em segurança psicológica geral</p>
                   </div>
@@ -2359,7 +2360,7 @@ export default function EmpresaPRG() {
           <CardContent className="p-6">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
-                <Brain className="h-6 w-6 text-purple-300" />
+                <Logo size="sm" showText={false} className="h-6 w-6 text-purple-300" />
                 <h3 className="text-xl font-bold text-white">HumaniQ AI</h3>
               </div>
               <p className="text-white text-sm max-w-4xl mx-auto leading-relaxed">
@@ -2383,7 +2384,7 @@ export default function EmpresaPRG() {
                   ISO 45003
                 </Badge>
                 <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
-                  <Brain className="h-3 w-3 mr-1" />
+                  <Logo size="sm" showText={false} className="h-3 w-3 mr-1" />
                   IA Ética
                 </Badge>
               </div>

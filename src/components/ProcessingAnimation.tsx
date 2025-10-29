@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Brain, 
   BarChart3, 
   CheckCircle, 
   Sparkles, 
@@ -10,6 +9,7 @@ import {
   Target,
   Award
 } from 'lucide-react';
+import Logo from './Logo';
 
 interface ProcessingAnimationProps {
   onComplete: () => void;
@@ -21,7 +21,7 @@ const ProcessingAnimation: React.FC<ProcessingAnimationProps> = ({ onComplete })
 
   const stages = [
     {
-      icon: Brain,
+      icon: () => <Logo size="sm" showText={false} />,
       title: "Analisando Respostas",
       description: "Processando suas respostas com inteligência artificial",
       color: "hsl(217 91% 60%)", // --primary

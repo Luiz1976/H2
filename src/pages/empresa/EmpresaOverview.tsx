@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { 
   Users, UserPlus, TrendingUp, Award, Calendar, Clock, 
-  Activity, Target, BarChart3, Sparkles, Brain, 
+  Activity, Target, BarChart3, Sparkles, 
   TrendingDown, Zap, Shield, ArrowUp, ArrowDown, X, FileCheck
 } from 'lucide-react';
+import Logo from '@/components/Logo';
 import { empresaStatisticsService, EstatisticasEmpresa } from '../../services/empresaStatisticsService';
 import { apiService } from '../../services/apiService';
 import { useAuth } from '../../hooks/AuthContext';
@@ -205,7 +206,7 @@ export default function EmpresaOverview() {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
-                  <Brain className="w-6 h-6 text-white" />
+                  <Logo size="sm" showText={false} className="w-6 h-6 text-white" />
                 </div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                   {user?.name ? `${user.name}` : 'Dashboard'}

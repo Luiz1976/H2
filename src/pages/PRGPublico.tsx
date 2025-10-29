@@ -22,6 +22,7 @@ import {
   AlertCircle,
   Brain
 } from "lucide-react";
+import Logo from '@/components/Logo';
 import MatrizRisco from "@/components/prg/MatrizRisco";
 import GraficoDistribuicaoRiscos from "@/components/prg/GraficoDistribuicaoRiscos";
 import GraficoRadarDimensoes from "@/components/prg/GraficoRadarDimensoes";
@@ -689,7 +690,7 @@ export default function PRGPublico() {
           <CardContent className="p-4 md:p-6">
             <div className="text-center space-y-3 md:space-y-4">
               <div className="flex items-center justify-center gap-2">
-                <Brain className="h-5 w-5 md:h-6 md:w-6 text-purple-400" />
+                <Logo size="sm" showText={false} className="h-5 w-5 md:h-6 md:w-6 text-purple-400" />
                 <h3 className="text-lg md:text-xl font-bold text-white">HumaniQ AI</h3>
               </div>
               <p className="text-white/80 text-xs md:text-sm max-w-4xl mx-auto leading-relaxed">
@@ -713,7 +714,7 @@ export default function PRGPublico() {
                   ISO 45003
                 </Badge>
                 <Badge variant="outline" className="bg-white/5 border-white/20 text-white/70 text-xs md:text-sm">
-                  <Brain className="h-3 w-3 mr-1" />
+                  <Logo size="sm" showText={false} className="h-3 w-3 mr-1" />
                   IA Ética
                 </Badge>
               </div>

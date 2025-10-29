@@ -8,7 +8,6 @@ import {
   ArrowLeft, 
   ArrowRight,
   Play, 
-  Brain, 
   Target, 
   Zap, 
   Shield, 
@@ -24,6 +23,7 @@ import {
   TrendingUp,
   Lightbulb
 } from 'lucide-react';
+import Logo from '../components/Logo';
 
 const TesteEstresseOcupacionalIntroducao: React.FC = () => {
   const navigate = useNavigate();
@@ -54,9 +54,7 @@ const TesteEstresseOcupacionalIntroducao: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
-              <Brain className="h-8 w-8" />
-            </div>
+            <Logo size="md" showText={false} />
             <div>
               <h1 className="text-3xl font-bold text-slate-800">HumaniQ EO</h1>
               <p className="text-blue-700 font-medium">Avaliação de Estresse Ocupacional</p>
@@ -100,7 +98,7 @@ const TesteEstresseOcupacionalIntroducao: React.FC = () => {
               <div className="space-y-4">
                 <div className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200">
                   <div className="flex items-center gap-3 mb-2">
-                    <Brain className="h-6 w-6 text-blue-600" />
+                    <Logo size="sm" showText={false} />
                     <h3 className="font-semibold text-slate-800">Controle Inibitório</h3>
                   </div>
                   <p className="text-sm text-slate-600">
