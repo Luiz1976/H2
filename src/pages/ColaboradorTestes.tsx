@@ -122,7 +122,7 @@ export default function ColaboradorTestes() {
                   } flex items-center justify-center shadow-sm`}
                 >
                   {teste.disponivel ? (
-                    Ⓛh-8 w-8 text-whiteⓁ
+                    <Logo size="sm" showText={false} />
                   ) : (
                     <Lock className="h-8 w-8 text-white" />
                   )}

@@ -207,7 +207,7 @@ export function ResultadoVisualizacao({ resultado, dadosResultado, carregando = 
           <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border-2 border-slate-200 shadow-xl">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg">
-                Ⓛh-6 w-6 text-whiteⓁ
+                <Logo size="sm" showText={false} />
               </div>
               <h3 className="text-2xl font-bold text-slate-800">Dimensões Avaliadas</h3>
             </div>

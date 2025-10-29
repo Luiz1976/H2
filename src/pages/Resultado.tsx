@@ -133,7 +133,7 @@ export default function Resultado() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 flex items-center justify-center">
         <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center">
-          Ⓛh-12 w-12 text-gray-400 mx-auto mb-4Ⓛ
+          <Logo size="lg" showText={false} className="mx-auto mb-4" />
           <h2 className="text-xl font-semibold mb-2">Resultado não encontrado</h2>
           <p className="text-gray-600 mb-6">
             Não foi possível encontrar o resultado solicitado.
