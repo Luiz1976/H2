@@ -1,9 +1,11 @@
-import { GraduationCap, BookOpen, Clock, Award, ChevronRight, Play, Lock } from "lucide-react";
+import { GraduationCap, BookOpen, Clock, Award, ChevronRight, Play, Lock, Download, ExternalLink, Calendar } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default function ColaboradorCursos() {
   const navigate = useNavigate();
@@ -125,21 +127,103 @@ export default function ColaboradorCursos() {
           </Card>
         </div>
 
-        {/* Cursos Grid */}
-        {isLoading ? (
-          <div className="text-center py-12">
-            <p className="text-gray-600">Carregando cursos...</p>
+        {/* Seção de Certificados Conquistados */}
+        {certificados.length > 0 && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <Award className="h-8 w-8 text-green-600" />
+              <h2 className="text-2xl font-bold text-gray-900">
+                Meus Certificados ({certificados.length})
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
+              {certificados.map((certificado: any) => (
+                <Card 
+                  key={certificado.id}
+                  className="border-2 border-green-200 bg-gradient-to-r from-green-50/80 to-emerald-50/80 hover:shadow-xl transition-all"
+                  data-testid={`card-certificado-${certificado.cursoSlug}`}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                      {/* Informações do Certificado */}
+                      <div className="flex items-center gap-4 flex-1">
+                        <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg flex-shrink-0">
+                          <Award className="h-8 w-8 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg font-bold text-green-900 mb-1 truncate">
+                            {certificado.cursoTitulo}
+                          </h3>
+                          <div className="flex items-center gap-2 text-sm text-green-700 mb-1">
+                            <Calendar className="h-4 w-4 flex-shrink-0" />
+                            <span className="truncate">
+                              Emitido em {format(new Date(certificado.dataEmissao), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <Badge className="bg-green-100 text-green-700 border-green-200">
+                              Certificado Emitido
+                            </Badge>
+                            <span className="text-xs text-green-600 font-mono">
+                              {certificado.codigoAutenticacao}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Botões de Ação */}
+                      <div className="flex gap-2 flex-shrink-0">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="bg-white hover:bg-green-50 border-green-300"
+                          onClick={() => window.open(`/colaborador/cursos/${certificado.cursoSlug}/certificado`, '_blank')}
+                          data-testid={`button-ver-certificado-${certificado.cursoSlug}`}
+                        >
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          Ver
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white"
+                          onClick={() => window.open(`/colaborador/cursos/${certificado.cursoSlug}/certificado`, '_blank')}
+                          data-testid={`button-baixar-certificado-${certificado.cursoSlug}`}
+                        >
+                          <Download className="h-4 w-4 mr-2" />
+                          Baixar PDF
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        ) : cursosLiberados.length === 0 ? (
-          <div className="text-center py-12">
-            <Lock className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">Nenhum curso disponível</h3>
-            <p className="text-gray-600">
-              Entre em contato com sua empresa para liberar o acesso aos cursos.
-            </p>
+        )}
+
+        {/* Cursos Disponíveis */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <GraduationCap className="h-8 w-8 text-blue-600" />
+            <h2 className="text-2xl font-bold text-gray-900">
+              Cursos Disponíveis ({cursosLiberados.length})
+            </h2>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {isLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Carregando cursos...</p>
+            </div>
+          ) : cursosLiberados.length === 0 ? (
+            <div className="text-center py-12">
+              <Lock className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">Nenhum curso disponível</h3>
+              <p className="text-gray-600">
+                Entre em contato com sua empresa para liberar o acesso aos cursos.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {cursosLiberados.map((curso) => (
             <Card 
               key={curso.id} 
@@ -196,8 +280,9 @@ export default function ColaboradorCursos() {
               </CardContent>
             </Card>
           ))}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
 
         {/* Call to Action */}
         <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50">

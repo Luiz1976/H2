@@ -519,7 +519,23 @@ router.get('/meus-certificados', authenticateToken, async (req: AuthRequest, res
       where: eq(cursoCertificados.colaboradorId, colaboradorId)
     });
 
-    return res.json(certificados);
+    // Converter para camelCase para o frontend
+    const certificadosCamelCase = certificados.map(cert => ({
+      id: cert.id,
+      colaboradorId: cert.colaboradorId,
+      cursoId: cert.cursoId,
+      cursoSlug: cert.cursoSlug,
+      cursoTitulo: cert.cursoTitulo,
+      colaboradorNome: cert.colaboradorNome,
+      cargaHoraria: cert.cargaHoraria,
+      dataEmissao: cert.dataEmissao,
+      codigoAutenticacao: cert.codigoAutenticacao,
+      qrCodeUrl: cert.qrCodeUrl,
+      assinaturaDigital: cert.assinaturaDigital,
+      validado: cert.validado
+    }));
+
+    return res.json(certificadosCamelCase);
   } catch (error) {
     console.error('Erro ao buscar certificados:', error);
     return res.status(500).json({ error: 'Erro ao buscar certificados' });
