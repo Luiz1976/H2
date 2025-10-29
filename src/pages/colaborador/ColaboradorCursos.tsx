@@ -1,12 +1,19 @@
-import { GraduationCap, BookOpen, Clock, Award, ChevronRight, Play } from "lucide-react";
+import { GraduationCap, BookOpen, Clock, Award, ChevronRight, Play, Lock } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { cursos } from "@/data/cursosData";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ColaboradorCursos() {
   const navigate = useNavigate();
+
+  // Buscar cursos com informações de disponibilidade
+  const { data: cursosDisponiveis = [], isLoading } = useQuery<any[]>({
+    queryKey: ['/api/curso-disponibilidade/colaborador/cursos'],
+  });
+
+  const cursosLiberados = cursosDisponiveis.filter((c) => c.disponivel);
 
   const getNivelColor = (nivel: string) => {
     switch (nivel) {
@@ -48,7 +55,9 @@ export default function ColaboradorCursos() {
                   <BookOpen className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">{cursos.length}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {cursosLiberados.length}
+                  </p>
                   <p className="text-sm text-gray-600">Cursos Disponíveis</p>
                 </div>
               </div>
@@ -85,8 +94,21 @@ export default function ColaboradorCursos() {
         </div>
 
         {/* Cursos Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {cursos.map((curso) => (
+        {isLoading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">Carregando cursos...</p>
+          </div>
+        ) : cursosLiberados.length === 0 ? (
+          <div className="text-center py-12">
+            <Lock className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">Nenhum curso disponível</h3>
+            <p className="text-gray-600">
+              Entre em contato com sua empresa para liberar o acesso aos cursos.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {cursosLiberados.map((curso) => (
             <Card 
               key={curso.id} 
               className="group hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-200 bg-white/90 backdrop-blur overflow-hidden cursor-pointer"
@@ -142,7 +164,8 @@ export default function ColaboradorCursos() {
               </CardContent>
             </Card>
           ))}
-        </div>
+          </div>
+        )}
 
         {/* Call to Action */}
         <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50">
@@ -154,7 +177,7 @@ export default function ColaboradorCursos() {
               <strong>Conforme NR01</strong> - Liderança e Saúde Psicossocial
             </p>
             <p className="text-sm text-gray-500">
-              {cursos.length} cursos disponíveis | Conteúdo baseado em PNL e Rapport | Integração com PGR
+              {cursosDisponiveis.length} cursos disponíveis | Conteúdo baseado em PNL e Rapport | Integração com PGR
             </p>
           </CardContent>
         </Card>
