@@ -1,10 +1,43 @@
 import express from 'express';
 import { db } from '../db';
-import { cursoProgresso, cursoAvaliacoes, cursoCertificados, colaboradores } from '../../shared/schema';
+import { cursoProgresso, cursoAvaliacoes, cursoCertificados, colaboradores, cursoDisponibilidade } from '../../shared/schema';
 import { eq, and } from 'drizzle-orm';
 import { authenticateToken, AuthRequest } from '../middleware/auth';
 
 const router = express.Router();
+
+// Helper: Verificar se curso está disponível para o colaborador
+async function verificarDisponibilidadeCurso(
+  colaboradorId: string,
+  cursoSlug: string
+): Promise<{ disponivel: boolean; motivo?: string }> {
+  try {
+    // Buscar registro de disponibilidade
+    const [disponibilidade] = await db
+      .select()
+      .from(cursoDisponibilidade)
+      .where(
+        and(
+          eq(cursoDisponibilidade.colaboradorId, colaboradorId),
+          eq(cursoDisponibilidade.cursoId, cursoSlug)
+        )
+      )
+      .limit(1);
+
+    if (!disponibilidade) {
+      return { disponivel: false, motivo: 'Curso não liberado pela empresa' };
+    }
+
+    if (!disponibilidade.disponivel) {
+      return { disponivel: false, motivo: 'Curso bloqueado pela empresa' };
+    }
+
+    return { disponivel: true };
+  } catch (error) {
+    console.error('Erro ao verificar disponibilidade:', error);
+    return { disponivel: false, motivo: 'Erro ao verificar disponibilidade' };
+  }
+}
 
 // Obter progresso de um curso específico
 router.get('/progresso/:cursoSlug', authenticateToken, async (req: AuthRequest, res) => {
@@ -14,6 +47,12 @@ router.get('/progresso/:cursoSlug', authenticateToken, async (req: AuthRequest, 
 
     if (!colaboradorId) {
       return res.status(401).json({ error: 'Não autorizado' });
+    }
+
+    // Verificar disponibilidade do curso
+    const { disponivel, motivo } = await verificarDisponibilidadeCurso(colaboradorId, cursoSlug);
+    if (!disponivel) {
+      return res.status(403).json({ error: motivo || 'Curso não disponível' });
     }
 
     const progresso = await db.query.cursoProgresso.findFirst({
@@ -42,6 +81,12 @@ router.post('/progresso', authenticateToken, async (req: AuthRequest, res) => {
 
     if (!colaboradorId) {
       return res.status(401).json({ error: 'Não autorizado' });
+    }
+
+    // Verificar disponibilidade do curso
+    const { disponivel, motivo } = await verificarDisponibilidadeCurso(colaboradorId, cursoSlug);
+    if (!disponivel) {
+      return res.status(403).json({ error: motivo || 'Curso não disponível' });
     }
 
     // Verificar se já existe progresso
@@ -86,6 +131,13 @@ router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (
     if (!colaboradorId) {
       console.error('❌ [CURSOS] Colaborador não autenticado');
       return res.status(401).json({ error: 'Não autorizado' });
+    }
+
+    // Verificar disponibilidade do curso
+    const { disponivel, motivo } = await verificarDisponibilidadeCurso(colaboradorId, cursoSlug);
+    if (!disponivel) {
+      console.error('❌ [CURSOS] Curso não disponível:', motivo);
+      return res.status(403).json({ error: motivo || 'Curso não disponível' });
     }
 
     console.log('📝 [CURSOS] Buscando progresso no banco...');
@@ -171,6 +223,12 @@ router.post('/avaliacao/:cursoSlug', authenticateToken, async (req: AuthRequest,
 
     if (!colaboradorId) {
       return res.status(401).json({ error: 'Não autorizado' });
+    }
+
+    // Verificar disponibilidade do curso
+    const { disponivel, motivo } = await verificarDisponibilidadeCurso(colaboradorId, cursoSlug);
+    if (!disponivel) {
+      return res.status(403).json({ error: motivo || 'Curso não disponível' });
     }
 
     // Verificar se todos os módulos foram completados
