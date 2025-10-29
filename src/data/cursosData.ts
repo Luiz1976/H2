@@ -1323,6 +1323,1832 @@ Lembre-se: CNV e uma pratica, nao uma perfeicao. Seja gentil consigo mesmo no pr
       "Pratica de escuta empatica",
       "Workshop de feedback nao violento"
     ]
+  },
+  {
+    id: 4,
+    slug: "gestao-riscos-psicossociais-saude-mental",
+    titulo: "Gestao de Riscos Psicossociais e Saude Mental",
+    subtitulo: "Identificacao, Prevencao e Intervencao em Saude Mental Ocupacional",
+    descricao: "Reconheca sinais de estresse, burnout e outros transtornos mentais, aprenda a intervir adequadamente e crie ambientes de trabalho psicologicamente saudaveis.",
+    duracao: "4h",
+    nivel: "Intermediario",
+    categoria: "Saude Ocupacional",
+    icone: "🛡️",
+    cor: "from-red-600 to-pink-600",
+    corBadge: "bg-red-100 text-red-700 border-red-200",
+    objetivo: "Capacitar lideres para reconhecer, prevenir e intervir em situacoes de risco a saude mental no trabalho.",
+    resultadosEsperados: [
+      "Identificacao precoce de sinais de adoecimento mental",
+      "Reducao de afastamentos por transtornos mentais",
+      "Criacao de ambiente de apoio e seguranca psicologica",
+      "Gestao eficaz de situacoes de crise emocional"
+    ],
+    modulos: [
+      {
+        id: 1,
+        titulo: "Principais Transtornos Mentais Relacionados ao Trabalho",
+        duracao: "60 min",
+        topicos: [
+          "Estresse ocupacional cronico",
+          "Sindrome de Burnout",
+          "Transtornos de ansiedade",
+          "Depressao ocupacional",
+          "Transtorno de Estresse Pos-Traumatico",
+          "Sinais de alerta e sintomas"
+        ],
+        materialDidatico: `
+PRINCIPAIS TRANSTORNOS MENTAIS RELACIONADOS AO TRABALHO
+
+PANORAMA DA SAUDE MENTAL OCUPACIONAL NO BRASIL
+
+Dados Alarmantes (INSS 2023):
+- 289.000 afastamentos por transtornos mentais em 2023
+- Aumento de 38% em relacao a 2022
+- 3a maior causa de afastamento do trabalho
+- Custo de R$ 180 bilhoes/ano para economia brasileira
+
+Principais Diagnosticos:
+1. Depressao (41% dos casos)
+2. Ansiedade (29% dos casos)
+3. Burnout (18% dos casos)
+4. TEPT - Transtorno de Estresse Pos-Traumatico (12% dos casos)
+
+ESTRESSE OCUPACIONAL CRONICO
+
+O que e:
+Resposta prolongada do organismo a demandas excessivas do trabalho que excedem a capacidade de enfrentamento da pessoa.
+
+Fases do Estresse (Modelo de Hans Selye):
+
+Fase 1 - Alerta (Estresse Agudo - Normal):
+Duracao: Minutos a horas
+Sintomas: Aumento de energia, foco, adrenalina
+Efeito: Positivo - melhora performance
+Exemplo: Apresentacao importante, prazo apertado pontual
+
+Fase 2 - Resistencia (Estresse Prolongado - Atencao):
+Duracao: Dias a semanas
+Sintomas: Cansaco, irritabilidade, dificuldade concentracao
+Efeito: Neutro - organismo tenta se adaptar
+Exemplo: Projeto longo com pressao constante
+
+Fase 3 - Esgotamento (Estresse Cronico - PERIGO):
+Duracao: Meses a anos
+Sintomas: Exaustao extrema, doencas frequentes, desespero
+Efeito: Negativo - adoecimento fisico e mental
+Exemplo: Anos de sobrecarga sem recuperacao
+
+Sinais Fisicos de Estresse Cronico:
+- Dores de cabeca frequentes (tensionais)
+- Problemas gastricos (gastrite, ulcera, colite)
+- Tensao muscular constante (especialmente pescoco/ombros)
+- Problemas cardiovasculares (hipertensao, arritmia)
+- Queda de imunidade (gripes/resfriados constantes)
+- Disturbios do sono (insonia ou sonolencia excessiva)
+- Mudancas no apetite (comer demais ou perder apetite)
+
+Sinais Emocionais:
+- Irritabilidade constante
+- Ansiedade persistente
+- Dificuldade de concentracao
+- Esquecimentos frequentes
+- Sensacao de estar sobrecarregado
+- Perda de interesse em atividades prazerosas
+- Sentimento de estar preso ou sem saida
+
+Sinais Comportamentais:
+- Isolamento social
+- Uso aumentado de alcool, tabaco ou outras substancias
+- Procrastinacao
+- Mudancas drasticas no comportamento
+- Choro facil ou explosoes de raiva
+- Negligencia com aparencia pessoal
+
+SINDROME DE BURNOUT (CID-11: QD85)
+
+Definicao da OMS:
+Sindrome resultante de estresse cronico no local de trabalho que nao foi gerenciado com sucesso.
+
+As 3 Dimensoes do Burnout:
+
+1. Exaustao Emocional:
+- Sentimento de estar emocionalmente esgotado
+- Sem energia para o trabalho
+- Drenado, vazio, sem nada mais para dar
+Frase tipica: "Nao aguento mais"
+
+2. Despersonalizacao/Cinismo:
+- Distanciamento mental do trabalho
+- Atitude cinica em relacao a tarefas e pessoas
+- Perda de empatia
+Frase tipica: "Tanto faz, nao me importo mais"
+
+3. Baixa Realizacao Profissional:
+- Sentimento de incompetencia
+- Falta de produtividade e realizacao
+- Questionamento sobre propria capacidade
+Frase tipica: "Nao sirvo para isso, sou um fracasso"
+
+Sinais de Alerta de Burnout:
+
+Estagios do Burnout:
+
+Estagio 1 - Necessidade de Se Provar:
+- Ambicao excessiva
+- Negligencia de necessidades pessoais
+- Trabalho compulsivo
+
+Estagio 2 - Intensificacao do Esforco:
+- Incapacidade de desligar do trabalho
+- Negligencia de amigos e familia
+- Negacao de problemas
+
+Estagio 3 - Descuido com Necessidades:
+- Irregularidades no sono e alimentacao
+- Falta de interacao social
+- Uso de alcool/drogas para relaxar
+
+Estagio 4 - Deslocamento de Conflitos:
+- Consciencia de que algo esta errado
+- Incapacidade de ver a causa real
+- Crise de valores e sentido
+
+Estagio 5 - Revisao de Valores:
+- Negacao de necessidades basicas
+- Foco obsessivo no trabalho
+- Intolerancia
+
+Estagio 6 - Negacao de Problemas:
+- Cinismo crescente
+- Agressividade
+- Problemas fisicos evidentes
+
+Estagio 7 - Retraimento:
+- Desesperanca
+- Desligamento social total
+- Aversao ao trabalho
+
+Estagio 8 - Mudancas Comportamentais Obvias:
+- Mudancas drasticas de personalidade
+- Amigos e familia notam diferenca marcante
+
+Estagio 9 - Despersonalizacao:
+- Perda do senso de si mesmo
+- Vida em piloto automatico
+- Vazio interior profundo
+
+Estagio 10 - Vazio Interior:
+- Sentimento de inutilidade total
+- Pode incluir pensamentos suicidas
+- NECESSITA INTERVENCAO PROFISSIONAL URGENTE
+
+Diferencas entre Estresse e Burnout:
+
+ESTRESSE:
+- Superengajamento
+- Emocoes hiperativas
+- Perda de energia
+- Ansiedade predominante
+- Pode melhorar com ferias/descanso
+- Ainda ha esperanca
+
+BURNOUT:
+- Desengajamento total
+- Emocoes embotadas
+- Perda de motivacao e esperanca
+- Depressao predominante
+- Ferias nao resolvem
+- Desesperanca profunda
+
+TRANSTORNOS DE ANSIEDADE
+
+Tipos Comuns no Ambiente de Trabalho:
+
+1. Transtorno de Ansiedade Generalizada (TAG):
+Sintomas:
+- Preocupacao excessiva e incontrolavel
+- Tensao muscular constante
+- Fadiga persistente
+- Dificuldade de concentracao
+- Irritabilidade
+- Disturbios do sono
+
+No Trabalho:
+Preocupacao constante com desempenho, medo de cometer erros, incapacidade de relaxar mesmo apos expediente
+
+2. Sindrome do Panico:
+Sintomas:
+- Ataques de panico repentinos
+- Palpitacoes, suor, tremores
+- Sensacao de morte iminente
+- Medo de ter novos ataques
+- Evitacao de situacoes
+
+No Trabalho:
+Ataques durante reunioes importantes, apresentacoes, confrontos. Pode levar a faltas e evitacao de situacoes profissionais.
+
+3. Fobia Social:
+Sintomas:
+- Medo intenso de julgamento
+- Evitacao de interacao social
+- Sintomas fisicos em situacoes sociais
+- Antecipacao ansiosa de eventos
+
+No Trabalho:
+Pavor de apresentacoes, reunioes, almocos de equipe. Pode limitar drasticamente carreira.
+
+DEPRESSAO OCUPACIONAL
+
+Diferenca entre Tristeza e Depressao:
+
+TRISTEZA (Normal):
+- Resposta proporcional a evento
+- Melhora com tempo
+- Nao impede funcionamento
+- Momentos de alivio
+
+DEPRESSAO (Clinica):
+- Desproporcional ou sem motivo claro
+- Persistente (mais de 2 semanas)
+- Prejudica funcionamento diario
+- Sem alivio ou prazer em nada
+
+Criterios Diagnosticos (CID-10):
+
+Sintomas Essenciais (pelo menos 2):
+1. Humor deprimido na maior parte do dia
+2. Perda de interesse ou prazer
+3. Fadiga ou perda de energia
+
+Sintomas Adicionais:
+4. Perda de confianca ou autoestima
+5. Sentimentos de culpa inadequada
+6. Pensamentos de morte ou suicidio
+7. Diminuicao da concentracao
+8. Agitacao ou retardo psicomotor
+9. Disturbios do sono
+10. Mudanca no apetite/peso
+
+Gravidade:
+- Leve: 2 essenciais + 2 adicionais
+- Moderada: 2 essenciais + 3-4 adicionais
+- Grave: 3 essenciais + 4+ adicionais
+
+Sinais de Depressao no Trabalho:
+- Queda abrupta de produtividade
+- Atrasos e faltas frequentes
+- Descuido com aparencia
+- Dificuldade de tomar decisoes
+- Isolamento da equipe
+- Comentarios negativos sobre si mesmo
+- Choro no trabalho
+- Expressao facial de tristeza constante
+
+TRANSTORNO DE ESTRESSE POS-TRAUMATICO (TEPT)
+
+O que e:
+Transtorno que pode se desenvolver apos exposicao a evento traumatico grave.
+
+Eventos Traumaticos no Trabalho:
+- Assedio sexual ou moral severo
+- Violencia fisica
+- Ameacas graves
+- Acidente grave
+- Morte de colega
+- Assalto ou sequestro
+- Testemunhar tragedia
+
+Sintomas Principais:
+
+1. Revivencia (Flashbacks):
+- Lembrancas intrusivas do trauma
+- Pesadelos recorrentes
+- Reacoes fisicas intensas a gatilhos
+
+2. Evitacao:
+- Evitar pensar ou falar sobre evento
+- Evitar pessoas, lugares ou situacoes que lembrem
+- Ausencia emocional (embotamento)
+
+3. Hiperativacao:
+- Estado de alerta constante
+- Reacoes exageradas de susto
+- Irritabilidade e explosoes de raiva
+- Dificuldade de concentracao
+- Insonia severa
+
+Diferenca de Estresse Agudo:
+- ESTRESSE AGUDO: 3 dias a 1 mes apos evento
+- TEPT: Sintomas persistem por mais de 1 mes
+
+COMO IDENTIFICAR SINAIS DE ALERTA NA EQUIPE
+
+Sistema de Semaforo de Saude Mental:
+
+VERDE - Funcionamento Saudavel:
+- Produtividade consistente
+- Bom humor geral
+- Engajamento nas atividades
+- Relacionamentos saudaveis
+- Sono e alimentacao regulares
+ACAO: Manter ambiente saudavel, reconhecer e valorizar
+
+AMARELO - Sinais de Atencao:
+- Pequenas mudancas de comportamento
+- Cansaco mais frequente
+- Irritabilidade ocasional
+- Queda leve de produtividade
+- Comentarios sobre estresse
+ACAO: Conversa preventiva, oferecer apoio, ajustar demandas
+
+LARANJA - Sinais de Risco Moderado:
+- Mudancas comportamentais visiveis
+- Multiplas faltas ou atrasos
+- Isolamento da equipe
+- Queda significativa de performance
+- Sinais fisicos de estresse
+ACAO: Conversa seria, encaminhamento ao RH/SESMT, ajuste de carga
+
+VERMELHO - Risco Alto - Intervencao Urgente:
+- Mudancas drasticas de personalidade
+- Choro frequente no trabalho
+- Mencao a desesperanca ou morte
+- Negligencia total com trabalho/aparencia
+- Afastamentos repetidos
+ACAO: Intervencao imediata, acionar suporte profissional, nao deixar sozinho
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Identificacao de Sintomas
+Colaborador antes pontual e alegre agora chega atrasado, esta com olheiras profundas, perdeu 5kg, chora facilmente e diz "nao sei se aguento mais isso". Qual transtorno voce suspeita e o que fazer?
+
+Exercicio 2: Diferenciacao
+Um colaborador reclama de cansaco e estresse. Como voce diferencia entre estresse normal, estresse cronico ou burnout?
+
+CONCLUSAO DO MODULO
+
+Reconhecer transtornos mentais relacionados ao trabalho nao e diagnosticar - e identificar sinais de alerta para buscar ajuda profissional adequada.
+
+Como lider, voce nao e psicologo, mas pode salvar vidas ao perceber sinais precoces e agir com empatia e agilidade.
+
+Proximos Passos:
+1. Observe sua equipe com olhar atento
+2. Crie espaco seguro para conversas
+3. Conheca recursos de apoio disponiveis (PAE, SESMT)
+4. Aja rapidamente em sinais de alerta
+
+Lembre-se: Saude mental e tao importante quanto saude fisica. Trate com seriedade.
+        `
+      }
+    ],
+    atividadesPraticas: [
+      "Analise de casos reais de adoecimento mental",
+      "Simulacao de intervencao em crise",
+      "Mapeamento de recursos de apoio",
+      "Workshop de primeiros socorros psicologicos"
+    ]
+  },
+  {
+    id: 5,
+    slug: "prevencao-assedio-moral-sexual",
+    titulo: "Prevencao e Combate ao Assedio Moral e Sexual",
+    subtitulo: "Compliance, Etica e Protecao Legal",
+    descricao: "Compreenda as definicoes legais, aprenda a prevenir, identificar e agir adequadamente em casos de assedio moral e sexual conforme Lei 14.457/22.",
+    duracao: "3h",
+    nivel: "Intermediario",
+    categoria: "Compliance e Etica",
+    icone: "⚠️",
+    cor: "from-orange-600 to-red-600",
+    corBadge: "bg-orange-100 text-orange-700 border-orange-200",
+    objetivo: "Capacitar lideres para prevenir, identificar e agir adequadamente em situacoes de assedio, garantindo ambiente de respeito e conformidade legal.",
+    resultadosEsperados: [
+      "Ambiente livre de assedio e discriminacao",
+      "Reducao de processos trabalhistas",
+      "Cultura de respeito e seguranca psicologica",
+      "Conformidade com Lei 14.457/22"
+    ],
+    modulos: [
+      {
+        id: 1,
+        titulo: "Definicoes Legais e Tipos de Assedio",
+        duracao: "60 min",
+        topicos: [
+          "Assedio moral: definicao e caracterizacao",
+          "Assedio sexual: definicao legal",
+          "Diferenca entre conflito e assedio",
+          "Tipos de assediadores",
+          "Impactos nas vitimas e organizacao"
+        ],
+        materialDidatico: `
+PREVENCAO E COMBATE AO ASSEDIO MORAL E SEXUAL
+
+BASE LEGAL BRASILEIRA
+
+Lei 14.457/2022 - Programa Emprega + Mulheres:
+Torna obrigatoria a adocao de medidas de prevencao e combate ao assedio sexual e outras formas de violencia no ambito do trabalho.
+
+Codigo Penal Brasileiro:
+- Art. 216-A: Crime de Assedio Sexual (1 a 2 anos de reclusao)
+- Art. 147: Crime de Ameaca
+- Art. 140: Crime de Injuria
+- Art. 146: Crime de Constrangimento Ilegal
+
+CLT - Consolidacao das Leis do Trabalho:
+- Art. 483: Rescisao indireta por rigor excessivo ou falta de higiene
+- Justa causa para assediador
+
+ASSEDIO MORAL - DEFINICAO E CARACTERIZACAO
+
+O que e Assedio Moral:
+
+Definicao Legal:
+Exposicao de pessoas a situacoes humilhantes e constrangedoras de forma repetitiva e prolongada, no exercicio de suas atividades laborais, com o objetivo de desestabilizar emocional e profissionalmente a vitima.
+
+Elementos Essenciais:
+
+1. INTENCIONALIDADE:
+Objetivo de prejudicar, humilhar ou forcar saida da vitima
+
+2. REPETICAO:
+Nao e ato isolado - sao condutas reiteradas
+Minimo: 2-3 episodios ao longo de semanas/meses
+
+3. DIRECIONALIDADE:
+Foco em uma pessoa ou grupo especifico
+
+4. DANO:
+Causa sofrimento psiquico, moral ou fisico
+
+5. ABUSO DE PODER:
+Uso indevido de posicao hierarquica ou grupal
+
+Formas de Assedio Moral:
+
+1. ASSEDIO VERTICAL DESCENDENTE (mais comum - 75%):
+Chefia contra subordinado
+
+Exemplos:
+- Humilhacao publica em reunioes
+- Sobrecarga intencional de trabalho
+- Estabelecer metas impossiveis
+- Ignorar sistematicamente
+- Retirar funcoes sem justificativa
+- Ameacas veladas de demissao
+
+Caso Real:
+Gerente chamava funcionaria de "burra" e "incompetente" diariamente em frente a equipe. Resultado: Funcionaria desenvolveu depressao severa, afastou-se por 6 meses. Empresa condenada a pagar R$ 100.000 + estabilidade de 12 meses.
+
+2. ASSEDIO VERTICAL ASCENDENTE (raro - 5%):
+Subordinados contra chefia
+
+Exemplos:
+- Boicote sistematico a decisoes
+- Desrespeito publico a autoridade
+- Sabotagem de trabalho
+- Difamacao organizada
+
+3. ASSEDIO HORIZONTAL (20%):
+Entre colegas de mesmo nivel
+
+Exemplos:
+- Fofocas e difamacao
+- Isolamento proposital
+- Bullying corporativo
+- Sabotagem de trabalho de colega
+
+Caso Real:
+Grupo de 5 funcionarios isolou completamente uma colega nova: nao a cumprimentavam, excluiam de conversas, escondiam informacoes necessarias ao trabalho. Vitima desenvolveu ansiedade severa. Todos os 5 foram demitidos por justa causa.
+
+4. ASSEDIO ORGANIZACIONAL (sistematico):
+Praticas da propria empresa
+
+Exemplos:
+- Metas sistematicamente inatingiveis
+- Pressao psicologica generalizada
+- Jornadas exaustivas obrigatorias
+- Politicas humilhantes (revista intima abusiva)
+- Controle excessivo (ir ao banheiro)
+
+Praticas que Configuram Assedio Moral:
+
+COMUNICACAO ABUSIVA:
+- Gritar, xingar, insultar
+- Ameacas veladas ou diretas
+- Criticas destrutivas publicas
+- Ironias e sarcasmos constantes
+- Recusar comunicacao (lei do gelo)
+
+CONDICOES DE TRABALHO DEGRADANTES:
+- Retirar instrumentos de trabalho
+- Atribuir tarefas incompativeis com funcao
+- Sobrecarregar intencionalmente
+- Tirar todas as tarefas (ociosidade forcada)
+- Local inadequado (sala sem ventilacao)
+
+ISOLAMENTO E EXCLUSAO:
+- Proibir colegas de falarem com vitima
+- Excluir de reunioes importantes
+- Nao repassar informacoes essenciais
+- Transferencias punitivas constantes
+
+ATAQUE A REPUTACAO:
+- Espalhar boatos
+- Ridicularizar publicamente
+- Atribuir erros nao cometidos
+- Questionar sanidade mental
+
+O QUE NAO E ASSEDIO MORAL
+
+E importante diferenciar assedio de gestao legitima:
+
+NAO E ASSEDIO:
+- Feedback negativo dado respeitosamente
+- Cobranca de metas realisticas
+- Mudanca de funcao por necessidade organizacional
+- Advertencia ou suspensao justificada
+- Conflito pontual entre colegas
+- Decisao desfavoravel mas fundamentada
+
+CONFLITO vs ASSEDIO:
+
+CONFLITO:
+- Pontual
+- Bilateral (ambos confrontam)
+- Pode ser resolvido com dialogo
+- Sem intencao de destruir
+
+ASSEDIO:
+- Repetitivo
+- Unilateral (vitima sofre)
+- Dialogo nao resolve
+- Intencao de prejudicar
+
+ASSEDIO SEXUAL - DEFINICAO LEGAL
+
+Codigo Penal - Art. 216-A:
+
+"Constranger alguem com o intuito de obter vantagem ou favorecimento sexual, prevalecendo-se o agente de sua condicao de superior hierarquico ou ascendencia inerentes ao exercicio de emprego, cargo ou funcao."
+
+Pena: 1 a 2 anos de reclusao
+
+Elementos do Crime:
+
+1. CONSTRANGIMENTO:
+Acao que causa desconforto, vergonha, intimidacao
+
+2. INTUITO SEXUAL:
+Objetivo de obter favor ou vantagem sexual
+
+3. PREVALENCIA:
+Uso de posicao de poder (hierarquia ou influencia)
+
+4. AMBIENTE DE TRABALHO:
+Relacao decorrente de emprego, cargo ou funcao
+
+Tipos de Assedio Sexual:
+
+1. ASSEDIO POR CHANTAGEM (Quid Pro Quo):
+Exigencia de favores sexuais em troca de beneficios ou para evitar prejuizos
+
+Exemplos:
+- "Se sair comigo, te promovo"
+- "Se nao aceitar, vai ser demitida"
+- "Preciso desse favor para aprovar suas ferias"
+
+Gravidade: MAXIMA - Crime tipificado
+
+2. ASSEDIO POR INTIMIDACAO (Ambiental):
+Criacao de ambiente hostil atraves de insinuacoes, piadas ou gestos de cunho sexual
+
+Exemplos:
+- Comentarios sobre corpo ou aparencia
+- Piadas sexuais constantes
+- Mostrar conteudo pornografico
+- Olhares insistentes e constrangedores
+- Convites insistentes apos recusa
+
+Gravidade: ALTA - Pode configurar assedio moral
+
+Exemplos Praticos de Assedio Sexual:
+
+OBVIAMENTE ASSEDIO:
+- Toques nao consensuais
+- Beijos forcados
+- Convite para hotel
+- Mostrar orgaos genitais
+- Mensagens sexualmente explicitas
+- Promessa de beneficio por sexo
+
+ZONA CINZENTA (depende do contexto):
+- Elogio a aparencia ("Esta bonita hoje")
+  * OK se: Pontual, respeitoso, publico
+  * ASSEDIO se: Constante, sobre corpo, em privado, apos recusa
+
+- Convite para jantar
+  * OK se: Profissional, primeira vez, aceita recusa
+  * ASSEDIO se: Insistente apos recusa, conotacao sexual
+
+- Piada com duplo sentido
+  * OK se: Rara, contexto descontraido, sem alvo especifico
+  * ASSEDIO se: Frequente, direcionada, ambiente de trabalho
+
+NUNCA E ASSEDIO:
+- Relacao consensual entre colegas de mesmo nivel
+- Elogio profissional ("Excelente apresentacao")
+- Convite respeitoso aceito voluntariamente
+
+Diferencas de Percepcao:
+
+O QUE QUEM ASSEDIA PENSA:
+"E so brincadeira"
+"Estou sendo galanteador"
+"Ela gosta, so esta se fazendo"
+"Nao tem maldade"
+
+O QUE A VITIMA SENTE:
+Desconforto, medo, nojo, humilhacao, impotencia, raiva
+
+REGRA DE OURO:
+Se a outra pessoa demonstra desconforto (verbal ou nao verbal), PARE IMEDIATAMENTE.
+
+PERFIL DOS ASSEDIADORES
+
+Tipos Comuns:
+
+1. O PREDADOR CONSCIENTE:
+- Sabe que esta assediando
+- Age deliberadamente
+- Abusa do poder
+- Escolhe vitimas vulneraveis
+- Repeate comportamento com multiplas pessoas
+
+2. O INSENSIVEL CULTURAL:
+- Acha normal pela criacao
+- "Sempre foi assim"
+- Nao percebe o dano
+- Pode mudar se conscientizado
+
+3. O NARCISISTA:
+- Se acha irresistivel
+- Nao aceita rejeicao
+- Ve recusa como desafio
+- Falta de empatia
+
+4. O VINGATIVO:
+- Usa assedio como retaliacao
+- Punicao por rejeicao
+- Punicao por denuncia previa
+
+IMPACTOS DO ASSEDIO
+
+Impactos na Vitima:
+
+SAUDE MENTAL:
+- Ansiedade generalizada (87% das vitimas)
+- Depressao (62%)
+- Sindrome do panico (34%)
+- TEPT (28%)
+- Pensamentos suicidas (19%)
+
+SAUDE FISICA:
+- Disturbios do sono (92%)
+- Problemas gastricos (68%)
+- Hipertensao (45%)
+- Dores cronicas (53%)
+
+VIDA PROFISSIONAL:
+- Queda de produtividade (100%)
+- Faltas frequentes (78%)
+- Pedido de demissao (45%)
+- Afastamento por doenca (34%)
+
+VIDA PESSOAL:
+- Problemas nos relacionamentos (71%)
+- Isolamento social (64%)
+- Perda de autoestima (95%)
+
+Impactos na Organizacao:
+
+FINANCEIROS:
+- Processos trabalhistas (R$ 50.000 a R$ 500.000)
+- Afastamentos e substituicoes
+- Turnover aumentado
+- Perda de produtividade (20-40%)
+
+REPUTACIONAIS:
+- Imagem publica manchada
+- Dificuldade de atrair talentos
+- Perda de contratos
+- Exposicao midiatica negativa
+
+CULTURAIS:
+- Clima organizacional toxico
+- Perda de engajamento
+- Cultura de medo
+- Queda na inovacao
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Identifique
+Caso: Gerente elogia aparencia fisica de funcionaria diariamente, faz comentarios sobre roupa, convida para jantar semanalmente mesmo apos 5 recusas. E assedio? Que tipo?
+
+Exercicio 2: Acao do Lider
+Voce descobre que um colaborador seu esta assediando moralmente outro. O que fazer? Liste 5 acoes imediatas.
+
+CONCLUSAO DO MODULO
+
+Assedio moral e sexual sao crimes graves que destroem vidas e organizacoes. Como lider, voce tem responsabilidade legal e moral de prevenir e combater.
+
+Proximos Passos:
+1. Conheca a politica de prevencao da empresa
+2. Reflita sobre proprias condutas
+3. Observe comportamentos na equipe
+4. Esteja preparado para agir rapidamente
+
+Lembre-se: Tolerancia zero com assedio. Uma cultura de respeito comeca com voce.
+        `
+      }
+    ],
+    atividadesPraticas: [
+      "Analise de casos juridicos reais",
+      "Simulacao de investigacao de assedio",
+      "Workshop de comunicacao respeitosa",
+      "Criacao de politica de prevencao"
+    ]
+  },
+  {
+    id: 6,
+    slug: "gestao-estresse-qualidade-vida",
+    titulo: "Gestao do Estresse e Qualidade de Vida no Trabalho",
+    subtitulo: "Autocuidado, Resiliencia e Bem-Estar Sustentavel",
+    descricao: "Promova autocuidado, desenvolva resiliencia e crie estrategias para prevenir o esgotamento profissional e melhorar qualidade de vida.",
+    duracao: "3h",
+    nivel: "Iniciante",
+    categoria: "Bem-Estar",
+    icone: "🌱",
+    cor: "from-emerald-600 to-green-600",
+    corBadge: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    objetivo: "Desenvolver praticas de autocuidado e gestao de estresse para manter equilibrio entre vida pessoal e profissional.",
+    resultadosEsperados: [
+      "Reducao de niveis de estresse pessoal e da equipe",
+      "Melhoria na qualidade de vida e bem-estar",
+      "Aumento de resiliencia e capacidade de recuperacao",
+      "Prevencao de burnout e adoecimento"
+    ],
+    modulos: [
+      {
+        id: 1,
+        titulo: "Fundamentos da Qualidade de Vida no Trabalho",
+        duracao: "60 min",
+        topicos: [
+          "O que e QVT - Qualidade de Vida no Trabalho",
+          "Dimensoes do bem-estar",
+          "Equilibrio vida-trabalho",
+          "Tecnicas de autocuidado",
+          "Construindo resiliencia"
+        ],
+        materialDidatico: `
+GESTAO DO ESTRESSE E QUALIDADE DE VIDA NO TRABALHO
+
+O QUE E QUALIDADE DE VIDA NO TRABALHO (QVT)
+
+Definicao:
+Conjunto de acoes de uma empresa que visa melhorar as condicoes de trabalho, buscando o bem-estar fisico, psicologico e social dos colaboradores.
+
+Conceito Moderno de QVT:
+Nao e apenas beneficios materiais (vale-refeicao, plano de saude). E criar um ambiente onde as pessoas possam prosperar em todas as dimensoes da vida.
+
+Origem do Conceito:
+Anos 1950 - Eric Trist e colaboradores
+Objetivo inicial: Melhorar produtividade atraves do bem-estar
+Descoberta: Pessoas felizes sao naturalmente mais produtivas
+
+AS 8 DIMENSOES DO BEM-ESTAR (Modelo de Walton)
+
+1. COMPENSACAO JUSTA E ADEQUADA:
+- Salario compativel com mercado
+- Equidade interna (pessoas com mesma funcao ganham similar)
+- Beneficios adequados
+- Participacao nos lucros/resultados
+
+Impacto quando ausente:
+Sensacao de injustica, desmotivacao, alta rotatividade
+
+2. CONDICOES DE TRABALHO:
+- Ambiente fisico adequado (iluminacao, temperatura, ergonomia)
+- Jornada razoavel (sem horas extras excessivas)
+- Pausas regulares
+- Equipamentos adequados
+- Seguranca fisica e psicologica
+
+Impacto quando ausente:
+Fadiga, doencas ocupacionais, acidentes, estresse
+
+3. USO E DESENVOLVIMENTO DE CAPACIDADES:
+- Trabalho que usa habilidades do colaborador
+- Autonomia para tomar decisoes
+- Variedade de tarefas (nao monotonia)
+- Feedback sobre desempenho
+- Visibilidade do resultado do trabalho
+
+Impacto quando ausente:
+Tedio, subaproveitamento, frustracao, perda de sentido
+
+4. OPORTUNIDADE DE CRESCIMENTO:
+- Plano de carreira claro
+- Treinamentos e desenvolvimento
+- Oportunidades de promocao
+- Aprendizado continuo
+
+Impacto quando ausente:
+Estagnacao, desmotivacao, busca de outras empresas
+
+5. INTEGRACAO SOCIAL:
+- Ausencia de preconceitos (raca, genero, idade, etc)
+- Bom relacionamento com colegas
+- Senso de comunidade
+- Apoio mutuo
+- Ausencia de hierarquia rigida
+
+Impacto quando ausente:
+Isolamento, conflitos, discriminacao, clima toxico
+
+6. CONSTITUCIONALISMO (DIREITOS):
+- Respeito a direitos trabalhistas
+- Privacidade pessoal
+- Liberdade de expressao
+- Tratamento justo
+- Normas claras
+
+Impacto quando ausente:
+Sensacao de abuso, inseguranca juridica, medo
+
+7. TRABALHO E ESPACO TOTAL DE VIDA:
+- Equilibrio entre vida pessoal e profissional
+- Flexibilidade de horarios quando possivel
+- Respeito ao tempo pessoal
+- Tempo para familia e lazer
+
+Impacto quando ausente:
+Esgotamento, conflitos familiares, perda de qualidade de vida
+
+8. RELEVANCIA SOCIAL:
+- Orgulho da empresa e do trabalho
+- Responsabilidade social da organizacao
+- Imagem externa positiva
+- Produto/servico util para sociedade
+
+Impacto quando ausente:
+Vergonha do trabalho, falta de proposito, cinismo
+
+EQUILIBRIO VIDA-TRABALHO (WORK-LIFE BALANCE)
+
+O Mito do Equilibrio Perfeito:
+
+Nao existe divisao 50-50 todos os dias. Equilibrio e dinamico:
+- Alguns dias o trabalho demanda mais
+- Outros dias a vida pessoal precisa de atencao
+- O importante e a media ao longo de semanas/meses
+
+Sinais de Desequilibrio Vida-Trabalho:
+
+TRABALHO DOMINA VIDA:
+- Trabalha mais de 50h/semana regularmente
+- Leva trabalho para casa todo dia
+- Pensa no trabalho 24h
+- Nao tem hobbies ou vida social
+- Relacionamentos familiares sofrem
+- Saude fisica deteriora
+- Ferias geram ansiedade
+
+CONSEQUENCIAS:
+Burnout, divorcio, alienacao dos filhos, doencas, morte precoce
+
+Caso Real:
+Executivo trabalhava 80h/semana por 10 anos. Aos 42, infarto. Sobreviveu mas ficou com sequelas. Perdeu casamento. Filhos adultos nao falavam com ele. Reflexao: "Construi imperio mas destrui minha vida."
+
+Estrategias para Equilibrio:
+
+1. ESTABELECER LIMITES CLAROS:
+- Definir horario de desligar (ex: 18h)
+- Desligar notificacoes de trabalho apos expediente
+- Nao ler emails no fim de semana
+- Comunicar limites a equipe e chefia
+
+2. PRIORIZAR O QUE IMPORTA:
+- Familia e saude vem antes de tudo
+- Pergunte: "No meu leito de morte, vou me arrepender de nao ter trabalhado mais?"
+- Ninguem no funeral diz: "Gostaria que ele tivesse passado mais tempo no escritorio"
+
+3. USAR TECNOLOGIA A SEU FAVOR:
+- Automatizar tarefas repetitivas
+- Usar agenda para bloquear tempo pessoal
+- Apps de produtividade
+- MAS: Desligar tecnologia em momentos pessoais
+
+4. NEGOCIAR FLEXIBILIDADE:
+- Home office quando possivel
+- Horarios flex
+
+iveis
+- Jornada comprimida (4 dias de 10h)
+
+5. MICRO-MOMENTOS DE QUALIDADE:
+Se nao pode ter 4 horas, tenha 30 minutos de qualidade total:
+- Jantar SEM celular com familia
+- 20 min brincando com filhos (presente 100%)
+- 15 min caminhada ao ar livre
+
+TECNICAS DE AUTOCUIDADO
+
+Pilares do Autocuidado:
+
+1. FISICO:
+- Sono: 7-9h por noite, horarios regulares
+- Alimentacao: 3 refeicoes saudaveis, evitar excesso de cafe/acucar
+- Exercicio: 30min, 3-5x/semana minimo
+- Hidratacao: 2-3 litros agua/dia
+- Exames preventivos anuais
+
+2. MENTAL:
+- Pausas regulares no trabalho (5-10min cada 1h)
+- Leitura por prazer
+- Aprender algo novo (hobby)
+- Limitar exposicao a noticias negativas
+- Terapia preventiva
+
+3. EMOCIONAL:
+- Expressar emocoes saudavelmente
+- Pedir ajuda quando precisar
+- Cultivar relacionamentos positivos
+- Perdoar (a si e aos outros)
+- Gratidao diaria (listar 3 coisas boas)
+
+4. SOCIAL:
+- Tempo de qualidade com amigos/familia
+- Participar de comunidades
+- Voluntariado
+- Dizer nao quando necessario
+- Limites saudaveis
+
+5. ESPIRITUAL/PROPOSITO:
+- Reflexao sobre valores
+- Conexao com proposito maior
+- Meditacao ou oracao (se religioso)
+- Contato com natureza
+- Arte, musica, beleza
+
+Praticas Diarias de Autocuidado (15-30min):
+
+MANHA (10min):
+- Acordar 15min antes
+- Alongamento leve
+- Respiracao profunda (5min)
+- Definir intencao do dia
+
+TARDE (5min):
+- Pausa para lanche saudavel
+- Caminhada breve
+- Desconectar de telas
+
+NOITE (15min):
+- Jantar sem telas
+- Ritual de descompressao
+- Gratidao (3 coisas boas do dia)
+- Leitura relaxante
+
+CONSTRUINDO RESILIENCIA
+
+O que e Resiliencia:
+Capacidade de se adaptar bem diante de adversidades, traumas, tragedias, ameacas ou fontes significativas de estresse.
+
+Resiliencia NAO e:
+- Nunca sentir dor ou estresse
+- Ser forte o tempo todo
+- Fazer tudo sozinho
+- Nao pedir ajuda
+
+Resiliencia E:
+- Dobrar sem quebrar
+- Recuperar-se de quedas
+- Aprender com dificuldades
+- Pedir e aceitar apoio
+
+Os 7 Pilares da Resiliencia:
+
+1. AUTOCONHECIMENTO:
+Conhecer proprios limites, gatilhos, valores
+
+2. AUTORREGULACAO:
+Gerenciar emocoes e impulsos
+
+3. OTIMISMO REALISTA:
+Esperanca fundamentada, nao negacao
+
+4. EMPATIA:
+Conectar-se com outros
+
+5. EFICACIA PESSOAL:
+Crenca na propria capacidade
+
+6. FLEXIBILIDADE MENTAL:
+Adaptar-se a mudancas
+
+7. REDE DE APOIO:
+Ter pessoas em quem confiar
+
+Como Desenvolver Resiliencia:
+
+1. REFORMULE ADVERSIDADES:
+Pergunta Disempoderada: "Por que isso aconteceu comigo?"
+Pergunta Empoderada: "O que posso aprender com isso?"
+
+2. FOCO NO CONTROLAVEL:
+- Nao pode controlar: Economia, decisoes de outros, passado
+- Pode controlar: Suas acoes, reacoes, atitude
+
+3. CUIDE DA SAUDE BASE:
+Cerebro estressado, mal alimentado, sem sono = Sem resiliencia
+
+4. CONSTRUA REDE DE APOIO:
+Nao e fraqueza pedir ajuda. E inteligencia ter suporte.
+
+5. PRATIQUE AUTOCOMPAIXAO:
+Trate-se como trataria melhor amigo em dificuldade
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Avaliacao de Equilibrio
+De 0-10, avalie sua satisfacao em:
+- Trabalho: ___
+- Familia: ___
+- Saude: ___
+- Amizades: ___
+- Lazer: ___
+- Proposito: ___
+
+Areas com nota abaixo de 7 precisam de atencao.
+
+Exercicio 2: Plano de Autocuidado
+Liste 3 acoes concretas que voce fara esta semana em cada pilar:
+- Fisico: ___
+- Mental: ___
+- Emocional: ___
+
+Exercicio 3: Rede de Apoio
+Liste 5 pessoas que voce pode pedir ajuda em momentos dificeis.
+Se nao conseguiu listar 5, e hora de construir essa rede.
+
+CONCLUSAO DO MODULO
+
+Qualidade de vida no trabalho nao e luxo - e necessidade para sustentabilidade da vida e carreira.
+
+Voce nao pode servir agua de um copo vazio. Cuide de voce PRIMEIRO para poder cuidar dos outros.
+
+Proximos Passos:
+1. Avalie seu equilibrio vida-trabalho
+2. Implemente 1 pratica de autocuidado diaria
+3. Estabeleca 1 limite saudavel esta semana
+4. Fortaleça sua rede de apoio
+
+Lembre-se: Sucesso sem saude e bem-estar nao e sucesso - e um caminho para o colapso.
+        `
+      }
+    ],
+    atividadesPraticas: [
+      "Avaliacao de qualidade de vida pessoal",
+      "Criacao de plano de autocuidado",
+      "Pratica de tecnicas de relaxamento",
+      "Workshop de gestao de tempo"
+    ]
+  },
+  {
+    id: 7,
+    slug: "lideranca-humanizada-clima-organizacional",
+    titulo: "Lideranca Humanizada e Clima Organizacional",
+    subtitulo: "Criando Ambientes de Alta Performance e Bem-Estar",
+    descricao: "Desenvolva habilidades de lideranca humanizada para criar clima organizacional saudavel, engajamento e alta performance sustentavel.",
+    duracao: "3h",
+    nivel: "Avancado",
+    categoria: "Lideranca",
+    icone: "👥",
+    cor: "from-indigo-600 to-purple-600",
+    corBadge: "bg-indigo-100 text-indigo-700 border-indigo-200",
+    objetivo: "Capacitar lideres a criar ambientes de trabalho humanizados que promovam engajamento, bem-estar e resultados sustentaveis.",
+    resultadosEsperados: [
+      "Melhoria significativa no clima organizacional",
+      "Aumento do engajamento e retencao de talentos",
+      "Cultura de confianca e seguranca psicologica",
+      "Resultados sustentaveis com equipes saudaveis"
+    ],
+    modulos: [
+      {
+        id: 1,
+        titulo: "Principios da Lideranca Humanizada",
+        duracao: "60 min",
+        topicos: [
+          "O que e lideranca humanizada",
+          "Diferenca entre gestao e lideranca",
+          "Seguranca psicologica",
+          "Lideranca servidora",
+          "Impacto do lider no clima"
+        ],
+        materialDidatico: `
+LIDERANCA HUMANIZADA E CLIMA ORGANIZACIONAL
+
+O QUE E LIDERANCA HUMANIZADA
+
+Definicao:
+Estilo de lideranca que coloca o ser humano no centro das decisoes, reconhecendo colaboradores como pessoas integrais (nao apenas recursos), valorizando bem-estar, desenvolvimento e proposito alem de resultados financeiros.
+
+Principios Fundamentais:
+
+1. PESSOAS EM PRIMEIRO LUGAR:
+Pessoas nao sao meios para resultados - sao o fim em si mesmas
+Cuidar das pessoas GERA resultados, nao e incompativel com eles
+
+2. EMPATIA GENUINA:
+Interesse real pelo bem-estar do outro
+Compreender desafios pessoais e profissionais
+
+3. VULNERABILIDADE:
+Lider humanizado admite erros, pede ajuda, mostra humanidade
+Isso cria conexao, nao fraqueza
+
+4. PROPOSITO E SIGNIFICADO:
+Conectar trabalho a algo maior que numeros
+Dar sentido ao que as pessoas fazem
+
+5. DESENVOLVIMENTO INTEGRAL:
+Investir no crescimento profissional E pessoal
+Apoiar vida toda, nao so carreira
+
+DIFERENCA ENTRE GESTAO E LIDERANCA
+
+GESTAO (Administrar):
+- Foco em processos e sistemas
+- Planejamento e organizacao
+- Controle e monitoramento
+- Eficiencia operacional
+- Cumprimento de metas
+- Visao de curto prazo
+
+LIDERANCA (Inspirar):
+- Foco em pessoas e relacoes
+- Visao e direcao
+- Inspiracao e motivacao
+- Desenvolvimento humano
+- Transformacao cultural
+- Visao de longo prazo
+
+Analogia:
+GESTOR = Piloto do navio (garante que funcione)
+LIDER = Capitao (define para onde vai e inspira tripulacao)
+
+O Ideal: Ser AMBOS
+Gerenciar bem E liderar com proposito
+
+Evolucao da Lideranca:
+
+LIDERANCA 1.0 - Autoritaria (ate anos 1950):
+"Faca porque eu mando"
+- Comando e controle
+- Hierarquia rigida
+- Medo como motivador
+Resultado: Obediencia, nao engajamento
+
+LIDERANCA 2.0 - Transacional (anos 1960-1990):
+"Faca que eu te pago"
+- Troca: Trabalho por salario
+- Premios e punicoes
+- Foco em metas
+Resultado: Performance, mas sem paixao
+
+LIDERANCA 3.0 - Transformacional (anos 2000):
+"Faca porque acredita"
+- Inspiracao
+- Visao compartilhada
+- Desenvolvimento
+Resultado: Engajamento genuino
+
+LIDERANCA 4.0 - Humanizada (atualmente):
+"Vamos fazer juntos porque importa"
+- Co-criacao
+- Proposito
+- Bem-estar integral
+- Sustentabilidade
+Resultado: Alta performance com saude
+
+SEGURANCA PSICOLOGICA
+
+Conceito (Amy Edmondson - Harvard):
+Crenca compartilhada de que o ambiente e seguro para assumir riscos interpessoais. Pessoas se sentem confortaveis sendo elas mesmas, expressando ideias, admitindo erros e questionando status quo sem medo de humilhacao ou punicao.
+
+Pesquisa Google - Projeto Aristoteles:
+Google estudou 180 equipes por 2 anos para descobrir o que torna uma equipe excepcional.
+Resultado surpreendente: NAO foi talento individual, experiencia ou recursos.
+Foi SEGURANCA PSICOLOGICA - o fator #1
+
+Elementos da Seguranca Psicologica:
+
+1. PODE ERRAR SEM SER PUNIDO:
+Ambiente: Erro e visto como aprendizado
+Contrario: Cultura de culpa e medo
+
+2. PODE FAZER PERGUNTAS:
+Ambiente: Nao existe pergunta burra
+Contrario: "Voce nao sabe isso ainda?"
+
+3. PODE DISCORDAR:
+Ambiente: Opinioes divergentes sao valorizadas
+Contrario: "Aqui quem manda sou eu"
+
+4. PODE SER VOCE MESMO:
+Ambiente: Autenticidade e aceita
+Contrario: Tem que usar mascara profissional
+
+5. PODE PEDIR AJUDA:
+Ambiente: Pedir ajuda e sinal de maturidade
+Contrario: "Vira-te sozinho"
+
+Como Criar Seguranca Psicologica:
+
+1. MODELE VULNERABILIDADE:
+Lider admite: "Nao sei, preciso de ajuda"
+Lider compartilha: "Cometi esse erro e aprendi..."
+Resultado: Time sente permissao para ser humano
+
+2. CELEBRE ERRO COMO APRENDIZADO:
+Quando alguem erra: "O que aprendemos com isso?"
+NAO: "Quem e o culpado?"
+
+3. ESCUTA ATIVA E CURIOSIDADE:
+Faca perguntas genuinas
+Ouça sem julgar ou interromper
+Valorize perspectivas diferentes
+
+4. AGRADEÇA DISCORDANCIA:
+"Obrigado por trazer perspectiva diferente"
+Cria cultura onde as pessoas falam a verdade
+
+5. NAO TOLERE DESRESPEITO:
+Seguranca psicologica NAO e vale-tudo
+E respeito mutuo com espaço para ser real
+
+Indicadores de Seguranca Psicologica Alta:
+
+- Pessoas fazem perguntas livremente
+- Erros sao reportados rapidamente
+- Inovacao acontece (risco e permitido)
+- Conflitos sao construtivos
+- Feedback e bidirecional
+- Pessoas sao autenticas
+- Alta retencao de talentos
+
+Indicadores de Seguranca Psicologica Baixa:
+
+- Silencio em reunioes (medo de falar)
+- Erros sao escondidos
+- Inovacao estagnada
+- Conflitos sao evitados ou destrutivos
+- Feedback so desce
+- Mascara profissional constante
+- Turnover alto
+
+LIDERANCA SERVIDORA (Servant Leadership)
+
+Conceito (Robert Greenleaf):
+Lider serve primeiro, lidera depois. Foco em atender necessidades da equipe para que ela prospere.
+
+Inversao da Piramide Tradicional:
+
+PIRAMIDE TRADICIONAL:
+CEO no topo
+Gerentes no meio
+Funcionarios na base
+
+PIRAMIDE INVERTIDA:
+Clientes no topo
+Funcionarios servem clientes
+Lideres servem funcionarios
+
+Filosofia: Lider remove obstaculos para equipe servir bem os clientes
+
+Caracteristicas do Lider Servidor:
+
+1. ESCUTA:
+Compreende profundamente necessidades da equipe
+
+2. EMPATIA:
+Assume boa intencao, compreende perspectivas
+
+3. CURA:
+Ajuda pessoas a se recuperarem de feridas
+
+4. CONSCIENTIZACAO:
+Autoconhecimento e consciencia do entorno
+
+5. PERSUASAO:
+Convence, nao coage
+
+6. CONCEITUALIZACAO:
+Pensa alem do dia-a-dia, sonha grande
+
+7. PREVISAO:
+Antecipa consequencias de decisoes
+
+8. MORDOMIA:
+Cuida do que lhe foi confiado (pessoas, recursos)
+
+9. COMPROMISSO COM CRESCIMENTO:
+Investe no desenvolvimento de cada pessoa
+
+10. CONSTRUCAO DE COMUNIDADE:
+Cria senso de pertencimento
+
+Perguntas que o Lider Servidor Faz:
+
+- O que voce precisa de mim para ter sucesso?
+- Que obstaculos posso remover para voce?
+- Como posso apoiar seu desenvolvimento?
+- Estou sendo um bom lider para voce?
+- O que posso fazer diferente?
+
+IMPACTO DO LIDER NO CLIMA ORGANIZACIONAL
+
+Pesquisa Gallup:
+70% da variacao no engajamento e explicada pelo gestor imediato
+Pessoas nao saem de empresas - saem de chefes
+
+Como o Lider Impacta o Clima:
+
+1. MODELO DE COMPORTAMENTO:
+Equipe copia o lider (para bem ou mal)
+Lider estressado = Equipe estressada
+Lider equilibrado = Equipe equilibrada
+
+2. COMUNICACAO:
+Transparencia gera confianca
+Segredos geram paranoia
+
+3. RECONHECIMENTO:
+Reconhecer esforco = Motivacao
+Ignorar esforco = Desmotivacao
+
+4. GESTAO DE CONFLITOS:
+Resolver rapido = Clima saudavel
+Ignorar = Clima toxico
+
+5. EQUIDADE:
+Tratar todos com justica = Confianca
+Favoritismo = Ressentimento
+
+6. DESENVOLVIMENTO:
+Investir nas pessoas = Lealdade
+Explorar sem desenvolver = Turnover
+
+Indicadores de Clima Organizacional:
+
+POSITIVOS:
+- Baixo absenteismo
+- Baixo turnover
+- Alta produtividade
+- Inovacao constante
+- Colaboracao natural
+- Energia positiva visivel
+
+NEGATIVOS:
+- Faltas frequentes
+- Rotatividade alta
+- Produtividade baixa
+- Resistencia a mudancas
+- Silos e competicao interna
+- Clima pesado, tensao visivel
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Auto-Avaliacao de Lideranca
+De 0-10, como voce avalia sua lideranca em:
+- Empatia: ___
+- Vulnerabilidade: ___
+- Desenvolvimento da equipe: ___
+- Criacao de seguranca psicologica: ___
+- Foco em bem-estar (nao apenas resultados): ___
+
+Exercicio 2: Pesquisa de Clima Simples
+Pergunte anonimamente a equipe:
+1. Voce se sente seguro para expressar opiniao? (Sim/Nao)
+2. Sente que seu trabalho tem proposito? (Sim/Nao)
+3. Sente que eu, como lider, me importo com voce como pessoa? (Sim/Nao)
+
+Se houver 1 "Nao", ha trabalho a fazer.
+
+CONCLUSAO DO MODULO
+
+Lideranca humanizada nao e ser bonzinho - e ser eficaz de forma sustentavel cuidando das pessoas.
+
+Resultados extraordinarios vem de pessoas que se sentem valorizadas, seguras e inspiradas.
+
+Proximos Passos:
+1. Identifique 1 comportamento de lideranca para mudar
+2. Tenha conversa vulneravel com sua equipe
+3. Pergunte: "Como posso ser melhor lider para voce?"
+4. Aja com base no feedback
+
+Lembre-se: Pessoas nao se importam com quanto voce sabe ate saberem o quanto voce se importa.
+        `
+      }
+    ],
+    atividadesPraticas: [
+      "Avaliacao 360 de lideranca",
+      "Pesquisa de clima organizacional",
+      "Criacao de plano de desenvolvimento de equipe",
+      "Workshop de feedback bidirecional"
+    ]
+  },
+  {
+    id: 8,
+    slug: "diversidade-inclusao-respeito",
+    titulo: "Diversidade, Inclusao e Respeito nas Relacoes de Trabalho",
+    subtitulo: "Construindo Ambientes Equitativos e Inclusivos",
+    descricao: "Compreenda a importancia da diversidade, aprenda a promover inclusao genuina e crie ambiente de respeito onde todas as pessoas possam prosperar.",
+    duracao: "3h",
+    nivel: "Intermediario",
+    categoria: "Diversidade e Inclusao",
+    icone: "🌈",
+    cor: "from-pink-600 to-rose-600",
+    corBadge: "bg-pink-100 text-pink-700 border-pink-200",
+    objetivo: "Desenvolver consciencia sobre diversidade e competencias para criar ambientes verdadeiramente inclusivos e respeitosos.",
+    resultadosEsperados: [
+      "Ambiente livre de discriminacao e preconceitos",
+      "Cultura de inclusao e pertencimento",
+      "Aproveitamento de beneficios da diversidade",
+      "Conformidade com legislacao antidiscriminacao"
+    ],
+    modulos: [
+      {
+        id: 1,
+        titulo: "Fundamentos de Diversidade e Inclusao",
+        duracao: "60 min",
+        topicos: [
+          "Diferenca entre diversidade e inclusao",
+          "Tipos de diversidade",
+          "Beneficios da diversidade",
+          "Vies inconsciente",
+          "Microagressoes",
+          "Criando cultura inclusiva"
+        ],
+        materialDidatico: `
+DIVERSIDADE, INCLUSAO E RESPEITO NAS RELACOES DE TRABALHO
+
+DIFERENCA ENTRE DIVERSIDADE E INCLUSAO
+
+Definicoes:
+
+DIVERSIDADE:
+Presenca de diferencas em um grupo. E sobre CONVIDAR para a festa.
+Exemplos: Idade, genero, raca, orientacao sexual, religiao, deficiencia, origem, classe social
+
+INCLUSAO:
+Garantir que todos se sintam valorizados, respeitados e tenham oportunidades iguais. E sobre CONVIDAR PARA DANCAR na festa.
+
+Equidade:
+Dar a cada pessoa o que ela precisa para ter as mesmas oportunidades. E sobre ajustar a musica para que todos possam dancar.
+
+Analogia Poderosa:
+
+DIVERSIDADE = Ser convidado para festa
+INCLUSAO = Ser convidado para dancar
+PERTENCIMENTO = Dancar a musica da sua alma
+
+Exemplos Praticos:
+
+Empresa DIVERSA mas NAO inclusiva:
+- Contrata pessoas diversas
+- MAS: Mulheres nao chegam a cargos de lideranca
+- MAS: Pessoas negras sofrem microagressoes
+- MAS: Pessoas LGBTQIA+ escondem identidade
+- MAS: Pessoas com deficiencia sao subestimadas
+
+Empresa DIVERSA E inclusiva:
+- Contrata pessoas diversas
+- E: Todas tem oportunidades iguais de crescimento
+- E: Todos se sentem seguros sendo autenticos
+- E: Diferentes perspectivas sao valorizadas
+- E: Politicas e praticas consideram necessidades diversas
+
+TIPOS DE DIVERSIDADE
+
+1. DIVERSIDADE DEMOGRAFICA (Visivel):
+
+Raca e Etnia:
+- Pessoas brancas, negras, pardas, indigenas, asiaticas
+- Importante: Brasil e pais racialmente desigual
+- Pessoas negras = 56% populacao, mas 4% em cargos executivos
+
+Genero:
+- Mulheres, homens, pessoas nao-binarias
+- Realidade: Mulheres ganham 20% menos que homens em mesma funcao
+- Mulheres sao 50% populacao, mas 13% CEOs
+
+Idade:
+- Baby Boomers (1946-1964)
+- Geracao X (1965-1980)
+- Millennials (1981-1996)
+- Geracao Z (1997-2012)
+- Cada geracao tem perspectivas unicas
+
+Deficiencia:
+- Fisica, sensorial, intelectual, psicossocial
+- 24% da populacao brasileira tem alguma deficiencia
+- Importante: Acessibilidade e direito, nao favor
+
+2. DIVERSIDADE COGNITIVA (Invisivel):
+
+Personalidade:
+- Introvertidos vs Extrovertidos
+- Analiticos vs Criativos
+- Detalhistas vs Visionarios
+
+Neurodivergencia:
+- Autismo, TDAH, Dislexia, etc
+- Formas diferentes de processar informacao
+- Perspectivas unicas valiosas
+
+3. DIVERSIDADE DE EXPERIENCIA:
+
+Origem Socioeconomica:
+- Diferentes realidades financeiras
+- Acesso desigual a oportunidades
+
+Educacao:
+- Diferentes niveis e tipos de formacao
+- Educacao formal vs autodidata
+
+Trajetoria Profissional:
+- Diferentes industrias e funcoes
+- Perspectivas variadas
+
+4. DIVERSIDADE DE CRENCAS:
+
+Religiao:
+- Catolicos, evangelicos, espiritas, ateus, etc
+- Respeito a todas as crencas (ou ausencia delas)
+
+Valores:
+- Diferentes priori dades na vida
+- Importancia de respeitar sem impor
+
+BENEFICIOS DA DIVERSIDADE
+
+Dados Cientificos:
+
+McKinsey & Company (2023):
+- Empresas com diversidade de genero tem 21% mais chance de ter lucratividade acima da media
+- Empresas com diversidade etnica tem 33% mais chance
+
+Harvard Business Review:
+- Equipes diversas tomam decisoes melhores em 87% dos casos
+- Empresas inclusivas tem 2,3x mais fluxo de caixa por funcionario
+
+Beneficios Concretos:
+
+1. INOVACAO:
+Perspectivas diferentes = Ideias diferentes
+Exemplo: Equipe homogenea: 10 ideias similares
+Equipe diversa: 30 ideias variadas
+
+2. RESOLUCAO DE PROBLEMAS:
+Angulos diferentes identificam solucoes que grupo homogeneo nao ve
+
+3. CONEXAO COM CLIENTES:
+Equipe diversa entende clientes diversos melhor
+
+4. ATRACAO DE TALENTOS:
+Millennials e Gen Z escolhem empresas inclusivas
+
+5. REDUCAO DE RISCOS:
+Perspectivas diversas identificam riscos que grupo similar nao viu
+
+6. CLIMA ORGANIZACIONAL:
+Ambiente inclusivo = Pessoas felizes = Performance
+
+VIES INCONSCIENTE (Unconscious Bias)
+
+O que e:
+Atalhos mentais automaticos que nosso cerebro usa para processar informacoes rapidamente. Baseados em experiencias, cultura, midia.
+
+Importante: TODO MUNDO TEM VIESES
+Ter vies nao te faz pessoa ruim. AGIR com base nele sem questionar e o problema.
+
+Tipos Comuns de Vieses:
+
+1. VIES DE AFINIDADE:
+Preferir pessoas similares a nos
+Exemplo: Contratar quem estudou na mesma faculdade
+
+2. VIES DE CONFIRMACAO:
+Buscar informacoes que confirmam o que ja acreditamos
+Exemplo: Achar que mulher e emocional, notar apenas momentos que confirmam
+
+3. EFEITO HALO:
+Uma caracteristica positiva contamina avaliacao geral
+Exemplo: Pessoa bonita e assumida como competente
+
+4. VIES DE GENERO:
+Associacoes automaticas sobre homens e mulheres
+Exemplos:
+- Homem assertivo = Lider / Mulher assertiva = Mandona
+- Homem ambicioso = Competente / Mulher ambiciosa = Calculista
+
+5. VIES RACIAL:
+Associacoes automaticas sobre racas
+Exemplo: Assumir que pessoa negra e da area de apoio, nao executiva
+
+6. VIES DE IDADE:
+Estereotipos sobre geracoes
+Exemplos:
+- Jovem = Imaturo, sem compromisso
+- Mais velho = Resistente a mudanca, tecnologicamente atrasado
+
+Como Combater Vieses:
+
+1. CONSCIENTIZACAO:
+Reconhecer que voce TEM vieses
+Teste de viés implicito (Harvard): https://implicit.harvard.edu
+
+2. PAUSAR ANTES DE JULGAR:
+"Por que pensei isso? E baseado em fato ou estereotipo?"
+
+3. BUSCAR CONTRA-EVIDENCIAS:
+Procurar ativamente informacoes que desafiem sua primeira impressao
+
+4. DIVERSIFICAR EXPOSICAO:
+Conviver com pessoas diferentes expande perspectiva
+
+5. PROCESSOS OBJETIVOS:
+Usar criterios claros em contratacao e promocao
+
+MICROAGRESSOES
+
+O que sao:
+Comentarios ou acoes cotidianas, geralmente nao intencionais, que comunicam mensagens hostis ou depreciativas para grupos marginalizados.
+
+Caracteristicas:
+- Frequentes e acumulativas
+- Pequenas individualmente, devastadoras no conjunto
+- Muitas vezes inconscientes de quem faz
+- Extremamente dolorosas para quem recebe
+
+Exemplos de Microagressoes:
+
+Raciais:
+- "Voce fala tao bem!" (pressupoe que pessoa negra nao falaria bem)
+- Tocar cabelo de pessoa negra sem permissao
+- "De onde voce e REALMENTE?" (questionar pertencimento)
+- Segurar bolsa perto de pessoa negra
+
+Genero:
+- "Voce e muito emocional" (para mulheres)
+- "Voce ajuda sua esposa em casa?" (pressupoe que casa e trabalho dela)
+- Interromper mulheres constantemente
+- "Nao e brincadeira, voce e bonita E inteligente"
+
+Orientacao Sexual:
+- "Mas voce nao parece gay"
+- "Quem e o homem na relacao?"
+- Assumir que todos sao heterossexuais
+
+Deficiencia:
+- "Nossa, voce e tao inspirador!" (por fazer coisas normais)
+- Falar alto com pessoa cega (confundir deficiencias)
+- "Deixa que eu faco isso pra voce" (sem perguntar se precisa ajuda)
+
+Idade:
+- "Voce e muito novo pra esse cargo"
+- "Vou explicar bem devagar" (para pessoa mais velha)
+
+Como Nao Cometer Microagressoes:
+
+1. PENSE ANTES DE FALAR:
+Esse comentario seria OK se fosse sobre mim?
+
+2. NAO ASSUMA:
+Nao presuma orientacao sexual, genero, capacidades
+
+3. TRATE TODOS COMO INDIVIDUOS:
+Nao como representantes de um grupo
+
+4. ACEITE FEEDBACK:
+Se alguem diz que algo doeu, acredite
+
+5. DESCULPE-SE:
+"Desculpa, nao foi minha intencao machucar. Vou fazer diferente."
+
+CRIANDO CULTURA INCLUSIVA
+
+Pilares da Cultura Inclusiva:
+
+1. LIDERANCA COMPROMETIDA:
+Lideres modelam comportamento inclusivo
+Nao e RH que cria inclusao - e lideranca
+
+2. POLITICAS CLARAS:
+Codigo de conduta anti-discriminacao
+Consequencias claras para violacoes
+
+3. RECRUTAMENTO INCLUSIVO:
+Vagas abertas a todos
+Processo sem vieses
+Diversidade em todas os niveis
+
+4. DESENVOLVIMENTO EQUITATIVO:
+Oportunidades iguais de crescimento
+Mentoria e sponsorship para grupos sub-representados
+
+5. AMBIENTE SEGURO:
+Pessoas podem ser autenticas
+Erros de inclusao sao oportunidades de aprendizado
+
+6. CELEBRACAO DE DIFERENCAS:
+Diferentes perspectivas sao valorizadas
+Diversas datas comemorativas respeitadas
+
+Praticas Inclusivas no Dia-a-Dia:
+
+REUNIOES:
+- Dar voz a todos (nao apenas quem fala mais alto)
+- Creditar ideias a quem falou primeiro
+- Criar espaco seguro para discordancia
+
+COMUNICACAO:
+- Linguagem inclusiva (evitar "pessoal/galera")
+- Nao assumir genero (usar nome, nao "ele/ela")
+- Acessibilidade (legendas, letras grandes)
+
+ESPACOS FISICOS:
+- Banheiros acessiveis e neutros
+- Espacos de oracao/meditacao
+- Rampas e elevadores
+- Iluminacao e acustica adequadas
+
+BENEFICIOS:
+- Licenca parental (nao apenas maternidade)
+- Horarios flexiveis (diferentes necessidades)
+- Plano de saude inclusivo
+- PAE com foco em diversidade
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Mapeamento de Diversidade
+Olhe para sua equipe:
+- Quantos homens vs mulheres?
+- Quantas pessoas negras em cargos de lideranca?
+- Quantas pessoas com deficiencia?
+- Diversidade etaria?
+
+Se sua equipe e homogenea, por que? Como mudar?
+
+Exercicio 2: Identificando Vieses
+Complete rapido:
+- Lider born e ___
+- Enfermeiro e ___
+- Engenheiro e ___
+
+Se respondeu "homem", "mulher", "homem" - vies de genero apareceu.
+
+Exercicio 3: Auditoria de Inclusao
+- Alguem ja escondeu identidade no trabalho?
+- Alguem ja se sentiu excluido?
+- Todas as vozes sao ouvidas nas reunioes?
+- Piadas sobre grupos sao toleradas?
+
+Se sim para ultimas 3 perguntas, ha trabalho a fazer.
+
+CONCLUSAO DO MODULO
+
+Diversidade e fato. Inclusao e escolha.
+
+Ambientes verdadeiramente inclusivos nao acontecem por acaso - sao construidos intencionalmente todos os dias.
+
+Como lider, voce tem poder de criar espaco onde todas as pessoas possam prosperar sendo plenamente quem sao.
+
+Proximos Passos:
+1. Faca teste de vies implicito (Harvard)
+2. Identifique 1 vies seu para trabalhar
+3. Tenha conversa sobre inclusao com equipe
+4. Implemente 1 pratica inclusiva esta semana
+
+Lembre-se: Inclusao nao e favor - e justica. E nao e apenas certo moralmente, e estrategicamente inteligente.
+        `
+      }
+    ],
+    atividadesPraticas: [
+      "Teste de vies implicito",
+      "Auditoria de praticas inclusivas",
+      "Workshop de linguagem inclusiva",
+      "Criacao de plano de diversidade e inclusao"
+    ]
   }
 ];
 
