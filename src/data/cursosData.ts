@@ -8996,6 +8996,1234 @@ Proximos Passos:
 
 Lembre-se: Inclusao nao e favor - e justica. E nao e apenas certo moralmente, e estrategicamente inteligente.
         `
+      },
+      {
+        id: 2,
+        titulo: "Equidade de Genero e Combate ao Sexismo",
+        duracao: "50 min",
+        topicos: [
+          "Desigualdades de genero no trabalho",
+          "Sexismo explicito e implicito",
+          "Barreira invisivel (teto de vidro)",
+          "Promocao de equidade de genero",
+          "Lideranca feminina e masculinidades saudaveis"
+        ],
+        materialDidatico: `
+EQUIDADE DE GENERO E COMBATE AO SEXISMO
+
+INTRODUCAO
+
+Equidade de genero nao e questao de mulheres vs homens. E questao de justica, performance e sustentabilidade organizacional.
+
+Dados Globais:
+- Mulheres sao 50% da populacao mas 13% dos CEOs globalmente
+- No ritmo atual, equidade de genero levara 132 anos para ser alcancada (WEF)
+- Empresas com lideranca diversa em genero tem performance 21% superior
+
+Equidade de genero beneficia TODOS.
+
+DESIGUALDADES DE GENERO NO TRABALHO
+
+Principais Desigualdades (Brasil 2024):
+
+1. GAP SALARIAL:
+Mulheres ganham 20-25% menos que homens em mesma funcao e experiencia.
+
+Pior:
+- Mulheres negras ganham 45% menos que homens brancos
+
+2. SEGREGACAO OCUPACIONAL:
+
+Setores "Feminizados" (Baixa Remuneracao):
+- Educacao infantil, enfermagem, cuidados, limpeza
+- Media salarial: R$ 2.500
+
+Setores "Masculinizados" (Alta Remuneracao):
+- Tecnologia, engenharia, financas, executivo
+- Media salarial: R$ 8.000
+
+3. TETO DE VIDRO:
+
+Mulheres sao:
+- 52% dos profissionais de nivel basico
+- 38% dos profissionais de nivel medio
+- 21% dos gerentes
+- 13% dos diretores
+- 5% dos CEOs
+
+Quanto mais alto o cargo, menos mulheres.
+
+4. CARGA DUPLA / TRIPLA:
+
+Mulheres trabalham em media:
+- 8h/dia trabalho remunerado
+- 21h/semana trabalho domestico nao-remunerado
+
+Homens:
+- 8h/dia trabalho remunerado
+- 11h/semana trabalho domestico
+
+Mulheres trabalham 10 horas a mais por semana SEM remuneracao.
+
+5. PENALIDADE DA MATERNIDADE:
+
+Mulheres com filhos:
+- Ganham 20% menos que mulheres sem filhos
+- Sao vistas como "menos comprometidas"
+- Tem menos promocoes
+
+Homens com filhos:
+- Ganham 6% mais (bonus de paternidade!)
+- Sao vistos como "mais responsaveis"
+- Tem mais promocoes
+
+Injustica estrutural.
+
+SEXISMO EXPLICITO E IMPLICITO
+
+SEXISMO EXPLICITO (Hostil):
+Discriminacao aberta e intencional.
+
+Exemplos:
+- "Mulher nao aguenta pressao de cargo executivo"
+- "Nao vou contratar mulher jovem, vai engravidar"
+- "Isso e trabalho de homem"
+- Assedio sexual
+- Piadas sexistas
+
+Mais raro hoje (mas ainda existe).
+
+SEXISMO IMPLICITO (Benevolente):
+Discriminacao sutil, disfarçada de "protecao" ou "elogio".
+
+Exemplos:
+
+"Mulheres sao tao organizadas! Vou colocar voce para fazer as atas."
+→ Delega tarefas administrativas a mulheres, nao estrategicas
+
+"Voce e mae, nao quer viajar a trabalho, ne?"
+→ Assume sem perguntar, limita oportunidades
+
+"Deixa que eu carrego isso, e muito pesado para voce"
+→ Subestima capacidades
+
+"Nossa, voce e agressiva" (para mulher assertiva)
+"Ele e decidido" (para homem assertivo)
+→ Mesmo comportamento, avaliacao diferente
+
+SEXISMO INSTITUCIONAL:
+Politicas que parecem neutras mas desfavorecem mulheres.
+
+Exemplos:
+- Reunioes sempre as 18h (quando mulheres buscam filhos)
+- Promocao baseada em "tempo de casa" (ignora licenca maternidade)
+- Networking em happy hours/futebol (exclui mulheres)
+- Criterios subjetivos de promocao ("fit cultural")
+
+BARREIRA INVISIVEL (Teto de Vidro)
+
+Teto de Vidro:
+Barreira invisivel que impede mulheres de chegarem a cargos de lideranca, apesar de qualificacao.
+
+Causas do Teto de Vidro:
+
+1. VIES DE LIDERANCA MASCULINA:
+
+Estereotipo: Lider = Homem (assertivo, forte, decisivo)
+
+Quando mulher e assertiva: "Agressiva", "Dificil", "Mandona"
+Quando homem e assertivo: "Lider nato", "Decidido"
+
+Duplo vinculo (Double Bind):
+- Se mulher e assertiva → "Agressiva demais"
+- Se mulher e empatica → "Fraca demais"
+
+Homens nao enfrentam esse dilema.
+
+2. FALTA DE PATROCINADORES:
+
+Promocoes nao vem de desempenho apenas - vem de PATROCINIO (alguem poderoso defendendo voce).
+
+Mulheres tem mentores. Homens tem patrocinadores.
+
+Mentoria: "Vou te aconselhar"
+Patrocinio: "Vou te promover"
+
+3. FALTA DE REDES DE PODER:
+
+Decisoes de poder acontecem em:
+- Happy hours
+- Campos de golf e
+- Churrascos
+- Reunioes informais
+
+Mulheres frequentemente excluidas desses espacos.
+
+4. POLITICAS NAO-FAMILIARES:
+
+Falta de:
+- Licenca paternidade estendida
+- Flexibilidade de horario
+- Creche
+- Home office
+
+Como Quebrar o Teto de Vidro:
+
+1. METAS DE DIVERSIDADE:
+"Queremos 40% de mulheres em cargos de lideranca ate 2027"
+
+2. PROCESSOS DE PROMOCAO OBJETIVOS:
+Criterios claros, baseados em dados, nao "feeling"
+
+3. PATROCINIO ATIVO:
+Lideres homens ativamente patrocinando mulheres
+
+4. POLITICAS FAMILY-FRIENDLY:
+Flexibilidade, licenca paternidade, creche
+
+PROMOCAO DE EQUIDADE DE GENERO
+
+Acoes Praticas que Lideres Podem Tomar:
+
+NIVEL INDIVIDUAL:
+
+1. AMPLIFIQUE VOZES DE MULHERES:
+
+Em reunioes:
+- Mulher da ideia, e ignorada
+- Homem repete ideia, e celebrado
+
+Acao: "Como [Nome] ja disse..."
+
+2. INTERROMPA INTERRUPCOES:
+
+Mulheres sao interrompidas 3x mais que homens.
+
+Acao: "Deixa [Nome] terminar"
+
+3. DELEGUE TAREFAS ESTRATEGICAS (Nao So Administrativas):
+
+Evite:
+- Sempre pedir mulheres para fazer atas, organizar festa, fazer cafe
+
+De a mulheres:
+- Projetos de visibilidade
+- Apresentacoes para diretoria
+- Lideranca de iniciativas estrategicas
+
+4. SEJA PATROCINADOR (Nao So Mentor):
+
+Ativamente defenda promocao de mulheres talentosas.
+
+NIVEL ORGANIZACIONAL:
+
+5. ANALISE GAP SALARIAL:
+
+Auditoria anual:
+- Mulheres e homens em mesma funcao ganham o mesmo?
+- Se nao, corrija
+
+6. PROCESSOS CEGOS DE RECRUTAMENTO:
+
+- CVs sem nome (evita vies)
+- Painel de entrevistas diverso
+- Perguntas padronizadas
+
+7. LICENCA PATERNIDADE OBRIGATORIA:
+
+Nao "ofereca" licenca paternidade - EXIJA.
+Quando pais tambem saem, maternidade nao e desvantagem.
+
+8. FLEXIBILIDADE PARA TODOS:
+
+Nao so para maes - para TODOS.
+
+LIDERANCA FEMININA E MASCULINIDADES SAUDAVEIS
+
+Mito: Mulheres lideram "melhor" que homens.
+Verdade: Nao ha estilo de lideranca "feminino" ou "masculino" - ha lideranca eficaz.
+
+Estereotipos Prejudiciais:
+
+"Mulheres sao mais empáticas" → Isso pressiona mulheres a serem sempre "cuidadoras"
+"Homens sao mais decisivos" → Isso pressiona homens a nunca demonstrar vulnerabilidade
+
+Realidade:
+Pessoas de qualquer genero podem ser empaticas E decisivas.
+
+Masculinidades Saudaveis:
+
+Masculinidade Toxica (Prejudica Todos):
+- "Homem nao chora"
+- "Homem tem que ser provedor"
+- "Pedir ajuda e fraqueza"
+- "Cuidar de filhos e coisa de mulher"
+
+Consequencias:
+- Homens adoecem mais (menos cuidado com saude)
+- Suiciodio masculino e 4x maior
+- Homens tem menos redes de apoio emocional
+- Homens perdem conexao com filhos
+
+Masculinidade Saudavel (Beneficia Todos):
+- Homens podem ser vulneraveis
+- Homens podem pedir ajuda
+- Homens podem ser cuidadores
+- Sucesso nao e medido apenas por provimento financeiro
+
+Beneficios:
+- Homens mais saudaveis emocionalmente
+- Relacoes mais profundas
+- Paternidade ativa
+- Ambientes de trabalho mais humanos
+
+Como Promover Masculinidades Saudaveis:
+
+1. NORMALIZE VULNERABILIDADE:
+Homens podem (e devem) falar sobre saude mental, emocoes, desafios.
+
+2. CELEBRE PATERNIDADE ATIVA:
+Homem que tira licenca paternidade nao e "menos comprometido" - e lider modelo.
+
+3. QUESTIONE PIADAS SEXISTAS:
+"E so uma piada" normaliza sexismo.
+
+4. DIVIDA TAREFAS DOMESTICAS E CUIDADO:
+Nao "ajude" sua parceira - DIVIDA responsabilidade igualmente.
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Auditoria de Equidade de Genero
+- % de mulheres em cada nivel hierarquico na sua equipe?
+- Mulheres e homens ganham igual em mesma funcao?
+- Quem recebe tarefas estrategicas vs administrativas?
+
+Exercicio 2: Amplificacao de Vozes
+Proximas 3 reunioes, monitore:
+- Quem fala mais? Homens ou mulheres?
+- Quem e interrompido?
+- De quem as ideias sao creditadas?
+
+Aja ativamente para equilibrar.
+
+Exercicio 3: Conversa sobre Equidade
+Converse com equipe:
+"Como podemos promover equidade de genero aqui?"
+
+CONCLUSAO DO MODULO
+
+Equidade de genero nao e jogo de soma zero. Nao e mulheres ganhando e homens perdendo.
+
+E todos ganhando:
+- Mulheres: Oportunidades justas, salarios iguais, lideranca
+- Homens: Liberdade de serem vulneraveis, paternidade ativa, ambientes saudaveis
+- Empresas: Performance superior, inovacao, atracao de talentos
+
+Proximos Passos:
+1. Analise equidade de genero na sua equipe
+2. Seja patrocinador ativo de mulheres
+3. Amplifique vozes femininas em reunioes
+4. Questione masculinidade toxica
+
+Lembre-se: Equidade de genero e responsabilidade de TODOS, especialmente de homens em posicoes de poder.
+        `
+      },
+      {
+        id: 3,
+        titulo: "Antirracismo e Combate ao Racismo Estrutural",
+        duracao: "55 min",
+        topicos: [
+          "Racismo estrutural e institucional",
+          "Colorismo e privilegio branco",
+          "Representatividade e equidade racial",
+          "Praticas antirracistas",
+          "Acao afirmativa e reparacao historica"
+        ],
+        materialDidatico: `
+ANTIRRACISMO E COMBATE AO RACISMO ESTRUTURAL
+
+INTRODUCAO
+
+Brasil e pais com segunda maior populacao negra do mundo (56% da populacao se declara preta ou parda).
+
+Mas:
+- Pessoas negras sao 70% da populacao em situacao de pobreza
+- Pessoas negras sao 4% dos cargos executivos
+- Pessoas negras ganham 45% menos que brancos em mesma funcao
+- Mulheres negras sao as mais afetadas pela desigualdade
+
+Isso nao e acidente. E resultado de racismo estrutural.
+
+O QUE E RACISMO ESTRUTURAL E INSTITUCIONAL
+
+RACISMO INDIVIDUAL:
+Preconceito e discriminacao de uma pessoa contra outra baseado em raca.
+Exemplo: Pessoa branca ofende pessoa negra com termo racista.
+
+RACISMO INSTITUCIONAL:
+Praticas de instituicoes que discriminam pessoas negras, mesmo sem intencao explicita.
+Exemplo: Empresa que so contrata via indicacao (redes sao majoritariamente brancas).
+
+RACISMO ESTRUTURAL:
+Sistema social, economico, politico que normaliza e perpetua desigualdades raciais.
+
+Racismo estrutural significa:
+- Nao e apenas "pessoas racistas" - e todo sistema organizado para favorecer brancos
+- Esta em politicas, processos, normas, cultura
+- Pessoas bem-intencionadas podem perpetuar racismo estrutural sem perceber
+
+Exemplo de Racismo Estrutural no Trabalho:
+
+1. RECRUTAMENTO:
+Processos valorizam "fit cultural" = "Parece com quem ja esta aqui" = Brancos contratam brancos
+
+CVs com nomes "brancos" (Joao, Maria) recebem 30% mais retorno que CVs identicos com nomes "negros" (Joao da Silva, Maria Aparecida).
+
+2. PROMOCAO:
+Criterios subjetivos favorecem quem tem acesso a redes de poder (majoritariamente brancas).
+
+3. NETWORKING:
+Eventos em clubes exclusivos, golfe, happy hours caros = Exclui pessoas negras de classes populares.
+
+4. CODIGO DE VESTIMENTA:
+"Cabelo profissional" = Cabelo liso (discrimina cabelos afro/crespos)
+"Aparencia corporativa" = Estetica branca europeia
+
+5. MICROAGRESSOES:
+"Voce e articulado!" (Surpresa que pessoa negra seja articulada = Racismo)
+Tocar cabelo de pessoa negra sem permissao
+"De onde voce e? Nao, DE ONDE VOCE E MESMO?"
+
+COLORISMO E PRIVILEGIO BRANCO
+
+COLORISMO:
+Discriminacao baseada em tom de pele DENTRO da comunidade negra.
+
+Hierarquia:
+- Pessoas de pele mais clara (pardas) tem mais oportunidades
+- Pessoas de pele mais escura (pretas) sofrem mais discriminacao
+
+Exemplo:
+- 70% das pessoas em cargos de lideranca que se declaram "pardas" tem pele clara
+- Pessoas pretas (pele escura) sao maioria em trabalhos precarios
+
+PRIVILEGIO BRANCO:
+Vantagens sistematicas que pessoas brancas tem por serem brancas, independente de esforco ou merito.
+
+Exemplos de Privilegio Branco:
+
+- Nao ser seguido em loja por segurancas
+- Nao ter CV ignorado por ter nome "negro"
+- Nao ouvir "Voce so esta aqui por cota"
+- Nao ter cabelo natural visto como "nao-profissional"
+- Ser visto como individuo (nao como representante de toda raca)
+- Nao ser parado por policia sem razao
+- Procurar "curativo cor de pele" e encontrar da sua cor
+
+Importante:
+Privilegio branco NAO significa que brancos nao sofrem ou nao trabalham duro.
+Significa que raca nao e uma das barreiras que enfrentam.
+
+Pessoa branca pobre ainda tem privilegio racial (mas nao tem privilegio de classe).
+
+REPRESENTATIVIDADE E EQUIDADE RACIAL
+
+Representatividade Importa:
+
+Quando pessoas negras nao veem outras pessoas negras em cargos de lideranca:
+- "Esse lugar nao e para mim"
+- Falta de modelos
+- Falta de esperanca
+
+Quando ha representatividade:
+- "Eu posso chegar la"
+- Modelos de inspiracao
+- Caminhos possiveis
+
+Dados Brasileiros:
+
+POPULACAO: 56% negra (pretos + pardos)
+
+CARGOS:
+- Nivel operacional: 60% negros
+- Nivel tecnico: 40% negros
+- Gerencia: 20% negros
+- Diretoria: 10% negros
+- CEO: 4% negros
+
+Piramide social = Piramide racial.
+
+Quanto mais alto, mais branco.
+
+Equidade Racial significa:
+Representacao proporcional em TODOS os niveis, nao apenas nos cargos baixos.
+
+PRATICAS ANTIRRACISTAS
+
+Diferenca:
+
+NAO-RACISTA:
+"Eu nao sou racista."
+Postura passiva. Nao perpetua racismo, mas tambem nao combate.
+
+ANTIRRACISTA:
+"Eu combato racismo ativamente."
+Postura ativa. Identifica e desmantel a racismo.
+
+Como Ser Antirracista (Acoes Concretas):
+
+NIVEL INDIVIDUAL:
+
+1. RECONHECA PRIVILEGIOS (Se Branco):
+"Tenho vantagens estruturais por ser branco. Vou usa-las para promover equidade."
+
+2. ESCUTE PESSOAS NEGRAS:
+Nao fale POR pessoas negras. Amplifique vozes.
+
+3. EDUQUE-SE:
+Livros, cursos, documentarios sobre racismo.
+Responsabilidade de aprender e sua, nao de pessoas negras te educarem.
+
+4. INTERROMPA RACISMO:
+Quando presenciar piada racista, comentario, acao → INTERROMPA.
+
+"Isso e racista. Nao vamos aceitar isso aqui."
+
+5. APOIE NEGOCIOS NEGROS:
+Use poder de compra para promover equidade economica.
+
+NIVEL ORGANIZACIONAL:
+
+6. METAS DE DIVERSIDADE RACIAL:
+"Queremos 40% de pessoas negras em cargos de lideranca ate 2027."
+
+7. RECRUTAMENTO ATIVO DE TALENTOS NEGROS:
+- Parcerias com universidades historicamente negras
+- Programas de trainee exclusivos
+- Recrutamento em comunidades negras
+
+8. PROCESSOS CEGOS:
+- CVs sem nome, foto
+- Entrevistas estruturadas (mesmas perguntas para todos)
+- Paineis de entrevista diversos
+
+9. POLITICA DE CABELO:
+Aceite e celebre cabelos naturais/afro/crespos.
+Proiba discriminacao capilar.
+
+10. COMBATE A MICROAGRESSOES:
+Treinamentos sobre microagressoes raciais.
+Consequencias para quem as perpetua.
+
+11. MENTORIA E PATROCINIO:
+Lideres brancos ativamente patrocinando talentos negros.
+
+12. AUDITORIA SALARIAL:
+Pessoas negras e brancas em mesma funcao ganham o mesmo?
+Se nao, corrija.
+
+ACAO AFIRMATIVA E REPARACAO HISTORICA
+
+ACAO AFIRMATIVA (Cotas):
+Politicas que reservam vagas/oportunidades para grupos historicamente excluidos.
+
+Exemplo:
+- 50% das vagas de trainee para pessoas negras
+- 30% dos cargos de lideranca para pessoas negras
+
+Por Que Cotas Sao Necessarias:
+
+MITO: "Devemos contratar pelo merito, nao pela cor"
+
+REALIDADE:
+- Sistema atual JA favorece brancos (racismo estrutural)
+- "Merito" e construido em sistema desigual
+- Pessoa negra precisa ser 2x melhor para conseguir mesma oportunidade
+- Cotas corrigem distorcao, nao criam
+
+Analogia:
+Corrida de 100m onde brancos largam 50m a frente.
+"Merito" = Brancos ganham porque largaram na frente.
+Cotas = Todos largam do mesmo lugar.
+
+REPARACAO HISTORICA:
+
+Brasil foi ultimo pais a abolir escravidao (1888 - apenas 136 anos atras).
+
+Pos-abolicao:
+- Nenhuma reparacao a pessoas escravizadas
+- Politicas de "branqueamento" (incentivo a imigracao europeia)
+- Exclusao de pessoas negras de terra, educacao, trabalho formal
+
+Consequencia: Desigualdade racial atual.
+
+Reparacao historica significa:
+Reconhecer divida historica e ativamente corrigi-la atraves de politicas afirmativas.
+
+Objecoes Comuns e Respostas:
+
+"Cotas sao racismo reverso."
+→ Nao. Racismo e sistema de poder. Cotas corrigem desigualdade, nao criam discriminacao.
+
+"Cotas baixam qualidade."
+→ Falso. Estudos mostram que cotistas tem desempenho igual ou superior.
+
+"Eu sou branco e pobre, nao tenho privilegio."
+→ Voce tem privilegio racial (nao de classe). Lutas se somam, nao competem.
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Auditoria Racial
+- % de pessoas negras em cada nivel hierarquico?
+- Pessoas negras e brancas ganham igual?
+- Quem tem acesso a oportunidades de desenvolvimento?
+
+Exercicio 2: Teste de Privilegio Branco (Se Branco)
+Responda:
+- Ja fui seguido em loja por seguranca por "parecer suspeito"?
+- Ja tive cabelo/estetica rotulados como "nao-profissionais"?
+- Ja ouvi "Voce so esta aqui por cota"?
+
+Se respondeu nao, voce tem privilegio branco.
+
+Exercicio 3: Plano Antirracista
+Liste 3 acoes concretas que voce fara nos proximos 30 dias para combater racismo.
+
+CONCLUSAO DO MODULO
+
+Antirracismo nao e opcional. E obrigacao moral e estrategica.
+
+Empresas antirracistas:
+- Refletem sociedade (56% negra)
+- Tem performance superior (diversidade = inovacao)
+- Atraem talentos
+- Constroem reputacao
+- Promovem justica
+
+Racismo nao vai acabar sozinho. Exige acao intencional, continua, corajosa.
+
+Proximos Passos:
+1. Analise equidade racial na sua equipe
+2. Implemente 1 pratica antirracista este mes
+3. Interrompa proxima situacao racista que presenciar
+4. Eduque-se continuamente
+
+Lembre-se: Ser nao-racista nao basta. Seja antirracista.
+        `
+      },
+      {
+        id: 4,
+        titulo: "Inclusao de Pessoas LGBTQIA+ e Neurodivergentes",
+        duracao: "50 min",
+        topicos: [
+          "Diversidade de orientacao sexual e identidade de genero",
+          "Combate a LGBTfobia",
+          "Neurodiversidade (Autismo, TDAH, Dislexia)",
+          "Acessibilidade e adaptacoes razoaveis",
+          "Linguagem inclusiva e respeitosa"
+        ],
+        materialDidatico: `
+INCLUSAO DE PESSOAS LGBTQIA+ E NEURODIVERGENTES
+
+INTRODUCAO
+
+Pessoas LGBTQIA+ e neurodivergentes sao frequentemente invisiveis ou excluidas no ambiente de trabalho.
+
+Dados:
+- 40% das pessoas LGBTQIA+ escondem identidade no trabalho por medo (LinkedIn)
+- 60% ja sofreram discriminacao no trabalho
+- Pessoas neurodivergentes tem taxa de desemprego 3x maior
+
+Ambiente inclusivo significa pessoas podem ser autenticas e prosperar.
+
+DIVERSIDADE DE ORIENTACAO SEXUAL E IDENTIDADE DE GENERO
+
+Conceitos Basicos:
+
+ORIENTACAO SEXUAL:
+Por quem voce se sente atraido romanticamente/sexualmente.
+
+- Heterossexual: Atraido por genero oposto
+- Homossexual (Gay/Lesbica): Atraido por mesmo genero
+- Bissexual: Atraido por mais de um genero
+- Pansexual: Atraido por pessoas independente de genero
+- Assexual: Nao sente atracao sexual
+
+IDENTIDADE DE GENERO:
+Como voce se identifica internamente.
+
+- Cisgener o: Identidade coincide com sexo biologico (ex: nasceu mulher, se identifica mulher)
+- Transgenero: Identidade difere de sexo biologico (ex: nasceu homem, se identifica mulher)
+- Nao-binario: Nao se identifica exclusivamente como homem ou mulher
+- Genero-fluido: Identidade varia ao longo do tempo
+
+EXPRESSAO DE GENERO:
+Como voce se apresenta externamente (roupa, cabelo, comportamento).
+
+Importante:
+- Orientacao sexual ≠ Identidade de genero
+- Mulher trans pode ser lesbica, heterossexual, bi, etc
+- Pessoa nao-binaria pode ser gay, hetero, etc
+
+COMBATE A LGBTFOBIA
+
+LGBTfobia:
+Discriminacao, preconceito, violencia contra pessoas LGBTQIA+.
+
+Formas de LGBTfobia no Trabalho:
+
+1. EXCLUSAO:
+- Nao convidar pessoa LGBT para eventos sociais
+- Piadas homofobicas/transfobicas
+- Isolar pessoa LGBT
+
+2. INVALIDACAO:
+- Negar uso de nome social (pessoa trans)
+- Usar pronomes errados intencionalmente
+- "E uma fase"
+- "Voce nao parece gay"
+
+3. ASSEDIO:
+- Perguntas invasivas sobre vida pessoal/sexual
+- Comentarios sexualizados
+- Assedio moral
+
+4. DISCRIMINACAO INSTITUCIONAL:
+- Politicas que so reconhecem casamentos heterossexuais
+- Banheiros que forcam pessoas trans a escolherem "homem" ou "mulher"
+- Codigo de vestimenta rigido baseado em genero binario
+
+5. VIOLENCIA:
+- Brasil e pais que mais mata pessoas trans no mundo
+- 1 pessoa LGBT+ e morta a cada 34 horas no Brasil
+
+Como Combater LGBTfobia:
+
+NIVEL INDIVIDUAL:
+
+1. USE PRONOMES CORRETOS:
+Pergunte: "Quais sao seus pronomes?"
+Respeite: Ela/dela, Ele/dele, Elu/delu (nao-binario)
+
+Se errar: Corrija rapidamente e siga em frente. Nao faca drama.
+
+2. USE NOME SOCIAL:
+Se pessoa trans usa nome social (diferente de nome de registro), USE nome social.
+Nome social e nome verdadeiro.
+
+3. NAO FACA PERGUNTAS INVASIVAS:
+NAO: "Voce ja fez a cirurgia?"
+NAO: "Como e o sexo gay?"
+NAO: "Quem e o homem/mulher na relacao?"
+
+4. INCLUA TODOS:
+"Meu marido..." (homem gay)
+"Minha esposa..." (mulher lesbica)
+→ Trate igual a casais heterossexuais.
+
+5. INTERROMPA PIADAS HOMOFOBICAS:
+"Isso e ofensivo. Nao vamos aceitar isso aqui."
+
+NIVEL ORGANIZACIONAL:
+
+6. POLITICAS INCLUSIVAS:
+- Beneficios para parceiros do mesmo genero
+- Licenca parental para casais homoafetivos
+- Cobertura de saude para tratamentos de transicao (pessoas trans)
+
+7. BANHEIROS INCLUSIVOS:
+- Banheiros unissex/neutros
+- Permitir que pessoas trans usem banheiro de sua identidade de genero
+
+8. CODIGO DE VESTIMENTA FLEXIVEL:
+Nao force "roupa feminina" ou "roupa masculina".
+Permite que cada pessoa vista-se conforme identidade.
+
+9. NOME SOCIAL EM SISTEMAS:
+Sistemas internos devem exibir nome social, nao nome de registro.
+
+10. DIA/SEMANA DO ORGULHO LGBT:
+Celebre diversidade. Mostre apoio visivel.
+
+NEURODIVERSIDADE (AUTISMO, TDAH, DISLEXIA)
+
+Neurodiversidade:
+Reconhecimento de que cerebros funcionam de formas diferentes - e isso e valioso.
+
+Tipos de Neurodivergencia:
+
+1. AUTISMO (TEA - Transtorno do Espectro Autista):
+- Processamento sensorial diferente
+- Comunicacao social atipica
+- Padroes de comportamento repetitivos
+- Hiperfoco em interesses especificos
+
+Forcas:
+- Atencao a detalhes
+- Pensamento sistematico
+- Honestidade direta
+- Expertise profunda em areas de interesse
+
+Desafios:
+- Interacoes sociais "pequenas conversas"
+- Ambientes sensoriais intensos (barulho, luzes)
+- Mudancas de rotina
+- Comunicacao implicita (sarcasmo, metaforas)
+
+2. TDAH (Transtorno do Deficit de Atencao com Hiperatividade):
+- Dificuldade de concentracao em tarefas nao-estimulantes
+- Hiperatividade/impulsividade
+- Dificuldade de organizacao
+
+Forcas:
+- Criatividade
+- Pensamento divergente
+- Hiperfoco em areas de interesse
+- Alta energia
+
+Desafios:
+- Tarefas repetitivas
+- Prazos longos sem checkpoints
+- Organizacao de tempo
+
+3. DISLEXIA:
+- Dificuldade de processamento de leitura/escrita
+
+Forcas:
+- Pensamento visual-espacial
+- Solucao criativa de problemas
+- Visao holistica (big picture)
+
+Desafios:
+- Leitura longa
+- Escrita
+- Ortografia
+
+ACESSIBILIDADE E ADAPTACOES RAZOAVEIS
+
+Lei Brasileira de Inclusao (LBI):
+Empresas devem fazer adaptacoes razoaveis para pessoas com deficiencia (incluindo neurodivergencias).
+
+Adaptacoes para Pessoas Neurodivergentes:
+
+Para Autismo:
+- Ambiente de trabalho previsivel (rotinas claras)
+- Comunicacao direta e literal (evitar sarcasmo)
+- Espaco de trabalho com controle sensorial (fones com cancelamento de ruido, luz ajustavel)
+- Pausas sensoriais
+- Instrucoes escritas (nao apenas orais)
+
+Para TDAH:
+- Prazos com checkpoints frequentes
+- Tarefas variadas (nao repetitivas)
+- Flexibilidade de movimento (nao obrigar sentar 8h parado)
+- Ferramentas de organizacao (apps, lembretes)
+- Pausas frequentes
+
+Para Dislexia:
+- Softwares de leitura em voz alta
+- Tempo adicional para leitura/escrita
+- Apresentacoes visuais (nao so texto)
+- Gravacao de reunioes
+
+Adaptacoes Custam Pouco ou Nada:
+- Permitir fones de ouvido: R$ 0
+- Comunicacao clara: R$ 0
+- Flexibilidade de movimento: R$ 0
+- Software de leitura: R$ 50/mes
+
+Beneficio: Acesso a talentos unicos.
+
+LINGUAGEM INCLUSIVA E RESPEITOSA
+
+Principios de Linguagem Inclusiva:
+
+1. USE LINGUAGEM NEUTRA QUANDO POSSIVEL:
+
+NAO: "Prezados senhores"
+SIM: "Prezados" ou "Prezadas pessoas" ou "Equipe"
+
+NAO: "Maos a obra, rapazes!"
+SIM: "Maos a obra, pessoal!"
+
+2. NAO ASSUMA GENERO:
+
+NAO: "Traga sua esposa para confraternizacao"
+SIM: "Traga seu/sua parceiro(a) para confraternizacao"
+
+3. RESPEITE PRONOMES:
+
+Pergunte pronomes como pergunta nome.
+"Oi, sou Joao, meus pronomes sao ele/dele. E voce?"
+
+4. USE NOME SOCIAL:
+
+Se pessoa pede para ser chamada de [Nome], use [Nome].
+Nao importa o que esta em documentos.
+
+5. EVITE TERMOS GENERICOS MASCULINOS:
+
+NAO: "Os candidatos devem..."
+SIM: "As pessoas candidatas devem..." ou "Candidatos e candidatas devem..."
+
+6. NAO USE DIAGNOSTICOS COMO XINGAMENTOS:
+
+NAO: "Voce e autista?" (Como ofensa)
+NAO: "Que bipolar!" (Como critica)
+NAO: "Ela e meio esquizofrenica" (Como zueira)
+
+Isso estigmatiza pessoas com diagnosticos reais.
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Auditoria de Inclusao LGBT e Neurodiversidade
+- Pessoas LGBT se sentem seguras sendo autenticas aqui?
+- Ha politicas inclusivas para LGBT?
+- Ha adaptacoes para neurodivergentes?
+
+Exercicio 2: Pratica de Pronomes
+Adicione pronomes a sua assinatura de email.
+"Joao Silva | Gerente | Ele/dele"
+
+Isso normaliza pratica e mostra que e espaco seguro.
+
+Exercicio 3: Linguagem Inclusiva
+Revise 1 comunicacao corporativa (email, politica, manual).
+Identifique linguagem nao-inclusiva. Corrija.
+
+CONCLUSAO DO MODULO
+
+Inclusao de pessoas LGBTQIA+ e neurodivergentes nao e "politicamente correto" - e justica e inteligencia.
+
+Ambientes inclusivos:
+- Atraem talentos diversos
+- Pessoas trabalham melhor quando podem ser autenticas
+- Inovacao vem de perspectivas diversas
+- Conformidade legal
+
+Inclusao requer intencao, educacao, acoes concretas.
+
+Proximos Passos:
+1. Adicione pronomes a assinatura de email
+2. Pergunte a equipe que adaptacoes precisam
+3. Revise politicas para garantir inclusao LGBT
+4. Interrompa proxima piada LGBTfobica
+
+Lembre-se: Quando pessoas podem ser plenamente quem sao, todos prosperamos.
+        `
+      },
+      {
+        id: 5,
+        titulo: "Criacao de Cultura Verdadeiramente Inclusiva",
+        duracao: "45 min",
+        topicos: [
+          "Diferenca entre diversidade simbolica e inclusao real",
+          "Metricas de diversidade e inclusao",
+          "Responsabilidade e prestacao de contas",
+          "Grupos de afinidade e aliados",
+          "Sustentabilidade de iniciativas de D&I"
+        ],
+        materialDidatico: `
+CRIACAO DE CULTURA VERDADEIRAMENTE INCLUSIVA
+
+INTRODUCAO
+
+Muitas empresas fazem "diversity washing":
+- Colocam pessoas diversas em publicidade
+- Mas nao promovem internamente
+- Nao criam ambiente inclusivo
+- Usam diversidade como marketing
+
+Cultura verdadeiramente inclusiva vai alem de contratar pessoas diversas.
+E criar ambiente onde TODAS as pessoas prosperam.
+
+DIFERENCA ENTRE DIVERSIDADE SIMBOLICA E INCLUSAO REAL
+
+DIVERSIDADE SIMBOLICA (Tokenismo):
+Contratar pessoas de grupos minoritarios para "parecer bem", mas sem real inclusao.
+
+Sinais de Tokenismo:
+
+1. UNICA PESSOA:
+Unica mulher na equipe, unico negro, unico LGBT.
+→ Pessoa vira "representante de todo grupo"
+→ Pressao imensa
+
+2. SEM VOZ REAL:
+Pessoa esta presente mas opiniao nao e ouvida/valorizada.
+
+3. SEM OPORTUNIDADES DE CRESCIMENTO:
+Pessoa fica estagnada em cargo inicial.
+
+4. USADA EM MARKETING:
+Foto de pessoa diversa em site, mas nao em cargos de decisao.
+
+5. NAO-PERTENCIMENTO:
+Pessoa sente que "nao pertence", esta la para "preencher cota".
+
+INCLUSAO REAL:
+
+Sinais de Inclusao Real:
+
+1. REPRESENTACAO PROPORCIIONAL EM TODOS OS NIVEIS:
+Nao so nivel operacional - tambem gerencia, diretoria, CEO.
+
+2. VOZ E INFLUENCIA:
+Pessoas diversas tem poder de decisao real.
+
+3. CRESCIMENTO E PROMOCOES:
+Pessoas diversas crescem na mesma velocidade que maioria.
+
+4. PERTENCIMENTO:
+Pessoas sentem que pertencem, nao que sao "exceçao".
+
+5. POLITICAS E CULTURA INCLUSIVAS:
+Ambiente adaptado para TODOS, nao so para maioria.
+
+METRICAS DE DIVERSIDADE E INCLUSAO
+
+"O que nao e medido nao e gerenciado."
+
+Metricas de DIVERSIDADE (Quantitativas):
+
+1. REPRESENTACAO POR NIVEL HIERARQUICO:
+% de mulheres, negros, LGBT, PcD em cada nivel (operacional, tecnico, gerencia, diretoria, C-level)
+
+Meta: Refletir demografia da sociedade.
+
+2. GAP SALARIAL:
+Diferenca salarial entre grupos demograficos em mesma funcao.
+
+Meta: Gap zero.
+
+3. TAXA DE RETENCAO:
+% de pessoas de grupos minoritarios que permanecem na empresa.
+
+Se rotatividade de mulheres negras e 40% e de homens brancos e 10%, ha problema.
+
+4. TAXA DE PROMOCAO:
+% de pessoas de cada grupo que sao promovidas anualmente.
+
+Se homens brancos sao promovidos 2x mais, ha vies.
+
+Metricas de INCLUSAO (Qualitativas):
+
+5. PESQUISA DE PERTENCIMENTO:
+"Sinto que pertenco aqui" (1-10)
+"Posso ser autentico aqui" (1-10)
+"Minhas ideias sao valorizadas" (1-10)
+
+Analise por grupo demografico.
+Se mulheres respondem 5 e homens 8, ha gap de inclusao.
+
+6. SEGURANCA PSICOLOGICA:
+"Posso falar sobre discriminacao sem medo de retaliacao?"
+
+7. ACESSO A OPORTUNIDADES:
+"Tenho acesso igual a projetos de visibilidade, treinamentos, mentorias?"
+
+RESPONSABILIDADE E PRESTACAO DE CONTAS
+
+Diversidade e Inclusao nao podem ser "iniciativa de RH".
+Tem que ser responsabilidade de LIDERANCA.
+
+Como Criar Responsabilidade:
+
+1. METAS DE D&I PARA LIDERANCA:
+
+Bonus de CEOs/diretores vinculado a metas de D&I.
+
+"Se nao atingirmos 30% de mulheres em gerencia ate 2025, bonus reduzido em 20%."
+
+Isso torna D&I prioridade estrategica.
+
+2. RELATORIOS PUBLICOS:
+
+Transparencia:
+- Publica dados de diversidade anualmente
+- Publica gap salarial
+- Publica plano de acao
+
+Transparencia gera pressao para agir.
+
+3. COMITE DE D&I COM PODER REAL:
+
+Nao comite "consultivo" que ninguem ouve.
+Comite com poder de veto em decisoes que impactam D&I.
+
+4. CONSEQUENCIAS PARA DISCRIMINACAO:
+
+Politica clara:
+"Discriminacao, assedio, microagressoes = Advertencia/demissao."
+
+Consequencias reais para violacoes.
+
+GRUPOS DE AFINIDADE E ALIADOS
+
+GRUPOS DE AFINIDADE (ERGs - Employee Resource Groups):
+Grupos voluntarios de funcionarios que compartilham identidade ou experiencia.
+
+Exemplos:
+- Grupo de Mulheres
+- Grupo de Pessoas Negras
+- Grupo LGBT
+- Grupo de Pessoas com Deficiencia
+- Grupo de Pais/Maes
+
+Funcoes de ERGs:
+
+1. SUPORTE EMOCIONAL:
+Espaco seguro para compartilhar experiencias, desafios.
+
+2. NETWORKING:
+Conexao entre pessoas de grupo minoritario.
+
+3. DESENVOLVIMENTO:
+Mentorias, treinamentos, apoio a crescimento.
+
+4. ADVOCACY:
+Levar demandas a lideranca.
+
+5. EDUCACAO:
+Educar empresa sobre experiencias de grupo.
+
+Como Apoiar ERGs:
+
+- Tempo remunerado para participar
+- Budget para eventos/iniciativas
+- Acesso a lideranca
+- Reconhecimento de contribuicoes
+
+ALIADOS:
+Pessoas de grupo majoritario que apoiam ativamente grupos minoritarios.
+
+Como Ser Aliado Eficaz:
+
+1. ESCUTE MAIS, FALE MENOS:
+Amplifique vozes de grupos minoritarios, nao fale por eles.
+
+2. EDUQUE-SE:
+Responsabilidade sua aprender, nao de grupos minoritarios te educarem.
+
+3. USE SEU PRIVILEGIO PARA AJUDAR:
+- Indique pessoas de grupos minoritarios para oportunidades
+- Interrompa discriminacao
+- Patrocine (nao apenas mentore)
+
+4. ACEITE FEEDBACK:
+Quando errar, ouca, desculpe-se, aprenda.
+
+5. NAO ESPERE RECONHECIMENTO:
+Ser aliado nao e para ganhar "pontos". E fazer o certo.
+
+SUSTENTABILIDADE DE INICIATIVAS DE D&I
+
+Muitas iniciativas de D&I morrem apos 1-2 anos.
+
+Por que falham:
+
+1. FALTA DE COMPROMISSO DA LIDERANCA:
+D&I e delegado para RH. Lideranca nao se envolve.
+
+2. FALTA DE RECURSOS:
+Nao ha budget, tempo, pessoas dedicadas.
+
+3. RESISTENCIA NAO-ENDEREÇADA:
+Pessoas resistem ("Isso e besteira politicamente correta") e nao ha consequencias.
+
+4. FALTA DE MEDICAO:
+Nao ha metricas, entao nao da para saber se funciona.
+
+5. INICIATIVAS SUPERFICIAIS:
+Palestras sem mudancas estruturais reais.
+
+Como Garantir Sustentabilidade:
+
+1. COMPROMISSO DE CIMA:
+CEO e board comprometidos publicamente.
+
+2. RECURSOS DEDICADOS:
+- Equipe de D&I com orcamento
+- Tempo de trabalho alocado para iniciativas
+
+3. INTEGRAÇÃO EM TODOS PROCESSOS:
+D&I nao e "programa separado".
+D&I esta integrado em:
+- Recrutamento
+- Promocao
+- Avaliacao de desempenho
+- Desenvolvimento
+- Remuneracao
+
+4. MEDICAO E AJUSTE CONTINUO:
+Revisao trimestral de metricas.
+Ajuste de estrategia baseado em dados.
+
+5. MUDANCAS ESTRUTURAIS:
+Nao so treinamentos.
+Mudancas em:
+- Politicas
+- Processos
+- Sistemas
+- Cultura
+
+6. CELEBRE PROGRESSO, RECONHEÇA GAPS:
+Transparencia sobre o que funciona e o que ainda precisa melhorar.
+
+EXERCICIOS PRATICOS
+
+Exercicio 1: Auditoria de D&I
+Colete dados:
+- Representacao por nivel
+- Gap salarial
+- Taxas de retencao e promocao
+
+Identifique gaps.
+
+Exercicio 2: Pesquisa de Inclusao
+Pergunte anonimamente:
+- "Voce sente que pertence aqui?" (1-10)
+- "Voce pode ser autentico aqui?" (1-10)
+
+Analise por grupo demografico.
+
+Exercicio 3: Plano de Acao
+Com base em dados, crie plano com:
+- 3 metas especificas
+- Acoes concretas
+- Responsaveis
+- Timeline
+
+CONCLUSAO DO MODULO
+
+Diversidade sem inclusao e decoracao. Inclusao sem diversidade e ilusao.
+
+Cultura verdadeiramente inclusiva:
+- Representa sociedade em todos os niveis
+- Todos se sentem pertencentes
+- Todos tem oportunidades iguais
+- Diferenças sao celebradas, nao toleradas
+- Lideranca e responsavel
+
+Construir cultura inclusiva e trabalho de longo prazo, continuo, intencional.
+
+Mas beneficios sao imensos:
+- Inovacao
+- Performance
+- Atracao e retencao
+- Reputacao
+- JUSTIÇA
+
+Proximos Passos:
+1. Colete metricas de D&I
+2. Identifique maiores gaps
+3. Crie plano de acao com metas
+4. Responsabilize lideranca
+
+Lembre-se: Diversidade e fato. Inclusao e escolha. Escolha inclusao.
+
+FIM DO CURSO DE DIVERSIDADE, INCLUSAO E RESPEITO
+        `
       }
     ],
     atividadesPraticas: [
