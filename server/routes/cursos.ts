@@ -329,7 +329,12 @@ router.get('/certificado/:cursoSlug', authenticateToken, async (req: AuthRequest
     const { cursoSlug } = req.params;
     const colaboradorId = req.user?.userId;
 
+    console.log('🎓 [BACKEND-CERTIFICADO] Buscando certificado');
+    console.log('🎓 [BACKEND-CERTIFICADO] Curso slug:', cursoSlug);
+    console.log('🎓 [BACKEND-CERTIFICADO] Colaborador ID:', colaboradorId);
+
     if (!colaboradorId) {
+      console.error('❌ [BACKEND-CERTIFICADO] Colaborador não autorizado');
       return res.status(401).json({ error: 'Não autorizado' });
     }
 
@@ -340,13 +345,20 @@ router.get('/certificado/:cursoSlug', authenticateToken, async (req: AuthRequest
       )
     });
 
+    console.log('🎓 [BACKEND-CERTIFICADO] Certificado encontrado?', !!certificado);
+    if (certificado) {
+      console.log('🎓 [BACKEND-CERTIFICADO] ID do certificado:', certificado.id);
+    }
+
     if (!certificado) {
+      console.log('⚠️ [BACKEND-CERTIFICADO] Retornando 404');
       return res.status(404).json({ error: 'Certificado não encontrado' });
     }
 
+    console.log('✅ [BACKEND-CERTIFICADO] Retornando certificado com sucesso');
     return res.json(certificado);
   } catch (error) {
-    console.error('Erro ao buscar certificado:', error);
+    console.error('❌ [BACKEND-CERTIFICADO] Erro ao buscar certificado:', error);
     return res.status(500).json({ error: 'Erro ao buscar certificado' });
   }
 });

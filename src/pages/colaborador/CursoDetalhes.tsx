@@ -116,7 +116,7 @@ export default function CursoDetalhes() {
   });
 
   // Buscar certificado (se existir)
-  const { data: certificado } = useQuery({
+  const { data: certificado, refetch: refetchCertificado } = useQuery({
     queryKey: ['/api/cursos/certificado', slug],
     queryFn: async () => {
       let token = localStorage.getItem('token');
@@ -126,16 +126,30 @@ export default function CursoDetalhes() {
       
       if (!token) return null;
       
+      console.log('🎓 [CERTIFICADO] Buscando certificado para curso:', slug);
       const response = await fetch(`/api/cursos/certificado/${slug}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
       
-      if (response.status === 404) return null;
-      if (!response.ok) throw new Error('Erro ao buscar certificado');
-      return response.json();
+      console.log('🎓 [CERTIFICADO] Status da resposta:', response.status);
+      
+      if (response.status === 404) {
+        console.log('⚠️ [CERTIFICADO] Certificado não encontrado (404)');
+        return null;
+      }
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ [CERTIFICADO] Erro ao buscar certificado:', errorText);
+        throw new Error('Erro ao buscar certificado');
+      }
+      
+      const cert = await response.json();
+      console.log('✅ [CERTIFICADO] Certificado encontrado:', cert);
+      return cert;
     },
+    enabled: !!slug,
     // Polling automático: verifica a cada 2 segundos se o certificado foi criado (se avaliação foi realizada mas certificado não existe)
     refetchInterval: (query) => {
       const avaliacaoRealizada = progresso?.avaliacaoFinalRealizada || false;
