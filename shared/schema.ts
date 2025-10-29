@@ -483,3 +483,53 @@ export const insertCursoAvaliacaoSchema = z.object({
 });
 
 export type InsertCursoAvaliacao = z.infer<typeof insertCursoAvaliacaoSchema>;
+
+// Tabela de Disponibilidade de Cursos (Sistema de Controle de Acesso)
+export const cursoDisponibilidade = pgTable('curso_disponibilidade', {
+  id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+  colaboradorId: uuid('colaborador_id').references(() => colaboradores.id, { onDelete: 'cascade' }).notNull(),
+  cursoId: varchar('curso_id', { length: 100 }).notNull(),
+  empresaId: uuid('empresa_id').references(() => empresas.id, { onDelete: 'cascade' }).notNull(),
+  disponivel: boolean('disponivel').default(false).notNull(),
+  periodicidadeDias: integer('periodicidade_dias'),
+  ultimaLiberacao: timestamp('ultima_liberacao', { withTimezone: true }),
+  proximaDisponibilidade: timestamp('proxima_disponibilidade', { withTimezone: true }),
+  liberadoPor: uuid('liberado_por'),
+  historicoLiberacoes: jsonb('historico_liberacoes').default([]),
+  metadados: jsonb('metadados').default({}),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  colaboradorIdx: index('idx_curso_disp_colaborador_id').on(table.colaboradorId),
+  cursoIdx: index('idx_curso_disp_curso_id').on(table.cursoId),
+  empresaIdx: index('idx_curso_disp_empresa_id').on(table.empresaId),
+  disponibilidadeIdx: index('idx_curso_disp_disponivel').on(table.disponivel),
+  uniqueColabCurso: uniqueIndex('idx_curso_disp_colab_curso_unique').on(table.colaboradorId, table.cursoId),
+}));
+
+export type CursoDisponibilidade = typeof cursoDisponibilidade.$inferSelect;
+
+export const insertCursoDisponibilidadeSchema = z.object({
+  colaboradorId: z.string().uuid(),
+  cursoId: z.string(),
+  empresaId: z.string().uuid(),
+  disponivel: z.boolean().optional(),
+  periodicidadeDias: z.number().optional().nullable(),
+  ultimaLiberacao: z.date().optional().nullable(),
+  proximaDisponibilidade: z.date().optional().nullable(),
+  liberadoPor: z.string().uuid().optional().nullable(),
+  historicoLiberacoes: z.any().optional(),
+  metadados: z.any().optional(),
+});
+
+export type InsertCursoDisponibilidade = z.infer<typeof insertCursoDisponibilidadeSchema>;
+
+export const updateCursoDisponibilidadeSchema = z.object({
+  disponivel: z.boolean().optional(),
+  periodicidadeDias: z.number().optional().nullable(),
+  ultimaLiberacao: z.date().optional().nullable(),
+  proximaDisponibilidade: z.date().optional().nullable(),
+  liberadoPor: z.string().uuid().optional().nullable(),
+  historicoLiberacoes: z.any().optional(),
+  metadados: z.any().optional(),
+});
