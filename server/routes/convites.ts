@@ -320,26 +320,28 @@ router.post('/colaborador/aceitar/:token', async (req, res) => {
       .returning();
 
     // Seeding: Criar registros de disponibilidade de cursos (bloqueados por padrão)
-    try {
-      const { cursos } = await import('../../src/data/cursosData');
-      const { cursoDisponibilidade } = await import('../../shared/schema');
-      
-      const cursosDisponibilidadeData = cursos.map(curso => ({
-        colaboradorId: novoColaborador.id,
-        cursoId: curso.slug,
-        empresaId: convite.empresaId,
-        disponivel: false, // Bloqueado por padrão
-      }));
+    if (convite.empresaId) {
+      try {
+        const { cursos } = await import('../../src/data/cursosData');
+        const { cursoDisponibilidade } = await import('../../shared/schema');
+        
+        const cursosDisponibilidadeData = cursos.map(curso => ({
+          colaboradorId: novoColaborador.id,
+          cursoId: curso.slug,
+          empresaId: convite.empresaId!,
+          disponivel: false, // Bloqueado por padrão
+        }));
 
-      await db
-        .insert(cursoDisponibilidade)
-        .values(cursosDisponibilidadeData)
-        .onConflictDoNothing();
+        await db
+          .insert(cursoDisponibilidade)
+          .values(cursosDisponibilidadeData)
+          .onConflictDoNothing();
 
-      console.log(`✅ [SEEDING] Criados ${cursosDisponibilidadeData.length} registros de disponibilidade de cursos para colaborador ${novoColaborador.id}`);
-    } catch (seedError) {
-      console.error('⚠️ [SEEDING] Erro ao criar disponibilidade de cursos:', seedError);
-      // Não falhar a criação do colaborador se o seeding falhar
+        console.log(`✅ [SEEDING] Criados ${cursosDisponibilidadeData.length} registros de disponibilidade de cursos para colaborador ${novoColaborador.id}`);
+      } catch (seedError) {
+        console.error('⚠️ [SEEDING] Erro ao criar disponibilidade de cursos:', seedError);
+        // Não falhar a criação do colaborador se o seeding falhar
+      }
     }
 
     await db
