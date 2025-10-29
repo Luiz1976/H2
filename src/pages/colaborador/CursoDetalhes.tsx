@@ -142,7 +142,10 @@ export default function CursoDetalhes() {
   const completarModuloMutation = useMutation({
     mutationFn: async (moduloId: number) => {
       return apiRequest(`/api/cursos/progresso/${slug}/modulo/${moduloId}`, {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify({
+          totalModulos: curso.modulos.length
+        })
       });
     },
     onSuccess: () => {

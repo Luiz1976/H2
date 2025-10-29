@@ -79,8 +79,9 @@ router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (
     console.log('📝 [CURSOS] Requisição para marcar módulo como concluído recebida');
     const { cursoSlug, moduloId } = req.params;
     const colaboradorId = req.user?.userId;
+    const { totalModulos } = req.body; // Aceitar totalModulos do frontend
     
-    console.log('📝 [CURSOS] Params:', { cursoSlug, moduloId, colaboradorId });
+    console.log('📝 [CURSOS] Params:', { cursoSlug, moduloId, colaboradorId, totalModulos });
 
     if (!colaboradorId) {
       console.error('❌ [CURSOS] Colaborador não autenticado');
@@ -88,7 +89,7 @@ router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (
     }
 
     console.log('📝 [CURSOS] Buscando progresso no banco...');
-    const progresso = await db.query.cursoProgresso.findFirst({
+    let progresso = await db.query.cursoProgresso.findFirst({
       where: and(
         eq(cursoProgresso.colaboradorId, colaboradorId),
         eq(cursoProgresso.cursoSlug, cursoSlug)
@@ -96,8 +97,25 @@ router.post('/progresso/:cursoSlug/modulo/:moduloId', authenticateToken, async (
     });
 
     if (!progresso) {
-      console.error('❌ [CURSOS] Progresso não encontrado para:', { colaboradorId, cursoSlug });
-      return res.status(404).json({ error: 'Progresso não encontrado. Crie o progresso primeiro visitando a página do curso.' });
+      console.log('⚠️  [CURSOS] Progresso não encontrado, criando automaticamente...');
+      
+      if (!totalModulos) {
+        console.error('❌ [CURSOS] totalModulos não foi fornecido');
+        return res.status(400).json({ error: 'totalModulos é obrigatório para criar progresso' });
+      }
+      
+      // Criar progresso automaticamente
+      const [novoProgresso] = await db.insert(cursoProgresso).values({
+        colaboradorId,
+        cursoId: cursoSlug, // Usar slug como ID temporário
+        cursoSlug,
+        totalModulos,
+        modulosCompletados: [],
+        progressoPorcentagem: 0,
+      }).returning();
+      
+      console.log('✅ [CURSOS] Progresso criado automaticamente:', novoProgresso.id);
+      progresso = novoProgresso;
     }
 
     console.log('✅ [CURSOS] Progresso encontrado:', progresso.id);
