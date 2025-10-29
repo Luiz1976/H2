@@ -1,18 +1,24 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Clock, Award, Target, CheckCircle2, BookOpen, Play, ChevronRight } from "lucide-react";
+import { ArrowLeft, Clock, Award, Target, CheckCircle2, BookOpen, Play, ChevronRight, FileText, Download, Trophy } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getCursoBySlug } from "@/data/cursosData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import AvaliacaoFinal from "@/components/cursos/AvaliacaoFinal";
+import CertificadoView from "@/components/cursos/CertificadoView";
 
 export default function CursoDetalhes() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const curso = getCursoBySlug(slug!);
-  const [moduloAtual, setModuloAtual] = useState(0);
+  const { toast } = useToast();
+  const [moduloExpandido, setModuloExpandido] = useState<number | null>(null);
 
   if (!curso) {
     return (
@@ -29,7 +35,104 @@ export default function CursoDetalhes() {
     );
   }
 
-  const progresso = (moduloAtual / curso.modulos.length) * 100;
+  // Buscar ou criar progresso
+  const { data: progresso, isLoading: loadingProgresso } = useQuery({
+    queryKey: ['/api/cursos/progresso', slug],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`/api/cursos/progresso/${slug}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        if (response.status === 404) {
+          // Criar novo progresso
+          const createResponse = await apiRequest('/api/cursos/progresso', {
+            method: 'POST',
+            body: JSON.stringify({
+              cursoId: curso.id.toString(),
+              cursoSlug: slug,
+              totalModulos: curso.modulos.length
+            })
+          });
+          return createResponse;
+        }
+        
+        if (!response.ok) throw new Error('Erro ao buscar progresso');
+        return response.json();
+      } catch (error) {
+        console.error('Erro ao buscar/criar progresso:', error);
+        throw error;
+      }
+    }
+  });
+
+  // Buscar certificado (se existir)
+  const { data: certificado } = useQuery({
+    queryKey: ['/api/cursos/certificado', slug],
+    queryFn: async () => {
+      const response = await fetch(`/api/cursos/certificado/${slug}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      if (response.status === 404) return null;
+      if (!response.ok) throw new Error('Erro ao buscar certificado');
+      return response.json();
+    }
+  });
+
+  // Marcar módulo como completado
+  const completarModuloMutation = useMutation({
+    mutationFn: async (moduloId: number) => {
+      return apiRequest(`/api/cursos/progresso/${slug}/modulo/${moduloId}`, {
+        method: 'POST'
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/cursos/progresso', slug] });
+      toast({
+        title: "Módulo concluído!",
+        description: "Continue progredindo no curso.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erro",
+        description: "Não foi possível marcar o módulo como concluído.",
+        variant: "destructive"
+      });
+    }
+  });
+
+  const modulosCompletados = Array.isArray(progresso?.modulosCompletados) 
+    ? progresso.modulosCompletados 
+    : [];
+  
+  const progressoPorcentagem = progresso?.progressoPorcentagem || 0;
+  const todosModulosCompletados = modulosCompletados.length === curso.modulos.length;
+  const avaliacaoHabilitada = todosModulosCompletados && !progresso?.avaliacaoFinalRealizada;
+  const avaliacaoRealizada = progresso?.avaliacaoFinalRealizada || false;
+  const possuiCertificado = !!certificado;
+
+  const handleCompletarModulo = (moduloId: number) => {
+    if (!modulosCompletados.includes(moduloId)) {
+      completarModuloMutation.mutate(moduloId);
+    }
+  };
+
+  if (loadingProgresso) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Carregando curso...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4 md:p-8">
@@ -76,22 +179,54 @@ export default function CursoDetalhes() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-700">Seu Progresso</span>
-              <span className="text-sm font-bold text-blue-600">{Math.round(progresso)}%</span>
+              <span className="text-sm font-bold text-blue-600">{progressoPorcentagem}%</span>
             </div>
-            <Progress value={progresso} className="h-3" />
+            <Progress value={progressoPorcentagem} className="h-3" />
             <p className="text-xs text-gray-600 mt-2">
-              {moduloAtual} de {curso.modulos.length} módulos concluídos
+              {modulosCompletados.length} de {curso.modulos.length} módulos concluídos
             </p>
+            
+            {todosModulosCompletados && !avaliacaoRealizada && (
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm text-green-700 font-medium">
+                  🎉 Parabéns! Você completou todos os módulos. A avaliação final está disponível!
+                </p>
+              </div>
+            )}
+
+            {possuiCertificado && (
+              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-yellow-600" />
+                <p className="text-sm text-yellow-700 font-medium">
+                  Você concluiu o curso e recebeu seu certificado! Veja na aba Certificado.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         {/* Tabs de Conteúdo */}
         <Tabs defaultValue="visao-geral" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white border-2">
+          <TabsList className="grid w-full grid-cols-5 bg-white border-2">
             <TabsTrigger value="visao-geral" data-testid="tab-visao-geral">Visão Geral</TabsTrigger>
             <TabsTrigger value="modulos" data-testid="tab-modulos">Módulos</TabsTrigger>
             <TabsTrigger value="praticas" data-testid="tab-praticas">Práticas</TabsTrigger>
-            <TabsTrigger value="integracao" data-testid="tab-integracao">Integração</TabsTrigger>
+            <TabsTrigger 
+              value="avaliacao" 
+              data-testid="tab-avaliacao"
+              disabled={!todosModulosCompletados}
+              className={todosModulosCompletados ? "bg-green-50" : ""}
+            >
+              Avaliação
+            </TabsTrigger>
+            <TabsTrigger 
+              value="certificado" 
+              data-testid="tab-certificado"
+              disabled={!possuiCertificado}
+              className={possuiCertificado ? "bg-yellow-50" : ""}
+            >
+              Certificado
+            </TabsTrigger>
           </TabsList>
 
           {/* Visão Geral */}
@@ -130,58 +265,80 @@ export default function CursoDetalhes() {
 
           {/* Módulos */}
           <TabsContent value="modulos" className="space-y-4">
-            {curso.modulos.map((modulo, index) => (
-              <Card
-                key={modulo.id}
-                className={`border-2 transition-all ${
-                  index <= moduloAtual
-                    ? "border-blue-200 bg-blue-50/50"
-                    : "border-gray-100"
-                }`}
-                data-testid={`card-modulo-${modulo.id}`}
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-4">
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
-                        index <= moduloAtual ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-600"
-                      }`}>
-                        {index <= moduloAtual ? (
-                          <CheckCircle2 className="h-5 w-5" />
-                        ) : (
-                          <span className="font-bold">{index + 1}</span>
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-lg mb-2">{modulo.titulo}</CardTitle>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Clock className="h-4 w-4" />
-                          <span>{modulo.duracao}</span>
+            {curso.modulos.map((modulo, index) => {
+              const moduloConcluido = modulosCompletados.includes(modulo.id);
+              const expandido = moduloExpandido === modulo.id;
+
+              return (
+                <Card
+                  key={modulo.id}
+                  className={`border-2 transition-all ${
+                    moduloConcluido
+                      ? "border-green-200 bg-green-50/50"
+                      : "border-gray-100"
+                  }`}
+                  data-testid={`card-modulo-${modulo.id}`}
+                >
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start gap-4">
+                        <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                          moduloConcluido ? "bg-green-600 text-white" : "bg-gray-200 text-gray-600"
+                        }`}>
+                          {moduloConcluido ? (
+                            <CheckCircle2 className="h-5 w-5" />
+                          ) : (
+                            <span className="font-bold">{index + 1}</span>
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-lg mb-2">{modulo.titulo}</CardTitle>
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <Clock className="h-4 w-4" />
+                            <span>{modulo.duracao}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {modulo.conteudo.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
-                        <ChevronRight className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                    onClick={() => setModuloAtual(Math.min(index + 1, curso.modulos.length))}
-                    data-testid={`button-iniciar-modulo-${modulo.id}`}
-                  >
-                    <Play className="h-4 w-4 mr-2" />
-                    {index <= moduloAtual ? "Revisar Módulo" : "Iniciar Módulo"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent>
+                    {expandido && (
+                      <ul className="space-y-2 mb-4">
+                        {modulo.conteudo.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
+                            <ChevronRight className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    
+                    <div className="flex gap-2">
+                      <Button
+                        className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                        onClick={() => setModuloExpandido(expandido ? null : modulo.id)}
+                        data-testid={`button-ver-modulo-${modulo.id}`}
+                      >
+                        <BookOpen className="h-4 w-4 mr-2" />
+                        {expandido ? "Ocultar Conteúdo" : "Ver Conteúdo"}
+                      </Button>
+                      
+                      {!moduloConcluido && (
+                        <Button
+                          variant="outline"
+                          onClick={() => handleCompletarModulo(modulo.id)}
+                          disabled={completarModuloMutation.isPending}
+                          data-testid={`button-completar-modulo-${modulo.id}`}
+                        >
+                          <CheckCircle2 className="h-4 w-4 mr-2" />
+                          Marcar como Concluído
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </TabsContent>
 
           {/* Atividades Práticas */}
@@ -217,73 +374,34 @@ export default function CursoDetalhes() {
             </Card>
           </TabsContent>
 
-          {/* Integração com PGR */}
-          <TabsContent value="integracao" className="space-y-4">
-            <Card className="border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-purple-50">
-              <CardHeader>
-                <CardTitle className="text-xl">🔗 Integração com PGR e NR01</CardTitle>
-                <CardDescription>
-                  Como este curso contribui para a gestão de riscos psicossociais
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {curso.integracaoPGR && curso.integracaoPGR.length > 0 ? (
-                  <ul className="space-y-3">
-                    {curso.integracaoPGR.map((item, index) => (
-                      <li key={index} className="flex items-start gap-3 p-4 bg-white rounded-lg border border-blue-100">
-                        <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className="space-y-3">
-                    <p className="text-gray-700 leading-relaxed">
-                      Este curso está alinhado com as diretrizes da <strong>NR01 – Gestão de Riscos Ocupacionais</strong> e contribui para:
-                    </p>
-                    <ul className="space-y-2 ml-6">
-                      <li className="flex items-start gap-2">
-                        <ChevronRight className="h-4 w-4 text-blue-600 flex-shrink-0 mt-1" />
-                        <span>Atuação preventiva conforme NR01</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <ChevronRight className="h-4 w-4 text-blue-600 flex-shrink-0 mt-1" />
-                        <span>Identificação e comunicação de fatores de riscos psicossociais</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <ChevronRight className="h-4 w-4 text-blue-600 flex-shrink-0 mt-1" />
-                        <span>Promoção de ambiente saudável, ético e seguro</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <ChevronRight className="h-4 w-4 text-blue-600 flex-shrink-0 mt-1" />
-                        <span>Fortalecimento da cultura de prevenção contínua</span>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+          {/* Avaliação Final */}
+          <TabsContent value="avaliacao">
+            <AvaliacaoFinal 
+              curso={curso}
+              progresso={progresso}
+              avaliacaoRealizada={avaliacaoRealizada}
+            />
+          </TabsContent>
+
+          {/* Certificado */}
+          <TabsContent value="certificado">
+            {certificado ? (
+              <CertificadoView certificado={certificado} curso={curso} />
+            ) : (
+              <Card className="border-2 border-gray-200">
+                <CardContent className="p-12 text-center">
+                  <Award className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-700 mb-2">
+                    Certificado não disponível
+                  </h3>
+                  <p className="text-gray-600">
+                    Complete a avaliação final com sucesso para receber seu certificado.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
-
-        {/* CTA Final */}
-        <Card className={`border-2 bg-gradient-to-r ${curso.cor} text-white`}>
-          <CardContent className="p-8 text-center">
-            <h3 className="text-2xl font-bold mb-2">Pronto para começar?</h3>
-            <p className="text-lg opacity-90 mb-6">
-              Inicie sua jornada de aprendizado agora mesmo!
-            </p>
-            <Button
-              size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100 shadow-lg text-lg px-8"
-              onClick={() => setModuloAtual(1)}
-              data-testid="button-iniciar-curso-principal"
-            >
-              <Play className="h-5 w-5 mr-2" />
-              Iniciar Curso Completo
-            </Button>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
