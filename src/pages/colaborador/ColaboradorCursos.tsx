@@ -2,50 +2,11 @@ import { GraduationCap, BookOpen, Clock, Award, ChevronRight, Play } from "lucid
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
+import { cursos } from "@/data/cursosData";
 
 export default function ColaboradorCursos() {
-  const cursos = [
-    {
-      id: 1,
-      titulo: "Saúde Mental no Trabalho",
-      descricao: "Aprenda a identificar sinais de estresse e burnout, e desenvolva estratégias para manter seu bem-estar mental.",
-      duracao: "2h 30min",
-      nivel: "Iniciante",
-      progresso: 0,
-      imagem: "🧠",
-      categoria: "Bem-estar"
-    },
-    {
-      id: 2,
-      titulo: "Gestão de Estresse Ocupacional",
-      descricao: "Técnicas práticas para gerenciar o estresse no ambiente de trabalho e melhorar sua qualidade de vida.",
-      duracao: "3h 15min",
-      nivel: "Intermediário",
-      progresso: 0,
-      imagem: "🎯",
-      categoria: "Desenvolvimento"
-    },
-    {
-      id: 3,
-      titulo: "Comunicação Assertiva",
-      descricao: "Desenvolva habilidades de comunicação eficaz para melhorar relacionamentos profissionais.",
-      duracao: "2h 00min",
-      nivel: "Iniciante",
-      progresso: 0,
-      imagem: "💬",
-      categoria: "Soft Skills"
-    },
-    {
-      id: 4,
-      titulo: "Equilíbrio Trabalho-Vida",
-      descricao: "Estratégias para alcançar um equilíbrio saudável entre vida pessoal e profissional.",
-      duracao: "1h 45min",
-      nivel: "Iniciante",
-      progresso: 0,
-      imagem: "⚖️",
-      categoria: "Bem-estar"
-    },
-  ];
+  const navigate = useNavigate();
 
   const getNivelColor = (nivel: string) => {
     switch (nivel) {
@@ -128,13 +89,14 @@ export default function ColaboradorCursos() {
           {cursos.map((curso) => (
             <Card 
               key={curso.id} 
-              className="group hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-200 bg-white/90 backdrop-blur overflow-hidden"
+              className="group hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-200 bg-white/90 backdrop-blur overflow-hidden cursor-pointer"
+              onClick={() => navigate(`/colaborador/cursos/${curso.slug}`)}
               data-testid={`card-curso-${curso.id}`}
             >
               <CardHeader className="space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="text-5xl">{curso.imagem}</div>
+                    <div className="text-5xl">{curso.icone}</div>
                     <div className="flex flex-col gap-2">
                       <Badge variant="outline" className="w-fit text-xs">
                         {curso.categoria}
@@ -149,8 +111,8 @@ export default function ColaboradorCursos() {
                   <CardTitle className="text-xl mb-2 group-hover:text-blue-600 transition-colors">
                     {curso.titulo}
                   </CardTitle>
-                  <CardDescription className="text-sm leading-relaxed">
-                    {curso.descricao}
+                  <CardDescription className="text-sm leading-relaxed line-clamp-2">
+                    {curso.subtitulo}
                   </CardDescription>
                 </div>
               </CardHeader>
@@ -160,13 +122,21 @@ export default function ColaboradorCursos() {
                     <Clock className="h-4 w-4" />
                     <span>{curso.duracao}</span>
                   </div>
+                  <div className="flex items-center gap-1">
+                    <BookOpen className="h-4 w-4" />
+                    <span>{curso.modulos.length} módulos</span>
+                  </div>
                 </div>
                 <Button 
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg group-hover:shadow-xl transition-all"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/colaborador/cursos/${curso.slug}`);
+                  }}
                   data-testid={`button-iniciar-curso-${curso.id}`}
                 >
                   <Play className="h-4 w-4 mr-2" />
-                  Iniciar Curso
+                  Ver Detalhes
                   <ChevronRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </CardContent>
@@ -178,16 +148,14 @@ export default function ColaboradorCursos() {
         <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50">
           <CardContent className="p-8 text-center">
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Em breve, mais cursos!
+              🎓 Trilha de Capacitação Completa
             </h3>
-            <p className="text-gray-600 mb-6">
-              Estamos preparando novos conteúdos para o seu desenvolvimento contínuo.
+            <p className="text-gray-600 mb-4">
+              <strong>Conforme NR01</strong> - Liderança e Saúde Psicossocial
             </p>
-            <div className="flex justify-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
-              <div className="h-2 w-2 rounded-full bg-purple-400 animate-pulse" style={{ animationDelay: '0.2s' }} />
-              <div className="h-2 w-2 rounded-full bg-pink-400 animate-pulse" style={{ animationDelay: '0.4s' }} />
-            </div>
+            <p className="text-sm text-gray-500">
+              {cursos.length} cursos disponíveis | Conteúdo baseado em PNL e Rapport | Integração com PGR
+            </p>
           </CardContent>
         </Card>
       </div>
