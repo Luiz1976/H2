@@ -117,9 +117,9 @@ export default function LoadingAnimation({
       </div>
 
       <div className="relative z-10 text-center max-w-2xl mx-auto px-8">
-        {/* Logo estático */}
-        <div className="mb-8">
-          <Logo size="lg" showText={false} className="mx-auto" />
+        {/* Logo estático centralizado */}
+        <div className="mb-8 flex justify-center items-center">
+          <Logo size="xl" showText={false} className="" />
         </div>
 
         {/* Título */}
