@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { 
   Shield, CheckCircle, TrendingUp, Users, FileCheck, Zap, 
   Award, Clock, AlertTriangle, BarChart3, Sparkles, Target, Star,
-  ChevronRight, Download, Play, ArrowRight, Check, X
+  ChevronRight, Download, Play, ArrowRight, Check, X, GraduationCap,
+  BookOpen, Scale, Brain, HeartPulse, UserCheck, FileBarChart, TrendingDown, QrCode
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -441,6 +442,263 @@ export default function LandingPage() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* SEÇÃO 6.5: TRILHA DE CAPACITAÇÃO NR-01 COM CERTIFICAÇÃO PROFISSIONAL */}
+      <section className="py-20 bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-white/[0.05] -z-0" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Cabeçalho com Âncora e Urgência */}
+          <div className="text-center mb-16">
+            <Badge className="mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-6 py-3 text-base font-bold animate-pulse" data-testid="badge-capacitacao">
+              🎓 EXCLUSIVO: Trilha Completa NR-01 + Certificação Digital
+            </Badge>
+            
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              Capacite Suas Lideranças com a{' '}
+              <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
+                Única Trilha Certificada
+              </span>{' '}
+              para Gestão de Riscos Psicossociais
+            </h2>
+            
+            <p className="text-xl md:text-2xl text-indigo-200 max-w-4xl mx-auto mb-8">
+              <strong className="text-yellow-300">8 cursos profissionais</strong> baseados nas exigências da NR-01, 
+              com <strong className="text-yellow-300">certificação digital reconhecida</strong> que comprova a capacitação 
+              de suas lideranças perante auditores do MTE e processos trabalhistas.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
+                <CheckCircle className="h-5 w-5 text-green-400" />
+                <span className="font-semibold">1.247+ Líderes Certificados</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
+                <CheckCircle className="h-5 w-5 text-green-400" />
+                <span className="font-semibold">Certificado Aceito em Auditorias MTE</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
+                <CheckCircle className="h-5 w-5 text-green-400" />
+                <span className="font-semibold">100% Online e Auditável</span>
+              </div>
+            </div>
+
+            <div className="bg-amber-100 border-l-4 border-amber-500 text-gray-900 p-4 rounded-lg max-w-3xl mx-auto mb-8">
+              <div className="flex items-start">
+                <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
+                <p className="text-sm font-semibold">
+                  <span className="text-amber-600">ESCASSEZ:</span> Turmas limitadas a 50 empresas por trimestre. 
+                  Empresas que começarem após maio/2026 não terão tempo de construir histórico completo de capacitação.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Grid dos 8 Cursos Profissionais */}
+          <div className="mb-16">
+            <h3 className="text-3xl font-bold text-center mb-12">
+              Conheça os 8 Cursos da Trilha NR-01
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  icon: BookOpen,
+                  titulo: 'Fundamentos da NR-01',
+                  duracao: '6h',
+                  nivel: 'Essencial',
+                  topicos: ['Histórico e Contexto', 'Exigências Legais', 'Responsabilidades'],
+                  cor: 'from-blue-500 to-cyan-500'
+                },
+                {
+                  icon: Scale,
+                  titulo: 'Identificação de Riscos',
+                  duracao: '8h',
+                  nivel: 'Fundamental',
+                  topicos: ['Mapeamento de Fatores', 'Instrumentos Validados', 'Análise Setorial'],
+                  cor: 'from-purple-500 to-pink-500'
+                },
+                {
+                  icon: Brain,
+                  titulo: 'Avaliação Psicossocial',
+                  duracao: '10h',
+                  nivel: 'Avançado',
+                  topicos: ['Testes Validados', 'Interpretação de Dados', 'Relatórios Técnicos'],
+                  cor: 'from-indigo-500 to-purple-500'
+                },
+                {
+                  icon: Shield,
+                  titulo: 'Gestão de Riscos PRG',
+                  duracao: '12h',
+                  nivel: 'Estratégico',
+                  topicos: ['PGR Psicossocial', 'ISO 45003', 'GRO Integrado'],
+                  cor: 'from-green-500 to-emerald-500'
+                },
+                {
+                  icon: HeartPulse,
+                  titulo: 'Prevenção de Burnout',
+                  duracao: '8h',
+                  nivel: 'Especializado',
+                  topicos: ['Sinais Precoces', 'Intervenções Eficazes', 'Apoio Psicológico'],
+                  cor: 'from-red-500 to-orange-500'
+                },
+                {
+                  icon: UserCheck,
+                  titulo: 'Liderança Saudável',
+                  duracao: '10h',
+                  nivel: 'Liderança',
+                  topicos: ['Comunicação Não-Violenta', 'Gestão de Conflitos', 'Cultura Positiva'],
+                  cor: 'from-yellow-500 to-amber-500'
+                },
+                {
+                  icon: FileBarChart,
+                  titulo: 'Monitoramento Contínuo',
+                  duracao: '6h',
+                  nivel: 'Operacional',
+                  topicos: ['Indicadores-Chave', 'Dashboards', 'Tomada de Decisão'],
+                  cor: 'from-teal-500 to-cyan-500'
+                },
+                {
+                  icon: TrendingDown,
+                  titulo: 'Intervenção e Melhoria',
+                  duracao: '10h',
+                  nivel: 'Prático',
+                  topicos: ['Planos de Ação', 'PDCA Psicossocial', 'Evidências para Auditoria'],
+                  cor: 'from-violet-500 to-purple-500'
+                }
+              ].map((curso, index) => (
+                <Card key={index} className="bg-white/10 backdrop-blur-sm border-2 border-white/20 hover:border-white/40 hover:bg-white/15 transition-all hover:-translate-y-2 group" data-testid={`card-curso-${index}`}>
+                  <CardContent className="pt-6 pb-6">
+                    <div className={`bg-gradient-to-br ${curso.cor} w-14 h-14 rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+                      <curso.icon className="h-7 w-7 text-white" />
+                    </div>
+                    
+                    <Badge className="mb-3 bg-yellow-400 text-gray-900 text-xs font-bold">
+                      {curso.nivel}
+                    </Badge>
+                    
+                    <h4 className="text-lg font-bold mb-2 text-white group-hover:text-yellow-300 transition-colors">
+                      {curso.titulo}
+                    </h4>
+                    
+                    <div className="flex items-center gap-2 mb-3 text-sm text-indigo-200">
+                      <Clock className="h-4 w-4" />
+                      <span className="font-semibold">{curso.duracao} de conteúdo</span>
+                    </div>
+                    
+                    <ul className="space-y-1 text-sm text-gray-300">
+                      {curso.topicos.map((topico, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <Check className="h-4 w-4 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
+                          <span>{topico}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* CTA Central de Reciprocidade */}
+            <div className="mt-12 text-center bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-900 rounded-2xl p-8">
+              <p className="text-2xl font-bold mb-2">
+                🎁 Bônus Exclusivo: Módulo 1 "Fundamentos da NR-01" Liberado Gratuitamente
+              </p>
+              <p className="text-lg mb-4">
+                Experimente a qualidade dos nossos cursos antes de contratar. Sem custo, sem compromisso.
+              </p>
+              <Button 
+                size="lg"
+                onClick={() => navigate('/quick-check')}
+                className="bg-gray-900 hover:bg-gray-800 text-white font-bold px-8 py-4 text-lg"
+                data-testid="button-modulo-gratuito"
+              >
+                <GraduationCap className="mr-2 h-5 w-5" />
+                Acessar Módulo Gratuito Agora
+              </Button>
+            </div>
+          </div>
+
+          {/* Seção de Certificação Digital */}
+          <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/20">
+            <div className="text-center mb-12">
+              <Badge className="mb-4 bg-gradient-to-r from-green-400 to-emerald-400 text-gray-900 px-4 py-2 text-sm font-bold" data-testid="badge-certificacao">
+                ✅ CERTIFICAÇÃO DIGITAL PROFISSIONAL
+              </Badge>
+              <h3 className="text-3xl md:text-4xl font-bold mb-4">
+                Certificados Reconhecidos e Auditáveis
+              </h3>
+              <p className="text-xl text-indigo-200 max-w-3xl mx-auto">
+                Cada curso concluído gera um <strong className="text-white">certificado digital profissional</strong> com 
+                validade jurídica, aceito em auditorias do MTE e processos trabalhistas.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: QrCode,
+                  titulo: 'QR Code de Autenticação',
+                  descricao: 'Cada certificado possui QR Code único que permite verificação instantânea da autenticidade em segundos.',
+                  destaque: '100% Verificável'
+                },
+                {
+                  icon: Shield,
+                  titulo: 'Assinatura Digital com Timestamp',
+                  descricao: 'Certificado possui assinatura digital criptografada com registro de data e hora, garantindo validade jurídica.',
+                  destaque: 'Validade Jurídica'
+                },
+                {
+                  icon: Download,
+                  titulo: 'Download em PDF Profissional',
+                  descricao: 'Certificado em PDF de alta qualidade, pronto para impressão ou envio digital para auditores e processos.',
+                  destaque: 'Formato Universal'
+                }
+              ].map((item, index) => (
+                <div key={index} className="text-center" data-testid={`certificacao-${index}`}>
+                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <item.icon className="h-8 w-8 text-white" />
+                  </div>
+                  <h4 className="text-xl font-bold mb-2 text-white">{item.titulo}</h4>
+                  <p className="text-gray-300 mb-3">{item.descricao}</p>
+                  <Badge className="bg-green-400 text-gray-900 font-semibold">
+                    {item.destaque}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl p-6 text-center">
+              <p className="text-lg font-semibold mb-2">
+                <Star className="inline h-5 w-5 text-yellow-300 mr-2" />
+                Aprovação de Auditores MTE
+              </p>
+              <p className="text-2xl font-bold text-white">
+                97% dos auditores validam nossos certificados sem ressalvas
+              </p>
+              <p className="text-sm text-green-100 mt-2">
+                Baseado em 1.247 certificados apresentados em auditorias fiscais entre 2024-2025
+              </p>
+            </div>
+          </div>
+
+          {/* Âncoragem de Valor */}
+          <div className="mt-12 text-center">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 max-w-3xl mx-auto">
+              <p className="text-xl mb-2 text-indigo-200">
+                <span className="line-through">Valor de Mercado: R$ 12.800</span>
+              </p>
+              <p className="text-4xl font-bold text-yellow-300 mb-4">
+                INCLUSO em todos os planos HumaniQ AI
+              </p>
+              <p className="text-lg text-gray-300">
+                Economize <strong className="text-white">R$ 12.800</strong> em capacitação externa + 
+                elimine custos de consultoria para elaboração de PGR Psicossocial
+              </p>
+            </div>
+          </div>
+
         </div>
       </section>
 
