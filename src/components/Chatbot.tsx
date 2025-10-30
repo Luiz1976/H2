@@ -150,7 +150,7 @@ export function Chatbot() {
   return (
     <div 
       className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-[10000]
-                 w-full h-[100dvh] sm:w-[380px] sm:h-[600px] md:w-[420px] md:h-[650px] lg:w-[450px] lg:h-[700px]
+                 w-full h-[100dvh] sm:w-[380px] sm:h-auto sm:max-h-[85vh] md:w-[420px] lg:w-[450px]
                  bg-white dark:bg-slate-900 
                  rounded-none sm:rounded-2xl 
                  shadow-none sm:shadow-2xl border-none sm:border border-slate-200 dark:border-slate-700 
