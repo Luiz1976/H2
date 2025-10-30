@@ -109,7 +109,7 @@ export function Chatbot() {
       <button
         onClick={() => setIsOpen(true)}
         data-testid="button-open-chat"
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-110 transition-all duration-300"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9998] flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-110 transition-all duration-300"
         aria-label="Abrir chat"
       >
         <Lottie 
@@ -123,7 +123,7 @@ export function Chatbot() {
 
   if (isMinimized) {
     return (
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9998]">
         <button
           onClick={() => setIsMinimized(false)}
           data-testid="button-restore-chat"
@@ -149,7 +149,7 @@ export function Chatbot() {
 
   return (
     <div 
-      className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 
+      className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-[10000]
                  w-full h-[100dvh] sm:w-[380px] sm:h-[600px] md:w-[420px] md:h-[650px] lg:w-[450px] lg:h-[700px]
                  bg-white dark:bg-slate-900 
                  rounded-none sm:rounded-2xl 
