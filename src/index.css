@@ -123,6 +123,59 @@ All colors MUST be HSL.
   100% { transform: scale(1); }
 }
 
+/* Barras de rolagem customizadas para o chatbot - sempre visíveis */
+.scrollbar-visible {
+  scrollbar-width: auto;
+  scrollbar-color: rgba(100, 116, 139, 0.5) rgba(241, 245, 249, 0.3);
+  overflow: auto;
+}
+
+.scrollbar-visible::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.8);
+  border-radius: 5px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 5px;
+  border: 2px solid rgba(241, 245, 249, 0.8);
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.7);
+}
+
+.scrollbar-visible::-webkit-scrollbar-corner {
+  background: rgba(241, 245, 249, 0.8);
+}
+
+/* Dark mode scrollbar */
+.dark .scrollbar-visible {
+  scrollbar-color: rgba(148, 163, 184, 0.5) rgba(15, 23, 42, 0.3);
+}
+
+.dark .scrollbar-visible::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.dark .scrollbar-visible::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.5);
+  border: 2px solid rgba(15, 23, 42, 0.8);
+}
+
+.dark .scrollbar-visible::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.7);
+}
+
+.dark .scrollbar-visible::-webkit-scrollbar-corner {
+  background: rgba(15, 23, 42, 0.8);
+}
+
 @keyframes blob {
   0%, 100% {
     transform: translate(0, 0) scale(1);

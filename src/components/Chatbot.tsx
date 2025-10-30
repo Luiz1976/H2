@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { X, Send, User, Loader2, Minimize2 } from 'lucide-react';
 import Lottie from 'lottie-react';
 import robotWaving from '@/assets/robot-waving.json';
@@ -194,8 +193,8 @@ export function Chatbot() {
       </div>
 
       {/* Messages Area */}
-      <ScrollArea className="flex-1 p-3 sm:p-4 bg-slate-50 dark:bg-slate-950" ref={scrollAreaRef}>
-        <div className="space-y-4">
+      <div className="flex-1 bg-slate-50 dark:bg-slate-950 overflow-x-auto overflow-y-auto p-3 sm:p-4 scrollbar-visible">
+        <div className="space-y-4 w-full min-w-0">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -217,13 +216,13 @@ export function Chatbot() {
                   />
                 )}
               </div>
-              <div className={`flex flex-col max-w-[95%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
-                <div className={`px-3 py-2 sm:px-4 sm:py-3 rounded-2xl ${
+              <div className={`flex flex-col min-w-0 ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
+                <div className={`px-3 py-2 sm:px-4 sm:py-3 rounded-2xl min-w-0 ${
                   message.role === 'user'
                     ? 'bg-blue-500 text-white rounded-tr-none'
                     : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-tl-none shadow-sm border border-slate-200 dark:border-slate-700'
                 }`}>
-                  <p className="text-xs sm:text-sm whitespace-pre-wrap break-words overflow-wrap-anywhere">{message.content}</p>
+                  <p className="text-xs sm:text-sm whitespace-pre-wrap break-words overflow-wrap-anywhere min-w-0">{message.content}</p>
                 </div>
                 <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 px-2">
                   {message.timestamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
@@ -250,7 +249,7 @@ export function Chatbot() {
           )}
           <div ref={messagesEndRef} />
         </div>
-      </ScrollArea>
+      </div>
 
       {/* Input Area */}
       <form onSubmit={sendMessage} className="p-3 sm:p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex-shrink-0">
