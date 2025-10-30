@@ -159,7 +159,7 @@ export function Chatbot() {
       data-testid="chatbot-container"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 sm:p-4 flex items-center justify-between text-white flex-shrink-0">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 sm:p-4 flex items-center justify-between text-white flex-shrink-0 relative z-[10001]">
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-10 h-10 sm:w-12 sm:h-12">
             <Lottie 
@@ -173,22 +173,22 @@ export function Chatbot() {
             <p className="text-xs text-white/80 hidden sm:block">Online • Sempre disponível</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative z-[10002]">
           <button
             onClick={() => setIsMinimized(true)}
             data-testid="button-minimize-chat"
-            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/20 rounded-lg transition-colors cursor-pointer relative z-[10003]"
             aria-label="Minimizar"
           >
-            <Minimize2 className="w-4 h-4" />
+            <Minimize2 className="w-5 h-5 sm:w-4 sm:h-4" />
           </button>
           <button
             onClick={() => setIsOpen(false)}
             data-testid="button-close-chat"
-            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/20 rounded-lg transition-colors cursor-pointer relative z-[10003]"
             aria-label="Fechar"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5 sm:w-4 sm:h-4" />
           </button>
         </div>
       </div>
