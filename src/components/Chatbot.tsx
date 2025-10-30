@@ -109,7 +109,7 @@ export function Chatbot() {
       <button
         onClick={() => setIsOpen(true)}
         data-testid="button-open-chat"
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-24 h-24 hover:scale-110 transition-all duration-300"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-110 transition-all duration-300"
         aria-label="Abrir chat"
       >
         <Lottie 
@@ -123,20 +123,20 @@ export function Chatbot() {
 
   if (isMinimized) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
         <button
           onClick={() => setIsMinimized(false)}
           data-testid="button-restore-chat"
-          className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-2xl hover:shadow-blue-500/50 transition-all duration-300"
+          className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-2xl hover:shadow-blue-500/50 transition-all duration-300"
         >
-          <div className="w-8 h-8">
+          <div className="w-7 h-7 sm:w-8 sm:h-8">
             <Lottie 
               animationData={robotWaving} 
               loop={true}
               className="w-full h-full"
             />
           </div>
-          <span className="font-medium">HumaniQ</span>
+          <span className="font-medium text-sm sm:text-base">HumaniQ</span>
           {messages.length > 1 && (
             <span className="bg-white/20 px-2 py-0.5 rounded-full text-xs">
               {messages.length}
@@ -149,13 +149,19 @@ export function Chatbot() {
 
   return (
     <div 
-      className="fixed bottom-6 right-6 z-50 w-[400px] h-[600px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col overflow-hidden"
+      className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 
+                 w-full h-[100dvh] sm:w-[380px] sm:h-[600px] md:w-[420px] md:h-[650px] lg:w-[450px] lg:h-[700px]
+                 bg-white dark:bg-slate-900 
+                 rounded-none sm:rounded-2xl 
+                 shadow-none sm:shadow-2xl border-none sm:border border-slate-200 dark:border-slate-700 
+                 flex flex-col overflow-hidden"
+      style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}
       data-testid="chatbot-container"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 flex items-center justify-between text-white">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 sm:p-4 flex items-center justify-between text-white flex-shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12">
             <Lottie 
               animationData={robotWaving} 
               loop={true}
@@ -163,8 +169,8 @@ export function Chatbot() {
             />
           </div>
           <div>
-            <h3 className="font-semibold text-lg">HumaniQ</h3>
-            <p className="text-xs text-white/80">Online • Sempre disponível</p>
+            <h3 className="font-semibold text-base sm:text-lg">HumaniQ</h3>
+            <p className="text-xs text-white/80 hidden sm:block">Online • Sempre disponível</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -188,7 +194,7 @@ export function Chatbot() {
       </div>
 
       {/* Messages Area */}
-      <ScrollArea className="flex-1 p-4 bg-slate-50 dark:bg-slate-950" ref={scrollAreaRef}>
+      <ScrollArea className="flex-1 p-3 sm:p-4 bg-slate-50 dark:bg-slate-950" ref={scrollAreaRef}>
         <div className="space-y-4">
           {messages.map((message, index) => (
             <div
@@ -211,13 +217,13 @@ export function Chatbot() {
                   />
                 )}
               </div>
-              <div className={`flex flex-col max-w-[75%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
-                <div className={`px-4 py-3 rounded-2xl ${
+              <div className={`flex flex-col max-w-[80%] sm:max-w-[75%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
+                <div className={`px-3 py-2 sm:px-4 sm:py-3 rounded-2xl ${
                   message.role === 'user'
                     ? 'bg-blue-500 text-white rounded-tr-none'
                     : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-tl-none shadow-sm border border-slate-200 dark:border-slate-700'
                 }`}>
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{message.content}</p>
                 </div>
                 <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 px-2">
                   {message.timestamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
@@ -247,7 +253,7 @@ export function Chatbot() {
       </ScrollArea>
 
       {/* Input Area */}
-      <form onSubmit={sendMessage} className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700">
+      <form onSubmit={sendMessage} className="p-3 sm:p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex-shrink-0">
         <div className="flex gap-2">
           <Input
             value={inputMessage}
@@ -255,22 +261,22 @@ export function Chatbot() {
             placeholder="Digite sua mensagem..."
             disabled={isLoading}
             data-testid="input-chat-message"
-            className="flex-1 rounded-xl border-slate-300 dark:border-slate-600 focus:border-blue-500 dark:focus:border-blue-400"
+            className="flex-1 rounded-xl border-slate-300 dark:border-slate-600 focus:border-blue-500 dark:focus:border-blue-400 text-sm"
           />
           <Button
             type="submit"
             disabled={!inputMessage.trim() || isLoading}
             data-testid="button-send-message"
-            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl px-4"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl px-3 sm:px-4"
           >
             {isLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
             ) : (
-              <Send className="w-5 h-5" />
+              <Send className="w-4 h-4 sm:w-5 sm:h-5" />
             )}
           </Button>
         </div>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center hidden sm:block">
           Powered by Google Gemini AI
         </p>
       </form>
