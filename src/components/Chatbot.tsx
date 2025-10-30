@@ -150,7 +150,7 @@ export function Chatbot() {
   return (
     <div 
       className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-[10000]
-                 w-full h-[100dvh] sm:w-[380px] sm:h-auto sm:max-h-[85vh] md:w-[420px] lg:w-[450px]
+                 w-full h-[100dvh] sm:w-[420px] sm:h-auto sm:max-h-[85vh] md:w-[480px] lg:w-[520px]
                  bg-white dark:bg-slate-900 
                  rounded-none sm:rounded-2xl 
                  shadow-none sm:shadow-2xl border-none sm:border border-slate-200 dark:border-slate-700 
@@ -217,13 +217,13 @@ export function Chatbot() {
                   />
                 )}
               </div>
-              <div className={`flex flex-col max-w-[80%] sm:max-w-[75%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
+              <div className={`flex flex-col max-w-[95%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
                 <div className={`px-3 py-2 sm:px-4 sm:py-3 rounded-2xl ${
                   message.role === 'user'
                     ? 'bg-blue-500 text-white rounded-tr-none'
                     : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-tl-none shadow-sm border border-slate-200 dark:border-slate-700'
                 }`}>
-                  <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                  <p className="text-xs sm:text-sm whitespace-pre-wrap break-words overflow-wrap-anywhere">{message.content}</p>
                 </div>
                 <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 px-2">
                   {message.timestamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
