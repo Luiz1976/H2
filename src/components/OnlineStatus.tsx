@@ -47,13 +47,14 @@ export function OnlineStatus() {
         )}
       </div>
       
-      {/* Texto discreto (opcional - apenas no hover) */}
+      {/* Texto sempre visível */}
       <span 
-        className={`text-xs font-medium opacity-0 hover:opacity-100 transition-opacity duration-300 ${
+        className={`text-xs font-medium ${
           isOnline ? 'text-green-600' : 'text-red-600'
         }`}
+        data-testid="online-status-text"
       >
-        {isOnline ? 'Online' : 'Offline'}
+        {isOnline ? 'ONLINE' : 'OFFLINE'}
       </span>
     </div>
   );
