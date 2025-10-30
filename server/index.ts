@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import logger, { logRequest } from './utils/logger';
 import authRouter from './routes/auth';
 import convitesRouter from './routes/convites';
 import empresasRouter from './routes/empresas';
@@ -19,6 +22,37 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+app.set('trust proxy', 1);
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: 'Muitas requisições deste IP, por favor tente novamente em 15 minutos.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(limiter);
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: 'Muitas tentativas de login, por favor tente novamente em 15 minutos.',
+  skipSuccessfulRequests: true,
+});
 
 const allowedOrigins = [
   'http://localhost:5000',
@@ -42,6 +76,8 @@ app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+app.use(logRequest);
+
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
@@ -51,7 +87,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.use('/api/auth', authRouter);
+app.use('/api/auth', authLimiter, authRouter);
 app.use('/api/convites', convitesRouter);
 app.use('/api/empresas', empresasRouter);
 app.use('/api/testes', testesRouter);
@@ -70,24 +106,29 @@ app.use((req, res) => {
 });
 
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err);
+  logger.error('Erro não tratado', {
+    error: err.message,
+    stack: err.stack,
+    url: req.url,
+    method: req.method,
+  });
   res.status(500).json({ error: 'Erro interno do servidor' });
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-  console.log(`📊 Endpoints disponíveis:`);
-  console.log(`   POST /api/auth/login`);
-  console.log(`   POST /api/auth/register/admin`);
-  console.log(`   POST /api/convites/empresa`);
-  console.log(`   POST /api/convites/colaborador`);
-  console.log(`   GET  /api/convites/token/:token`);
-  console.log(`   GET  /api/empresas/me`);
-  console.log(`   GET  /api/colaboradores/me`);
-  console.log(`   GET  /api/testes`);
-  console.log(`   POST /api/testes/resultado`);
-  console.log(`   POST /api/email/test-email (ADMIN)`);
-  console.log(`   GET  /api/email/email-status (ADMIN)`);
+  logger.info(`🚀 Servidor HumaniQ AI iniciado em http://localhost:${PORT}`);
+  logger.info(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
+  logger.info(`🔐 Segurança: Helmet.js ✅ | Rate Limiting ✅`);
+  logger.info(`📝 Logging estruturado: Winston ✅`);
+  logger.debug('Endpoints disponíveis:', {
+    auth: 'POST /api/auth/login, POST /api/auth/register/admin',
+    convites: 'POST /api/convites/empresa, POST /api/convites/colaborador',
+    empresas: 'GET /api/empresas/me',
+    colaboradores: 'GET /api/colaboradores/me',
+    testes: 'GET /api/testes, POST /api/testes/resultado',
+    cursos: 'GET /api/cursos/*',
+    admin: 'POST /api/email/test-email',
+  });
 });
 
 export default app;

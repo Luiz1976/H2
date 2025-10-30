@@ -56,9 +56,36 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
 ### System Design Choices
 The system migrated from Supabase to a local API backend. Manual Zod schemas are used for validation, and the API consistently returns camelCase. A PostgreSQL connection pool is used for performance.
 
+### Security & Production Readiness (30/10/2025)
+The platform has been hardened for production deployment with enterprise-grade security and monitoring:
+
+- **HTTP Security**: Helmet.js configured with Content Security Policy, XSS protection, and security headers
+- **Rate Limiting**: Global rate limiting (100 req/15min) with strict authentication limits (5 attempts/15min) using express-rate-limit
+- **Structured Logging**: Winston logger with daily rotation, separate error/combined logs, colorized console output in dev, and JSON structured logging in production
+- **Environment Documentation**: Complete `.env.example` with all 20+ variables documented including DATABASE_URL, JWT_SECRET, Stripe keys, Google AI, and SendGrid integration
+- **Health Monitoring**: `/health` endpoint returning server status, timestamp, version, and database connectivity for uptime monitoring
+- **CI/CD Pipeline**: GitHub Actions workflow automating lint, type-check, tests, security scans, builds, and deployments to staging/production
+- **Code Quality**: Removed JavaScript legacy files, migrated to 100% TypeScript across backend
+
+### CI/CD & Deployment (30/10/2025)
+Automated deployment pipeline configured with GitHub Actions:
+
+- **Continuous Integration**: Automated ESLint, TypeScript type-checking, and Vitest on every push/PR
+- **Security Scanning**: npm audit and Snyk integration for vulnerability detection
+- **Multi-Environment**: Separate staging (develop branch) and production (main branch) deployments
+- **Frontend Deployment**: Vercel with environment-specific configuration and preview deployments
+- **Backend Deployment**: Railway with automatic database migrations and health checks
+- **Notifications**: Slack integration for deployment status and failure alerts
+- **Rollback Support**: Documented rollback procedures for Vercel, Railway, and Neon database
+
+See `DEPLOY_GUIDE.md` for complete deployment documentation and `.github/workflows/ci-cd.yml` for pipeline configuration.
+
 ## External Dependencies
-- **Database**: Neon PostgreSQL
+- **Database**: Neon PostgreSQL (serverless, auto-scaling)
 - **Frontend Libraries**: React, Vite, Shadcn/UI, Tailwind CSS, TanStack Query, React Router DOM, Recharts
-- **Backend Libraries**: Express.js, TypeScript, Drizzle, bcrypt, jsonwebtoken
+- **Backend Libraries**: Express.js, TypeScript, Drizzle, bcrypt, jsonwebtoken, Winston (logging)
+- **Security**: Helmet.js (HTTP headers), express-rate-limit (DDoS protection)
 - **AI Integration**: Google Gemini API (chatbot and psychosocial analysis)
 - **Payment Processing**: Stripe (@stripe/stripe-js)
+- **Email Service**: SendGrid (via Replit integration)
+- **Monitoring**: Winston daily rotate file logger, health check endpoint
