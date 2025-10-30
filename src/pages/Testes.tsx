@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Clock, FileText, Heart, Users, Shield, AlertTriangle, Star, Lock, CheckCircle2, Loader2, Calendar } from "lucide-react";
+import { Building2, Clock, FileText, Heart, Users, Shield, AlertTriangle, Star, Lock, CheckCircle2, Loader2, Calendar, Lightbulb, Scale } from "lucide-react";
 import Logo from "@/components/Logo";
 import { useNavigate } from "react-router-dom";
 import { infoTesteClimaOrganizacional } from "@/lib/testes/clima-organizacional";
@@ -125,9 +125,9 @@ export default function Testes() {
 
   const getTesteIcon = (nome: string) => {
     const nomeNorm = nome.toLowerCase();
-    if (nomeNorm.includes('humaniq insight')) return <Logo size="sm" showText={false} />;
+    if (nomeNorm.includes('humaniq insight')) return <Lightbulb className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('clima organizacional')) return <Building2 className="h-8 w-8 text-white" />;
-    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return <Logo size="sm" showText={false} />;
+    if (nomeNorm.includes('karasek') || nomeNorm.includes('siegrist')) return <Scale className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('estresse')) return <Heart className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('clima e bem-estar')) return <Users className="h-8 w-8 text-white" />;
     if (nomeNorm.includes('maturidade') || nomeNorm.includes('mgrp')) return <Shield className="h-8 w-8 text-white" />;
