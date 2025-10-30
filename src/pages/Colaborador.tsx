@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, BarChart3, Zap, Shield, Users, Building2, Heart, Target, TrendingUp, Award } from "lucide-react";
+import { Sparkles, BarChart3, Zap, Shield, Users, Building2, Heart, Target, TrendingUp, Award, ClipboardCheck } from "lucide-react";
 import Logo from "@/components/Logo";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -216,7 +216,7 @@ const Colaborador = () => {
               <div className="relative mb-8 mx-auto w-fit">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/40 to-purple-500/40 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500"></div>
                 <div className="relative bg-gradient-to-br from-blue-500 to-purple-600 p-6 rounded-3xl shadow-2xl group-hover:shadow-blue-500/25 transition-all duration-500">
-                   <Logo size="lg" showText={false} className="group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 drop-shadow-lg" />
+                   <ClipboardCheck className="h-16 w-16 text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 drop-shadow-lg" />
                  </div>
               </div>
               
