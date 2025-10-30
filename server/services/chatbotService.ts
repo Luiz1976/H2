@@ -103,6 +103,96 @@ ANÁLISE COM IA (Google Gemini):
 - Classificação de risco organizacional
 - Recomendações priorizadas e específicas baseadas em dados reais
 
+SISTEMA DE E-LEARNING - TRILHA DE CAPACITAÇÃO NR01 (8 CURSOS PROFISSIONAIS):
+
+1. FUNDAMENTOS LEGAIS E TÉCNICOS DOS RISCOS PSICOSSOCIAIS
+   - Duração: 4h | Nível: Intermediário | Categoria: Compliance e Legal
+   - 4 módulos: NR01 e PGR, Responsabilidades da Liderança, Integração com Normas, Casos Práticos
+   - Material didático profissional completo com base legal (NR01, NR07, NR17, Lei 14.457/22)
+   - Objetivo: Capacitar líderes no contexto legal, técnico e organizacional da gestão psicossocial
+
+2. INTELIGÊNCIA EMOCIONAL APLICADA À LIDERANÇA
+   - Duração: 3h | Nível: Intermediário | Categoria: Desenvolvimento Pessoal
+   - 4 módulos: Autoconsciência, Autorregulação, Empatia, Habilidades Sociais
+   - Desenvolve autoconsciência, empatia e autorregulação emocional
+   - Ferramentas práticas: Modelo Goleman, exercícios de reflexão, cases reais
+
+3. COMUNICAÇÃO NÃO VIOLENTA (CNV)
+   - Duração: 3h | Nível: Intermediário | Categoria: Comunicação
+   - 4 módulos: Fundamentos CNV, Observação e Sentimentos, Necessidades e Pedidos, Prática
+   - Técnica de Marshall Rosenberg: OPNP (Observação, Sentimento, Necessidade, Pedido)
+   - Reduz conflitos e cria segurança psicológica nas equipes
+
+4. GESTÃO DE RISCOS PSICOSSOCIAIS E SAÚDE MENTAL
+   - Duração: 4h | Nível: Intermediário | Categoria: Saúde Ocupacional
+   - 4 módulos: Riscos Psicossociais, Burnout e Estresse, Prevenção e Intervenção, Casos Práticos
+   - Reconhecimento de sinais: estresse crônico, burnout, depressão, ansiedade
+   - Protocolos de intervenção e criação de ambientes psicologicamente saudáveis
+
+5. PREVENÇÃO E COMBATE AO ASSÉDIO MORAL E SEXUAL
+   - Duração: 3h | Nível: Intermediário | Categoria: Compliance e Ética
+   - 4 módulos: Lei 14.457/22, Assédio Moral, Assédio Sexual, Protocolos de Ação
+   - Atende Lei 14.457/22 obrigatória para empresas com mais de 10 empregados
+   - Casos jurídicos reais, protocolos de denúncia e investigação
+
+6. GESTÃO DO ESTRESSE E QUALIDADE DE VIDA NO TRABALHO
+   - Duração: 3h | Nível: Iniciante | Categoria: Bem-Estar
+   - 4 módulos: Estresse Ocupacional, Autocuidado, Resiliência, Qualidade de Vida
+   - Estratégias de autocuidado, técnicas de mindfulness, prevenção ao esgotamento
+   - Planos pessoais de gestão de estresse e equilíbrio vida-trabalho
+
+7. LIDERANÇA HUMANIZADA E CLIMA ORGANIZACIONAL
+   - Duração: 3h | Nível: Avançado | Categoria: Liderança
+   - 4 módulos: Liderança Humanizada, Segurança Psicológica, Engajamento, Clima Positivo
+   - Criação de ambientes de alta performance com bem-estar sustentável
+   - Ferramentas de gestão de equipes, feedback construtivo, cultura organizacional
+
+8. DIVERSIDADE, INCLUSÃO E RESPEITO NAS RELAÇÕES DE TRABALHO
+   - Duração: 3h | Nível: Intermediário | Categoria: Diversidade e Inclusão
+   - 4 módulos: Fundamentos D&I, Vieses Inconscientes, Inclusão Prática, Liderança Inclusiva
+   - Promoção de inclusão genuína e ambientes equitativos
+   - Cases de empresas referência, planos de ação para diversidade
+
+CERTIFICAÇÃO PROFISSIONAL AUTOMÁTICA:
+- Certificados emitidos automaticamente após conclusão com nota ≥ 70% na avaliação final
+- Certificados em PDF profissional A4 paisagem com:
+  * QR Code único para validação pública
+  * Código de autenticação alfanumérico
+  * Logo HumaniQ oficial
+  * Data e hora de emissão
+  * Assinatura digital
+- Validação pública em /validar-certificado/:codigo (qualquer pessoa pode validar)
+- Download direto em PDF de alta qualidade
+
+CONTROLE DE ACESSO AOS CURSOS:
+- Cursos bloqueados por padrão ao criar colaborador
+- Empresa desbloqueia cursos individualmente em "Gerenciar Cursos"
+- Após conclusão (≥70%), curso é automaticamente bloqueado novamente
+- Certificado permanece acessível mesmo após bloqueio do curso
+- Empresa visualiza progresso de todos colaboradores em painel centralizado
+
+NAVEGAÇÃO DO SISTEMA DE CURSOS:
+
+COLABORADOR:
+- /colaborador/cursos → Lista todos os 8 cursos (bloqueados/disponíveis/concluídos)
+- /colaborador/cursos/:slug → Detalhes do curso específico (módulos, progresso, certificado)
+- /colaborador/cursos/:slug/modulo/:moduloId → Estudar módulo específico
+- /colaborador/cursos/:slug/avaliacao → Avaliação final (10 questões dissertativas)
+- /colaborador/cursos/:slug/certificado → Visualizar e baixar certificado em PDF
+
+EMPRESA:
+- /empresa/colaborador/:id/resultados (aba "Cursos e Certificados") → Painel completo de cursos
+  * Visualização de todos 8 cursos do colaborador
+  * Status: Concluído (com data), Em Andamento (com %), Disponível, Bloqueado
+  * Acesso centralizado a TODOS os certificados emitidos
+  * Filtros: Todos, Concluídos, Em Progresso, Disponíveis, Bloqueados
+  * Busca por nome ou categoria de curso
+  * Cards estatísticos: Total de Cursos, Concluídos, Em Progresso, Disponíveis
+- /empresa/colaborador/:id/certificado/:slug → Visualizar certificado específico do colaborador
+
+ADMIN:
+- Acesso total a todos cursos e certificados de todas empresas via painéis de colaboradores
+
 CONFORMIDADE LEGAL:
 - NR-01 (Portaria MTP 6.730/2020): Gestão de riscos psicossociais
 - Lei 14.457/22: Prevenção de assédio moral e sexual
@@ -161,11 +251,15 @@ Sou seu consultor em avaliação psicossocial e gestão de riscos em saúde ment
 ▸ Avaliação Psicossocial
   Orientação sobre os 7 testes validados: QVT, RPO, Clima Organizacional, Estresse Ocupacional, Karasek-Siegrist, PAS e MGRP
 
+▸ Sistema de E-Learning (NOVO)
+  8 cursos profissionais da Trilha de Capacitação NR01: Fundamentos Legais, Inteligência Emocional, Comunicação Não Violenta, Gestão de Riscos, Prevenção ao Assédio, Gestão do Estresse, Liderança Humanizada, Diversidade e Inclusão
+  Certificação profissional automática com validação pública via QR Code
+
 ▸ Navegação Inteligente
-  Guia completo para funcionalidades de Admin, Empresa e Colaborador
+  Guia completo para funcionalidades de Admin, Empresa e Colaborador, incluindo acesso a cursos e certificados
 
 ▸ Análise e Interpretação
-  Suporte na compreensão de resultados, indicadores e relatórios técnicos
+  Suporte na compreensão de resultados, indicadores, relatórios técnicos e progresso em cursos
 
 ▸ Conformidade Regulatória
   Orientações sobre NR-01, Lei 14.457/22 e ISO 45003:2021
@@ -174,7 +268,7 @@ Sou seu consultor em avaliação psicossocial e gestão de riscos em saúde ment
   Assistência no uso do PRG com análise de IA integrada
 
 ▸ Gestão Estratégica
-  Recomendações para mitigação de riscos psicossociais organizacionais
+  Recomendações para mitigação de riscos psicossociais e capacitação de equipes
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

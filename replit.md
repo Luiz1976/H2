@@ -49,6 +49,9 @@ The frontend uses React with Vite, Shadcn/UI, and Tailwind CSS for a modern, res
 - **Landing Page Profissional**: Marketing landing page at `/landing` designed for client conversion, utilizing NLP and mental triggers.
 - **Admin Dashboards**: Redesigned Admin Convites page with modern UI/UX and an Executive Dashboard for CEO-level business intelligence, including financial, conversion, strategic KPIs, and growth metrics.
 - **Stripe Payment Integration**: Complete subscription payment system with three pricing tiers, checkout pages, webhook handling, and database schema extensions for subscription management.
+- **Employee Certificate Viewing System (30/10/2025)**: Dedicated certificate viewing and download functionality for employees at `/colaborador/cursos/:slug/certificado`, with "Ver" (view in new tab) and "Baixar PDF" (download) buttons for all completed courses.
+- **Online/Offline Status Indicator (30/10/2025)**: Discrete pulsating indicator in top-right corner of all screens showing real-time connection status with green dot + "ONLINE" text (with animated waves) when connected, red dot + "OFFLINE" text when disconnected.
+- **AI Chatbot with E-Learning Integration (30/10/2025)**: Google Gemini-powered chatbot with comprehensive knowledge base updated to include all 8 professional courses from NR01 Capacitation Trail, certification system details, navigation paths, and course access control information.
 
 ### System Design Choices
 The system migrated from Supabase to a local API backend. Manual Zod schemas are used for validation, and the API consistently returns camelCase. A PostgreSQL connection pool is used for performance.
@@ -57,5 +60,5 @@ The system migrated from Supabase to a local API backend. Manual Zod schemas are
 - **Database**: Neon PostgreSQL
 - **Frontend Libraries**: React, Vite, Shadcn/UI, Tailwind CSS, TanStack Query, React Router DOM, Recharts
 - **Backend Libraries**: Express.js, TypeScript, Drizzle, bcrypt, jsonwebtoken
-- **AI Integration**: Google Gemini API
+- **AI Integration**: Google Gemini API (chatbot and psychosocial analysis)
 - **Payment Processing**: Stripe (@stripe/stripe-js)
