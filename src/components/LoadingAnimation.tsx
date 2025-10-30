@@ -117,21 +117,10 @@ export default function LoadingAnimation({
       </div>
 
       <div className="relative z-10 text-center max-w-2xl mx-auto px-8">
-        {/* Logo animado */}
-        <motion.div
-          className="mb-8"
-          animate={{
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, -5, 0]
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
+        {/* Logo estático */}
+        <div className="mb-8">
           <Logo size="lg" showText={false} className="mx-auto" />
-        </motion.div>
+        </div>
 
         {/* Título */}
         <motion.h1
