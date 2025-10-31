@@ -18,7 +18,7 @@ export function OnlineStatus() {
 
   return (
     <div 
-      className="fixed top-4 right-4 z-[9999] flex items-center gap-2"
+      className="fixed top-20 right-4 z-[99999] flex items-center gap-2 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full shadow-lg border border-gray-200/50"
       data-testid="online-status-indicator"
     >
       <div className="relative flex items-center justify-center">

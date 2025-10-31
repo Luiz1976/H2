@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, Award, CheckCircle2, Shield } from "lucide-react";
-import { Curso } from "@/data/cursosData";
+import { Curso } from "@/data/cursosData.ts";
 import QRCode from "qrcode";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";

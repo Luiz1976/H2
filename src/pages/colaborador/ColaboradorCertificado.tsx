@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { cursos } from "@/data/cursosData";
+import { cursos } from "@/data/cursosData.ts";
 import CertificadoView from "@/components/cursos/CertificadoView";
 import { Loader2 } from "lucide-react";
 

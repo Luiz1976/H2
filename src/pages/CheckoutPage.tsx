@@ -80,11 +80,13 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/stripe/create-checkout-session', {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const response = await fetch(`${apiUrl}/api/stripe/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Para cookies em produção
         body: JSON.stringify({
           planType: planKey,
           employeeCount: quantidadeColaboradores,

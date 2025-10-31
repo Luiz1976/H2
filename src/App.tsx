@@ -84,6 +84,7 @@ import ValidarCertificado from "./pages/ValidarCertificado";
 import EmpresaColaboradorCertificado from "./pages/empresa/EmpresaColaboradorCertificado";
 import { Chatbot } from "./components/Chatbot";
 import { OnlineStatus } from "./components/OnlineStatus";
+import HomeRoute from "./components/layout/HomeRoute";
 
 function App() {
   console.log('🔍 [APP] Componente App iniciado');
@@ -122,11 +123,7 @@ function App() {
               />
               <Route 
                 path="/" 
-                element={
-                  <ProtectedRoute>
-                    <ModuleSelection />
-                  </ProtectedRoute>
-                } 
+                element={<HomeRoute />} 
               />
               <Route 
                 path="/Colaborador" 

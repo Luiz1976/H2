@@ -7,7 +7,7 @@ import { CheckCircle2, Clock, Award, AlertCircle } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Curso } from "@/data/cursosData";
+import { Curso } from "@/data/cursosData.ts";
 
 interface AvaliacaoFinalProps {
   curso: Curso;

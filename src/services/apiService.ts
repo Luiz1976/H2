@@ -1,6 +1,6 @@
 // Serviço para comunicação com a API backend
-// Usa URL relativa - o Vite faz proxy para localhost:3001
-const API_BASE_URL = '';
+// Usa URL baseada na variável de ambiente para produção ou proxy local para desenvolvimento
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 interface ApiResponse<T> {
   success?: boolean;
@@ -47,6 +47,7 @@ class ApiService {
     const token = localStorage.getItem('authToken');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       ...options.headers,
     };
 
@@ -57,6 +58,8 @@ class ApiService {
     const response = await fetch(url, {
       ...options,
       headers,
+      credentials: 'include', // Importante para cookies em produção
+      timeout: 30000, // Timeout de 30 segundos
     });
 
     const data = await response.json();

@@ -22,7 +22,10 @@ export default function CheckoutSuccessPage() {
     const sessionId = searchParams.get('session_id');
     
     if (sessionId) {
-      fetch(`/api/stripe/convite-session/${sessionId}`)
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      fetch(`${apiUrl}/api/stripe/convite-session/${sessionId}`, {
+        credentials: 'include' // Para cookies em produção
+      })
         .then(res => res.json())
         .then(data => {
           if (data.success) {

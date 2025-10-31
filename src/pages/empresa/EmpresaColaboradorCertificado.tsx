@@ -4,7 +4,7 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import CertificadoView from '@/components/cursos/CertificadoView';
-import { cursos } from '@/data/cursosData';
+import { cursos } from '@/data/cursosData.ts';
 
 export default function EmpresaColaboradorCertificado() {
   const { colaboradorId, cursoSlug } = useParams<{ colaboradorId: string; cursoSlug: string }>();
