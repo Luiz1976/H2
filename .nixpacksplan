@@ -1,0 +1,16 @@
+{
+  "phases": {
+    "setup": {
+      "nixPkgs": ["nodejs_22", "npm-9_x"]
+    },
+    "install": {
+      "cmds": ["npm install --legacy-peer-deps"]
+    },
+    "build": {
+      "cmds": ["npm run build"]
+    }
+  },
+  "start": {
+    "cmd": "npm start"
+  }
+}
