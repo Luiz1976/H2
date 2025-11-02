@@ -4,7 +4,7 @@
 
 ## 📋 Sobre o Projeto
 
-HumaniQ é uma plataforma completa para avaliação psicológica no ambiente corporativo, permitindo que administradores criem empresas, empresas gerenciem colaboradores, e colaboradores realizem testes psicológicos validados.
+HumaniQ é uma plataforma completa para avaliação psicológica no ambiente corporativo, permitindo que administradores criem empresas, empresas gerenciem colaboradores, e colaboradores realizem testes psicológicos validados
 
 ### 🎯 Funcionalidades Principais
 
