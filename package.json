@@ -70,6 +70,7 @@
     "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "dotenv": "^17.2.3",
+    "js-cookie": "^3.0.5",   
     "drizzle-kit": "^0.31.5",
     "drizzle-orm": "^0.44.6",
     "drizzle-zod": "^0.8.3",
