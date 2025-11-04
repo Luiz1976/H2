@@ -22,16 +22,27 @@ const allowedOrigins = [
   'https://humaniqai.com.br',
   process.env.FRONTEND_URL,
   process.env.CORS_ORIGIN,
+  process.env.RENDER_EXTERNAL_URL,
+  process.env.RENDER_ALLOWED_ORIGIN,
 ].filter(Boolean) as string[];
 
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    if (allowedOrigins.includes(origin)) return cb(null, true);
-    console.warn(`[CORS] Origem bloqueada: ${origin}`);
-    cb(new Error('Não permitido pelo CORS'));
+    try {
+      if (!origin) return cb(null, true);
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+      const hostname = new URL(origin).hostname;
+      if (hostname.endsWith('.onrender.com')) return cb(null, true);
+      console.warn(`[CORS] Origem não listada: ${origin} — permitindo temporariamente`);
+      return cb(null, true);
+    } catch (e) {
+      console.warn('[CORS] Falha ao analisar origem, permitindo:', origin, e);
+      return cb(null, true);
+    }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }));
 
 // Parsers com limite reduzido
@@ -106,6 +117,11 @@ app.use('*', (req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado', path: req.originalUrl });
 });
 
+// Rota raiz para verificação rápida
+app.get('/', (_req, res) => {
+  res.json({ status: 'OK', environment: NODE_ENV, port: PORT });
+});
+
 // Inicialização
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Backend minimal iniciado em http://0.0.0.0:${PORT} (${NODE_ENV})`);
@@ -118,4 +134,15 @@ process.on('SIGTERM', () => {
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT recebido. Encerr
+  console.log('SIGINT recebido. Encerrando...');
+  server.close(() => process.exit(0));
+});
+// Middleware de erro global para evitar 500 em erros de CORS
+app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  const msg = err?.message || 'Erro';
+  if (msg.toLowerCase().includes('cors')) {
+    return res.status(403).json({ error: 'Origem não permitida', details: msg });
+  }
+  console.error('[ERROR] Não tratado:', err);
+  res.status(500).json({ error: 'Erro interno do servidor' });
+});
