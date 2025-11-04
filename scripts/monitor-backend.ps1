@@ -2,12 +2,13 @@
 # HUMANIQ AI - MONITOR DE CONECTIVIDADE BACKEND
 # ================================================
 # Script para monitorar continuamente a conectividade
-# com o backend Railway e notificar mudanças de status
+# com o backend Render e notificar mudanças de status
 # ================================================
 
 param(
     [int]$IntervalMinutes = 2,
-    [string]$BackendUrl = "https://h2-production.up.railway.app",
+    # URL padrão do backend em produção (Render)
+    [string]$BackendUrl = "https://h2-8xej.onrender.com",
     [switch]$Verbose
 )
 
@@ -30,7 +31,7 @@ $Endpoints = @(
 # Função para exibir cabeçalho
 function Show-Header {
     Clear-Host
-    Write-Host "MONITOR DE CONECTIVIDADE BACKEND RAILWAY" -ForegroundColor Cyan
+    Write-Host "MONITOR DE CONECTIVIDADE BACKEND RENDER" -ForegroundColor Cyan
     Write-Host "=" * 60 -ForegroundColor Gray
     Write-Host "Backend: $BackendUrl" -ForegroundColor White
     Write-Host "Intervalo: $IntervalMinutes minutos" -ForegroundColor White
@@ -148,15 +149,15 @@ function Notify-StatusChange {
     Write-Host ""
     
     if ($NewStatus -eq "Online") {
-        Write-Host "BACKEND RAILWAY ESTA ONLINE!" -ForegroundColor Green
+        Write-Host "BACKEND RENDER ESTA ONLINE!" -ForegroundColor Green
         Write-Host "   Todos os endpoints criticos estao funcionando" -ForegroundColor Green
         Write-Host "   Voce pode usar o sistema normalmente" -ForegroundColor Green
     } elseif ($NewStatus -eq "Offline") {
-        Write-Host "BACKEND RAILWAY ESTA OFFLINE!" -ForegroundColor Red
+        Write-Host "BACKEND RENDER ESTA OFFLINE!" -ForegroundColor Red
         Write-Host "   Endpoints criticos nao estao respondendo" -ForegroundColor Red
         Write-Host "   Continuando monitoramento..." -ForegroundColor Yellow
     } else {
-        Write-Host "BACKEND RAILWAY PARCIALMENTE ONLINE" -ForegroundColor Yellow
+        Write-Host "BACKEND RENDER PARCIALMENTE ONLINE" -ForegroundColor Yellow
         Write-Host "   Alguns endpoints funcionando, outros nao" -ForegroundColor Yellow
     }
     
