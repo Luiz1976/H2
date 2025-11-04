@@ -11,6 +11,6 @@
     }
   },
   "start": {
-    "cmd": "node server-minimal-render.cjs"
+    "cmd": "node server-standalone.cjs"
   }
 }

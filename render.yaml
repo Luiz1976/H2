@@ -4,7 +4,7 @@ services:
     env: node
     plan: free
     buildCommand: npm ci --omit=dev --no-audit --no-fund || npm install --omit=dev --no-audit --no-fund
-    startCommand: node server-minimal-render.cjs
+    startCommand: node server-standalone.cjs
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV

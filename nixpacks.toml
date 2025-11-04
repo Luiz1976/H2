@@ -8,5 +8,5 @@ cmds = ["npm ci --omit=dev --no-audit --no-fund || npm install --omit=dev --no-a
 cmds = ["echo 'Skipping build phase for backend'"]
 
 [start]
-cmd = "node server-minimal-render.cjs"
+cmd = "node server-standalone.cjs"
 
