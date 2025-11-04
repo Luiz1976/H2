@@ -1,11 +1,38 @@
 import express from 'express';
-import { db } from '../../db';
+import { db } from '../db-sqlite';
 import { admins, empresas, colaboradores, insertAdminSchema } from '../../shared/schema';
 import { hashPassword, comparePassword, generateToken } from '../utils/auth';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 const router = express.Router();
+
+// Middleware para verificar token JWT
+const authenticateToken = (req: any, res: any, next: any) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Token de acesso requerido' });
+  }
+
+  try {
+    const { verifyToken } = require('../utils/auth');
+    const decoded = verifyToken(token);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(403).json({ error: 'Token inválido' });
+  }
+};
+
+// Endpoint para verificar se o usuário está autenticado
+router.get('/check', authenticateToken, (req: any, res: any) => {
+  res.json({
+    authenticated: true,
+    user: req.user
+  });
+});
 
 const loginSchema = z.object({
   email: z.string().email(),

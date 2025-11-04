@@ -2,12 +2,81 @@
 
 ## 📋 Índice
 
-1. [Configuração de Secrets](#configuração-de-secrets)
-2. [Deploy Manual](#deploy-manual)
-3. [CI/CD Automático](#cicd-automático)
-4. [Ambientes](#ambientes)
-5. [Rollback](#rollback)
-6. [Monitoramento](#monitoramento)
+1. [Deploy no Render.com](#deploy-no-rendercom)
+2. [Configuração de Secrets](#configuração-de-secrets)
+3. [Deploy Manual](#deploy-manual)
+4. [CI/CD Automático](#cicd-automático)
+5. [Ambientes](#ambientes)
+6. [Rollback](#rollback)
+7. [Monitoramento](#monitoramento)
+
+---
+
+## 🌐 Deploy no Render.com
+
+### ✅ Configuração Atual (IMPLEMENTADA)
+
+O backend está configurado para deploy no **Render.com** com as seguintes especificações:
+
+#### Arquivo `render.yaml`
+```yaml
+services:
+  - type: web
+    name: humaniq-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run start:prod
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: humaniq-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://trae9eoscz2t.vercel.app
+      - key: CORS_ORIGIN
+        value: https://trae9eoscz2t.vercel.app
+    autoDeploy: true
+    
+databases:
+  - name: humaniq-db
+    databaseName: humaniq
+    user: humaniq_user
+    plan: free
+```
+
+#### Passos para Deploy:
+
+1. **Conectar Repositório ao Render:**
+   - Acesse [render.com](https://render.com)
+   - Conecte sua conta GitHub
+   - Selecione o repositório HumaniQ
+
+2. **Configurar Variáveis de Ambiente:**
+   - `NODE_ENV`: production
+   - `PORT`: 10000
+   - `JWT_SECRET`: (gerado automaticamente)
+   - `DATABASE_URL`: (conectado ao PostgreSQL)
+   - `FRONTEND_URL`: https://trae9eoscz2t.vercel.app
+   - `CORS_ORIGIN`: https://trae9eoscz2t.vercel.app
+
+3. **Deploy Automático:**
+   - O Render detectará o `render.yaml`
+   - Build: `npm install`
+   - Start: `npm run start:prod`
+   - Health Check: `/health`
+
+#### URLs de Produção:
+- **Backend**: `https://humaniq-backend.onrender.com`
+- **Frontend**: `https://trae9eoscz2t.vercel.app`
+- **Health Check**: `https://humaniq-backend.onrender.com/health`
 
 ---
 
@@ -22,11 +91,10 @@ Acesse: `Settings → Secrets and variables → Actions → New repository secre
 NODE_VERSION=20.x
 ```
 
-#### Backend (Railway)
+#### Backend (Render.com)
 ```
-RAILWAY_TOKEN_STAGING=<token_staging>
-RAILWAY_TOKEN_PRODUCTION=<token_production>
-DATABASE_URL_PRODUCTION=<neon_connection_string>
+RENDER_API_KEY=<render_api_key>
+DATABASE_URL_PRODUCTION=<postgresql_connection_string>
 ```
 
 #### Frontend (Vercel)

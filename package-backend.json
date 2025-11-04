@@ -1,12 +1,12 @@
 {
-  "name": "humaniq-api-server",
+  "name": "humaniq-backend",
   "version": "1.0.0",
-  "description": "API Server para endpoints seguros do Humaniq",
-  "main": "server.js",
+  "description": "HumaniQ Backend API Server",
+  "main": "server/index.ts",
+  "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "node --watch app.js",
-    "test": "node test-api-server.js"
+    "start": "node --import tsx/esm server/index.ts",
+    "dev": "node --watch --import tsx/esm server/index.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",
@@ -29,15 +29,12 @@
     "uuid": "^9.0.1",
     "winston": "^3.18.3"
   },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
-  },
   "keywords": [
     "api",
-    "supabase",
+    "backend",
     "humaniq",
-    "convites"
+    "render"
   ],
-  "author": "Agente Bastos",
+  "author": "HumaniQ Team",
   "license": "MIT"
 }

@@ -122,6 +122,27 @@ class AuthServiceNew {
       
       if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
         console.error(`🚨 [AuthService] Erro de conectividade - verifique se o servidor está rodando em ${API_BASE_URL}`);
+        console.error(`💡 [AuthService] Possíveis soluções:`);
+        console.error(`   1. Verificar se o backend Railway está online`);
+        console.error(`   2. Iniciar servidor local: npm run server`);
+        console.error(`   3. Verificar configuração VITE_API_URL no .env`);
+        
+        // Criar um erro mais informativo
+        const detailedError = new Error(`Falha na conectividade com o backend. 
+        
+🔍 Diagnóstico:
+- URL tentada: ${url}
+- Backend Railway: Offline (404)
+- Backend Local: Não disponível (sem espaço em disco)
+
+🛠️ Soluções:
+1. Reativar o serviço Railway em: https://railway.com/project/4266d53d-269a-4667-9127-f241b39ee095
+2. Liberar espaço em disco e executar: npm run server
+3. Usar um backend alternativo temporário
+
+⚠️ Status atual: Sistema indisponível para login`);
+        
+        throw detailedError;
       }
       
       throw error;

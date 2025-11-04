@@ -1,134 +1,245 @@
-import express from 'express';
-import cors from 'cors';
+// Carregar variáveis de ambiente PRIMEIRO
 import dotenv from 'dotenv';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import logger, { logRequest } from './utils/logger';
-import authRouter from './routes/auth';
-import convitesRouter from './routes/convites';
-import empresasRouter from './routes/empresas';
-import testesRouter from './routes/testes';
-import colaboradoresRouter from './routes/colaboradores';
-import erpRouter from './routes/erp';
-import testeDisponibilidadeRouter from './routes/teste-disponibilidade';
-import cursoDisponibilidadeRouter from './routes/curso-disponibilidade';
-import stripeRouter from './routes/stripe';
-import adminRouter from './routes/admin';
-import chatbotRouter from './routes/chatbot';
-import emailTestRouter from './routes/email-test';
-import cursosRouter from './routes/cursos';
-
 dotenv.config();
 
+
+
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { db } from '../db';
+import winston from 'winston';
+
+// Importar rotas
+import authRoutes from './routes/auth';
+import testesRoutes from './routes/testes';
+import empresasRoutes from './routes/empresas';
+import colaboradoresRoutes from './routes/colaboradores';
+import convitesRoutes from './routes/convites';
+import adminRoutes from './routes/admin';
+import chatbotRoutes from './routes/chatbot';
+import stripeRoutes from './routes/stripe';
+import erpRoutes from './routes/erp';
+import testeDisponibilidadeRoutes from './routes/teste-disponibilidade';
+import cursoDisponibilidadeRoutes from './routes/curso-disponibilidade';
+import cursosRoutes from './routes/cursos';
+import emailTestRoutes from './routes/email-test';
+
+
+
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
-app.set('trust proxy', 1);
+// Configurar logger
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+  ),
+  defaultMeta: { service: 'humaniq-backend' },
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      )
+    })
+  ]
+});
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:"],
-    },
-  },
-  crossOriginEmbedderPolicy: false,
-}));
-
+// Configurar rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: 'Muitas requisições deste IP, por favor tente novamente em 15 minutos.',
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // máximo 100 requests por IP por janela
+  message: 'Muitas tentativas. Tente novamente em 15 minutos.',
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-app.use(limiter);
+// Middleware de segurança
+app.use(helmet({
+  crossOriginEmbedderPolicy: false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+}));
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: 'Muitas tentativas de login, por favor tente novamente em 15 minutos.',
-  skipSuccessfulRequests: true,
-});
+// Configurar CORS (inclui produção)
+const corsOptions = {
+  origin: function (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) {
+    const allowedOrigins = [
+      'http://localhost:5000',
+      'http://localhost:3000',
+      'https://www.humaniqai.com.br',
+      'https://humaniqai.com.br',
+      'https://h2-8xej.onrender.com',
+      process.env.FRONTEND_URL,
+      process.env.CORS_ORIGIN,
+    ].filter(Boolean);
 
-const allowedOrigins = [
-  'http://localhost:5000',
-  'https://08104fec-88a3-487a-ac1e-cdc4db92eb97-00-2yraann2v6dea.riker.replit.dev:5000',
-  process.env.CORS_ORIGIN
-].filter(Boolean);
+    // Permitir requests sem origin (mobile apps, server-to-server)
+    if (!origin) return callback(null, true);
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(null, true);
+      logger.warn(`CORS bloqueado para origem: ${origin}`);
+      callback(new Error('Não permitido pelo CORS'), false);
     }
   },
   credentials: true,
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+};
 
-app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }));
+app.use(cors(corsOptions));
+app.use(limiter);
 
+// Middleware para parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-app.use(logRequest);
+// Middleware de logging
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.path}`, {
+    ip: req.ip,
+    userAgent: req.get('User-Agent'),
+    timestamp: new Date().toISOString()
+  });
+  next();
+});
 
+// Health check endpoint
+// Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'OK',
     timestamp: new Date().toISOString(),
+    environment: NODE_ENV,
+    port: PORT,
+    database: 'connected',
     version: '1.0.0',
-    database: 'connected'
   });
 });
 
-app.use('/api/auth', authLimiter, authRouter);
-app.use('/api/convites', convitesRouter);
-app.use('/api/empresas', empresasRouter);
-app.use('/api/testes', testesRouter);
-app.use('/api/colaboradores', colaboradoresRouter);
-app.use('/api/erp', erpRouter);
-app.use('/api/teste-disponibilidade', testeDisponibilidadeRouter);
-app.use('/api/curso-disponibilidade', cursoDisponibilidadeRouter);
-app.use('/api/stripe', stripeRouter);
-app.use('/api/admin', adminRouter);
-app.use('/api/chatbot', chatbotRouter);
-app.use('/api/email', emailTestRouter);
-app.use('/api/cursos', cursosRouter);
-
-app.use((req, res) => {
-  res.status(404).json({ error: 'Endpoint não encontrado' });
+// API Health check endpoint (para compatibilidade com frontend)
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: NODE_ENV,
+    port: PORT,
+    database: 'connected',
+    version: '1.0.0'
+  });
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'HumaniQ AI Backend API',
+    version: '1.0.0',
+    environment: NODE_ENV,
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth',
+      testes: '/api/testes',
+      empresas: '/api/empresas',
+      colaboradores: '/api/colaboradores',
+      admin: '/api/admin'
+    }
+  });
+});
+
+// Configurar rotas da API
+app.use('/api/auth', authRoutes);
+app.use('/api/testes', testesRoutes);
+app.use('/api/empresas', empresasRoutes);
+app.use('/api/colaboradores', colaboradoresRoutes);
+app.use('/api/convites', convitesRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/chatbot', chatbotRoutes);
+app.use('/api/stripe', stripeRoutes);
+app.use('/api/erp', erpRoutes);
+app.use('/api/teste-disponibilidade', testeDisponibilidadeRoutes);
+app.use('/api/curso-disponibilidade', cursoDisponibilidadeRoutes);
+app.use('/api/cursos', cursosRoutes);
+app.use('/api/email-test', emailTestRoutes);
+
+// Middleware para rotas não encontradas
+app.use('*', (req, res) => {
+  res.status(404).json({
+    error: 'Endpoint não encontrado',
+    path: req.originalUrl,
+    method: req.method,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Middleware de tratamento de erros
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  logger.error('Erro não tratado', {
+  logger.error('Erro não tratado:', {
     error: err.message,
     stack: err.stack,
-    url: req.url,
+    path: req.path,
     method: req.method,
+    ip: req.ip
   });
-  res.status(500).json({ error: 'Erro interno do servidor' });
+
+  res.status(err.status || 500).json({
+    error: NODE_ENV === 'production' ? 'Erro interno do servidor' : err.message,
+    timestamp: new Date().toISOString(),
+    ...(NODE_ENV !== 'production' && { stack: err.stack })
+  });
 });
 
-app.listen(PORT, () => {
-  logger.info(`🚀 Servidor HumaniQ AI iniciado em http://localhost:${PORT}`);
-  logger.info(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-  logger.info(`🔐 Segurança: Helmet.js ✅ | Rate Limiting ✅`);
-  logger.info(`📝 Logging estruturado: Winston ✅`);
-  logger.debug('Endpoints disponíveis:', {
-    auth: 'POST /api/auth/login, POST /api/auth/register/admin',
-    convites: 'POST /api/convites/empresa, POST /api/convites/colaborador',
-    empresas: 'GET /api/empresas/me',
-    colaboradores: 'GET /api/colaboradores/me',
-    testes: 'GET /api/testes, POST /api/testes/resultado',
-    cursos: 'GET /api/cursos/*',
-    admin: 'POST /api/email/test-email',
+// Inicializar servidor
+const server = app.listen(PORT, '0.0.0.0', () => {
+  logger.info(`🚀 HumaniQ Backend iniciado com sucesso!`);
+  logger.info(`📍 Servidor rodando em: http://0.0.0.0:${PORT}`);
+  logger.info(`📊 Ambiente: ${NODE_ENV}`);
+  logger.info(`🗄️ Banco de dados: ${process.env.DATABASE_URL ? 'PostgreSQL (Neon)' : 'SQLite (local)'}`);
+  logger.info(`🔒 CORS configurado para: ${process.env.CORS_ORIGIN || 'localhost:5000'}`);
+  logger.info(`⚡ Rate limiting: 100 req/15min por IP`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM recebido. Encerrando servidor graciosamente...');
+  server.close(() => {
+    logger.info('Servidor encerrado.');
+    process.exit(0);
   });
+});
+
+process.on('SIGINT', () => {
+  logger.info('SIGINT recebido. Encerrando servidor graciosamente...');
+  server.close(() => {
+    logger.info('Servidor encerrado.');
+    process.exit(0);
+  });
+});
+
+// Tratamento de erros não capturados
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection:', { reason, promise });
+});
+
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught Exception:', error);
+  process.exit(1);
 });
 
 export default app;

@@ -7,7 +7,12 @@ import { randomBytes } from 'crypto';
 
 const router = Router();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Verificar se a chave do Stripe está configurada
+if (!process.env.STRIPE_SECRET_KEY) {
+  console.warn('⚠️  STRIPE_SECRET_KEY not set. Stripe operations will fail.');
+}
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy_key_for_development', {
   apiVersion: '2025-09-30.clover',
 });
 
