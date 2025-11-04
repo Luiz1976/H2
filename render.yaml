@@ -3,7 +3,7 @@ services:
     name: humaniq-backend
     env: node
     plan: free
-    buildCommand: npm install
+    buildCommand: npm ci --omit=dev --no-audit --no-fund || npm install --omit=dev --no-audit --no-fund
     startCommand: node server-minimal-render.cjs
     healthCheckPath: /health
     envVars:

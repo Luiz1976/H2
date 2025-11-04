@@ -1,16 +1,16 @@
 {
   "phases": {
     "setup": {
-      "nixPkgs": ["nodejs_22", "npm-9_x"]
+      "nixPkgs": ["nodejs_20"]
     },
     "install": {
-      "cmds": ["npm install --legacy-peer-deps"]
+      "cmds": ["npm ci --omit=dev --no-audit --no-fund || npm install --omit=dev --no-audit --no-fund"]
     },
     "build": {
-      "cmds": ["npm run build"]
+      "cmds": ["echo 'Skipping build phase for backend'"]
     }
   },
   "start": {
-    "cmd": "npm start"
+    "cmd": "node server-minimal-render.cjs"
   }
 }
