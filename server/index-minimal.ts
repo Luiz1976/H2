@@ -112,8 +112,8 @@ lazyRoute('/api/curso-disponibilidade', () => import('./routes/curso-disponibili
 lazyRoute('/api/cursos', () => import('./routes/cursos'));
 lazyRoute('/api/email-test', () => import('./routes/email-test'));
 
-// 404 mínimo
-app.use('*', (req, res) => {
+// 404 mínimo (sem wildcard inválido)
+app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint não encontrado', path: req.originalUrl });
 });
 

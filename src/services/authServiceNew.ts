@@ -4,6 +4,11 @@ import Cookies from 'js-cookie';
 // Em produção, usa VITE_API_URL (ex.: https://api.humaniqai.com.br)
 // Em desenvolvimento, faz fallback para http://localhost:3001
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// Normalizar base para evitar duplicações de "/api" e barras finais
+const NORMALIZED_BASE = (API_BASE_URL || '').replace(/\/api\/?$/, '').replace(/\/+$/, '');
+// NOVO: Fallback opcional via variável de ambiente
+const API_FALLBACK_URL = import.meta.env.VITE_API_FALLBACK_URL || '';
+const FALLBACK_BASE = (API_FALLBACK_URL || '').replace(/\/api\/?$/, '').replace(/\/+$/, '');
 
 // Configurações de cookies para produção/desenvolvimento
 const getCookieConfig = () => {
@@ -81,7 +86,7 @@ class AuthServiceNew {
   }
 
   private async makeRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${API_BASE_URL}${endpoint}`;
+    const url = `${NORMALIZED_BASE}${endpoint}`;
     
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -95,6 +100,8 @@ class AuthServiceNew {
 
     console.log(`🔄 [AuthService] Fazendo requisição: ${url}`);
     console.log(`🔄 [AuthService] API_BASE_URL: ${API_BASE_URL}`);
+    console.log(`🔄 [AuthService] NORMALIZED_BASE: ${NORMALIZED_BASE}`);
+    console.log(`🔄 [AuthService] FALLBACK_BASE: ${FALLBACK_BASE}`);
     console.log(`🔄 [AuthService] Headers:`, headers);
     
     try {
@@ -120,27 +127,44 @@ class AuthServiceNew {
     } catch (error) {
       console.error(`❌ [AuthService] Erro na requisição para ${url}:`, error);
       
+      // Tentar fallback automaticamente se houver falha de conectividade
+      const isFetchFail = error instanceof TypeError && (error.message.includes('Failed to fetch') || error.message.includes('NetworkError'));
+      const canFallback = FALLBACK_BASE && FALLBACK_BASE !== NORMALIZED_BASE;
+      if (isFetchFail && canFallback) {
+        const fallbackUrl = `${FALLBACK_BASE}${endpoint}`;
+        console.warn(`⚠️ [AuthService] Tentando fallback: ${fallbackUrl}`);
+        try {
+          const fbResponse = await fetch(fallbackUrl, {
+            ...options,
+            headers,
+            mode: 'cors',
+            credentials: 'include',
+          });
+          console.log(`📡 [AuthService] Fallback status: ${fbResponse.status}`);
+          if (fbResponse.ok) {
+            const fbData = await fbResponse.json();
+            console.warn(`✅ [AuthService] Fallback bem-sucedido em ${fallbackUrl}`);
+            return fbData;
+          } else {
+            const fbText = await fbResponse.text();
+            console.error(`❌ [AuthService] Fallback falhou: HTTP ${fbResponse.status}:`, fbText);
+          }
+        } catch (fbError) {
+          console.error(`❌ [AuthService] Erro ao usar fallback ${fallbackUrl}:`, fbError);
+        }
+      }
+      
       if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-        console.error(`🚨 [AuthService] Erro de conectividade - verifique se o servidor está rodando em ${API_BASE_URL}`);
+        console.error(`🚨 [AuthService] Erro de conectividade - verifique se o servidor está rodando em ${NORMALIZED_BASE}`);
         console.error(`💡 [AuthService] Possíveis soluções:`);
         console.error(`   1. Verificar se o backend Render está online`);
         console.error(`   2. Iniciar servidor local: npm run server`);
         console.error(`   3. Verificar configuração VITE_API_URL no ambiente (Vercel/.env)`);
+        if (canFallback) {
+          console.error(`   4. Fallback tentou usar: ${FALLBACK_BASE} (defina VITE_API_FALLBACK_URL)`);
+        }
 
-        // Criar um erro mais informativo
-        const detailedError = new Error(`Falha na conectividade com o backend.
-
-🔍 Diagnóstico:
-- URL tentada: ${url}
-- Backend Render: Indisponível ou com erro (500/502)
-- Backend Local: Não disponível (sem espaço em disco)
-
-🛠️ Soluções:
-1. Confirmar VITE_API_URL em produção: https://h2-8xej.onrender.com/api
-2. Liberar espaço em disco e executar local: npm run server
-3. Forçar redeploy e limpar cache no Vercel
-
-⚠️ Status atual: Sistema indisponível para login`);
+        const detailedError = new Error(`Falha na conectividade com o backend.\n\n🔍 Diagnóstico:\n- URL tentada: ${url}\n- Backend primário: indisponível ou com erro (500/502)\n- Fallback: ${canFallback ? 'tentado' : 'não configurado'}\n\n🛠️ Soluções:\n1. Confirmar VITE_API_URL em produção\n2. Definir VITE_API_FALLBACK_URL (ex.: ngrok/Railway)\n3. Liberar espaço e executar local: npm run server\n4. Forçar redeploy e limpar cache no Vercel\n\n⚠️ Status atual: Sistema indisponível para login`);
 
         throw detailedError;
       }
@@ -257,92 +281,48 @@ class AuthServiceNew {
 
   async getEmpresas(): Promise<{ success: boolean; data?: any[]; message?: string }> {
     try {
-      const response = await this.makeRequest<{ empresas: any[]; total: number }>('/api/empresas/todas', {
-        method: 'GET',
+      const response = await this.makeRequest<{ data: any[] }>('/api/empresas', {
+        method: 'GET'
       });
-      return { success: true, data: response.empresas };
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error('Erro ao buscar empresas:', error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Erro ao buscar empresas'
-      };
+      return { success: false, message: error instanceof Error ? error.message : 'Erro ao buscar empresas' };
     }
   }
 
   async getColaboradores(): Promise<{ success: boolean; data?: any[]; message?: string }> {
     try {
-      const response = await this.makeRequest<{ colaboradores: any[]; total: number }>('/api/empresas/colaboradores', {
-        method: 'GET',
+      const response = await this.makeRequest<{ data: any[] }>('/api/colaboradores', {
+        method: 'GET'
       });
-      
-      const colaboradores = response.colaboradores.map((col: any) => ({
-        id: col.id,
-        nome: col.nome,
-        email: col.email,
-        cargo: col.cargo,
-        departamento: col.departamento,
-        avatar: col.avatar,
-        ativo: col.ativo,
-        created_at: col.createdAt,
-        updated_at: col.createdAt,
-        total_testes: col.situacaoPsicossocial?.totalTestes || 0,
-        ultimo_teste: col.situacaoPsicossocial?.ultimoTeste,
-        situacaoPsicossocial: col.situacaoPsicossocial,
-      }));
-      
-      return { success: true, data: colaboradores };
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error('Erro ao buscar colaboradores:', error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Erro ao buscar colaboradores'
-      };
+      return { success: false, message: error instanceof Error ? error.message : 'Erro ao buscar colaboradores' };
     }
   }
 
   async getColaboradorById(id: string): Promise<{ success: boolean; data?: any; message?: string }> {
     try {
-      const response = await this.makeRequest<{ colaborador: any }>(`/api/empresas/colaboradores/${id}`, {
-        method: 'GET',
+      const response = await this.makeRequest<{ data: any }>(`/api/colaboradores/${id}`, {
+        method: 'GET'
       });
-      
-      const colaborador = {
-        id: response.colaborador.id,
-        nome: response.colaborador.nome,
-        email: response.colaborador.email,
-        cargo: response.colaborador.cargo,
-        departamento: response.colaborador.departamento,
-        avatar: response.colaborador.avatar,
-        ativo: response.colaborador.ativo,
-        created_at: response.colaborador.createdAt,
-      };
-      
-      return { success: true, data: colaborador };
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error('Erro ao buscar colaborador:', error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Erro ao buscar colaborador'
-      };
+      return { success: false, message: error instanceof Error ? error.message : 'Erro ao buscar colaborador' };
     }
   }
 
   async getResultadosColaborador(colaboradorId: string): Promise<{ success: boolean; data?: any[]; message?: string }> {
     try {
-      const response = await this.makeRequest<{ resultados: any[]; total: number }>(`/api/empresas/colaboradores/${colaboradorId}/resultados`, {
-        method: 'GET',
+      const response = await this.makeRequest<{ data: any[] }>(`/api/testes/resultado/${colaboradorId}`, {
+        method: 'GET'
       });
-      
-      return { success: true, data: response.resultados };
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error('Erro ao buscar resultados do colaborador:', error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Erro ao buscar resultados'
-      };
+      return { success: false, message: error instanceof Error ? error.message : 'Erro ao buscar resultados' };
     }
   }
 }
 
 export const authServiceNew = new AuthServiceNew();
+

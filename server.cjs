@@ -46,68 +46,36 @@ app.use(helmet({
       frameAncestors: ["'self'"],
       objectSrc: ["'none'"],
       scriptSrcAttr: ["'none'"],
-      upgradeInsecureRequests: [],
-    },
+    }
   },
-  crossOriginOpenerPolicy: { policy: "same-origin" },
-  crossOriginResourcePolicy: { policy: "same-origin" },
-  originAgentCluster: true,
-  referrerPolicy: { policy: "no-referrer" },
-  strictTransportSecurity: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-  },
-  xContentTypeOptions: true,
-  xDnsPrefetchControl: true,
-  xDownloadOptions: true,
-  xFrameOptions: { action: "deny" },
-  xPermittedCrossDomainPolicies: false,
-  xPoweredBy: false,
-  xXssProtection: true,
+  crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
+  crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json());
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // máximo 100 requests por IP por janela de tempo
-  message: {
-    error: 'Muitas tentativas. Tente novamente em 15 minutos.',
-    code: 'RATE_LIMIT_EXCEEDED'
-  },
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
   standardHeaders: true,
-  legacyHeaders: false,
+  legacyHeaders: false
 });
-
 app.use(limiter);
 
-// Health check endpoint
+// Health check endpoints
 app.get('/health', (req, res) => {
-  res.json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    environment: NODE_ENV,
-    port: PORT,
-    database: 'connected',
-    version: '1.0.0'
-  });
+  res.status(200).json({ status: 'ok', service: 'server', timestamp: new Date().toISOString() });
 });
 
-// API routes
 app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'OK',
-    message: 'HumaniQ Backend API is running',
-    timestamp: new Date().toISOString(),
-    environment: NODE_ENV
-  });
+  res.status(200).json({ status: 'ok', service: 'server', path: '/api/health', timestamp: new Date().toISOString() });
 });
 
-// Default 404 handler
-app.use((req, res) => {
+// Catch-all para endpoints inexistentes
+app.use('*', (req, res) => {
   res.status(404).json({
     error: 'Endpoint not found',
     message: 'This is the HumaniQ Backend API. Frontend is served separately.',

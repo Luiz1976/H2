@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
+// Removido loadStripe para evitar inicialização sem chave válida
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,7 +8,13 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+// Função util para obter base da API de forma segura
+function getApiBase() {
+  const raw = import.meta.env.VITE_API_URL || '';
+  const trimmed = raw.replace(/\/+$/, '');
+  const base = trimmed.replace(/\/api$/, '');
+  return base;
+}
 
 const PLANOS = {
   essencial: {
@@ -80,13 +86,17 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/stripe/create-checkout-session`, {
+      const apiBase = getApiBase();
+      if (!apiBase) {
+        throw new Error('Configuração ausente: VITE_API_URL não definida');
+      }
+
+      const response = await fetch(`${apiBase}/api/stripe/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Para cookies em produção
+        credentials: 'include',
         body: JSON.stringify({
           planType: planKey,
           employeeCount: quantidadeColaboradores,

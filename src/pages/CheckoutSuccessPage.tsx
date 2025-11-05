@@ -7,6 +7,14 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
+// Função util para obter base da API de forma segura
+function getApiBase() {
+  const raw = import.meta.env.VITE_API_URL || '';
+  const trimmed = raw.replace(/\/+$/, '');
+  const base = trimmed.replace(/\/api$/, '');
+  return base;
+}
+
 export default function CheckoutSuccessPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -22,9 +30,14 @@ export default function CheckoutSuccessPage() {
     const sessionId = searchParams.get('session_id');
     
     if (sessionId) {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      fetch(`${apiUrl}/api/stripe/convite-session/${sessionId}`, {
-        credentials: 'include' // Para cookies em produção
+      const apiBase = getApiBase();
+      if (!apiBase) {
+        console.error('VITE_API_URL ausente para buscar convite do Stripe');
+        setLoading(false);
+        return;
+      }
+      fetch(`${apiBase}/api/stripe/convite-session/${sessionId}`, {
+        credentials: 'include'
       })
         .then(res => res.json())
         .then(data => {

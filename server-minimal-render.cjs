@@ -11,7 +11,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
 
-app.use(cors({ origin: CORS_ORIGIN }));
+// Permitir Vercel Preview explicitamente
+const allowedOrigins = [
+  CORS_ORIGIN,
+  'https://trae9eoscz2t.vercel.app'
+].filter(Boolean);
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 // Log simples
@@ -50,5 +56,5 @@ process.on('uncaughtException', (error) => {
 
 app.listen(PORT, () => {
   console.log(`Servidor mínimo (Render) ouvindo em http://localhost:${PORT}`);
-  console.log(`CORS_ORIGIN permitido: ${CORS_ORIGIN}`);
+  console.log(`CORS_ORIGIN permitido:`, allowedOrigins);
 });

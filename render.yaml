@@ -3,8 +3,8 @@ services:
     name: humaniq-backend
     env: node
     plan: free
-    buildCommand: cp -f package-standalone.json package.json && npm install --omit=dev --no-audit --no-fund
-    startCommand: node server-standalone.cjs
+    buildCommand: npm ci --omit=dev --no-audit --no-fund || npm install --omit=dev --no-audit --no-fund
+    startCommand: tsx server/index.ts
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV

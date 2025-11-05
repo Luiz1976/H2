@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
   'http://localhost:5000',
   'https://www.humaniqai.com.br',
+  'https://trae9eoscz2t.vercel.app',
   process.env.CORS_ORIGIN || ''
 ].filter(Boolean);
 

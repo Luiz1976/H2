@@ -85,12 +85,25 @@ const corsOptions = {
       'https://www.humaniqai.com.br',
       'https://humaniqai.com.br',
       'https://h2-8xej.onrender.com',
+      // Removido domínio fixo de vercel para lógica dinâmica
       process.env.FRONTEND_URL,
       process.env.CORS_ORIGIN,
     ].filter(Boolean);
 
     // Permitir requests sem origin (mobile apps, server-to-server)
     if (!origin) return callback(null, true);
+
+    // Permitir domínios de preview e produção do Vercel (*.vercel.app)
+    try {
+      const hostname = new URL(origin).hostname;
+      if (hostname.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+      // Permitir domínios onrender.com
+      if (hostname.endsWith('.onrender.com')) {
+        return callback(null, true);
+      }
+    } catch (_) {}
 
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -178,8 +191,8 @@ app.use('/api/curso-disponibilidade', cursoDisponibilidadeRoutes);
 app.use('/api/cursos', cursosRoutes);
 app.use('/api/email-test', emailTestRoutes);
 
-// Middleware para rotas não encontradas
-app.use('*', (req, res) => {
+// Middleware para rotas não encontradas (sem wildcard inválido)
+app.use((req, res) => {
   res.status(404).json({
     error: 'Endpoint não encontrado',
     path: req.originalUrl,
