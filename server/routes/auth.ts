@@ -1,5 +1,5 @@
 import express from 'express';
-import { db } from '../db-sqlite';
+import { db } from '../db';
 import { admins, empresas, colaboradores, insertAdminSchema } from '../../shared/schema';
 import { hashPassword, comparePassword, generateToken } from '../utils/auth';
 import { eq } from 'drizzle-orm';
@@ -109,8 +109,14 @@ router.post('/login', async (req, res) => {
         departamento: (user as any).departamento,
       },
     });
-  } catch (error) {
-    console.error('Login error:', error);
+  } catch (error: any) {
+    console.error('❌ [AUTH/LOGIN] Erro interno durante login', {
+      email: req.body?.email,
+      code: error?.code,
+      name: error?.name,
+      message: error?.message,
+      stack: typeof error?.stack === 'string' ? error.stack.split('\n').slice(0, 3).join(' | ') : undefined,
+    });
     res.status(500).json({ error: 'Internal server error' });
   }
 });
