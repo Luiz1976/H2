@@ -1,7 +1,5 @@
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import { Pool, neonConfig } from '@neondatabase/serverless';
-import Database from 'better-sqlite3';
-import { drizzle as drizzleSqlite } from 'drizzle-orm/better-sqlite3';
 import ws from "ws";
 import * as schema from '../shared/schema';
 
@@ -19,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
     );
   }
 
-  const pool = new Pool({ 
+  const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     connectionTimeoutMillis: 30000,
     idleTimeoutMillis: 30000,
@@ -28,13 +26,15 @@ if (process.env.NODE_ENV === 'production') {
     keepAliveInitialDelayMillis: 10000
   });
 
-  db = drizzle({ client: pool, schema });
+  db = drizzle(pool, { schema });
 } else {
   // SQLite para desenvolvimento
+  const Database = require('better-sqlite3');
+  const { drizzle: drizzleSqlite } = require('drizzle-orm/better-sqlite3');
   const sqlite = new Database('humaniq-dev.db');
   sqlite.pragma('journal_mode = WAL');
-  
-  db = drizzleSqlite({ client: sqlite, schema });
+
+  db = drizzleSqlite(sqlite, { schema });
 }
 
 export { db };

@@ -11,6 +11,13 @@ interface Message {
   timestamp: Date;
 }
 
+// Função util para obter base da API de forma segura
+const getApiBase = () => {
+  const raw = import.meta.env.VITE_API_URL || '';
+  const trimmed = raw.replace(/\/+$/, '');
+  return trimmed.replace(/\/api$/, '');
+};
+
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -36,7 +43,29 @@ export function Chatbot() {
 
   const loadWelcomeMessage = async () => {
     try {
-      const response = await fetch('/api/chatbot/welcome');
+      const apiBase = getApiBase();
+      const url = `${apiBase}/api/chatbot/welcome`;
+      console.log('🤖 [CHATBOT] Buscando mensagem de boas-vindas em:', url);
+
+      const response = await fetch(url, {
+        headers: { Accept: 'application/json' },
+        credentials: 'include',
+        mode: 'cors',
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        console.error('❌ [CHATBOT] Resposta não OK:', response.status, errText?.slice(0, 200));
+        throw new Error(`HTTP ${response.status}: ${errText}`);
+      }
+
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        const rawText = await response.text();
+        console.error('❌ [CHATBOT] Conteúdo não-JSON recebido:', rawText?.slice(0, 200));
+        throw new Error('Resposta inválida da API (não-JSON)');
+      }
+
       const data = await response.json();
       
       setMessages([{
