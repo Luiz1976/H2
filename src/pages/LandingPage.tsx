@@ -61,6 +61,20 @@ export default function LandingPage() {
               <button onClick={() => scrollToSection('depoimentos')} className="text-gray-700 hover:text-indigo-600 transition-colors">
                 Casos de Sucesso
               </button>
+              <button
+                onClick={() => {
+                  try {
+                    window.dispatchEvent(new CustomEvent('chatbot:open'));
+                  } catch (e) {
+                    console.warn('Falha ao disparar evento chatbot:open', e);
+                  }
+                }}
+                className="text-gray-700 hover:text-indigo-600 transition-colors"
+                data-testid="button-chatbot-header"
+                title="Abrir Chatbot"
+              >
+                Chatbot
+              </button>
               <Button 
                 onClick={() => navigate('/quick-check')} 
                 className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
