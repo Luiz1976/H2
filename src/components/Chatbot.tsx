@@ -26,6 +26,9 @@ export function Chatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const path = typeof window !== 'undefined' ? window.location.pathname : '';
+  // Oculta o gatilho flutuante especificamente na Landing (/ e /landing)
+  const hideFloatingTriggerOnThisPage = path === '/' || path === '/landing';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -40,6 +43,23 @@ export function Chatbot() {
       loadWelcomeMessage();
     }
   }, [isOpen]);
+
+  // Permite abrir/alternar/fechar o chatbot por eventos globais do window
+  useEffect(() => {
+    const openHandler = () => setIsOpen(true);
+    const toggleHandler = () => setIsOpen(prev => !prev);
+    const closeHandler = () => setIsOpen(false);
+
+    window.addEventListener('chatbot:open', openHandler as unknown as EventListener);
+    window.addEventListener('chatbot:toggle', toggleHandler as unknown as EventListener);
+    window.addEventListener('chatbot:close', closeHandler as unknown as EventListener);
+
+    return () => {
+      window.removeEventListener('chatbot:open', openHandler as unknown as EventListener);
+      window.removeEventListener('chatbot:toggle', toggleHandler as unknown as EventListener);
+      window.removeEventListener('chatbot:close', closeHandler as unknown as EventListener);
+    };
+  }, []);
 
   const loadWelcomeMessage = async () => {
     try {
@@ -133,6 +153,10 @@ export function Chatbot() {
   };
 
   if (!isOpen) {
+    // Na LandingPage, o gatilho será fornecido pelo header; aqui não renderizamos o botão flutuante
+    if (hideFloatingTriggerOnThisPage) {
+      return null;
+    }
     return (
       <button
         onClick={() => setIsOpen(true)}

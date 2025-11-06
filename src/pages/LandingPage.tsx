@@ -46,9 +46,9 @@ export default function LandingPage() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
+          <div className="flex items-center">
             <Logo size="md" showText={true} />
-            <nav className="hidden md:flex space-x-8">
+            <nav className="hidden md:flex space-x-8 items-center ml-12">
               <button onClick={() => scrollToSection('solucao')} className="text-gray-700 hover:text-indigo-600 transition-colors">
                 Solução
               </button>
@@ -61,15 +61,6 @@ export default function LandingPage() {
               <button onClick={() => scrollToSection('depoimentos')} className="text-gray-700 hover:text-indigo-600 transition-colors">
                 Casos de Sucesso
               </button>
-            </nav>
-            <div className="flex space-x-4">
-              <Button 
-                variant="ghost" 
-                onClick={() => navigate('/login')}
-                data-testid="button-login"
-              >
-                Entrar
-              </Button>
               <Button 
                 onClick={() => navigate('/quick-check')} 
                 className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
@@ -77,7 +68,14 @@ export default function LandingPage() {
               >
                 Diagnóstico Gratuito
               </Button>
-            </div>
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate('/login')}
+                data-testid="button-login"
+              >
+                Entrar
+              </Button>
+            </nav>
           </div>
         </div>
       </header>
