@@ -1,15 +1,21 @@
 import dotenv from 'dotenv';
 import postgres from 'postgres';
 
-// Carregar env de forma robusta: usar primeiro DATABASE_URL válido
-const envPaths = ['.env.render', '.env.production', '.env'];
-let databaseUrl: string | undefined;
-for (const p of envPaths) {
-  const res = dotenv.config({ path: p });
-  const candidate = res.parsed?.DATABASE_URL || process.env.DATABASE_URL;
-  if (candidate && /^postgres(ql)?:\/\//.test(candidate)) {
-    databaseUrl = candidate;
-    break;
+// Carregar env de forma robusta: priorizar process.env.DATABASE_URL válido
+let databaseUrl: string | undefined =
+  process.env.DATABASE_URL && /^postgres(ql)?:\/\//.test(process.env.DATABASE_URL)
+    ? process.env.DATABASE_URL
+    : undefined;
+
+if (!databaseUrl) {
+  const envPaths = ['.env', '.env.production', '.env.render'];
+  for (const p of envPaths) {
+    const res = dotenv.config({ path: p });
+    const candidate = res.parsed?.DATABASE_URL;
+    if (candidate && /^postgres(ql)?:\/\//.test(candidate)) {
+      databaseUrl = candidate;
+      break;
+    }
   }
 }
 
