@@ -1,7 +1,11 @@
 // Serviço para comunicação com a API backend
 // Em desenvolvimento: usa URL relativa (proxy Vite)
 // Em produção: usa VITE_API_URL do ambiente
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+const RAW_API_BASE = import.meta.env.VITE_API_URL || '';
+const API_BASE_URL = RAW_API_BASE.replace(/\/+$/, '').replace(/\/api$/, '');
+// Fallback opcional para produção
+const RAW_FALLBACK_BASE = import.meta.env.VITE_API_FALLBACK_URL || '';
+const API_FALLBACK_BASE = RAW_FALLBACK_BASE.replace(/\/+$/, '').replace(/\/api$/, '');
 
 interface ApiResponse<T> {
   success?: boolean;
@@ -43,8 +47,8 @@ class ApiService {
     endpoint: string, 
     options: RequestInit = {}
   ): Promise<T> {
-    const url = `${API_BASE_URL}${endpoint}`;
-    
+    const buildUrl = (base: string) => `${base}${endpoint}`;
+
     const token = localStorage.getItem('authToken');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -55,18 +59,47 @@ class ApiService {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(url, {
-      ...options,
-      headers,
-    });
+    const primaryUrl = API_BASE_URL ? buildUrl(API_BASE_URL) : endpoint; // relativo se base vazia
 
-    const data = await response.json();
+    const tryFetch = async (url: string) => {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+      });
 
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}: ${response.statusText}`);
+      let data: any = null;
+      try {
+        data = await response.json();
+      } catch (_) {
+        data = null;
+      }
+
+      if (!response.ok) {
+        const err = new Error(data?.error || `HTTP ${response.status}: ${response.statusText}`) as any;
+        err.status = response.status;
+        err.url = url;
+        err.data = data;
+        throw err;
+      }
+
+      return data as T;
+    };
+
+    try {
+      return await tryFetch(primaryUrl);
+    } catch (error: any) {
+      const isServerError = typeof error?.status === 'number' && error.status >= 500;
+      const isNetworkError = !error?.status; // falha de rede geralmente não tem status
+      const canFallback = Boolean(API_FALLBACK_BASE);
+
+      if ((isServerError || isNetworkError) && canFallback) {
+        const fallbackUrl = buildUrl(API_FALLBACK_BASE);
+        console.warn(`⚠️ [ApiService] Erro em '${primaryUrl}' → tentando fallback '${fallbackUrl}'`);
+        return await tryFetch(fallbackUrl);
+      }
+
+      throw error;
     }
-
-    return data;
   }
 
   // Health check da API
@@ -212,6 +245,9 @@ class ApiService {
     });
     
     return response.resultado;
+  }
+  async obterDashboardAdmin(): Promise<any> {
+    return this.makeRequest('/api/admin/dashboard');
   }
 }
 

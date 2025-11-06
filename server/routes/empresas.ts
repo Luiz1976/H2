@@ -2094,4 +2094,43 @@ router.post('/:id/bloquear-acesso', authenticateToken, requireAdmin, async (req:
   }
 });
 
+// Compatibilidade: listar empresas na raiz para GET /api/empresas
+router.get('/', authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
+  try {
+    console.log('🏢 [ADMIN] Listando empresas via GET /api/empresas');
+    const todasEmpresas = await db
+      .select({
+        id: empresas.id,
+        nomeEmpresa: empresas.nomeEmpresa,
+        emailContato: empresas.emailContato,
+        ativa: empresas.ativa,
+        createdAt: empresas.createdAt,
+      })
+      .from(empresas);
+
+    const empresasEnriquecidas = await Promise.all(
+      todasEmpresas.map(async (empresa) => {
+        const colaboradoresList = await db
+          .select()
+          .from(colaboradores)
+          .where(eq(colaboradores.empresaId, empresa.id));
+
+        return {
+          id: empresa.id,
+          nome_empresa: empresa.nomeEmpresa,
+          email_contato: empresa.emailContato,
+          ativo: empresa.ativa,
+          created_at: empresa.createdAt,
+          total_colaboradores: colaboradoresList.length,
+        };
+      })
+    );
+
+    res.json({ data: empresasEnriquecidas, total: empresasEnriquecidas.length });
+  } catch (error) {
+    console.error('Erro ao listar empresas (root):', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 export default router;

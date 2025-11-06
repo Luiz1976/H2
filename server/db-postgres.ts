@@ -1,10 +1,6 @@
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import ws from "ws";
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 import * as schema from '../shared/schema';
-
-// Configurar WebSocket para Neon
-neonConfig.webSocketConstructor = ws;
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
@@ -12,16 +8,13 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-export const pool = new Pool({ 
-  connectionString: process.env.DATABASE_URL,
-  connectionTimeoutMillis: 30000,
-  idleTimeoutMillis: 30000,
-  max: 10,
-  keepAlive: true,
-  keepAliveInitialDelayMillis: 10000
+export const client = postgres(process.env.DATABASE_URL, {
+  max: 20,
+  idle_timeout: 20,
+  connect_timeout: 10,
 });
 
-export const db = drizzle({ client: pool, schema });
+export const db = drizzle(client, { schema });
 
 // Função para executar migrações PostgreSQL
 export async function runMigrations() {
