@@ -3,12 +3,14 @@ services:
     name: humaniq-backend
     env: node
     plan: free
-    buildCommand: npm ci --omit=dev --no-audit --no-fund || npm install --omit=dev --no-audit --no-fund
-    startCommand: tsx server/index.ts
+    buildCommand: npm install --no-audit --no-fund
+    startCommand: npm run start:prod
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 10000
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
