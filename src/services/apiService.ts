@@ -1,6 +1,7 @@
 // Serviço para comunicação com a API backend
 // Em desenvolvimento: usa URL relativa (proxy Vite)
 // Em produção: usa VITE_API_URL do ambiente
+import Cookies from 'js-cookie';
 const RAW_API_BASE = import.meta.env.VITE_API_URL || '';
 const API_BASE_URL = RAW_API_BASE.replace(/\/+$/, '').replace(/\/api$/, '');
 // Fallback opcional para produção
@@ -42,6 +43,16 @@ interface ConviteResponse {
   linkConvite?: string;
 }
 
+function getAuthToken(): string | null {
+  // Preferir cookies em produção; fallback para localStorage
+  const cookieToken = Cookies.get('authToken');
+  if (cookieToken && typeof cookieToken === 'string' && cookieToken.length > 0) {
+    return cookieToken;
+  }
+  const lsToken = localStorage.getItem('authToken');
+  return lsToken || null;
+}
+
 class ApiService {
   private async makeRequest<T>(
     endpoint: string, 
@@ -49,7 +60,7 @@ class ApiService {
   ): Promise<T> {
     const buildUrl = (base: string) => `${base}${endpoint}`;
 
-    const token = localStorage.getItem('authToken');
+    const token = getAuthToken();
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       ...options.headers,
@@ -234,7 +245,7 @@ class ApiService {
     userEmail?: string;
     empresaId?: string | null;
   }): Promise<{ id: string; pontuacaoTotal: number; dataRealizacao: string }> {
-    const token = localStorage.getItem('authToken');
+    const token = getAuthToken();
     
     // Se tiver token, usa endpoint autenticado; senão usa anônimo
     const endpoint = token ? '/api/testes/resultado' : '/api/testes/resultado/anonimo';
