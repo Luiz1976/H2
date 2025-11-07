@@ -67,18 +67,40 @@ The platform has been hardened for production deployment with enterprise-grade s
 - **CI/CD Pipeline**: GitHub Actions workflow automating lint, type-check, tests, security scans, builds, and deployments to staging/production
 - **Code Quality**: Removed JavaScript legacy files, migrated to 100% TypeScript across backend
 
-### CI/CD & Deployment (30/10/2025)
-Automated deployment pipeline configured with GitHub Actions:
+### CI/CD & Deployment (07/11/2025)
+Production deployment configured for **Render + Vercel** architecture (currently deployed and operational):
 
-- **Continuous Integration**: Automated ESLint, TypeScript type-checking, and Vitest on every push/PR
-- **Security Scanning**: npm audit and Snyk integration for vulnerability detection
-- **Multi-Environment**: Separate staging (develop branch) and production (main branch) deployments
+**Production Servers**:
+- **Backend (API)**: Render - `https://h2-8xej.onrender.com`
+  - Target custom domain: `https://api.humaniqai.com.br`
+  - Database: Neon PostgreSQL (serverless, auto-scaling)
+  - SSL: Automatic via Render (Let's Encrypt)
+- **Frontend**: Vercel - URL temporária
+  - Target custom domain: `https://www.humaniqai.com.br`
+  - Build: Vite production build
+  - SSL: Automatic via Vercel
+- **Domain**: humaniqai.com.br (managed via WIX DNS)
+- **Repository**: GitHub - `Luiz1976/H2`
+
+**Configuration**:
+- **CORS**: Multiple origins support (Vercel temporary URL + custom domain)
+- **API URL**: Configured via `VITE_API_URL` environment variable
+- **Health Monitoring**: `/health` endpoint for uptime monitoring
+- **Security**: Helmet.js, rate limiting, JWT authentication, CORS whitelisting
+- **Logging**: Winston structured logging with daily rotation
+
+See `DEPLOY_RENDER_VERCEL_WIX.md` for complete DNS configuration and custom domain setup.  
+See `VARIAVEIS_AMBIENTE.md` for complete environment variables reference.
+
+**Continuous Integration & Deployment**:
+- **Auto-deploy**: Push to GitHub `main` branch triggers automatic deployments on both Render and Vercel
 - **Frontend Deployment**: Vercel with environment-specific configuration and preview deployments
-- **Backend Deployment**: Railway with automatic database migrations and health checks
-- **Notifications**: Slack integration for deployment status and failure alerts
-- **Rollback Support**: Documented rollback procedures for Vercel, Railway, and Neon database
+- **Backend Deployment**: Render with automatic restarts on code changes
+- **Database**: Neon PostgreSQL serverless with automatic scaling and backups
+- **Rollback Support**: Documented rollback procedures for Vercel, Render, and Neon database
 
-See `DEPLOY_GUIDE.md` for complete deployment documentation and `.github/workflows/ci-cd.yml` for pipeline configuration.
+See `DEPLOY_PRODUCAO_FINAL.md` for general deployment guide.  
+See `ATUALIZACAO_PRODUCAO.md` for technical details of latest API changes.
 
 ## External Dependencies
 - **Database**: Neon PostgreSQL (serverless, auto-scaling)
