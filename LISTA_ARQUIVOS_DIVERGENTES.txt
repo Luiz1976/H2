@@ -1,0 +1,34 @@
+╔══════════════════════════════════════════════════════════════════╗
+║  ARQUIVOS DIVERGENTES ENTRE REPLIT E PRODUÇÃO                   ║
+║  Data: 07/11/2025 19:45                                          ║
+╔══════════════════════════════════════════════════════════════════╗
+
+SITUAÇÃO:
+- Replit: 110 commits à frente do GitHub
+- GitHub: 12 commits à frente do Replit
+- Status: BRANCHES DIVERGIRAM
+
+ARQUIVOS NOVOS (não existem em produção):
+1. humaniq-ai-backend
+2. src/components/layout/HomeRoute.tsx
+3. src/data/cursosData.js
+4. src/data/cursosData.d.ts
+5. src/data/cursosData.d.ts.map
+6. src/data/cursosData.js.map
+
+ARQUIVOS MODIFICADOS (versões diferentes):
+1. package.json (CRÍTICO - tem patch-package)
+2. src/App.tsx
+3. src/components/OnlineStatus.tsx
+4. src/components/cursos/AvaliacaoFinal.tsx
+5. src/components/cursos/CertificadoView.tsx
+6. src/pages/CheckoutPage.tsx
+7. src/pages/CheckoutSuccessPage.tsx
+8. src/pages/colaborador/ColaboradorCertificado.tsx
+9. src/pages/colaborador/CursoDetalhes.tsx
+10. src/pages/empresa/EmpresaColaboradorCertificado.tsx
+
+ARQUIVOS DELETADOS (foram removidos no Replit):
+1. server/package-lock.json (removido - não é mais usado)
+
+TOTAL: 17 arquivos com diferenças
