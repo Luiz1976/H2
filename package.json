@@ -1,8 +1,4 @@
 {
-  "name": "vite_react_shadcn_ts",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "start": "npm run server & npm run dev",
     "start:prod": "NODE_ENV=production tsx server/index.ts",
